@@ -46,3 +46,8 @@
 - Added descriptions for YÖK/MOE/MOH recognition, Erasmus and dormitory flags.
 - Added descriptions for QS/THE/ARWU/URAP ranking fields.
 - Added descriptions for offering fee basis, tuition variants, discounts, quota and deadline.
+
+### Approval field scope
+- Removed `is_moe_approved` from `Program`.
+- Removed `is_moh_approved` from `Program`.
+- Kept YÖK, MOE, and MOH recognition/approval strictly on `University`.

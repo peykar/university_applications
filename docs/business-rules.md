@@ -48,3 +48,9 @@
 - Internal agent documents are stored through `AgentDocument`.
 - `AgentDocument.description` is internal staff-facing metadata.
 
+## University approval and recognition
+
+- `is_yok_recognized` belongs to `University`.
+- `is_moe_approved` belongs to `University`.
+- `is_moh_approved` belongs to `University`.
+- `Program` must not duplicate these fields.

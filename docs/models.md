@@ -92,6 +92,7 @@ Student residence city is not required to reference `City`.
 A university belongs to a `City`.
 
 Important properties include:
+- approval/recognition fields are university-level only
 - multilingual name and slug
 - multilingual description
 - logo
@@ -146,10 +147,11 @@ Important fields include:
 - thesis type
 - program language
 - duration
-- approval flags
 - active state
 
 Tuition, quota and deadline do not belong here.
+
+Programs do not carry MOE, MOH, or YÖK approval flags. Those recognition/approval flags belong to `University`.
 
 ## ProgramOffering
 

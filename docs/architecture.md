@@ -91,3 +91,9 @@ adding multiple file fields directly to `Agent`.
 
 This supports an unlimited number of documents per agency, including
 agreements, payment receipts, commission records, and other internal files.
+
+### University-level approvals
+
+MOE, MOH, and YÖK are modeled at the university level. Programs inherit that
+institutional context through their `university` relation and do not duplicate
+those approval fields.

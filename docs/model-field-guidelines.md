@@ -33,3 +33,8 @@ Django forms and the Django admin.
 
 When adding or changing a domain-specific model field, review whether it needs
 `help_text` as part of the same change.
+
+## MOE/MOH/YÖK scope
+
+`is_yok_recognized`, `is_moe_approved`, and `is_moh_approved` are
+university-level fields. Do not add equivalent flags to `Program`.

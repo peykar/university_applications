@@ -498,20 +498,6 @@ class Program(
         related_name="programs",
     )
     duration = models.PositiveSmallIntegerField(null=True, blank=True)
-    is_moe_approved = models.BooleanField(
-        default=False,
-        help_text=_(
-            "Whether this university or program is approved by the relevant "
-            "Ministry of Education for the target student market."
-        ),
-    )
-    is_moh_approved = models.BooleanField(
-        default=False,
-        help_text=_(
-            "Whether this university or program is approved by the relevant "
-            "Ministry of Health for the target student market."
-        ),
-    )
 
     class Meta:
         ordering = ["university__name_en", "name_en"]
