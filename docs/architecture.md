@@ -83,3 +83,11 @@ An agent has:
 Users and agents use a many-to-many relationship so multiple staff accounts
 may operate under the same agency and a user may be associated with more than
 one agency when needed.
+
+### Agent documents
+
+Agent-related internal files are modeled through `AgentDocument` rather than
+adding multiple file fields directly to `Agent`.
+
+This supports an unlimited number of documents per agency, including
+agreements, payment receipts, commission records, and other internal files.

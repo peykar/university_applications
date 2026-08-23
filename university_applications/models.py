@@ -154,6 +154,26 @@ class Agent(BaseModel):
         blank=True,
     )
 
+    email = models.EmailField(
+        blank=True,
+    )
+
+    website = models.URLField(
+        blank=True,
+    )
+
+    cell = models.CharField(
+        max_length=20,
+        blank=True,
+        validators=[validate_phone_number],
+    )
+
+    landline = models.CharField(
+        max_length=20,
+        blank=True,
+        validators=[validate_phone_number],
+    )
+
     users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="agents",
@@ -176,6 +196,35 @@ class Agent(BaseModel):
         verbose_name = _("Agent")
         verbose_name_plural = _("Agents")
 
+    def clean(self) -> None:
+        super().clean()
+
+        errors = {}
+
+        if self.cell:
+            try:
+                self.cell = normalize_phone_number(self.cell)
+            except ValueError as exc:
+                errors["cell"] = str(exc)
+
+        if self.landline:
+            try:
+                self.landline = normalize_phone_number(self.landline)
+            except ValueError as exc:
+                errors["landline"] = str(exc)
+
+        if errors:
+            raise ValidationError(errors)
+
+    def save(self, *args, **kwargs):
+        if self.cell:
+            self.cell = normalize_phone_number(self.cell)
+
+        if self.landline:
+            self.landline = normalize_phone_number(self.landline)
+
+        return super().save(*args, **kwargs)
+
     def __str__(self) -> str:
         return self.company_name
 
@@ -193,6 +242,39 @@ class Agent(BaseModel):
                 raise ValidationError({"parent": _("Agent hierarchy cannot contain a cycle.")})
             visited.add(ancestor.id)
             ancestor = ancestor.parent
+
+
+def agent_document_upload_path(instance, filename):
+    return f"agents/{instance.agent.id}/documents/{filename}"
+
+
+class AgentDocument(BaseModel):
+    agent = models.ForeignKey(
+        Agent,
+        on_delete=models.CASCADE,
+        related_name="documents",
+    )
+
+    name = models.CharField(
+        max_length=255,
+    )
+
+    description = models.TextField(
+        blank=True,
+        help_text=_("Internal description visible to staff users."),
+    )
+
+    file = models.FileField(
+        upload_to=agent_document_upload_path,
+    )
+
+    class Meta:
+        verbose_name = _("Agent Document")
+        verbose_name_plural = _("Agent Documents")
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.agent.company_name} - {self.name}"
 
 
 class Country(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):

@@ -29,3 +29,10 @@
 - Added optional `logo`.
 - Replaced the single `user` relation with many-to-many `users`.
 - Preserved parent/sub-agent hierarchy.
+
+### Agent contacts and documents
+- Added optional agent email and website.
+- Added optional agent cell/mobile and landline phone numbers.
+- Agent phones use the existing validation and E.164 normalization layer.
+- Added `AgentDocument` with name, internal description and uploaded file.
+- Agent documents use agent-specific upload paths.

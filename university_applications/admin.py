@@ -72,3 +72,10 @@ for model in [
     Semester, StudentDocument, ApplicationDocument,
 ]:
     admin.site.register(model)
+
+
+@admin.register(AgentDocument)
+class AgentDocumentAdmin(admin.ModelAdmin):
+    list_display = ("name", "agent", "created_at", "updated_at")
+    search_fields = ("name", "description", "agent__company_name")
+    list_filter = ("created_at",)

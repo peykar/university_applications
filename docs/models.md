@@ -33,13 +33,18 @@ Represents an agency/company.
 Fields and relationships:
 - `company_name`
 - optional `logo`
+- optional `email`
+- optional `website`
+- optional `cell`
+- optional `landline`
 - `users` — many-to-many relationship to the custom user model
 - optional `parent` agent
 - `is_active`
 
+Phone numbers are validated and normalized to E.164.
+
 An agent is not tied to a single user. Multiple users can belong to the same
-agent organization, which allows different staff members to work under one
-company account.
+agent organization.
 
 Agents can still form a hierarchy using:
 
@@ -47,6 +52,26 @@ Agents can still form a hierarchy using:
 Agent
 └── parent → Agent
 ```
+
+## AgentDocument
+
+Stores internal documents belonging to an agent.
+
+Examples:
+- signed agreement with the agent
+- payment receipt
+- commission statement
+- contract attachment
+- internal supporting document
+
+Fields:
+- `agent`
+- `name`
+- `description`
+- `file`
+- inherited audit fields
+
+The description is intended for internal staff use.
 
 
 ## Geography

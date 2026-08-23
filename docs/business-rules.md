@@ -39,7 +39,12 @@
 
 - `Agent` represents a company/agency, not a single user profile.
 - Each agent has a required company name.
-- Agent logo is optional.
+- Logo, email and website are optional.
+- Cell/mobile and landline numbers are optional.
+- Phone numbers are validated and normalized to E.164.
 - An agent may have multiple users.
 - A user may be associated with multiple agents.
 - Parent/sub-agent hierarchy remains supported.
+- Internal agent documents are stored through `AgentDocument`.
+- `AgentDocument.description` is internal staff-facing metadata.
+

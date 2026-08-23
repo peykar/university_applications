@@ -141,3 +141,37 @@ class AgentOrganizationTests(TestCase):
             company_name="No Logo Agency",
         )
         self.assertFalse(bool(agent.logo))
+
+
+class AgentContactAndDocumentTests(TestCase):
+    def test_agent_contact_details(self):
+        agent = Agent.objects.create(
+            company_name="Example Education Agency",
+            email="hello@example.com",
+            website="https://example.com",
+            cell="+31 6 1234 5678",
+            landline="+31 20 123 4567",
+        )
+
+        self.assertEqual(agent.email, "hello@example.com")
+        self.assertEqual(agent.website, "https://example.com")
+        self.assertEqual(agent.cell, "+31612345678")
+        self.assertEqual(agent.landline, "+31201234567")
+
+    def test_agent_document_metadata(self):
+        agent = Agent.objects.create(
+            company_name="Documented Agency",
+        )
+
+        document = AgentDocument(
+            agent=agent,
+            name="Agency Agreement",
+            description="Signed agency agreement for internal staff reference.",
+        )
+
+        self.assertEqual(document.name, "Agency Agreement")
+        self.assertEqual(
+            document.description,
+            "Signed agency agreement for internal staff reference.",
+        )
+        self.assertEqual(document.agent, agent)
