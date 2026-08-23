@@ -106,3 +106,17 @@ in every country merely to record a student's current residence.
 They therefore keep the forward foreign keys to the user who created or
 updated a record, but Django does not create reverse relations on the
 custom `User` model.
+
+## Documentation
+
+Project documentation lives in [`docs/`](docs/).
+
+Start with:
+- `docs/architecture.md`
+- `docs/models.md`
+- `docs/business-rules.md`
+- `docs/authentication.md`
+- `docs/development.md`
+
+Relevant documentation should be updated whenever project behavior or
+structure changes.
