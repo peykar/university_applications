@@ -54,3 +54,13 @@
 - `is_moe_approved` belongs to `University`.
 - `is_moh_approved` belongs to `University`.
 - `Program` must not duplicate these fields.
+
+## Listing priority
+
+- `University.listing_priority` and `Program.listing_priority` are internal
+  integer ordering controls.
+- The default value is `0`.
+- Higher values indicate greater listing priority.
+- The field does not imply sponsorship, popularity, quality, or academic rank.
+- Public listing/query logic may use it as an ordering input; it is not a
+  replacement for search relevance or explicit academic ranking fields.

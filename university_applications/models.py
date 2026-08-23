@@ -382,6 +382,15 @@ class University(
     )
     is_featured = models.BooleanField(default=False)
 
+    listing_priority = models.IntegerField(
+        default=0,
+        db_index=True,
+        help_text=_(
+            "Internal priority used to influence this item's position in "
+            "listings. Higher values receive greater priority."
+        ),
+    )
+
     class Meta:
         ordering = ["name_en"]
         constraints = [models.UniqueConstraint(fields=["city", "slug_en"], name="uniq_university_city_slug_en")]
@@ -498,6 +507,15 @@ class Program(
         related_name="programs",
     )
     duration = models.PositiveSmallIntegerField(null=True, blank=True)
+
+    listing_priority = models.IntegerField(
+        default=0,
+        db_index=True,
+        help_text=_(
+            "Internal priority used to influence this item's position in "
+            "listings. Higher values receive greater priority."
+        ),
+    )
 
     class Meta:
         ordering = ["university__name_en", "name_en"]

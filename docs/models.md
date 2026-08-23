@@ -104,6 +104,7 @@ Important properties include:
 - dormitory availability
 - ranking fields
 - active/featured flags
+- `listing_priority` for internal ordering control
 
 ## UniversityMedia
 
@@ -152,6 +153,8 @@ Important fields include:
 Tuition, quota and deadline do not belong here.
 
 Programs do not carry MOE, MOH, or YÖK approval flags. Those recognition/approval flags belong to `University`.
+
+`Program.listing_priority` is an internal ordering value; higher values can be used to place programs earlier in listings.
 
 ## ProgramOffering
 

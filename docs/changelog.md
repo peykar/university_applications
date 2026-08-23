@@ -51,3 +51,10 @@
 - Removed `is_moe_approved` from `Program`.
 - Removed `is_moh_approved` from `Program`.
 - Kept YÖK, MOE, and MOH recognition/approval strictly on `University`.
+
+### Listing priority
+- Added indexed `listing_priority` to `University`.
+- Added indexed `listing_priority` to `Program`.
+- Default is `0`; higher values indicate greater internal listing priority.
+- Chose the explicit name `listing_priority` instead of RasaStudy's
+  `boost_score`.

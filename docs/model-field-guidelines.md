@@ -38,3 +38,11 @@ When adding or changing a domain-specific model field, review whether it needs
 
 `is_yok_recognized`, `is_moe_approved`, and `is_moh_approved` are
 university-level fields. Do not add equivalent flags to `Program`.
+
+## Listing priority
+
+Use `listing_priority` rather than an ambiguous name such as `boost_score`
+when the value is an internal administrative ordering override.
+
+Higher values mean higher priority. The field should not be presented as an
+academic score, university quality score, or popularity metric.
