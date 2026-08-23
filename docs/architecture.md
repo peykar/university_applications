@@ -8,8 +8,9 @@ The main domain flow is:
 
 ```text
 User
-├── Agent
-│   └── parent → Agent
+├── Agent membership (many-to-many)
+│   └── Agent
+│       └── parent → Agent
 └── Student
     ├── StudentDocument
     └── Application
@@ -68,3 +69,17 @@ Business models inherit `BaseModel` and receive:
 
 The audit user foreign keys use `related_name="+"`, so no reverse audit
 relations are added to the custom user model.
+
+### Agent organization model
+
+`Agent` represents an agency/company rather than a single user's profile.
+
+An agent has:
+- `company_name`
+- optional `logo`
+- zero or more associated users
+- optional parent agent
+
+Users and agents use a many-to-many relationship so multiple staff accounts
+may operate under the same agency and a user may be associated with more than
+one agency when needed.

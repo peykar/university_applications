@@ -113,3 +113,31 @@ class PhoneNumberTests(TestCase):
         )
         student.full_clean()
         self.assertEqual(student.cell, "+905321234567")
+
+
+class AgentOrganizationTests(TestCase):
+    def test_agent_can_have_multiple_users(self):
+        user1 = User.objects.create_user(
+            username="agent-user-1",
+            password="testpass123",
+        )
+        user2 = User.objects.create_user(
+            username="agent-user-2",
+            password="testpass123",
+        )
+
+        agent = Agent.objects.create(
+            company_name="Example Education Agency",
+        )
+        agent.users.add(user1, user2)
+
+        self.assertEqual(agent.company_name, "Example Education Agency")
+        self.assertEqual(agent.users.count(), 2)
+        self.assertIn(agent, user1.agents.all())
+        self.assertIn(agent, user2.agents.all())
+
+    def test_agent_logo_is_optional(self):
+        agent = Agent.objects.create(
+            company_name="No Logo Agency",
+        )
+        self.assertFalse(bool(agent.logo))

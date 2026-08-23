@@ -22,3 +22,10 @@
 ### Documentation
 - Added canonical `docs/` folder.
 - Documentation must be updated as part of relevant future changes.
+
+### Agent organizations
+- Changed `Agent` from a one-to-one user profile to an organization/company.
+- Added required `company_name`.
+- Added optional `logo`.
+- Replaced the single `user` relation with many-to-many `users`.
+- Preserved parent/sub-agent hierarchy.

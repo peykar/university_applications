@@ -28,14 +28,26 @@ Phone numbers are normalized to E.164 where present.
 
 ## Agent
 
-An agent belongs to a user.
+Represents an agency/company.
 
-Agents may form a hierarchy using:
+Fields and relationships:
+- `company_name`
+- optional `logo`
+- `users` — many-to-many relationship to the custom user model
+- optional `parent` agent
+- `is_active`
+
+An agent is not tied to a single user. Multiple users can belong to the same
+agent organization, which allows different staff members to work under one
+company account.
+
+Agents can still form a hierarchy using:
 
 ```text
 Agent
 └── parent → Agent
 ```
+
 
 ## Geography
 

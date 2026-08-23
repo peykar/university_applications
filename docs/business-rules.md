@@ -34,3 +34,12 @@
 
 - `created_by` and `updated_by` retain forward foreign keys to `User`.
 - Neither creates a reverse relation on `User`.
+
+## Agents
+
+- `Agent` represents a company/agency, not a single user profile.
+- Each agent has a required company name.
+- Agent logo is optional.
+- An agent may have multiple users.
+- A user may be associated with multiple agents.
+- Parent/sub-agent hierarchy remains supported.

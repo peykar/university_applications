@@ -145,11 +145,21 @@ class ActiveMixin(models.Model):
 
 
 class Agent(BaseModel):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="agent_profile",
+    company_name = models.CharField(
+        max_length=255,
     )
+
+    logo = models.ImageField(
+        upload_to="agents/logos/",
+        blank=True,
+    )
+
+    users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="agents",
+        blank=True,
+    )
+
     parent = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
@@ -157,11 +167,17 @@ class Agent(BaseModel):
         blank=True,
         related_name="sub_agents",
     )
-    is_active = models.BooleanField(default=True)
+
+    is_active = models.BooleanField(
+        default=True,
+    )
 
     class Meta:
         verbose_name = _("Agent")
         verbose_name_plural = _("Agents")
+
+    def __str__(self) -> str:
+        return self.company_name
 
     def __str__(self) -> str:
         return f"Agent: {self.user}"
