@@ -36,3 +36,13 @@
 - Agent phones use the existing validation and E.164 normalization layer.
 - Added `AgentDocument` with name, internal description and uploaded file.
 - Agent documents use agent-specific upload paths.
+
+### Model field help text
+- Added explanatory `help_text` to domain-specific fields where the field name
+  alone may not make the business meaning clear.
+- Documented the requirement to add help text for acronyms, regulatory flags,
+  specialized pricing/admission fields, and other ambiguous model fields.
+
+- Added descriptions for YÖK/MOE/MOH recognition, Erasmus and dormitory flags.
+- Added descriptions for QS/THE/ARWU/URAP ranking fields.
+- Added descriptions for offering fee basis, tuition variants, discounts, quota and deadline.

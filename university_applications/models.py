@@ -327,15 +327,59 @@ class University(
     website = models.URLField(blank=True)
     city = models.ForeignKey(City, on_delete=models.PROTECT, related_name="universities")
     university_type = models.CharField(max_length=20, choices=UniversityType.choices)
-    is_yok_recognized = models.BooleanField(default=False)
-    is_moe_approved = models.BooleanField(default=False)
-    is_moh_approved = models.BooleanField(default=False)
-    has_erasmus = models.BooleanField(default=False)
-    has_dormitory = models.BooleanField(default=False)
-    ranking_qs = models.PositiveIntegerField(null=True, blank=True)
-    ranking_the = models.PositiveIntegerField(null=True, blank=True)
-    ranking_arwu = models.PositiveIntegerField(null=True, blank=True)
-    ranking_urap = models.PositiveIntegerField(null=True, blank=True)
+    is_yok_recognized = models.BooleanField(
+        default=False,
+        help_text=_(
+            "Whether the university is recognized by YÖK "
+            "(the Council of Higher Education of Türkiye)."
+        ),
+    )
+    is_moe_approved = models.BooleanField(
+        default=False,
+        help_text=_(
+            "Whether this university or program is approved by the relevant "
+            "Ministry of Education for the target student market."
+        ),
+    )
+    is_moh_approved = models.BooleanField(
+        default=False,
+        help_text=_(
+            "Whether this university or program is approved by the relevant "
+            "Ministry of Health for the target student market."
+        ),
+    )
+    has_erasmus = models.BooleanField(
+        default=False,
+        help_text=_(
+            "Whether the university participates in the Erasmus+ mobility programme."
+        ),
+    )
+    has_dormitory = models.BooleanField(
+        default=False,
+        help_text=_(
+            "Whether the university provides or officially offers student dormitory accommodation."
+        ),
+    )
+    ranking_qs = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("University ranking position according to QS World University Rankings."),
+    )
+    ranking_the = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("University ranking position according to Times Higher Education (THE)."),
+    )
+    ranking_arwu = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("University ranking position according to ARWU (Academic Ranking of World Universities)."),
+    )
+    ranking_urap = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("University ranking position according to URAP (University Ranking by Academic Performance)."),
+    )
     is_featured = models.BooleanField(default=False)
 
     class Meta:
@@ -446,6 +490,7 @@ class Program(
         choices=ThesisType.choices,
         null=True,
         blank=True,
+        help_text=_("Indicates whether a graduate program is thesis or non-thesis, when applicable."),
     )
     program_language = models.ForeignKey(
         ProgramLanguage,
@@ -453,8 +498,20 @@ class Program(
         related_name="programs",
     )
     duration = models.PositiveSmallIntegerField(null=True, blank=True)
-    is_moe_approved = models.BooleanField(default=False)
-    is_moh_approved = models.BooleanField(default=False)
+    is_moe_approved = models.BooleanField(
+        default=False,
+        help_text=_(
+            "Whether this university or program is approved by the relevant "
+            "Ministry of Education for the target student market."
+        ),
+    )
+    is_moh_approved = models.BooleanField(
+        default=False,
+        help_text=_(
+            "Whether this university or program is approved by the relevant "
+            "Ministry of Health for the target student market."
+        ),
+    )
 
     class Meta:
         ordering = ["university__name_en", "name_en"]
@@ -496,9 +553,20 @@ class ProgramOffering(BaseModel):
         related_name="program_offerings",
     )
     semester = models.ForeignKey(Semester, on_delete=models.PROTECT, related_name="program_offerings")
-    fee_basis = models.CharField(max_length=30, choices=FeeBasis.choices)
+    fee_basis = models.CharField(
+        max_length=30,
+        choices=FeeBasis.choices,
+        help_text=_(
+            "Specifies what period or unit the tuition amount applies to, "
+            "such as per year or for the full program."
+        ),
+    )
     currency = models.CharField(max_length=3, choices=Currency.choices)
-    tuition = models.DecimalField(max_digits=12, decimal_places=2)
+    tuition = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        help_text=_("Standard tuition amount before discounts for this program offering."),
+    )
     tuition_discount_percentage = models.DecimalField(
         max_digits=5,
         decimal_places=2,
@@ -506,7 +574,13 @@ class ProgramOffering(BaseModel):
         blank=True,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
-    tuition_discounted = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    tuition_discounted = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text=_("Final tuition amount after the applicable discount, when available."),
+    )
     cash_discount_percentage = models.DecimalField(
         max_digits=5,
         decimal_places=2,
@@ -514,12 +588,32 @@ class ProgramOffering(BaseModel):
         blank=True,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
-    tuition_cash = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    tuition_annual_installment = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    tuition_cash = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text=_("Tuition amount when paid using the full/cash payment option."),
+    )
+    tuition_annual_installment = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text=_("Tuition amount applicable to the annual installment payment option."),
+    )
     deposit = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     pre_school_fees = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    quota = models.PositiveIntegerField(null=True, blank=True)
-    deadline = models.DateField(null=True, blank=True)
+    quota = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("Number of admission places available for this specific offering, when known."),
+    )
+    deadline = models.DateField(
+        null=True,
+        blank=True,
+        help_text=_("Last date on which an application can be submitted for this offering."),
+    )
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -671,7 +765,11 @@ class Application(BaseModel):
     agent = models.ForeignKey(Agent, on_delete=models.SET_NULL, null=True, blank=True, related_name="applications")
     program_offering = models.ForeignKey(ProgramOffering, on_delete=models.PROTECT, related_name="applications")
     status = models.CharField(max_length=30, choices=ApplicationStatus.choices, default=ApplicationStatus.DRAFT)
-    tuition = models.DecimalField(max_digits=12, decimal_places=2)
+    tuition = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        help_text=_("Standard tuition amount before discounts for this program offering."),
+    )
     deposit = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     notes = models.TextField(blank=True)
 
