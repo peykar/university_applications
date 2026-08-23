@@ -92,3 +92,10 @@ Agent -> Student / Application
 ```
 
 `Program` stores the academic identity of a program. `ProgramOffering` stores intake-specific academic year, semester, tuition, quota, and deadline data. `Application` points to a `ProgramOffering` and snapshots its applicable tuition/deposit values.
+
+## Residence city
+
+`Student.country_of_residence` references the `Country` catalogue, while
+`Student.city_of_residence` is intentionally stored as free text. The
+application therefore does not require a complete catalogue of every city
+in every country merely to record a student's current residence.

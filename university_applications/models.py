@@ -498,12 +498,10 @@ class Student(BaseModel):
         blank=True,
         related_name="students_residing",
     )
-    city_of_residence = models.ForeignKey(
-        City,
-        on_delete=models.PROTECT,
-        null=True,
+    city_of_residence = models.CharField(
+        max_length=255,
         blank=True,
-        related_name="students_residing",
+        help_text=_("City of residence as free text."),
     )
     address = models.TextField(blank=True)
     educational_background = models.TextField(blank=True)
@@ -519,9 +517,6 @@ class Student(BaseModel):
         super().clean()
         if self.cell:
             self.cell = normalize_phone_number(self.cell)
-        if self.city_of_residence_id and self.country_of_residence_id:
-            if self.city_of_residence.country.id != self.country_of_residence_id:
-                raise ValidationError({"city_of_residence": _("City must belong to the selected country of residence.")})
         if self.passport_date_of_issue and self.passport_date_of_expiry:
             if self.passport_date_of_expiry <= self.passport_date_of_issue:
                 raise ValidationError({"passport_date_of_expiry": _("Passport expiry must be after the issue date.")})
