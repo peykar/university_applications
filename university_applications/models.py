@@ -90,14 +90,14 @@ class BaseModel(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="%(app_label)s_%(class)s_created",
+        related_name="+",
     )
     updated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="%(app_label)s_%(class)s_updated",
+        related_name="+",
     )
 
     class Meta:
