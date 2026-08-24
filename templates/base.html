@@ -17,7 +17,14 @@
 <body>
   <header class="site-header">
     <div class="container nav-wrap">
-      <a class="brand" href="{% url 'home' %}" aria-label="TurkDemy"><img src="{% static 'branding/turkdemy-logo-horizontal.svg' %}" alt="TurkDemy"></a>
+      <a class="brand" href="{% url 'home' %}" aria-label="TurkDemy home">
+        <img
+          src="{% static 'branding/turkdemy-logo-horizontal.svg' %}"
+          alt="TurkDemy"
+          width="190"
+          height="45"
+        >
+      </a>
 
       <nav class="main-nav" aria-label="{% trans 'Main navigation' %}">
         <a href="{% url 'university-list' %}">{% trans "Universities" %}</a>

@@ -211,3 +211,9 @@
 - Added favicon ICO/PNG, Apple Touch, Android/PWA icons and web manifest.
 - Integrated branding into the Django base template.
 - Added `docs/branding.md`.
+
+### Header logo rendering fix
+- Made the TurkDemy header brand insertion robust.
+- Ensured the base template loads Django static tags.
+- Strengthened header/logo layout rules so the SVG cannot collapse or disappear.
+- Added a direct static-asset verification URL to the branding docs.
