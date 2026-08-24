@@ -1,16 +1,8 @@
 from __future__ import annotations
 
-from phonenumbers.phonenumber import PhoneNumber
-from phonenumbers.phonenumberutil import (
-    NumberParseException,
-    PhoneNumberFormat,
-    format_number,
-    is_possible_number,
-    is_valid_number,
-    parse,
-)
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from phonenumber_field.phonenumber import PhoneNumber
 
 
 def _prepare_phone_value(value: str) -> str:
@@ -20,12 +12,19 @@ def _prepare_phone_value(value: str) -> str:
     return value
 
 
-def parse_phone_number(value: str, region: str | None = None) -> PhoneNumber:
-    """Parse and validate a phone number.
+def parse_phone_number(
+    value: str,
+    region: str | None = None,
+) -> PhoneNumber:
+    """
+    Parse and validate a phone number using django-phonenumber-field.
 
-    If no region is supplied, the number must be in international form, for
-    example ``+31612345678``. Numbers starting with ``00`` are accepted and
-    normalized to ``+`` before parsing.
+    This intentionally uses the package's public `PhoneNumber` API instead of
+    importing implementation details from either `phonenumbers` or
+    `phonenumberslite`.
+
+    Without a region, users should provide an international number, e.g.
+    `+31612345678`. A `00` international prefix is normalized to `+`.
     """
     value = _prepare_phone_value(value)
 
@@ -36,20 +35,17 @@ def parse_phone_number(value: str, region: str | None = None) -> PhoneNumber:
         )
 
     try:
-        phone = parse(value, region)
-    except NumberParseException as exc:
+        phone = PhoneNumber.from_string(
+            phone_number=value,
+            region=region,
+        )
+    except Exception as exc:
         raise ValidationError(
             _("Enter a valid phone number, including the country code."),
             code="invalid_phone",
         ) from exc
 
-    if not is_possible_number(phone):
-        raise ValidationError(
-            _("This phone number is not possible."),
-            code="invalid_phone",
-        )
-
-    if not is_valid_number(phone):
+    if not phone.is_valid():
         raise ValidationError(
             _("Enter a valid phone number."),
             code="invalid_phone",
@@ -58,12 +54,14 @@ def parse_phone_number(value: str, region: str | None = None) -> PhoneNumber:
     return phone
 
 
-def normalize_phone_number(value: str, region: str | None = None) -> str:
+def normalize_phone_number(
+    value: str,
+    region: str | None = None,
+) -> str:
     """Return a validated phone number in E.164 format."""
-    phone = parse_phone_number(value, region=region)
-    return format_number(phone, PhoneNumberFormat.E164)
+    return parse_phone_number(value, region=region).as_e164
 
 
 def validate_phone_number(value: str) -> None:
-    """Django field validator for international phone numbers."""
+    """Django model/form field validator."""
     parse_phone_number(value)

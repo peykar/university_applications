@@ -233,3 +233,12 @@
   contact form.
 - Added `check_phone_library` / `make phone-check` diagnostics to show exactly
   which `phonenumbers` module Python loads.
+
+### Phone backend compatibility fix
+- Removed direct imports from `phonenumbers` implementation modules.
+- Phone parsing now uses `django-phonenumber-field`'s public `PhoneNumber` API.
+- Standardized runtime dependency on
+  `django-phonenumber-field[phonenumberslite]`.
+- Removed the explicit `phonenumbers` dependency to avoid mixed/ambiguous
+  phone-number backends.
+- Updated `make phone-check` and regression tests.

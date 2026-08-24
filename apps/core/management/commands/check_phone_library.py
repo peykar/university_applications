@@ -1,16 +1,15 @@
 from django.core.management.base import BaseCommand
+from phonenumber_field.phonenumber import PhoneNumber
 
-import phonenumbers
-from phonenumbers.phonenumberutil import parse
+from apps.core.validators import normalize_phone_number
 
 
 class Command(BaseCommand):
-    help = "Show which phonenumbers package is loaded and verify its parser."
+    help = "Verify TurkDemy phone-number parsing through django-phonenumber-field."
 
     def handle(self, *args, **options):
-        self.stdout.write(f"phonenumbers module: {phonenumbers.__file__}")
         self.stdout.write(
-            f"phonenumbers version: {getattr(phonenumbers, '__version__', 'unknown')}"
+            f"PhoneNumber class: {PhoneNumber.__module__}.{PhoneNumber.__name__}"
         )
-        result = parse("+31612345678", None)
+        result = normalize_phone_number("+31612345678")
         self.stdout.write(self.style.SUCCESS(f"Parser OK: {result}"))

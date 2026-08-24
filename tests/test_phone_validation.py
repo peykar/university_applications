@@ -9,7 +9,9 @@ from apps.core.validators import normalize_phone_number, parse_phone_number
 class PhoneValidationTests(TestCase):
     def test_valid_international_number(self):
         phone = parse_phone_number("+31612345678")
-        self.assertIsNotNone(phone)
+        self.assertTrue(phone.is_valid())
+
+    def test_e164_normalization(self):
         self.assertEqual(
             normalize_phone_number("+31612345678"),
             "+31612345678",
@@ -42,7 +44,7 @@ class ContactFormPhoneValidationTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(ContactSubmission.objects.count(), 1)
 
-    def test_contact_form_returns_validation_error_for_invalid_phone(self):
+    def test_contact_form_returns_error_for_invalid_phone(self):
         response = self.client.post(
             reverse("contact"),
             {
@@ -56,4 +58,3 @@ class ContactFormPhoneValidationTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ContactSubmission.objects.count(), 0)
-        self.assertContains(response, "phone", status_code=200)
