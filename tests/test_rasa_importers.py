@@ -98,7 +98,7 @@ class RasaImporterTests(TestCase):
                         "faqs": [
                             {
                                 "id": 101,
-                                "category_id": 100,
+                                "category": "admissions",
                                 "question_en": "How do I apply?",
                                 "answer_en": "Submit an application.",
                             }
@@ -120,6 +120,7 @@ class RasaImporterTests(TestCase):
             self.assertEqual(offering.quota, 40)
             self.assertEqual(FAQCategory.objects.count(), 1)
             self.assertEqual(FAQ.objects.count(), 1)
+            self.assertEqual(FAQ.objects.get().category.key, "admissions")
 
             system_user = get_user_model().objects.get(username="system")
             university = University.objects.get()

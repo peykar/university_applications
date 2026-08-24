@@ -217,3 +217,38 @@ boost_score = "2.0"
 The importer accepts integral decimal representations and normalizes them to
 integers. Non-integral values such as `"5.5"` are not coerced into integer
 fields.
+
+## FAQ category relationship shape
+
+The downloaded Rasa FAQ records use a category **string**, not a category ID:
+
+```json
+{
+  "id": 81,
+  "category": "خوابگاه",
+  "question_fa": "..."
+}
+```
+
+Rasa FAQ categories use that same value as `key`:
+
+```json
+{
+  "id": 2,
+  "key": "خوابگاه",
+  "name_fa": "خوابگاه"
+}
+```
+
+Therefore the canonical relationship mapping is:
+
+```text
+FAQ.category (Rasa string)
+        ↓
+FAQCategory.key
+        ↓
+FAQ.category (TurkDemy ForeignKey)
+```
+
+The importer also supports numeric IDs, explicit category-key fields, and a
+nested category object as defensive fallbacks.

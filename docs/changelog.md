@@ -186,3 +186,11 @@
 - Added the previously documented but missing `make bootstrap` target.
 - Added `setup`, `migrate`, `system-user`, and `countries` targets.
 - Documented the fresh-checkout bootstrap and Rasa import workflow.
+
+### Rasa FAQ category mapping fix
+- Fixed FAQ imports for the actual Rasa payload shape where `FAQ.category` is
+  a string such as `خوابگاه` matching `FAQCategory.key`.
+- Added defensive support for numeric IDs, explicit keys, and nested category objects.
+- Added regression coverage for string-based FAQ-category mapping.
+- Rebuilt the Makefile with one canonical definition per target, removing
+  duplicate-target warnings.

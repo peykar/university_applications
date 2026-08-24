@@ -1,17 +1,43 @@
-sync:
+.PHONY: \
+	help setup bootstrap migrate makemigrations system-user countries run run-prod \
+	test coverage check ruff format format-check typecheck pre-commit pre-commit-install \
+	rasa-download rasa-import rasa-import-catalogue rasa-import-content rasa-sync \
+	frontend-install frontend-dev frontend-build docker-up docker-prod
+
+help:
+	@echo "TurkDemy development commands"
+	@echo ""
+	@echo "  make bootstrap          Fresh backend setup (sync, migrate, system user, countries)"
+	@echo "  make run                Run Django development server"
+	@echo "  make rasa-download      Download RasaStudy data/assets"
+	@echo "  make rasa-import        Import all downloaded RasaStudy data"
+	@echo "  make rasa-sync          Download then import RasaStudy data"
+	@echo "  make check              Run backend quality checks"
+	@echo "  make frontend-dev       Run React/Vite frontend"
+	@echo "  make docker-up          Run development Docker Compose"
+
+setup:
 	uv sync --all-groups
 
-migrate:
-	uv run python manage.py migrate
+bootstrap: setup migrate system-user countries
 
 makemigrations:
 	uv run python manage.py makemigrations
 
-run:
-	uv run python manage.py runserver
+migrate:
+	uv run python manage.py migrate
+
+system-user:
+	uv run python manage.py ensure_system_user
 
 countries:
 	uv run python manage.py populate_countries
+
+run:
+	uv run python manage.py runserver
+
+run-prod:
+	uv run gunicorn turkdemy.wsgi:application --bind 0.0.0.0:8000 --workers 3
 
 ruff:
 	uv run ruff check .
@@ -51,7 +77,6 @@ pre-commit:
 rasa-download:
 	uv run python scripts/download_rasastudy.py --output data/rasa
 
-
 rasa-import:
 	uv run python manage.py import_rasa_data data/rasa
 
@@ -61,12 +86,7 @@ rasa-import-catalogue:
 rasa-import-content:
 	uv run python manage.py import_rasa_content data/rasa
 
-system-user:
-	uv run python manage.py ensure_system_user
-
-
-run-prod:
-	uv run gunicorn turkdemy.wsgi:application --bind 0.0.0.0:8000 --workers 3
+rasa-sync: rasa-download rasa-import
 
 frontend-install:
 	cd frontend && npm install
@@ -82,21 +102,3 @@ docker-up:
 
 docker-prod:
 	docker compose -f docker-compose.prod.yml up --build -d
-
-.PHONY: bootstrap setup migrate system-user countries
-
-# Prepare a fresh local TurkDemy checkout.
-# This intentionally does not download/import Rasa data.
-bootstrap: setup migrate system-user countries
-
-setup:
-	uv sync --all-groups
-
-migrate:
-	uv run python manage.py migrate
-
-system-user:
-	uv run python manage.py ensure_system_user
-
-countries:
-	uv run python manage.py populate_countries

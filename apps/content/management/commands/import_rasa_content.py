@@ -122,13 +122,56 @@ class Command(BaseCommand):
         item: dict[str, Any],
         category_by_source_id: dict[Any, FAQCategory],
     ) -> FAQCategory | None:
+        # Some Rasa payloads use numeric source IDs.
         category_id = item.get("category_id") or item.get("cat_id")
         if category_id in category_by_source_id:
             return category_by_source_id[category_id]
 
+        # The actual Rasa FAQ dump uses:
+        #   "category": "خوابگاه"
+        # where the value matches FAQCategory.key.
+        raw_category = item.get("category")
+        if isinstance(raw_category, str) and raw_category.strip():
+            value = raw_category.strip()
+
+            category = FAQCategory.objects.filter(key=value).first()
+            if category is not None:
+                return category
+
+            # Defensive fallbacks for variations of the source payload.
+            category = FAQCategory.objects.filter(name_fa=value).first()
+            if category is not None:
+                return category
+
+            category = FAQCategory.objects.filter(name_en=value).first()
+            if category is not None:
+                return category
+
+            category = FAQCategory.objects.filter(name_tr=value).first()
+            if category is not None:
+                return category
+
+            category = FAQCategory.objects.filter(name_ar=value).first()
+            if category is not None:
+                return category
+
+        # Some API versions may return a nested category object.
+        if isinstance(raw_category, dict):
+            nested_id = raw_category.get("id")
+            if nested_id in category_by_source_id:
+                return category_by_source_id[nested_id]
+
+            nested_key = raw_category.get("key") or raw_category.get("slug")
+            if nested_key:
+                category = FAQCategory.objects.filter(key=str(nested_key)).first()
+                if category is not None:
+                    return category
+
         category_key = item.get("category_key") or item.get("cat_key")
         if category_key:
-            return FAQCategory.objects.filter(key=str(category_key)).first()
+            category = FAQCategory.objects.filter(key=str(category_key)).first()
+            if category is not None:
+                return category
 
         if len(category_by_source_id) == 1:
             return next(iter(category_by_source_id.values()))
