@@ -120,3 +120,15 @@
 - Additional university image assets populate `UniversityMedia`.
 - Media is saved through Django storage APIs.
 - Added `docs/rasa-mapping.md` as the canonical mapping reference.
+
+### Admin operations upgrade
+- Added shared `AuditAdminMixin` and active/inactive actions.
+- Added rich admin configuration across accounts, agents, geography,
+  universities, students, applications, and content.
+- Added university logo/banner previews and media inline.
+- Added program-offering inline.
+- Added student-document and application-document inlines.
+- Added application status actions and document verification actions.
+- Added contact handled/unhandled actions.
+- Added TurkDemy admin branding.
+- Added `docs/admin.md`.

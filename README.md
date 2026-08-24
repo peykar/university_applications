@@ -65,3 +65,5 @@ make rasa-import
 See `docs/rasa-import.md`.
 
 Detailed RasaStudy mapping is documented in `docs/rasa-mapping.md`.
+
+Internal admin behavior is documented in `docs/admin.md`.

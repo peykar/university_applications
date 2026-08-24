@@ -14,3 +14,4 @@
 - `rasa-data.md`
 - `rasa-import.md`
 - `rasa-mapping.md`
+- `admin.md`

@@ -4,6 +4,12 @@ from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import include, path
 
+
+admin.site.site_header = "TurkDemy Administration"
+admin.site.site_title = "TurkDemy Admin"
+admin.site.index_title = "Operations"
+
+
 def index(request):
     return JsonResponse({"project": "TurkDemy", "status": "ok"})
 
