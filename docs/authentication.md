@@ -107,3 +107,28 @@ This means Google users are not asked to verify the same Google email again
 after Google has authenticated them. Direct email signup/login still uses the
 TurkDemy email-code flow. Telegram is unaffected because it normally does not
 supply an email address.
+
+## Existing passwords and Google account linking
+
+django-allauth has a security safeguard for social email authentication: when
+a trusted provider matches an existing local account whose email has not yet
+been recorded as verified by allauth, the local password can be made unusable.
+
+TurkDemy installs `TurkDemySocialAccountAdapter` to handle legacy accounts.
+When Google supplies the same **verified** email address, the adapter first
+records that email as verified in allauth's `EmailAddress` table. The existing
+local password, staff flag, superuser flag, Leads, Students and Applications
+remain unchanged.
+
+This applies only to providers explicitly listed as trusted by the adapter
+(currently Google). Telegram does not provide an email address and is not used
+for email-based account linking.
+
+If a password was already made unusable before this fix, its old hash cannot
+be reconstructed. Restore it once with:
+
+```bash
+uv run --env-file .env python manage.py changepassword <username>
+```
+
+Future Google logins will preserve that restored password.

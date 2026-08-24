@@ -393,3 +393,12 @@
 - Google login no longer triggers a second TurkDemy email verification code.
 - Direct email signup/login remains mandatory-verification/passwordless.
 - Added a regression test for the configuration split.
+
+### Preserve existing passwords during Google email linking
+- Added `TurkDemySocialAccountAdapter`.
+- Verified Google email is synchronized into allauth's `EmailAddress` table
+  before social email authentication is accepted.
+- Existing usable passwords are preserved when Google is linked by verified
+  email.
+- Existing `is_staff` and `is_superuser` flags remain untouched.
+- Added regression coverage for legacy admin accounts.

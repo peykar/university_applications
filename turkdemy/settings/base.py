@@ -203,6 +203,7 @@ ACCOUNT_PREVENT_ENUMERATION = True
 ACCOUNT_SIGNUP_FORM_HONEYPOT_FIELD = "company_website"
 
 SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_ADAPTER = "apps.accounts.adapters.TurkDemySocialAccountAdapter"
 SOCIALACCOUNT_EMAIL_REQUIRED = False
 # Google already verifies its email identity; do not require a second
 # TurkDemy email-code step after social authentication. Direct email
