@@ -28,7 +28,7 @@
 
         {% if google_account %}
           {% if google_account.extra_data.email %}
-            <p>{{ google_account.extra_data.email }}</p>
+            <p><bdi dir="ltr">{{ google_account.extra_data.email }}</bdi></p>
           {% endif %}
           <form method="post" action="{% url 'disconnect-social-account' 'google' %}">
             {% csrf_token %}
@@ -61,7 +61,7 @@
 
         {% if telegram_account %}
           {% if telegram_account.extra_data.username %}
-            <p>@{{ telegram_account.extra_data.username }}</p>
+            <p><bdi dir="ltr">@{{ telegram_account.extra_data.username }}</bdi></p>
           {% else %}
             <p>{% trans "Telegram account connected" %}</p>
           {% endif %}
@@ -100,7 +100,7 @@
           {% for address in email_addresses %}
             <div class="account-email-row">
               <div>
-                <strong>{{ address.email }}</strong>
+                <strong><bdi dir="ltr">{{ address.email }}</bdi></strong>
                 <div class="account-email-badges">
                   {% if address.primary %}<span>{% trans "Primary" %}</span>{% endif %}
                   {% if address.verified %}

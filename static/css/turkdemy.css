@@ -503,3 +503,140 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut
   height:34px;
   display:block;
 }
+
+
+/* Global bidirectional layout support */
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: start;
+}
+
+html[dir="ltr"] body {
+  direction: ltr;
+  text-align: start;
+}
+
+/* Prefer logical alignment across shared layout primitives. */
+.site-header,
+.site-footer,
+.page-shell,
+.container,
+.section-heading,
+.auth-card,
+.account-methods-page,
+.signin-method-card,
+.signin-method-content,
+.account-email-row,
+.account-email-actions,
+.auth-form,
+.card,
+.panel,
+.form-row,
+.form-group {
+  text-align: start;
+}
+
+html[dir="rtl"] .site-header,
+html[dir="rtl"] .site-footer,
+html[dir="rtl"] .page-shell,
+html[dir="rtl"] .container,
+html[dir="rtl"] .auth-card,
+html[dir="rtl"] .account-methods-page,
+html[dir="rtl"] .signin-method-card,
+html[dir="rtl"] .account-email-row {
+  direction: rtl;
+}
+
+/* Header/navigation keep the same visual system while reversing flow. */
+html[dir="rtl"] .site-header .container,
+html[dir="rtl"] .site-header-inner,
+html[dir="rtl"] .nav,
+html[dir="rtl"] .nav-links,
+html[dir="rtl"] .header-actions {
+  direction: rtl;
+}
+
+/* Authentication pages */
+html[dir="rtl"] .auth-heading,
+html[dir="rtl"] .auth-form,
+html[dir="rtl"] .auth-new-user {
+  text-align: start;
+}
+
+html[dir="rtl"] .auth-provider-button {
+  direction: rtl;
+}
+
+/* Sign-in methods */
+html[dir="rtl"] .signin-method-card {
+  grid-template-columns: minmax(0, 1fr) 54px;
+}
+
+html[dir="rtl"] .signin-method-card > .signin-method-icon {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+html[dir="rtl"] .signin-method-card > .signin-method-content {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+html[dir="rtl"] .signin-method-title-row,
+html[dir="rtl"] .account-email-row {
+  direction: rtl;
+}
+
+html[dir="rtl"] .account-email-actions {
+  justify-content: flex-start;
+}
+
+html[dir="rtl"] .auth-back-link {
+  text-align: start;
+}
+
+/* Inputs should follow page direction, but machine-like values stay LTR. */
+html[dir="rtl"] input[type="email"],
+html[dir="rtl"] input[type="url"],
+html[dir="rtl"] input[type="tel"] {
+  direction: ltr;
+  text-align: left;
+}
+
+bdi[dir="ltr"],
+.ltr-value,
+.email-value,
+.url-value,
+.username-value {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+  text-align: left;
+}
+
+/* Logical spacing helpers for common components. */
+html[dir="rtl"] .account-email-actions,
+html[dir="rtl"] .signin-method-title-row,
+html[dir="rtl"] .header-actions,
+html[dir="rtl"] .nav-links {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 650px) {
+  html[dir="rtl"] .signin-method-card {
+    grid-template-columns: 1fr;
+  }
+
+  html[dir="rtl"] .signin-method-card > .signin-method-icon,
+  html[dir="rtl"] .signin-method-card > .signin-method-content {
+    grid-column: 1;
+  }
+
+  html[dir="rtl"] .signin-method-card > .signin-method-icon {
+    grid-row: 1;
+  }
+
+  html[dir="rtl"] .signin-method-card > .signin-method-content {
+    grid-row: 2;
+  }
+}

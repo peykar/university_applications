@@ -458,3 +458,10 @@
 - Renamed the `get_or_create()` throwaway boolean in `add_login_email()`.
 - Prevented the gettext `_` alias from being overwritten by a boolean.
 - Added regression coverage for translated add-email success messaging.
+
+### Global RTL support
+- Added language-aware `lang` and `dir` attributes to the root HTML element.
+- Persian and Arabic now render RTL; English and Turkish remain LTR.
+- Added RTL-aware shared layout rules for navigation, auth pages and account cards.
+- Protected emails/usernames with LTR bidi isolation.
+- Added regression tests for language direction.

@@ -225,3 +225,20 @@ need to run `compilemessages` just to use these translations.
 
 When authentication copy changes, regenerate/extract messages and update all
 three catalogues before release.
+
+## RTL support
+
+The root HTML element is language-aware:
+
+```django
+<html
+    lang="{{ LANGUAGE_CODE }}"
+    dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"
+>
+```
+
+Persian and Arabic therefore render RTL, while English and Turkish remain LTR.
+Shared CSS uses RTL-aware layout rules so the visual design remains consistent.
+
+Mixed-direction values such as email addresses and Telegram usernames are
+wrapped with `bdi dir="ltr"` so they remain readable inside RTL pages.
