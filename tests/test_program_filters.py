@@ -180,7 +180,7 @@ class ProgramFilterTests(TestCase):
         qs = apply_program_filters(
             Program.objects.all(),
             ProgramFilterState(
-                semester=self.spring.slug_en,
+                semester=str(self.spring.pk),
                 tuition_max="9000",
             ),
         )
@@ -190,7 +190,7 @@ class ProgramFilterTests(TestCase):
         qs = apply_program_filters(
             Program.objects.all(),
             ProgramFilterState(
-                semester=self.fall.slug_en,
+                semester=str(self.fall.pk),
                 tuition_max="9000",
                 currency="USD",
                 open_only=True,

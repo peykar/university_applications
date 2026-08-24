@@ -330,3 +330,33 @@
 - Fixed admin mixin/action typing and prepopulated field annotations.
 - Fixed URL pattern typing and Rasa importer optional-result narrowing.
 - Offering filters now resolve academic year and semester by slug instead of passing slugs to UUID foreign-key lookups.
+
+### Documentation formatter fix
+- Updated the Python example in `docs/model-field-guidelines.md` to match
+  Ruff's formatter output, so `ruff format --check .` does not fail on the
+  documentation snippet.
+
+### Program filter test alignment
+- Updated Semester filter tests to use primary-key strings because Semester
+  currently has no slug field.
+- Kept slug-based filtering for reference models that actually expose slugs.
+
+### Program offering filter implementation fix
+- Fixed `apply_program_filters()` to stop querying `Semester.slug_en`, which
+  does not exist.
+- Semester filters now use the current Semester primary key.
+- AcademicYear uses the same primary-key fallback when no slug field exists.
+- Kept public templates and tests aligned with the same contract.
+
+### UUID-safe offering filters
+- Parse AcademicYear and Semester query-string values to `UUID` before using
+  Django `_id` lookups.
+- Invalid UUID filter values now produce an empty queryset instead of a
+  database/type error.
+- Formatted the Python example in `docs/program-filters.md` for Ruff.
+
+### UUID filter type narrowing
+- Moved AcademicYear/Semester UUID parsing into the guarded offering-filter
+  branches.
+- `_id` lookups now receive a statically narrowed `UUID`, satisfying
+  django-stubs for non-nullable foreign keys.

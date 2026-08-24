@@ -22,8 +22,7 @@ Example:
 is_yok_recognized = models.BooleanField(
     default=False,
     help_text=_(
-        "Whether the university is recognized by YÖK "
-        "(the Council of Higher Education of Türkiye)."
+        "Whether the university is recognized by YÖK (the Council of Higher Education of Türkiye)."
     ),
 )
 ```

@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
 from typing import Any
+from uuid import UUID
 
 from django.db.models import Exists, Min, OuterRef, Q, QuerySet
 from django.utils import timezone
@@ -42,6 +43,16 @@ def _decimal(value: str | None) -> Decimal | None:
     try:
         return Decimal(value)
     except (InvalidOperation, ValueError):
+        return None
+
+
+def _uuid(value: str | None) -> UUID | None:
+    value = (value or "").strip()
+    if not value:
+        return None
+    try:
+        return UUID(value)
+    except ValueError:
         return None
 
 
@@ -153,10 +164,16 @@ def apply_program_filters(
             offerings = offerings.filter(currency=state.currency)
 
         if state.academic_year:
-            offerings = offerings.filter(academic_year__slug_en=state.academic_year)
+            academic_year_id = _uuid(state.academic_year)
+            if academic_year_id is None:
+                return queryset.none()
+            offerings = offerings.filter(academic_year_id=academic_year_id)
 
         if state.semester:
-            offerings = offerings.filter(semester__slug_en=state.semester)
+            semester_id = _uuid(state.semester)
+            if semester_id is None:
+                return queryset.none()
+            offerings = offerings.filter(semester_id=semester_id)
 
         if state.open_only:
             today = timezone.localdate()
