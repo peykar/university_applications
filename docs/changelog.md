@@ -77,3 +77,13 @@
 - Added E.164 phone handling to contact submissions.
 - Fixed `Agent` duplicate `__str__()` and `clean()` definitions by consolidating each behavior into one method.
 - Fixed adjacent Django admin registration/filter issues found while validating the merged project.
+
+### TurkDemy multi-app refactor
+- Renamed the project to TurkDemy.
+- Replaced the monolithic `university_applications` app with domain apps.
+- Added `accounts`, `agents`, `geography`, `universities`, `students`,
+  `applications`, `content`, `health`, and shared `core`.
+- Split Django settings into base/local/production.
+- Added health/readiness endpoints.
+- Added `data/rasa/` and `data/fixtures/`.
+- Added Dockerfile, docker-compose, Makefile, `.python-version`, and pre-commit config.

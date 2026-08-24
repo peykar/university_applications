@@ -1,103 +1,65 @@
-# Architecture
+# TurkDemy Architecture
 
-## Overview
+## Project structure
 
-The project is a Django application for managing university applications.
-
-The main domain flow is:
+TurkDemy uses a multi-app Django architecture:
 
 ```text
-User
-├── Agent membership (many-to-many)
-│   └── Agent
-│       └── parent → Agent
-└── Student
-    ├── StudentDocument
-    └── Application
-        └── ProgramOffering
-            └── Program
-                ├── University
-                ├── Department
-                └── ProgramLanguage
-
-Country
-└── Province
-    └── City
-        └── University
+apps/
+├── accounts/
+├── agents/
+├── geography/
+├── universities/
+├── students/
+├── applications/
+├── content/
+├── health/
+└── core/
 ```
 
-## Main design boundaries
+## Domain boundaries
 
-### Program vs ProgramOffering
+### accounts
+Custom `User` and authentication identity fields.
 
-`Program` represents the academic identity of a degree program.
+### agents
+Education agencies, their users, hierarchy, contact details and internal documents.
 
-Examples:
-- Computer Engineering
-- Bachelor
-- English
-- 4 years
+### geography
+Country, province and city reference data.
 
-`ProgramOffering` represents a specific intake/admission opportunity.
+### universities
+Universities, media, departments, languages, academic years, semesters, programs and offerings.
 
-Examples:
-- academic year
-- semester
-- tuition
-- discount
-- currency
-- quota
-- deadline
+### students
+Student profile and reusable student documents.
 
-Applications reference `ProgramOffering`, not only `Program`.
+### applications
+Applications and application-specific document links.
 
-### Student location
+### content
+FAQ categories, FAQs and contact submissions.
 
-`country_of_residence` references the project `Country` catalogue.
+### health
+Operational health/readiness endpoints.
 
-`city_of_residence` is intentionally free text because the system does not
-maintain a complete catalogue of every city in every country.
+### core
+Shared abstract models, localization mixins, phone helpers and validators.
 
-### Audit fields
+## Project configuration
 
-Business models inherit `BaseModel` and receive:
-- UUID primary key
-- created_at
-- updated_at
-- created_by
-- updated_by
+Settings are split into:
 
-The audit user foreign keys use `related_name="+"`, so no reverse audit
-relations are added to the custom user model.
+```text
+turkdemy/settings/
+├── base.py
+├── local.py
+└── production.py
+```
 
-### Agent organization model
+Local development defaults to SQLite.
 
-`Agent` represents an agency/company rather than a single user's profile.
+## Data
 
-An agent has:
-- `company_name`
-- optional `logo`
-- zero or more associated users
-- optional parent agent
-
-Users and agents use a many-to-many relationship so multiple staff accounts
-may operate under the same agency and a user may be associated with more than
-one agency when needed.
-
-### Agent documents
-
-Agent-related internal files are modeled through `AgentDocument` rather than
-adding multiple file fields directly to `Agent`.
-
-This supports an unlimited number of documents per agency, including
-agreements, payment receipts, commission records, and other internal files.
-
-### University-level approvals
-
-MOE, MOH, and YÖK are modeled at the university level. Programs inherit that
-institutional context through their `university` relation and do not duplicate
-those approval fields.
-
-### Public content and contact intake
-
-FAQ content is modeled independently through `FAQCategory` and `FAQ`. Public contact-form messages are persisted through `ContactSubmission` for internal follow-up. These models are intentionally separate from admissions `Application` records.
+`data/rasa/` is reserved for RasaStudy source dumps/assets.
+`data/fixtures/` is reserved for project-maintained fixture/reference data.

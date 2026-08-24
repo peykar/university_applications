@@ -1,5 +1,5 @@
 [project]
-name = "university-applications"
+name = "turkdemy"
 version = "0.1.0"
 description = "University application management platform built with Django"
 readme = "README.md"

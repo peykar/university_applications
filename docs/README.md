@@ -1,26 +1,12 @@
-# Project Documentation
+# TurkDemy Documentation
 
-This folder is the canonical home for project documentation.
-
-It should be updated whenever a code or data-model change affects:
-- architecture
-- models or relationships
-- authentication or user identity
-- business rules
-- validation
-- setup or development workflow
-- migrations
-- integrations
-- operational behavior
-
-## Documents
-
-- `architecture.md` — overall project structure and design boundaries
-- `models.md` — model catalogue and relationships
-- `authentication.md` — custom user model, phone handling, verification
-- `development.md` — local setup and development commands
-- `business-rules.md` — important domain rules and invariants
-- `changelog.md` — concise record of meaningful structural changes
-- `model-field-guidelines.md` — conventions for model fields and help text
-- `country-data.md` — ISO country population and CLDR translations
-- `faq-and-contact.md` — FAQ content and contact-submission models
+- `architecture.md`
+- `project-structure.md`
+- `models.md`
+- `development.md`
+- `business-rules.md`
+- `authentication.md`
+- `country-data.md`
+- `faq-and-contact.md`
+- `model-field-guidelines.md`
+- `changelog.md`

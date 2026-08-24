@@ -1,136 +1,26 @@
-# University Applications
+# TurkDemy
 
-A complete runnable Django project for managing universities, programs, offerings, agents, students, documents, and university applications.
+TurkDemy is a Django-based university discovery, agency management, student
+dossier, and university application platform.
 
-## Requirements
-
-- Python 3.11+
-- `uv`
-
-## Fastest way to run
+## Quick start
 
 ```bash
-unzip university_applications_complete.zip
-cd university_applications_complete
-
-./scripts/bootstrap.sh
+uv sync
+uv run python manage.py makemigrations
+uv run python manage.py migrate
+uv run python manage.py populate_countries
 uv run python manage.py createsuperuser
 uv run python manage.py runserver
 ```
 
 Open:
 
-- Home/status: http://127.0.0.1:8000/
-- Django admin: http://127.0.0.1:8000/admin/
-
-The default database is SQLite (`db.sqlite3`), so no PostgreSQL or other external database is required for local development.
-
-## Manual setup
-
-If you prefer to run every command yourself:
-
-```bash
-uv sync
-uv run python manage.py makemigrations university_applications
-uv run python manage.py migrate
-uv run python manage.py check
-uv run python manage.py createsuperuser
-uv run python manage.py runserver
-```
-
-The first successful `uv sync` also creates `uv.lock`; commit that file to Git for reproducible installs.
-
-## Tests
-
-```bash
-uv run python manage.py test university_applications
-# or
-uv run pytest
-```
-
-## Phone numbers
-
-`User.cell` and `Student.cell` are validated using `phonenumbers` and normalized to E.164 format:
-
 ```text
-+31 6 1234 5678 -> +31612345678
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/admin/
+http://127.0.0.1:8000/health/
+http://127.0.0.1:8000/health/ready/
 ```
 
-`User.cell_verified_at` is separate because number-format validation does not prove ownership.
-
-## Project structure
-
-```text
-.
-├── manage.py
-├── pyproject.toml
-├── .env.example
-├── scripts/
-│   └── bootstrap.sh
-├── config/
-│   ├── settings.py
-│   ├── urls.py
-│   ├── asgi.py
-│   └── wsgi.py
-└── university_applications/
-    ├── models.py
-    ├── admin.py
-    ├── managers.py
-    ├── services.py
-    ├── validators.py
-    ├── migrations/
-    └── tests/
-```
-
-## Main model flow
-
-```text
-Country -> Province -> City -> University -> Program -> ProgramOffering
-                                                     -> Application
-Student -> StudentDocument ---------------------------> ApplicationDocument
-Agent -> Student / Application
-```
-
-`Program` stores the academic identity of a program. `ProgramOffering` stores intake-specific academic year, semester, tuition, quota, and deadline data. `Application` points to a `ProgramOffering` and snapshots its applicable tuition/deposit values.
-
-## Residence city
-
-`Student.country_of_residence` references the `Country` catalogue, while
-`Student.city_of_residence` is intentionally stored as free text. The
-application therefore does not require a complete catalogue of every city
-in every country merely to record a student's current residence.
-
-## Audit user relations
-
-`BaseModel.created_by` and `BaseModel.updated_by` use `related_name="+"`.
-They therefore keep the forward foreign keys to the user who created or
-updated a record, but Django does not create reverse relations on the
-custom `User` model.
-
-## Documentation
-
-Project documentation lives in [`docs/`](docs/).
-
-Start with:
-- `docs/architecture.md`
-- `docs/models.md`
-- `docs/business-rules.md`
-- `docs/authentication.md`
-- `docs/development.md`
-
-Relevant documentation should be updated whenever project behavior or
-structure changes.
-
-## Populate countries
-
-After migrations:
-
-```bash
-uv run python manage.py populate_countries
-```
-
-This fills the country catalogue using ISO 3166-1 data plus CLDR translations for English, Persian, Turkish and Arabic.
-
-## FAQ and contact intake
-
-The project includes multilingual `FAQCategory`/`FAQ` models and an internal `ContactSubmission` inbox model. See `docs/faq-and-contact.md`.
+Project documentation lives in `docs/`.

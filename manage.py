@@ -2,17 +2,10 @@
 import os
 import sys
 
-
 def main():
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-    try:
-        from django.core.management import execute_from_command_line
-    except ImportError as exc:
-        raise ImportError(
-            "Couldn't import Django. Run `uv sync` first."
-        ) from exc
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "turkdemy.settings.local")
+    from django.core.management import execute_from_command_line
     execute_from_command_line(sys.argv)
-
 
 if __name__ == "__main__":
     main()
