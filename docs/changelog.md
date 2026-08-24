@@ -163,3 +163,7 @@
 - Added shared email sending helper.
 - Updated `.env.example`.
 - Added `docs/site-url-and-email.md`.
+
+### Pillow runtime dependency
+- Added Pillow as a runtime dependency because TurkDemy uses Django `ImageField`
+  for agent logos, university logos/banners, and university media images.

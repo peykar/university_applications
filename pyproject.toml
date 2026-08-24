@@ -12,6 +12,7 @@ dependencies = [
     "gunicorn>=23,<24",
     "djangorestframework>=3.16,<4",
     "django-cors-headers>=4.7,<5",
+    "Pillow>=11,<12",
 ]
 
 [dependency-groups]
