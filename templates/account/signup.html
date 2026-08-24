@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Create account" %} — TurkDemy{% endblock %}
+{% block content %}
+<section class="auth-shell"><div class="auth-card">
+  <div class="auth-heading"><p class="eyebrow">TurkDemy</p><h1>{% trans "Create your account" %}</h1><p>{% trans "Use your email address. You will verify it with a one-time code; no password is required." %}</p></div>
+  <form method="post" class="auth-form">{% csrf_token %}{{ form.as_p }}{{ redirect_field }}<button class="button auth-email-button" type="submit">{% trans "Continue with email" %}</button></form>
+  <p class="auth-new-user">{% trans "Already have an account?" %} <a href="{% url 'account_login' %}">{% trans "Sign in" %}</a></p>
+</div></section>
+{% endblock %}

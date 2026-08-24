@@ -1,41 +1,70 @@
-# Authentication and Phone Numbers
+# Authentication
 
-## Custom User
+TurkDemy uses `django-allauth` for Google, Telegram, and passwordless email
+authentication. All methods resolve to the same `accounts.User`.
 
-The project uses:
-
-```python
-AUTH_USER_MODEL = "university_applications.User"
-```
-
-## Phone validation
-
-Phone numbers are validated with the Python `phonenumbers` package.
-
-The system stores phone values in E.164 form where possible.
-
-Examples:
+Authentication endpoints are intentionally outside the language-prefixed URL
+tree so external callback URLs remain stable:
 
 ```text
-+31 6 1234 5678  → +31612345678
-+90 532 123 45 67 → +905321234567
+/accounts/login/
+/accounts/signup/
+/accounts/google/login/callback/
+/accounts/telegram/login/callback/
 ```
 
-Format validity is not the same as ownership verification.
+## Email code login
 
-## Verification state
+Email signup/login is passwordless. Login codes and email-verification codes
+expire after 10 minutes, allow up to 5 attempts, and support resending.
 
-`User.cell_verified_at` records when ownership of the user's phone number
-has been verified.
+## Google
 
-A valid phone-number format alone must not set this field.
+Configure:
 
-OTP verification can be added as a separate flow.
+```env
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+```
 
-## Student phone
+Production callback:
 
-`Student.cell` is contact information.
+```text
+https://turkdemy.com/accounts/google/login/callback/
+```
 
-It is validated and normalized, but is not automatically treated as an
-authentication identity and does not require verification merely because
-it is stored.
+Local callback:
+
+```text
+http://127.0.0.1:8000/accounts/google/login/callback/
+```
+
+Google verified-email authentication may connect to an existing TurkDemy
+account with the same email.
+
+## Telegram
+
+Configure:
+
+```env
+TELEGRAM_BOT_ID=123456789
+TELEGRAM_BOT_TOKEN=123456789:complete-token
+TELEGRAM_AUTH_DATE_VALIDITY=30
+```
+
+The complete BotFather token is required. Telegram does not provide email, so
+email is not globally required for social signup. django-allauth's
+`SocialAccount.uid` is canonical; TurkDemy also mirrors Telegram UID/username
+onto the existing User fields.
+
+## Install and migrate
+
+```bash
+uv lock
+uv sync --all-groups
+uv run python manage.py migrate
+uv run pre-commit run --all-files
+make check
+```
+
+Provider buttons are only displayed when their credentials are configured.

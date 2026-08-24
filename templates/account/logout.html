@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Sign out" %} — TurkDemy{% endblock %}
+{% block content %}
+<section class="auth-shell"><div class="auth-card">
+  <div class="auth-heading"><p class="eyebrow">TurkDemy</p><h1>{% trans "Sign out?" %}</h1><p>{% trans "You can sign back in using Google, Telegram, or an email code." %}</p></div>
+  <form method="post" class="auth-form">{% csrf_token %}<button class="button auth-email-button" type="submit">{% trans "Sign out" %}</button></form>
+</div></section>
+{% endblock %}

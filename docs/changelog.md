@@ -360,3 +360,19 @@
   branches.
 - `_id` lookups now receive a statically narrowed `UUID`, satisfying
   django-stubs for non-nullable foreign keys.
+
+### Unified authentication with django-allauth
+- Added Google and Telegram social login.
+- Added passwordless email signup/login with one-time codes.
+- Replaced Django auth URLs with django-allauth.
+- Kept provider callback URLs outside i18n prefixes.
+- Added environment-driven provider credentials.
+- Added TurkDemy authentication templates and styling.
+- Added Telegram identity synchronization to existing User fields.
+- Added `docs/authentication.md`.
+
+### Allauth settings mypy annotation
+- Explicitly typed `SOCIALACCOUNT_PROVIDERS` as
+  `dict[str, dict[str, Any]]`.
+- This allows environment-dependent `APP` provider configuration to be added
+  without mypy treating nested provider values as generic `object`.

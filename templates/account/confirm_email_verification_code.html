@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Verify email" %} — TurkDemy{% endblock %}
+{% block content %}
+<section class="auth-shell"><div class="auth-card">
+  <div class="auth-heading"><p class="eyebrow">{% trans "Email verification" %}</p><h1>{% trans "Verify your email" %}</h1>{% if email %}<p>{% blocktrans %}Enter the code sent to {{ email }}.{% endblocktrans %}</p>{% endif %}</div>
+  <form method="post" class="auth-form auth-code-form">{% csrf_token %}{{ form.as_p }}<button class="button auth-email-button" type="submit">{% trans "Verify email" %}</button></form>
+</div></section>
+{% endblock %}

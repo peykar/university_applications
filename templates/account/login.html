@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n socialaccount %}
+{% block title %}{% trans "Sign in" %} — TurkDemy{% endblock %}
+{% block content %}
+<section class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-heading">
+      <p class="eyebrow">TurkDemy</p>
+      <h1>{% trans "Welcome" %}</h1>
+      <p>{% trans "Sign in with Google, Telegram, or a one-time code sent to your email." %}</p>
+    </div>
+    <div class="auth-provider-stack">
+      {% if google_login_enabled %}
+        <form method="post" action="{% provider_login_url 'google' process='login' %}">
+          {% csrf_token %}
+          <button class="auth-provider-button" type="submit"><span class="auth-provider-mark">G</span>{% trans "Continue with Google" %}</button>
+        </form>
+      {% endif %}
+      {% if telegram_login_enabled %}
+        <form method="post" action="{% provider_login_url 'telegram' process='login' %}">
+          {% csrf_token %}
+          <button class="auth-provider-button" type="submit"><span class="auth-provider-mark">T</span>{% trans "Continue with Telegram" %}</button>
+        </form>
+      {% endif %}
+    </div>
+    {% if google_login_enabled or telegram_login_enabled %}<div class="auth-divider"><span>{% trans "or" %}</span></div>{% endif %}
+    <a class="button auth-email-button" href="{{ request_login_code_url }}">{% trans "Continue with email code" %}</a>
+    <p class="auth-new-user">{% trans "New to TurkDemy?" %} <a href="{{ signup_url }}">{% trans "Create an account with email" %}</a></p>
+  </div>
+</section>
+{% endblock %}
