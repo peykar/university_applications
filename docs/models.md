@@ -230,3 +230,5 @@ applications are not changed by later fee updates.
 Connects a student's existing document to a particular application.
 
 A document attached to an application must belong to that same student.
+
+Country data is populated from `pycountry` for ISO identity and Babel/CLDR for localized display names.

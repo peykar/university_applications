@@ -58,3 +58,11 @@ uv run python manage.py test university_applications
 Whenever a code change affects architecture, models, relationships,
 validation, authentication, setup, or business behavior, update the
 corresponding file under `docs/` in the same change.
+
+## Populate country reference data
+
+```bash
+uv run python manage.py populate_countries
+```
+
+This imports ISO country codes from `pycountry` and translated country names from Babel/CLDR.

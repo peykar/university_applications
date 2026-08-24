@@ -62,3 +62,10 @@
 ### High-school GPA help text
 - Added explanatory help text to `Student.high_school_gpa`.
 - Added explanatory help text to `Student.high_school_gpa_scale`.
+
+### Country reference data
+- Added `pycountry` and `Babel`.
+- Added idempotent `populate_countries` management command.
+- ISO2/ISO3 come from ISO 3166-1 via `pycountry`.
+- English, Persian, Turkish and Arabic names come from CLDR via Babel.
+- Added tests and documentation for country population.

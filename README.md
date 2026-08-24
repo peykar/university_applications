@@ -120,3 +120,13 @@ Start with:
 
 Relevant documentation should be updated whenever project behavior or
 structure changes.
+
+## Populate countries
+
+After migrations:
+
+```bash
+uv run python manage.py populate_countries
+```
+
+This fills the country catalogue using ISO 3166-1 data plus CLDR translations for English, Persian, Turkish and Arabic.
