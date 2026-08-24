@@ -166,18 +166,21 @@ class Agent(BaseModel):
         max_length=20,
         blank=True,
         validators=[validate_phone_number],
+        help_text=_("Mobile/cell number in international format, for example +905321234567."),
     )
 
     landline = models.CharField(
         max_length=20,
         blank=True,
         validators=[validate_phone_number],
+        help_text=_("Landline number in international format, including country and area code."),
     )
 
     users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="agents",
         blank=True,
+        help_text=_("Internal user accounts that are allowed to work under this agent company."),
     )
 
     parent = models.ForeignKey(
@@ -186,6 +189,7 @@ class Agent(BaseModel):
         null=True,
         blank=True,
         related_name="sub_agents",
+        help_text=_("Optional parent agent when this company belongs to an agent hierarchy."),
     )
 
     is_active = models.BooleanField(
@@ -195,10 +199,10 @@ class Agent(BaseModel):
     class Meta:
         verbose_name = _("Agent")
         verbose_name_plural = _("Agents")
+        ordering = ["company_name"]
 
     def clean(self) -> None:
         super().clean()
-
         errors = {}
 
         if self.cell:
@@ -213,36 +217,30 @@ class Agent(BaseModel):
             except ValueError as exc:
                 errors["landline"] = str(exc)
 
+        if self.parent_id and self.parent_id == self.id:
+            errors["parent"] = _("An agent cannot be its own parent.")
+        else:
+            ancestor = self.parent
+            visited = {self.id}
+            while ancestor is not None:
+                if ancestor.id in visited:
+                    errors["parent"] = _("Agent hierarchy cannot contain a cycle.")
+                    break
+                visited.add(ancestor.id)
+                ancestor = ancestor.parent
+
         if errors:
             raise ValidationError(errors)
 
     def save(self, *args, **kwargs):
         if self.cell:
             self.cell = normalize_phone_number(self.cell)
-
         if self.landline:
             self.landline = normalize_phone_number(self.landline)
-
         return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.company_name
-
-    def __str__(self) -> str:
-        return f"Agent: {self.user}"
-
-    def clean(self):
-        super().clean()
-        if self.parent_id and self.parent_id == self.id:
-            raise ValidationError({"parent": _("An agent cannot be its own parent.")})
-        ancestor = self.parent
-        visited = {self.id}
-        while ancestor is not None:
-            if ancestor.id in visited:
-                raise ValidationError({"parent": _("Agent hierarchy cannot contain a cycle.")})
-            visited.add(ancestor.id)
-            ancestor = ancestor.parent
-
 
 def agent_document_upload_path(instance, filename):
     return f"agents/{instance.agent.id}/documents/{filename}"
@@ -275,6 +273,175 @@ class AgentDocument(BaseModel):
 
     def __str__(self) -> str:
         return f"{self.agent.company_name} - {self.name}"
+
+
+def _localized_content_value(instance: models.Model, base_name: str, language_code: str) -> str:
+    language = (language_code or "en").split("-")[0].lower()
+    if language not in {"en", "fa", "tr", "ar"}:
+        language = "en"
+
+    for field_name in (
+        f"{base_name}_{language}",
+        f"{base_name}_en",
+        f"{base_name}_fa",
+        f"{base_name}_tr",
+        f"{base_name}_ar",
+    ):
+        value = getattr(instance, field_name, "")
+        if value:
+            return str(value)
+    return ""
+
+
+class FAQCategory(BaseModel, ActiveMixin):
+    key = models.SlugField(
+        max_length=64,
+        unique=True,
+        help_text=_("Stable internal key used to identify this FAQ category."),
+    )
+    name_en = models.CharField(max_length=128, blank=True)
+    name_fa = models.CharField(max_length=128, blank=True)
+    name_tr = models.CharField(max_length=128, blank=True)
+    name_ar = models.CharField(max_length=128, blank=True)
+    icon = models.CharField(
+        max_length=64,
+        blank=True,
+        help_text=_("Optional frontend icon identifier, for example a Material Symbols icon name."),
+    )
+    color = models.CharField(
+        max_length=32,
+        blank=True,
+        help_text=_("Optional frontend color value or design token used when displaying this category."),
+    )
+    sort_order = models.PositiveSmallIntegerField(
+        default=0,
+        db_index=True,
+        help_text=_("Lower values are displayed earlier among FAQ categories."),
+    )
+
+    class Meta:
+        ordering = ["sort_order", "key"]
+        verbose_name = _("FAQ Category")
+        verbose_name_plural = _("FAQ Categories")
+
+    def clean(self) -> None:
+        super().clean()
+        if not any((self.name_en, self.name_fa, self.name_tr, self.name_ar)):
+            raise ValidationError(_("At least one localized category name is required."))
+
+    @property
+    def faq_count(self) -> int:
+        return self.faqs.count()
+
+    def localized_name(self, language_code: str) -> str:
+        return _localized_content_value(self, "name", language_code)
+
+    def __str__(self) -> str:
+        return self.localized_name("en") or self.key
+
+
+class FAQ(BaseModel, ActiveMixin):
+    category = models.ForeignKey(
+        FAQCategory,
+        on_delete=models.PROTECT,
+        related_name="faqs",
+    )
+
+    question_en = models.CharField(max_length=255, blank=True)
+    question_fa = models.CharField(max_length=255, blank=True)
+    question_tr = models.CharField(max_length=255, blank=True)
+    question_ar = models.CharField(max_length=255, blank=True)
+
+    answer_en = models.TextField(blank=True)
+    answer_fa = models.TextField(blank=True)
+    answer_tr = models.TextField(blank=True)
+    answer_ar = models.TextField(blank=True)
+
+    audio_url = models.URLField(
+        blank=True,
+        help_text=_("Optional URL to an audio version of this FAQ answer."),
+    )
+    view_count = models.PositiveBigIntegerField(
+        default=0,
+        help_text=_("Number of times this FAQ has been viewed; intended for analytics and sorting."),
+    )
+    label_short = models.CharField(
+        max_length=128,
+        blank=True,
+        help_text=_("Optional short internal/display label for compact FAQ interfaces."),
+    )
+    topic = models.CharField(
+        max_length=128,
+        blank=True,
+        db_index=True,
+        help_text=_("Optional topic used to group or filter FAQs within a category."),
+    )
+
+    class Meta:
+        ordering = ["category__sort_order", "topic", "question_en", "question_fa"]
+        verbose_name = _("FAQ")
+        verbose_name_plural = _("FAQs")
+        indexes = [
+            models.Index(fields=["category", "topic"], name="faq_category_topic_idx"),
+        ]
+
+    def clean(self) -> None:
+        super().clean()
+        errors = {}
+        if not any((self.question_en, self.question_fa, self.question_tr, self.question_ar)):
+            errors["question_en"] = _("At least one localized question is required.")
+        if not any((self.answer_en, self.answer_fa, self.answer_tr, self.answer_ar)):
+            errors["answer_en"] = _("At least one localized answer is required.")
+        if errors:
+            raise ValidationError(errors)
+
+    def localized_question(self, language_code: str) -> str:
+        return _localized_content_value(self, "question", language_code)
+
+    def localized_answer(self, language_code: str) -> str:
+        return _localized_content_value(self, "answer", language_code)
+
+    def __str__(self) -> str:
+        return self.localized_question("en") or self.localized_question("fa") or str(self.id)
+
+
+class ContactSubmission(BaseModel):
+    name = models.CharField(max_length=128)
+    email = models.EmailField()
+    phone_number = models.CharField(
+        max_length=20,
+        blank=True,
+        validators=[validate_phone_number],
+        help_text=_("Optional contact phone number in international format."),
+    )
+    subject = models.CharField(max_length=160)
+    message = models.TextField()
+    handled = models.BooleanField(
+        default=False,
+        db_index=True,
+        help_text=_("Whether an internal staff member has finished handling this contact request."),
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = _("Contact Submission")
+        verbose_name_plural = _("Contact Submissions")
+
+    def clean(self) -> None:
+        super().clean()
+        if self.phone_number:
+            try:
+                self.phone_number = normalize_phone_number(self.phone_number)
+            except ValueError as exc:
+                raise ValidationError({"phone_number": str(exc)}) from exc
+
+    def save(self, *args, **kwargs):
+        if self.phone_number:
+            self.phone_number = normalize_phone_number(self.phone_number)
+        return super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return f"{self.name}: {self.subject}"
 
 
 class Country(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):

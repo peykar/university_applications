@@ -5,9 +5,30 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from university_applications.models import (
-    AcademicYear, ApplicationDocument, City, Country, DegreeType, Department,
-    FeeBasis, Gender, Program, ProgramLanguage, ProgramOffering, Province,
-    Semester, Student, StudentDocument, ThesisType, University, UniversityType,
+    AcademicYear,
+    Agent,
+    AgentDocument,
+    ApplicationDocument,
+    City,
+    ContactSubmission,
+    Country,
+    DegreeType,
+    Department,
+    FAQ,
+    FAQCategory,
+    FeeBasis,
+    Gender,
+    Program,
+    ProgramLanguage,
+    ProgramOffering,
+    Province,
+    Semester,
+    Student,
+    StudentDocument,
+    ThesisType,
+    University,
+    UniversityType,
+    User,
 )
 from university_applications.services import create_application_from_offering
 
@@ -175,3 +196,51 @@ class AgentContactAndDocumentTests(TestCase):
             "Signed agency agreement for internal staff reference.",
         )
         self.assertEqual(document.agent, agent)
+
+class AgentValidationTests(TestCase):
+    def test_agent_str_uses_company_name(self):
+        agent = Agent(company_name="Rasa Agency")
+        self.assertEqual(str(agent), "Rasa Agency")
+
+    def test_agent_clean_keeps_phone_normalization_and_hierarchy_validation(self):
+        parent = Agent.objects.create(company_name="Parent", cell="+31 6 1234 5678")
+        child = Agent(company_name="Child", parent=parent, cell="+90 532 123 45 67")
+        child.full_clean()
+        self.assertEqual(child.cell, "+905321234567")
+
+        parent.parent = parent
+        with self.assertRaises(ValidationError):
+            parent.full_clean()
+
+
+class FAQModelsTests(TestCase):
+    def test_faq_supports_multilingual_fallback(self):
+        category = FAQCategory.objects.create(key="admissions", name_fa="پذیرش")
+        faq = FAQ.objects.create(
+            category=category,
+            question_fa="چطور درخواست بدهم؟",
+            answer_fa="از فرم درخواست استفاده کنید.",
+        )
+        self.assertEqual(faq.localized_question("fa"), "چطور درخواست بدهم؟")
+        self.assertEqual(faq.localized_question("de"), "چطور درخواست بدهم؟")
+        self.assertEqual(category.faq_count, 1)
+
+    def test_faq_requires_question_and_answer(self):
+        category = FAQCategory.objects.create(key="general", name_en="General")
+        faq = FAQ(category=category)
+        with self.assertRaises(ValidationError):
+            faq.full_clean()
+
+
+class ContactSubmissionTests(TestCase):
+    def test_phone_is_normalized(self):
+        submission = ContactSubmission(
+            name="Test User",
+            email="test@example.com",
+            phone_number="+31 6 1234 5678",
+            subject="Question",
+            message="Hello",
+        )
+        submission.full_clean()
+        self.assertEqual(submission.phone_number, "+31612345678")
+

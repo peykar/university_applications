@@ -64,3 +64,11 @@
 - The field does not imply sponsorship, popularity, quality, or academic rank.
 - Public listing/query logic may use it as an ordering input; it is not a
   replacement for search relevance or explicit academic ranking fields.
+
+## FAQs and contact submissions
+
+- An FAQ category must have at least one localized name.
+- An FAQ must have at least one localized question and one localized answer.
+- FAQ category counts are computed from related FAQ rows rather than manually stored.
+- Contact phone numbers, when supplied, must use a valid international phone format and are normalized to E.164.
+- `ContactSubmission.handled` is an internal workflow flag and does not turn a contact message into an admissions application.

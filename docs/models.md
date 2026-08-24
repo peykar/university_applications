@@ -232,3 +232,15 @@ Connects a student's existing document to a particular application.
 A document attached to an application must belong to that same student.
 
 Country data is populated from `pycountry` for ISO identity and Babel/CLDR for localized display names.
+
+## FAQCategory
+
+Multilingual FAQ category with a stable key, optional presentation metadata, sort order, active state, and dynamically calculated FAQ count.
+
+## FAQ
+
+Multilingual FAQ question/answer content. Supports category, optional audio URL, view count, short label, topic, and active state.
+
+## ContactSubmission
+
+Public contact-form submission with name, email, optional normalized phone number, subject, message, and internal handled state.

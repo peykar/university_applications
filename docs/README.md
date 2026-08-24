@@ -23,3 +23,4 @@ It should be updated whenever a code or data-model change affects:
 - `changelog.md` — concise record of meaningful structural changes
 - `model-field-guidelines.md` — conventions for model fields and help text
 - `country-data.md` — ISO country population and CLDR translations
+- `faq-and-contact.md` — FAQ content and contact-submission models

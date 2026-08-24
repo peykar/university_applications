@@ -69,3 +69,11 @@
 - ISO2/ISO3 come from ISO 3166-1 via `pycountry`.
 - English, Persian, Turkish and Arabic names come from CLDR via Babel.
 - Added tests and documentation for country population.
+
+### FAQ/contact merge from tgate
+- Reworked and added `FAQCategory`, `FAQ`, and `ContactSubmission` from the previous `tgate` project.
+- Added English/Persian/Turkish/Arabic FAQ localization with fallback helpers.
+- Replaced the old stored FAQ category count with dynamic `faq_count`.
+- Added E.164 phone handling to contact submissions.
+- Fixed `Agent` duplicate `__str__()` and `clean()` definitions by consolidating each behavior into one method.
+- Fixed adjacent Django admin registration/filter issues found while validating the merged project.

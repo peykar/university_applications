@@ -97,3 +97,7 @@ agreements, payment receipts, commission records, and other internal files.
 MOE, MOH, and YÖK are modeled at the university level. Programs inherit that
 institutional context through their `university` relation and do not duplicate
 those approval fields.
+
+### Public content and contact intake
+
+FAQ content is modeled independently through `FAQCategory` and `FAQ`. Public contact-form messages are persisted through `ContactSubmission` for internal follow-up. These models are intentionally separate from admissions `Application` records.

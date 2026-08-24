@@ -130,3 +130,7 @@ uv run python manage.py populate_countries
 ```
 
 This fills the country catalogue using ISO 3166-1 data plus CLDR translations for English, Persian, Turkish and Arabic.
+
+## FAQ and contact intake
+
+The project includes multilingual `FAQCategory`/`FAQ` models and an internal `ContactSubmission` inbox model. See `docs/faq-and-contact.md`.
