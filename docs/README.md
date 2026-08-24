@@ -22,3 +22,4 @@
 - `public-and-api.md`
 - `frontend.md`
 - `site-url-and-email.md`
+- `dependency-audit.md`

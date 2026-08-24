@@ -4,35 +4,43 @@ version = "0.1.0"
 description = "TurkDemy Django platform"
 requires-python = ">=3.13"
 dependencies = [
-    "Django>=5.2,<6",
-    "django-phonenumber-field[phonenumberslite]>=8.1,<9",
-    "pycountry>=24.6,<25",
+    "Babel>=2.17,<3",
     "dj-database-url>=2.3,<3",
-    "psycopg[binary]>=3.2,<4",
-    "gunicorn>=23,<24",
-    "djangorestframework>=3.16,<4",
     "django-cors-headers>=4.7,<5",
+    "Django>=5.2,<6",
+    "djangorestframework>=3.16,<4",
+    "gunicorn>=23,<24",
+    "httpx>=0.28,<1",
+    "phonenumbers>=9,<10",
     "Pillow>=11,<12",
+    "psycopg[binary]>=3.2,<4",
+    "pycountry>=24.6,<25",
 ]
 
 [dependency-groups]
 dev = [
     "black>=25.1,<26",
-    "coverage>=7.6,<8",
+    "coverage[toml]>=7.6,<8",
+    "django-stubs>=5.2,<6",
+    "mypy>=1.15,<2",
+    "pre-commit>=4.2,<5",
     "pytest>=8.3,<9",
+    "pytest-cov>=6,<7",
     "pytest-django>=4.10,<5",
     "ruff>=0.9,<1",
 ]
 
 [tool.black]
-line-length = 88
+line-length = 100
 target-version = ["py313"]
 
 [tool.ruff]
-line-length = 88
+line-length = 100
 target-version = "py313"
 extend-exclude = [
-    "migrations",
+    "*/migrations/*",
+    "staticfiles",
+    "media",
 ]
 
 [tool.ruff.lint]
@@ -40,35 +48,54 @@ select = [
     "E",
     "F",
     "I",
-    "UP",
     "B",
+    "UP",
+    "SIM",
     "DJ",
+    "RUF",
 ]
 ignore = [
     "DJ001",
 ]
 
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "turkdemy.settings"
-python_files = [
-    "tests.py",
-    "test_*.py",
-    "*_tests.py",
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "turkdemy"]
+
+[tool.mypy]
+python_version = "3.13"
+plugins = ["mypy_django_plugin.main"]
+check_untyped_defs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+exclude = [
+    "migrations/",
 ]
-testpaths = ["tests"]
+
+[tool.django-stubs]
+django_settings_module = "turkdemy.settings.local"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "turkdemy.settings.local"
+python_files = ["test_*.py", "tests.py"]
+testpaths = ["tests", "apps"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--tb=short",
+]
 
 [tool.coverage.run]
 branch = true
-source = [
-    "apps",
-    "turkdemy",
-]
+source = ["apps", "turkdemy"]
 omit = [
     "*/migrations/*",
     "*/tests/*",
-    "manage.py",
 ]
 
 [tool.coverage.report]
 show_missing = true
 skip_covered = true
+fail_under = 70

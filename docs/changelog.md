@@ -167,3 +167,11 @@
 ### Pillow runtime dependency
 - Added Pillow as a runtime dependency because TurkDemy uses Django `ImageField`
   for agent logos, university logos/banners, and university media images.
+
+### Dependency audit and runtime fixes
+- Audited third-party Python imports against `pyproject.toml`.
+- Added missing Babel runtime dependency required by country localization.
+- Ensured Pillow remains a runtime dependency for Django `ImageField`.
+- Added explicit `phonenumbers` because project code imports it directly.
+- Restored the complete development toolchain dependencies.
+- Rebuilt `pyproject.toml` as valid TOML and added `docs/dependency-audit.md`.
