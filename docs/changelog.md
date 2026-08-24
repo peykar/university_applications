@@ -299,3 +299,10 @@
 - Added customer Applicant workspace and login-required Apply flow.
 - Added staff Admin actions for recommendations, finalization and conversion.
 - Added workflow tests and documentation.
+
+### Lead audit helper import fix
+- Fixed Lead services to import `get_system_user` from the project's canonical
+  `apps.core.audit` module.
+- Added `apps.core.services.audit` as a backward-compatible re-export so older
+  local imports do not break.
+- Updated affected tests to use the canonical audit helper.

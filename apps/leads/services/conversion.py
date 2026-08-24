@@ -8,7 +8,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from apps.applications.models import Application, ApplicationStatus
-from apps.core.services.audit import get_system_user
+from apps.core.audit import get_system_user
 from apps.students.models import Student, StudentDocument
 
 from ..models import (

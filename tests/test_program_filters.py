@@ -4,7 +4,7 @@ from decimal import Decimal
 from django.test import TestCase
 from django.utils import timezone
 
-from apps.core.services.audit import get_system_user
+from apps.core.audit import get_system_user
 from apps.geography.models import City, Country, Province
 from apps.universities.models import (
     AcademicYear,

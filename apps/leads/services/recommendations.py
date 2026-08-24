@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from django.db.models import Exists, OuterRef, Q
 
-from apps.core.services.audit import get_system_user
+from apps.core.audit import get_system_user
 from apps.universities.models import Program, ProgramOffering
 
 from ..models import (
