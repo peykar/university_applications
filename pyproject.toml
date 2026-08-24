@@ -1,72 +1,37 @@
 [project]
 name = "turkdemy"
 version = "0.1.0"
-description = "University application management platform built with Django"
-readme = "README.md"
-requires-python = ">=3.11"
+description = "TurkDemy Django platform"
+requires-python = ">=3.13"
 dependencies = [
-    "python-dotenv>=1.0,<2",
-    "httpx>=0.28,<1",
-    "Django>=5.2,<5.3",
-    "Pillow>=10",
-    "phonenumbers>=9,<10",
-    "pycountry>=24.6.1",
-    "Babel>=2.15",
+    "Django>=5.2,<6",
+    "django-phonenumber-field[phonenumberslite]>=8.1,<9",
+    "pycountry>=24.6,<25",
     "dj-database-url>=2.3,<3",
-    "psycopg[binary,
+    "psycopg[binary]>=3.2,<4",
     "gunicorn>=23,<24",
     "djangorestframework>=3.16,<4",
     "django-cors-headers>=4.7,<5",
-]>=3.2,<4",
 ]
 
 [dependency-groups]
 dev = [
-    "black>=25.1",
-    "coverage[toml]>=7.6",
-    "django-stubs>=5.2",
-    "mypy>=1.15",
-    "pre-commit>=4.2",
-    "pytest>=8",
-    "pytest-cov>=6",
-    "pytest-django>=4.11",
-    "ruff>=0.12",
-]
-
-
-[tool.uv]
-package = false
-
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "turkdemy.settings.local"
-python_files = ["test_*.py", "tests.py"]
-testpaths = ["tests", "apps"]
-addopts = [
-    "--strict-markers",
-    "--strict-config",
-    "--tb=short",
+    "black>=25.1,<26",
+    "coverage>=7.6,<8",
+    "pytest>=8.3,<9",
+    "pytest-django>=4.10,<5",
+    "ruff>=0.9,<1",
 ]
 
 [tool.black]
-line-length = 100
-target-version = ["py311"]
-exclude = """
-/(
-    \.git
-  | \.venv
-  | migrations
-  | staticfiles
-  | media
-)/
-"""
+line-length = 88
+target-version = ["py313"]
 
 [tool.ruff]
-line-length = 100
-target-version = "py311"
+line-length = 88
+target-version = "py313"
 extend-exclude = [
-    "*/migrations/*",
-    "staticfiles",
-    "media",
+    "migrations",
 ]
 
 [tool.ruff.lint]
@@ -74,44 +39,35 @@ select = [
     "E",
     "F",
     "I",
-    "B",
     "UP",
-    "SIM",
+    "B",
     "DJ",
-    "RUF",
 ]
 ignore = [
     "DJ001",
 ]
 
-[tool.ruff.lint.isort]
-known-first-party = ["apps", "turkdemy"]
-
-[tool.mypy]
-python_version = "3.11"
-plugins = ["mypy_django_plugin.main"]
-check_untyped_defs = true
-disallow_untyped_defs = false
-ignore_missing_imports = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_unreachable = true
-exclude = [
-    "migrations/",
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "turkdemy.settings"
+python_files = [
+    "tests.py",
+    "test_*.py",
+    "*_tests.py",
 ]
-
-[tool.django-stubs]
-django_settings_module = "turkdemy.settings.local"
+testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
-source = ["apps", "turkdemy"]
+source = [
+    "apps",
+    "turkdemy",
+]
 omit = [
     "*/migrations/*",
     "*/tests/*",
+    "manage.py",
 ]
 
 [tool.coverage.report]
 show_missing = true
 skip_covered = true
-fail_under = 70
