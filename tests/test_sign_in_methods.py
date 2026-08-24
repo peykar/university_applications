@@ -66,6 +66,23 @@ class SignInMethodsTests(TestCase):
         self.assertContains(response, "Connected")
 
     @patch("allauth.account.models.EmailAddress.send_confirmation")
+    def test_add_email_does_not_shadow_gettext_alias(self, send_confirmation):
+        response = self.client.post(
+            reverse("add-login-email"),
+            {"email": "gettext@example.com"},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            EmailAddress.objects.filter(
+                user=self.user,
+                email="gettext@example.com",
+            ).exists()
+        )
+        send_confirmation.assert_called_once()
+
+    @patch("allauth.account.models.EmailAddress.send_confirmation")
     def test_add_email_uses_emailaddress_confirmation_api(self, send_confirmation):
         response = self.client.post(
             reverse("add-login-email"),

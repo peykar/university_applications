@@ -1,0 +1,228 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TurkDemy\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\nPlural-Forms: nplurals=2; plural=(n != 1);\\n"
+
+msgid "%(provider)s disconnected."
+msgstr "%(provider)s bağlantısı kesildi."
+
+msgid "Account protection"
+msgstr "Hesap koruması"
+
+msgid "Account security"
+msgstr "Hesap güvenliği"
+
+msgid "Add a verified email to use passwordless email-code login."
+msgstr "Şifresiz e-posta koduyla giriş için doğrulanmış bir e-posta ekleyin."
+
+msgid "Add and verify email"
+msgstr "E-posta ekle ve doğrula"
+
+msgid "Add another sign-in method before disconnecting your last login method."
+msgstr "Son giriş yönteminizin bağlantısını kesmeden önce başka bir giriş yöntemi ekleyin."
+
+msgid "Add another sign-in method before removing your last login method."
+msgstr "Son giriş yönteminizi kaldırmadan önce başka bir giriş yöntemi ekleyin."
+
+msgid "Already have an account?"
+msgstr "Zaten hesabınız var mı?"
+
+msgid "Back to sign-in methods"
+msgstr "Giriş yöntemlerine dön"
+
+msgid "Change password"
+msgstr "Parolayı değiştir"
+
+msgid "Connect Google"
+msgstr "Google'ı bağla"
+
+msgid "Connect Telegram"
+msgstr "Telegram'ı bağla"
+
+msgid "Connect more than one method so you can always access the same TurkDemy account."
+msgstr "Aynı TurkDemy hesabına her zaman erişebilmek için birden fazla giriş yöntemi bağlayın."
+
+msgid "Connected"
+msgstr "Bağlı"
+
+msgid "Continue with Google"
+msgstr "Google ile devam et"
+
+msgid "Continue with Telegram"
+msgstr "Telegram ile devam et"
+
+msgid "Continue with email"
+msgstr "E-posta ile devam et"
+
+msgid "Continue with email code"
+msgstr "E-posta kodu ile devam et"
+
+msgid "Create account"
+msgstr "Hesap oluştur"
+
+msgid "Create an account with email"
+msgstr "E-posta ile hesap oluştur"
+
+msgid "Create your account"
+msgstr "Hesabınızı oluşturun"
+
+msgid "Disconnect Google"
+msgstr "Google bağlantısını kaldır"
+
+msgid "Disconnect Telegram"
+msgstr "Telegram bağlantısını kaldır"
+
+msgid "Email"
+msgstr "E-posta"
+
+msgid "Email address"
+msgstr "E-posta adresi"
+
+msgid "Email addresses"
+msgstr "E-posta adresleri"
+
+msgid "Email sign in"
+msgstr "E-posta ile giriş"
+
+msgid "Email sign-in is managed together with your other TurkDemy sign-in methods."
+msgstr "E-posta girişi, diğer TurkDemy giriş yöntemlerinizle birlikte yönetilir."
+
+msgid "Email sign-in method removed."
+msgstr "E-posta giriş yöntemi kaldırıldı."
+
+msgid "Email verification"
+msgstr "E-posta doğrulama"
+
+msgid "Enter sign-in code"
+msgstr "Giriş kodunu girin"
+
+msgid "Enter the code sent to %(email)s."
+msgstr "%(email)s adresine gönderilen kodu girin."
+
+msgid "Enter your TurkDemy email address and we will send you a one-time code."
+msgstr "TurkDemy e-posta adresinizi girin; size tek kullanımlık bir kod gönderelim."
+
+msgid "Enter your sign-in code"
+msgstr "Giriş kodunuzu girin"
+
+msgid "Get a sign-in code"
+msgstr "Giriş kodu al"
+
+msgid "Google login is not configured."
+msgstr "Google ile giriş yapılandırılmamış."
+
+msgid "Make primary"
+msgstr "Birincil yap"
+
+msgid "Manage Google, Telegram, and email access from TurkDemy's account settings."
+msgstr "Google, Telegram ve e-posta erişimini TurkDemy hesap ayarlarından yönetin."
+
+msgid "Manage sign-in methods"
+msgstr "Giriş yöntemlerini yönet"
+
+msgid "New to TurkDemy?"
+msgstr "TurkDemy'de yeni misiniz?"
+
+msgid "Not configured"
+msgstr "Yapılandırılmamış"
+
+msgid "Not connected"
+msgstr "Bağlı değil"
+
+msgid "Open sign-in methods"
+msgstr "Giriş yöntemlerini aç"
+
+msgid "Other sign-in methods"
+msgstr "Diğer giriş yöntemleri"
+
+msgid "Primary"
+msgstr "Birincil"
+
+msgid "Primary email updated."
+msgstr "Birincil e-posta güncellendi."
+
+msgid "Remove"
+msgstr "Kaldır"
+
+msgid "Send sign-in code"
+msgstr "Giriş kodu gönder"
+
+msgid "Sign in"
+msgstr "Giriş yap"
+
+msgid "Sign in with Google, Telegram, or a one-time code sent to your email."
+msgstr "Google, Telegram veya e-postanıza gönderilen tek kullanımlık kod ile giriş yapın."
+
+msgid "Sign out"
+msgstr "Çıkış yap"
+
+msgid "Sign out?"
+msgstr "Çıkış yapılsın mı?"
+
+msgid "Sign-in methods"
+msgstr "Giriş yöntemleri"
+
+msgid "Telegram account connected"
+msgstr "Telegram hesabı bağlı"
+
+msgid "Telegram login is not configured."
+msgstr "Telegram ile giriş yapılandırılmamış."
+
+msgid "That email address is already verified."
+msgstr "Bu e-posta adresi zaten doğrulanmış."
+
+msgid "This email address already belongs to another TurkDemy account."
+msgstr "Bu e-posta adresi zaten başka bir TurkDemy hesabına ait."
+
+msgid "This email address is already connected to another TurkDemy account."
+msgstr "Bu e-posta adresi zaten başka bir TurkDemy hesabına bağlı."
+
+msgid "This page has moved"
+msgstr "Bu sayfa taşındı"
+
+msgid "TurkDemy now manages all sign-in methods from one account-security page."
+msgstr "TurkDemy artık tüm giriş yöntemlerini tek bir hesap güvenliği sayfasından yönetiyor."
+
+msgid "Unverified"
+msgstr "Doğrulanmadı"
+
+msgid "Use your email address. You will verify it with a one-time code; no password is required."
+msgstr "E-posta adresinizi kullanın. Tek kullanımlık kodla doğrulayacaksınız; parola gerekmez."
+
+msgid "Verification pending"
+msgstr "Doğrulama bekliyor"
+
+msgid "Verified"
+msgstr "Doğrulandı"
+
+msgid "Verified email login"
+msgstr "Doğrulanmış e-posta ile giriş"
+
+msgid "Verify and sign in"
+msgstr "Doğrula ve giriş yap"
+
+msgid "Verify email"
+msgstr "E-postayı doğrula"
+
+msgid "Verify this email address before making it primary."
+msgstr "Birincil yapmadan önce bu e-posta adresini doğrulayın."
+
+msgid "Verify your email"
+msgstr "E-postanızı doğrulayın"
+
+msgid "We sent a code to %(email)s."
+msgstr "%(email)s adresine bir kod gönderdik."
+
+msgid "We sent a verification email to %(email)s."
+msgstr "%(email)s adresine doğrulama e-postası gönderdik."
+
+msgid "Welcome"
+msgstr "Hoş geldiniz"
+
+msgid "You can sign back in using Google, Telegram, or an email code."
+msgstr "Google, Telegram veya e-posta koduyla tekrar giriş yapabilirsiniz."
+
+msgid "You currently have %(count)s usable sign-in method(s). TurkDemy will not let you remove your last one."
+msgstr "Şu anda %(count)s kullanılabilir giriş yönteminiz var. TurkDemy son yönteminizi kaldırmanıza izin vermez."
+
+msgid "or"
+msgstr "veya"

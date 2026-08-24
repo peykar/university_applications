@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from .forms import AddLoginEmailForm
@@ -83,7 +84,7 @@ def add_login_email(request: HttpRequest) -> HttpResponse:
 
     email = form.cleaned_data["email"]
 
-    address, _ = EmailAddress.objects.get_or_create(
+    address, address_created = EmailAddress.objects.get_or_create(
         user=user,
         email=email,
         defaults={
@@ -92,14 +93,16 @@ def add_login_email(request: HttpRequest) -> HttpResponse:
         },
     )
 
+    del address_created
+
     if address.verified:
-        messages.info(request, "That email address is already verified.")
+        messages.info(request, _("That email address is already verified."))
         return redirect("sign-in-methods")
 
     address.send_confirmation(request=request)
     messages.success(
         request,
-        f"We sent a verification email to {email}.",
+        _("We sent a verification email to %(email)s.") % {"email": email},
     )
     return redirect("sign-in-methods")
 
@@ -117,7 +120,7 @@ def make_login_email_primary(request: HttpRequest, email_id: int) -> HttpRespons
         raise Http404
 
     if not address.verified:
-        messages.error(request, "Verify this email address before making it primary.")
+        messages.error(request, _("Verify this email address before making it primary."))
         return redirect("sign-in-methods")
 
     EmailAddress.objects.filter(user=user, primary=True).exclude(pk=address.pk).update(
@@ -131,7 +134,7 @@ def make_login_email_primary(request: HttpRequest, email_id: int) -> HttpRespons
     user.email = address.email
     user.save(update_fields=["email"])
 
-    messages.success(request, "Primary email updated.")
+    messages.success(request, _("Primary email updated."))
     return redirect("sign-in-methods")
 
 
@@ -150,7 +153,7 @@ def remove_login_email(request: HttpRequest, email_id: int) -> HttpResponse:
     if address.verified and _usable_login_method_count(user) <= 1:
         messages.error(
             request,
-            "Add another sign-in method before removing your last login method.",
+            _("Add another sign-in method before removing your last login method."),
         )
         return redirect("sign-in-methods")
 
@@ -177,7 +180,7 @@ def remove_login_email(request: HttpRequest, email_id: int) -> HttpResponse:
 
         user.save(update_fields=["email"])
 
-    messages.success(request, "Email sign-in method removed.")
+    messages.success(request, _("Email sign-in method removed."))
     return redirect("sign-in-methods")
 
 
@@ -203,7 +206,7 @@ def disconnect_social_account(
     if _usable_login_method_count(user) <= 1:
         messages.error(
             request,
-            "Add another sign-in method before disconnecting your last login method.",
+            _("Add another sign-in method before disconnecting your last login method."),
         )
         return redirect("sign-in-methods")
 
@@ -222,7 +225,7 @@ def disconnect_social_account(
 
     messages.success(
         request,
-        f"{provider.title()} disconnected.",
+        _("%(provider)s disconnected.") % {"provider": provider.title()},
     )
     return redirect("sign-in-methods")
 

@@ -442,3 +442,19 @@
 - Added a consistent email SVG icon.
 - Updated the login page and Sign-in methods page.
 - Added regression coverage for provider icon rendering.
+
+### Complete authentication translations
+- Added Persian, Turkish and Arabic translations for login/OTP/account-security UI.
+- Added project locale catalogues and compiled `.mo` files.
+- Wrapped account forms and success/error messages in Django gettext.
+- Added regression tests for authentication translations.
+
+### Ruff Unicode translation-test exception
+- Added a per-file `RUF001` ignore for `tests/test_auth_translations.py`.
+- Legitimate Turkish dotless `ı` characters remain unchanged in exact
+  translation assertions.
+
+### Fix gettext alias shadowing
+- Renamed the `get_or_create()` throwaway boolean in `add_login_email()`.
+- Prevented the gettext `_` alias from being overwritten by a boolean.
+- Added regression coverage for translated add-email success messaging.

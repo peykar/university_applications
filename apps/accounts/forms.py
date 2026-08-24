@@ -3,13 +3,14 @@ from __future__ import annotations
 from allauth.account.models import EmailAddress
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 
 
 class AddLoginEmailForm(forms.Form):
     email = forms.EmailField(
-        label="Email address",
+        label=_("Email address"),
         widget=forms.EmailInput(
             attrs={
                 "autocomplete": "email",
@@ -27,12 +28,12 @@ class AddLoginEmailForm(forms.Form):
 
         if EmailAddress.objects.filter(email__iexact=email).exclude(user=self.user).exists():
             raise forms.ValidationError(
-                "This email address is already connected to another TurkDemy account."
+                _("This email address is already connected to another TurkDemy account.")
             )
 
         if User.objects.filter(email__iexact=email).exclude(pk=self.user.pk).exists():
             raise forms.ValidationError(
-                "This email address already belongs to another TurkDemy account."
+                _("This email address already belongs to another TurkDemy account.")
             )
 
         return email

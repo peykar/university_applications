@@ -95,3 +95,6 @@ omit = [
 show_missing = true
 skip_covered = true
 fail_under = 70
+
+[tool.ruff.lint.per-file-ignores]
+"tests/test_auth_translations.py" = ["RUF001"]

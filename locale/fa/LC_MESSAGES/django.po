@@ -1,0 +1,228 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TurkDemy\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\nPlural-Forms: nplurals=2; plural=(n != 1);\\n"
+
+msgid "%(provider)s disconnected."
+msgstr "اتصال %(provider)s قطع شد."
+
+msgid "Account protection"
+msgstr "محافظت از حساب"
+
+msgid "Account security"
+msgstr "امنیت حساب"
+
+msgid "Add a verified email to use passwordless email-code login."
+msgstr "برای ورود بدون رمز عبور با کد ایمیل، یک ایمیل تأییدشده اضافه کنید."
+
+msgid "Add and verify email"
+msgstr "افزودن و تأیید ایمیل"
+
+msgid "Add another sign-in method before disconnecting your last login method."
+msgstr "پیش از قطع آخرین روش ورود، یک روش ورود دیگر اضافه کنید."
+
+msgid "Add another sign-in method before removing your last login method."
+msgstr "پیش از حذف آخرین روش ورود، یک روش ورود دیگر اضافه کنید."
+
+msgid "Already have an account?"
+msgstr "از قبل حساب دارید؟"
+
+msgid "Back to sign-in methods"
+msgstr "بازگشت به روش‌های ورود"
+
+msgid "Change password"
+msgstr "تغییر رمز عبور"
+
+msgid "Connect Google"
+msgstr "اتصال Google"
+
+msgid "Connect Telegram"
+msgstr "اتصال Telegram"
+
+msgid "Connect more than one method so you can always access the same TurkDemy account."
+msgstr "برای اینکه همیشه به همان حساب TurkDemy دسترسی داشته باشید، بیش از یک روش ورود را متصل کنید."
+
+msgid "Connected"
+msgstr "متصل"
+
+msgid "Continue with Google"
+msgstr "ادامه با Google"
+
+msgid "Continue with Telegram"
+msgstr "ادامه با Telegram"
+
+msgid "Continue with email"
+msgstr "ادامه با ایمیل"
+
+msgid "Continue with email code"
+msgstr "ادامه با کد ایمیل"
+
+msgid "Create account"
+msgstr "ساخت حساب"
+
+msgid "Create an account with email"
+msgstr "ساخت حساب با ایمیل"
+
+msgid "Create your account"
+msgstr "حساب خود را بسازید"
+
+msgid "Disconnect Google"
+msgstr "قطع اتصال Google"
+
+msgid "Disconnect Telegram"
+msgstr "قطع اتصال Telegram"
+
+msgid "Email"
+msgstr "ایمیل"
+
+msgid "Email address"
+msgstr "آدرس ایمیل"
+
+msgid "Email addresses"
+msgstr "آدرس‌های ایمیل"
+
+msgid "Email sign in"
+msgstr "ورود با ایمیل"
+
+msgid "Email sign-in is managed together with your other TurkDemy sign-in methods."
+msgstr "ورود با ایمیل همراه با سایر روش‌های ورود TurkDemy مدیریت می‌شود."
+
+msgid "Email sign-in method removed."
+msgstr "روش ورود با ایمیل حذف شد."
+
+msgid "Email verification"
+msgstr "تأیید ایمیل"
+
+msgid "Enter sign-in code"
+msgstr "کد ورود را وارد کنید"
+
+msgid "Enter the code sent to %(email)s."
+msgstr "کد ارسال‌شده به %(email)s را وارد کنید."
+
+msgid "Enter your TurkDemy email address and we will send you a one-time code."
+msgstr "ایمیل TurkDemy خود را وارد کنید تا یک کد یک‌بارمصرف برایتان ارسال کنیم."
+
+msgid "Enter your sign-in code"
+msgstr "کد ورود خود را وارد کنید"
+
+msgid "Get a sign-in code"
+msgstr "دریافت کد ورود"
+
+msgid "Google login is not configured."
+msgstr "ورود با Google پیکربندی نشده است."
+
+msgid "Make primary"
+msgstr "انتخاب به‌عنوان ایمیل اصلی"
+
+msgid "Manage Google, Telegram, and email access from TurkDemy's account settings."
+msgstr "دسترسی Google، Telegram و ایمیل را از تنظیمات حساب TurkDemy مدیریت کنید."
+
+msgid "Manage sign-in methods"
+msgstr "مدیریت روش‌های ورود"
+
+msgid "New to TurkDemy?"
+msgstr "تازه به TurkDemy آمده‌اید؟"
+
+msgid "Not configured"
+msgstr "پیکربندی نشده"
+
+msgid "Not connected"
+msgstr "متصل نیست"
+
+msgid "Open sign-in methods"
+msgstr "باز کردن روش‌های ورود"
+
+msgid "Other sign-in methods"
+msgstr "روش‌های دیگر ورود"
+
+msgid "Primary"
+msgstr "اصلی"
+
+msgid "Primary email updated."
+msgstr "ایمیل اصلی به‌روزرسانی شد."
+
+msgid "Remove"
+msgstr "حذف"
+
+msgid "Send sign-in code"
+msgstr "ارسال کد ورود"
+
+msgid "Sign in"
+msgstr "ورود"
+
+msgid "Sign in with Google, Telegram, or a one-time code sent to your email."
+msgstr "با Google، Telegram یا کد یک‌بارمصرف ارسال‌شده به ایمیل خود وارد شوید."
+
+msgid "Sign out"
+msgstr "خروج"
+
+msgid "Sign out?"
+msgstr "خارج می‌شوید؟"
+
+msgid "Sign-in methods"
+msgstr "روش‌های ورود"
+
+msgid "Telegram account connected"
+msgstr "حساب Telegram متصل است"
+
+msgid "Telegram login is not configured."
+msgstr "ورود با Telegram پیکربندی نشده است."
+
+msgid "That email address is already verified."
+msgstr "این آدرس ایمیل از قبل تأیید شده است."
+
+msgid "This email address already belongs to another TurkDemy account."
+msgstr "این آدرس ایمیل از قبل متعلق به حساب دیگری در TurkDemy است."
+
+msgid "This email address is already connected to another TurkDemy account."
+msgstr "این آدرس ایمیل از قبل به حساب دیگری در TurkDemy متصل است."
+
+msgid "This page has moved"
+msgstr "این صفحه منتقل شده است"
+
+msgid "TurkDemy now manages all sign-in methods from one account-security page."
+msgstr "TurkDemy اکنون همه روش‌های ورود را از یک صفحه امنیت حساب مدیریت می‌کند."
+
+msgid "Unverified"
+msgstr "تأییدنشده"
+
+msgid "Use your email address. You will verify it with a one-time code; no password is required."
+msgstr "از آدرس ایمیل خود استفاده کنید. آن را با یک کد یک‌بارمصرف تأیید می‌کنید و نیازی به رمز عبور نیست."
+
+msgid "Verification pending"
+msgstr "در انتظار تأیید"
+
+msgid "Verified"
+msgstr "تأییدشده"
+
+msgid "Verified email login"
+msgstr "ورود با ایمیل تأییدشده"
+
+msgid "Verify and sign in"
+msgstr "تأیید و ورود"
+
+msgid "Verify email"
+msgstr "تأیید ایمیل"
+
+msgid "Verify this email address before making it primary."
+msgstr "پیش از انتخاب این ایمیل به‌عنوان ایمیل اصلی، آن را تأیید کنید."
+
+msgid "Verify your email"
+msgstr "ایمیل خود را تأیید کنید"
+
+msgid "We sent a code to %(email)s."
+msgstr "یک کد به %(email)s ارسال کردیم."
+
+msgid "We sent a verification email to %(email)s."
+msgstr "یک ایمیل تأیید به %(email)s ارسال کردیم."
+
+msgid "Welcome"
+msgstr "خوش آمدید"
+
+msgid "You can sign back in using Google, Telegram, or an email code."
+msgstr "می‌توانید دوباره با Google، Telegram یا کد ایمیل وارد شوید."
+
+msgid "You currently have %(count)s usable sign-in method(s). TurkDemy will not let you remove your last one."
+msgstr "در حال حاضر %(count)s روش ورود قابل استفاده دارید. TurkDemy اجازه حذف آخرین روش ورود را نمی‌دهد."
+
+msgid "or"
+msgstr "یا"

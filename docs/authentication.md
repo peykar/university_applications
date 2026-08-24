@@ -207,3 +207,21 @@ flows to the same URL.
 This prevents django-allauth's default unstyled account-connection page from
 appearing after Google/Telegram connections while keeping allauth responsible
 for the underlying secure connection workflow.
+
+## Authentication translations
+
+TurkDemy's authentication and Sign-in methods UI includes project-level
+translations for Persian (`fa`), Turkish (`tr`) and Arabic (`ar`). The
+catalogues live under:
+
+```text
+locale/fa/LC_MESSAGES/django.po
+locale/tr/LC_MESSAGES/django.po
+locale/ar/LC_MESSAGES/django.po
+```
+
+Compiled `.mo` files are committed as well, so deployed environments do not
+need to run `compilemessages` just to use these translations.
+
+When authentication copy changes, regenerate/extract messages and update all
+three catalogues before release.
