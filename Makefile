@@ -82,3 +82,21 @@ docker-up:
 
 docker-prod:
 	docker compose -f docker-compose.prod.yml up --build -d
+
+.PHONY: bootstrap setup migrate system-user countries
+
+# Prepare a fresh local TurkDemy checkout.
+# This intentionally does not download/import Rasa data.
+bootstrap: setup migrate system-user countries
+
+setup:
+	uv sync --all-groups
+
+migrate:
+	uv run python manage.py migrate
+
+system-user:
+	uv run python manage.py ensure_system_user
+
+countries:
+	uv run python manage.py populate_countries

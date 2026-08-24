@@ -181,3 +181,8 @@
 - `duration_years="5.0"` now imports as `Program.duration=5`.
 - Applied the same normalization to `boost_score` and `quota`.
 - Added regression coverage for decimal-string integer values.
+
+### Make bootstrap target
+- Added the previously documented but missing `make bootstrap` target.
+- Added `setup`, `migrate`, `system-user`, and `countries` targets.
+- Documented the fresh-checkout bootstrap and Rasa import workflow.

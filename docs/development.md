@@ -39,3 +39,32 @@ uv run python manage.py ensure_system_user
 ```
 
 It is also created lazily by audited management commands. See `docs/auditing.md`.
+
+
+## Bootstrap a fresh checkout
+
+After creating `.env`:
+
+```bash
+make bootstrap
+```
+
+This runs, in order:
+
+1. `uv sync --all-groups`
+2. `python manage.py migrate`
+3. `python manage.py ensure_system_user`
+4. `python manage.py populate_countries`
+
+Rasa data is intentionally separate:
+
+```bash
+make rasa-download
+make rasa-import
+```
+
+If the Rasa files are already present under `data/rasa`, only run:
+
+```bash
+make rasa-import
+```
