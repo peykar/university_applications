@@ -248,3 +248,13 @@
 - This makes core management commands such as `check_phone_library`
   discoverable by Django.
 - Ensured the core management-command package structure is complete.
+
+### Program catalogue filtering
+- Added compact homepage filters for keyword, degree, language and city.
+- Added university-page filters for field, degree, language, tuition, currency,
+  academic year, semester and open/ongoing applications.
+- Added full Programs catalogue filters including university/city/type,
+  university recognition flags and Erasmus+.
+- Offering-level filters use one correlated ProgramOffering match.
+- Added 24-item pagination with filter preservation.
+- Added filter regression tests and `docs/program-filters.md`.

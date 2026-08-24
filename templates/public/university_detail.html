@@ -8,6 +8,9 @@
     <h1>{{ university.name_en }}</h1>
     <div class="badges">
       <span class="badge">{{ university.get_university_type_display }}</span>
+      {% if university.is_yok_recognized %}<span class="badge badge-success">{% trans "YÖK recognized" %}</span>{% endif %}
+      {% if university.is_moe_approved %}<span class="badge badge-success">{% trans "MOE approved" %}</span>{% endif %}
+      {% if university.is_moh_approved %}<span class="badge badge-success">{% trans "MOH approved" %}</span>{% endif %}
       {% if university.has_erasmus %}<span class="badge">{% trans "Erasmus+" %}</span>{% endif %}
       {% if university.has_dormitory %}<span class="badge">{% trans "Dormitory" %}</span>{% endif %}
     </div>
@@ -28,22 +31,99 @@
 </section>
 {% endif %}
 
-<section class="section">
+<section class="section program-catalogue-section">
   <div class="section-heading">
-    <h2>{% trans "Programs" %}</h2>
+    <div>
+      <p class="eyebrow">{% trans "Program catalogue" %}</p>
+      <h2>{% trans "Programs at this university" %}</h2>
+    </div>
+    <strong class="result-count">{{ program_result_count }} {% trans "programs" %}</strong>
   </div>
-  <div class="card-grid">
-    {% for program in university.programs.all %}
-      {% if program.is_active %}
-      <article class="card">
+
+  <form method="get" class="university-program-filters">
+    <div class="filter-search-wide">
+      <input type="search" name="q" value="{{ filters.q }}" placeholder="{% trans 'Search programs' %}">
+    </div>
+
+    <select name="field">
+      <option value="">{% trans "Any field" %}</option>
+      {% for field in field_choices %}
+        <option value="{{ field }}"{% if filters.field == field %} selected{% endif %}>{{ field }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="degree">
+      <option value="">{% trans "Any degree" %}</option>
+      {% for value, label in degree_choices %}
+        <option value="{{ value }}"{% if filters.degree == value %} selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="language">
+      <option value="">{% trans "Any language" %}</option>
+      {% for language in language_choices %}
+        <option value="{{ language.id }}"{% if filters.language == language.id|stringformat:"s" %} selected{% endif %}>{{ language.name_en }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="academic_year">
+      <option value="">{% trans "Any academic year" %}</option>
+      {% for year in academic_year_choices %}
+        <option value="{{ year.id }}"{% if filters.academic_year == year.id|stringformat:"s" %} selected{% endif %}>{{ year.name_en }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="semester">
+      <option value="">{% trans "Any intake" %}</option>
+      {% for semester in semester_choices %}
+        <option value="{{ semester.id }}"{% if filters.semester == semester.id|stringformat:"s" %} selected{% endif %}>{{ semester.name_en }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="currency">
+      <option value="">{% trans "Any currency" %}</option>
+      {% for value, label in currency_choices %}
+        <option value="{{ value }}"{% if filters.currency == value %} selected{% endif %}>{{ value }}</option>
+      {% endfor %}
+    </select>
+
+    <input type="number" name="tuition_min" min="0" step="1" value="{{ filters.tuition_min }}" placeholder="{% trans 'Min tuition' %}">
+    <input type="number" name="tuition_max" min="0" step="1" value="{{ filters.tuition_max }}" placeholder="{% trans 'Max tuition' %}">
+
+    <label class="filter-checkbox">
+      <input type="checkbox" name="open" value="1"{% if filters.open_only %} checked{% endif %}>
+      {% trans "Open/ongoing" %}
+    </label>
+
+    <button class="button" type="submit">{% trans "Apply filters" %}</button>
+    <a class="clear-filters" href="{% url 'university-detail' university.slug_en %}">{% trans "Clear" %}</a>
+  </form>
+
+  <div class="program-result-grid">
+    {% for program in programs %}
+      <article class="program-result-card">
         <p class="eyebrow">{{ program.get_degree_display }}</p>
         <h3><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a></h3>
-        <p class="muted">{{ program.program_language.name_en }}</p>
+        <p class="muted">
+          {% if program.department %}{{ program.department.name_en }} · {% endif %}
+          {{ program.program_language.name_en }}
+          {% if program.duration %} · {{ program.duration }} {% trans "years" %}{% endif %}
+        </p>
+        <div class="program-price">
+          {% if program.min_active_tuition %}
+            <strong>{{ program.min_active_tuition|floatformat:0 }}</strong>
+            <span>{% trans "minimum active tuition" %}</span>
+          {% else %}
+            <strong>—</strong><span>{% trans "tuition unavailable" %}</span>
+          {% endif %}
+        </div>
+        <a class="card-action" href="{% url 'program-detail' program.slug_en %}">{% trans "View program" %}</a>
       </article>
-      {% endif %}
     {% empty %}
-      <div class="empty-state">{% trans "No programs available." %}</div>
+      <div class="empty-state">{% trans "No programs match these filters." %}</div>
     {% endfor %}
   </div>
+
+  {% include "public/includes/pagination.html" %}
 </section>
 {% endblock %}

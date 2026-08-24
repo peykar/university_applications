@@ -16,11 +16,28 @@
       {% endblocktrans %}
     </p>
 
-    <form method="get" class="hero-search" role="search">
-      <label class="sr-only" for="hero-search-input">{% trans "Search programs or universities" %}</label>
-      <input id="hero-search-input" type="search" name="q"
-        placeholder="{% trans 'Search medicine, dentistry, engineering, university…' %}" autocomplete="off">
-      <button class="button button-accent" type="submit">{% trans "Search programs" %}</button>
+    <form method="get" class="hero-search hero-search-advanced" role="search">
+      <div class="hero-search-main">
+        <label class="sr-only" for="hero-search-input">{% trans "Search programs or universities" %}</label>
+        <input id="hero-search-input" type="search" name="q"
+          placeholder="{% trans 'Medicine, dentistry, engineering, university…' %}" autocomplete="off">
+        <button class="button button-accent" type="submit">{% trans "Search programs" %}</button>
+      </div>
+      <div class="hero-filter-row">
+        <select name="degree" aria-label="{% trans 'Degree' %}">
+          <option value="">{% trans "Any degree" %}</option>
+          {% for value, label in degree_choices %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+        </select>
+        <select name="language" aria-label="{% trans 'Language' %}">
+          <option value="">{% trans "Any language" %}</option>
+          {% for language in language_choices %}<option value="{{ language.id }}">{{ language.name_en }}</option>{% endfor %}
+        </select>
+        <select name="city" aria-label="{% trans 'City' %}">
+          <option value="">{% trans "Any city" %}</option>
+          {% for city in city_choices %}<option value="{{ city.id }}">{{ city.name_en }}</option>{% endfor %}
+        </select>
+        <a class="advanced-filter-link" href="{% url 'program-list' %}">{% trans "Advanced filters" %} →</a>
+      </div>
     </form>
 
     <div class="hero-actions">
@@ -75,7 +92,7 @@
   <div class="section-heading"><div><p class="eyebrow">{% trans "Find your direction" %}</p><h2>{% trans "What do you want to study?" %}</h2></div></div>
   <div class="field-chip-grid">
     {% for field in study_fields %}
-      <a class="field-chip" href="{% url 'program-list' %}?q={{ field.name_en|urlencode }}">
+      <a class="field-chip" href="{% url 'program-list' %}?field={{ field.name_en|urlencode }}">
         <span>{{ field.name_en }}</span>
         <small>{{ field.program_count }} {% trans "programs" %}</small>
       </a>
