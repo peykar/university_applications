@@ -1,11 +1,35 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% block title %}{% trans "Universities" %} — TurkDemy{% endblock %}
 {% block content %}
-<h1>{% trans "Universities" %}</h1>
-<form method="get"><input name="q" value="{{ request.GET.q }}" placeholder="{% trans 'Search' %}"><button>{% trans "Search" %}</button></form>
-<ul>
-{% for university in universities %}
-<li><a href="{% url 'university-detail' university.slug_en %}">{{ university.name_en }}</a> — {{ university.city.name_en }}</li>
-{% empty %}<li>{% trans "No results." %}</li>{% endfor %}
-</ul>
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">{% trans "Catalogue" %}</p>
+    <h1>{% trans "Universities" %}</h1>
+  </div>
+</div>
+
+<form method="get" class="search-bar">
+  <input name="q" value="{{ request.GET.q }}" placeholder="{% trans 'Search universities' %}">
+  <button class="button" type="submit">{% trans "Search" %}</button>
+</form>
+
+<div class="card-grid">
+  {% for university in universities %}
+    <article class="card university-card">
+      {% if university.logo %}
+        <img class="card-logo" src="{{ university.logo.url }}" alt="{{ university.name_en }}">
+      {% endif %}
+      <h2><a href="{% url 'university-detail' university.slug_en %}">{{ university.name_en }}</a></h2>
+      <p>{{ university.city.name_en }}</p>
+      <div class="badges">
+        <span class="badge">{{ university.get_university_type_display }}</span>
+        {% if university.has_erasmus %}<span class="badge">{% trans "Erasmus+" %}</span>{% endif %}
+        {% if university.has_dormitory %}<span class="badge">{% trans "Dormitory" %}</span>{% endif %}
+      </div>
+    </article>
+  {% empty %}
+    <div class="empty-state">{% trans "No results." %}</div>
+  {% endfor %}
+</div>
 {% endblock %}

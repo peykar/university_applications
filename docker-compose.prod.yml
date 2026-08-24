@@ -9,7 +9,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-turkdemy} -d ${POSTGRES_DB:-turkdemy}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-turkdemy} -d ${POSTGRES_DB:-turkdemy}",
+        ]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -18,16 +22,18 @@ services:
     build: .
     restart: unless-stopped
     command:
-      - uv
-      - run
-      - gunicorn
-      - turkdemy.wsgi:application
-      - --bind
-      - 0.0.0.0:8000
-      - --workers
-      - "3"
-      - --timeout
-      - "60"
+      [
+        "uv",
+        "run",
+        "gunicorn",
+        "turkdemy.wsgi:application",
+        "--bind",
+        "0.0.0.0:8000",
+        "--workers",
+        "3",
+        "--timeout",
+        "60",
+      ]
     env_file:
       - .env
     environment:
@@ -36,17 +42,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    expose:
-      - "8000"
-
-  frontend:
-    build:
-      context: ./frontend
-    restart: unless-stopped
     ports:
-      - "80:80"
-    depends_on:
-      - web
+      - "8000:8000"
 
 volumes:
   postgres_data:

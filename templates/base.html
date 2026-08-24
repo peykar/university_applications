@@ -1,39 +1,65 @@
-{% load i18n %}
+{% load i18n static %}
 <!doctype html>
-<html lang="{{ LANGUAGE_CODE }}">
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'fa' or LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}TurkDemy{% endblock %}</title>
-    <link rel="stylesheet" href="/static/css/turkdemy.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}TurkDemy{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{% trans 'Study in Türkiye with TurkDemy.' %}{% endblock %}">
+  <link rel="stylesheet" href="{% static 'css/turkdemy.css' %}">
 </head>
 <body>
-<header>
-    <nav>
-        <a href="{% url 'home' %}">TurkDemy</a>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="{% url 'home' %}">TurkDemy</a>
+
+      <nav class="main-nav" aria-label="{% trans 'Main navigation' %}">
         <a href="{% url 'university-list' %}">{% trans "Universities" %}</a>
         <a href="{% url 'program-list' %}">{% trans "Programs" %}</a>
         <a href="{% url 'faq' %}">{% trans "FAQ" %}</a>
         <a href="{% url 'contact' %}">{% trans "Contact" %}</a>
         <a href="{% url 'about' %}">{% trans "About" %}</a>
-        {% if request.user.is_authenticated %}
-            <a href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
-            <a href="{% url 'profile' %}">{% trans "Profile" %}</a>
-            <form method="post" action="{% url 'logout' %}" class="inline-form">
-                {% csrf_token %}
-                <button type="submit">{% trans "Logout" %}</button>
-            </form>
-        {% else %}
-            <a href="{% url 'login' %}">{% trans "Login" %}</a>
-        {% endif %}
-    </nav>
-</header>
+      </nav>
 
-<main>
+      <div class="nav-actions">
+        <form action="{% url 'set_language' %}" method="post" class="language-form">
+          {% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.path }}">
+          <select name="language" onchange="this.form.submit()" aria-label="{% trans 'Language' %}">
+            {% get_current_language as CURRENT_LANGUAGE %}
+            {% get_available_languages as AVAILABLE_LANGUAGES %}
+            {% for code, name in AVAILABLE_LANGUAGES %}
+              <option value="{{ code }}"{% if code == CURRENT_LANGUAGE %} selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+          </select>
+        </form>
+
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
+          <a href="{% url 'profile' %}">{% trans "Profile" %}</a>
+          <form method="post" action="{% url 'logout' %}" class="inline-form">
+            {% csrf_token %}
+            <button class="link-button" type="submit">{% trans "Logout" %}</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}">{% trans "Login" %}</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <main class="container page-shell">
     {% for message in messages %}
-        <div class="message">{{ message }}</div>
+      <div class="message">{{ message }}</div>
     {% endfor %}
     {% block content %}{% endblock %}
-</main>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <strong>TurkDemy</strong>
+      <span>{% trans "University discovery and admissions." %}</span>
+    </div>
+  </footer>
 </body>
 </html>

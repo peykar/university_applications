@@ -182,6 +182,7 @@ STATIC_URL = os.getenv("DJANGO_STATIC_URL", "/static/")
 STATIC_ROOT = Path(
     os.getenv("DJANGO_STATIC_ROOT", str(BASE_DIR / "staticfiles"))
 )
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = os.getenv("DJANGO_MEDIA_URL", "/media/")
 MEDIA_ROOT = Path(

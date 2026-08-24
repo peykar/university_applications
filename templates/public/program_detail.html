@@ -1,15 +1,57 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ program.name_en }} — TurkDemy{% endblock %}
 {% block content %}
-<h1>{{ program.name_en }}</h1>
-<p><a href="{% url 'university-detail' program.university.slug_en %}">{{ program.university.name_en }}</a></p>
-<p>{{ program.description_en }}</p>
-<p>Degree: {{ program.get_degree_display }}</p>
-<p>Language: {{ program.program_language.name_en }}</p>
-<h2>Offerings</h2>
-<table>
-<tr><th>Academic year</th><th>Semester</th><th>Tuition</th><th>Deadline</th></tr>
-{% for offering in program.offerings.all %}
-<tr><td>{{ offering.academic_year }}</td><td>{{ offering.semester }}</td><td>{{ offering.currency }} {{ offering.tuition }}</td><td>{{ offering.deadline|default:"—" }}</td></tr>
-{% endfor %}
-</table>
+<section class="detail-hero">
+  <div>
+    <p class="eyebrow">{{ program.get_degree_display }}</p>
+    <h1>{{ program.name_en }}</h1>
+    <p class="lead">
+      <a href="{% url 'university-detail' program.university.slug_en %}">{{ program.university.name_en }}</a>
+    </p>
+    <div class="badges">
+      <span class="badge">{{ program.program_language.name_en }}</span>
+      {% if program.duration %}<span class="badge">{{ program.duration }} {% trans "years" %}</span>{% endif %}
+    </div>
+  </div>
+</section>
+
+{% if program.description_en %}
+<section class="section prose">
+  <h2>{% trans "Program overview" %}</h2>
+  <p>{{ program.description_en }}</p>
+</section>
+{% endif %}
+
+<section class="section">
+  <h2>{% trans "Available offerings" %}</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>{% trans "Academic year" %}</th>
+          <th>{% trans "Semester" %}</th>
+          <th>{% trans "Tuition" %}</th>
+          <th>{% trans "Quota" %}</th>
+          <th>{% trans "Deadline" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for offering in program.offerings.all %}
+          {% if offering.is_active %}
+          <tr>
+            <td>{{ offering.academic_year }}</td>
+            <td>{{ offering.semester }}</td>
+            <td>{{ offering.currency }} {{ offering.tuition }}</td>
+            <td>{{ offering.quota|default:"—" }}</td>
+            <td>{{ offering.deadline|default:"—" }}</td>
+          </tr>
+          {% endif %}
+        {% empty %}
+          <tr><td colspan="5">{% trans "No active offerings." %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
 {% endblock %}

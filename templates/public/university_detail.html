@@ -1,13 +1,49 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ university.name_en }} — TurkDemy{% endblock %}
 {% block content %}
-<h1>{{ university.name_en }}</h1>
-{% if university.logo %}<img src="{{ university.logo.url }}" alt="{{ university.name_en }}" class="hero-logo">{% endif %}
-<p>{{ university.description_en }}</p>
-<p>{{ university.city.name_en }}</p>
-<h2>Programs</h2>
-<ul>
-{% for program in university.programs.all %}
-<li><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a></li>
-{% endfor %}
-</ul>
+<section class="detail-hero">
+  <div>
+    <p class="eyebrow">{{ university.city.name_en }}</p>
+    <h1>{{ university.name_en }}</h1>
+    <div class="badges">
+      <span class="badge">{{ university.get_university_type_display }}</span>
+      {% if university.has_erasmus %}<span class="badge">{% trans "Erasmus+" %}</span>{% endif %}
+      {% if university.has_dormitory %}<span class="badge">{% trans "Dormitory" %}</span>{% endif %}
+    </div>
+  </div>
+  {% if university.logo %}
+    <img class="detail-logo" src="{{ university.logo.url }}" alt="{{ university.name_en }}">
+  {% endif %}
+</section>
+
+{% if university.banner %}
+  <img class="detail-banner" src="{{ university.banner.url }}" alt="{{ university.name_en }}">
+{% endif %}
+
+{% if university.description_en %}
+<section class="section prose">
+  <h2>{% trans "About the university" %}</h2>
+  <p>{{ university.description_en }}</p>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="section-heading">
+    <h2>{% trans "Programs" %}</h2>
+  </div>
+  <div class="card-grid">
+    {% for program in university.programs.all %}
+      {% if program.is_active %}
+      <article class="card">
+        <p class="eyebrow">{{ program.get_degree_display }}</p>
+        <h3><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a></h3>
+        <p class="muted">{{ program.program_language.name_en }}</p>
+      </article>
+      {% endif %}
+    {% empty %}
+      <div class="empty-state">{% trans "No programs available." %}</div>
+    {% endfor %}
+  </div>
+</section>
 {% endblock %}

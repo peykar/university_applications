@@ -1,14 +1,30 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "FAQ" %} — TurkDemy{% endblock %}
 {% block content %}
-<h1>FAQ</h1>
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">{% trans "Help center" %}</p>
+    <h1>{% trans "Frequently asked questions" %}</h1>
+  </div>
+</div>
 {% for category in categories %}
-<section>
-<h2>{{ category.name_en }}</h2>
-{% for faq in category.faqs.all %}
-{% if faq.is_active %}
-<details><summary>{{ faq.question_en }}</summary><p>{{ faq.answer_en }}</p></details>
-{% endif %}
-{% endfor %}
-</section>
+  <section class="section">
+    <h2>{{ category.name_en }}</h2>
+    <div class="faq-list">
+      {% for faq in category.faqs.all %}
+        {% if faq.is_active %}
+          <details class="faq-item">
+            <summary>{{ faq.question_en }}</summary>
+            <div class="faq-answer">{{ faq.answer_en }}</div>
+          </details>
+        {% endif %}
+      {% empty %}
+        <div class="empty-state">{% trans "No questions in this category." %}</div>
+      {% endfor %}
+    </div>
+  </section>
+{% empty %}
+  <div class="empty-state">{% trans "No FAQ categories available." %}</div>
 {% endfor %}
 {% endblock %}

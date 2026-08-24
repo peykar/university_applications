@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% block title %}{% trans "Contact" %} — TurkDemy{% endblock %}
 {% block content %}
-<h1>{% trans "Contact" %}</h1>
-<form method="post">
-{% csrf_token %}
-{{ form.as_p }}
-<button type="submit">{% trans "Send" %}</button>
-</form>
+<div class="narrow">
+  <p class="eyebrow">{% trans "Get in touch" %}</p>
+  <h1>{% trans "Contact TurkDemy" %}</h1>
+  <form method="post" class="form-card">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="button" type="submit">{% trans "Send message" %}</button>
+  </form>
+</div>
 {% endblock %}

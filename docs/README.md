@@ -20,6 +20,6 @@
 - `deployment.md`
 - `i18n.md`
 - `public-and-api.md`
-- `frontend.md`
 - `site-url-and-email.md`
 - `dependency-audit.md`
+- `public-frontend.md`

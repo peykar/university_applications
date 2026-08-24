@@ -1,25 +1,56 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}TurkDemy{% endblock %}
+{% block title %}TurkDemy — {% trans "Study in Türkiye" %}{% endblock %}
 {% block content %}
-<section>
-<h1>{% trans "Study in Türkiye" %}</h1>
-<p>{% trans "Discover universities, programs, and admissions opportunities." %}</p>
+<section class="hero">
+  <div>
+    <p class="eyebrow">{% trans "Universities in Türkiye" %}</p>
+    <h1>{% trans "Find the right university and program." %}</h1>
+    <p class="lead">{% trans "Explore universities, compare programs and manage your application in one place." %}</p>
+    <div class="hero-actions">
+      <a class="button" href="{% url 'university-list' %}">{% trans "Explore universities" %}</a>
+      <a class="button button-secondary" href="{% url 'program-list' %}">{% trans "Browse programs" %}</a>
+    </div>
+  </div>
 </section>
-<section>
-<h2>{% trans "Featured universities" %}</h2>
-<ul>
-{% for university in universities %}
-<li><a href="{% url 'university-detail' university.slug_en %}">{{ university.name_en }}</a></li>
-{% empty %}<li>{% trans "No universities yet." %}</li>{% endfor %}
-</ul>
+
+<section class="section">
+  <div class="section-heading">
+    <h2>{% trans "Featured universities" %}</h2>
+    <a href="{% url 'university-list' %}">{% trans "View all" %}</a>
+  </div>
+  <div class="card-grid">
+    {% for university in universities %}
+      <article class="card">
+        {% if university.logo %}
+          <img class="card-logo" src="{{ university.logo.url }}" alt="{{ university.name_en }}">
+        {% endif %}
+        <h3><a href="{% url 'university-detail' university.slug_en %}">{{ university.name_en }}</a></h3>
+        <p>{{ university.city.name_en }}</p>
+        <p class="muted">{{ university.get_university_type_display }}</p>
+      </article>
+    {% empty %}
+      <div class="empty-state">{% trans "No universities have been imported yet." %}</div>
+    {% endfor %}
+  </div>
 </section>
-<section>
-<h2>{% trans "Programs" %}</h2>
-<ul>
-{% for program in programs %}
-<li><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a> — {{ program.university.name_en }}</li>
-{% empty %}<li>{% trans "No programs yet." %}</li>{% endfor %}
-</ul>
+
+<section class="section">
+  <div class="section-heading">
+    <h2>{% trans "Popular programs" %}</h2>
+    <a href="{% url 'program-list' %}">{% trans "View all" %}</a>
+  </div>
+  <div class="card-grid">
+    {% for program in programs %}
+      <article class="card">
+        <p class="eyebrow">{{ program.get_degree_display }}</p>
+        <h3><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a></h3>
+        <p>{{ program.university.name_en }}</p>
+        <p class="muted">{{ program.program_language.name_en }}</p>
+      </article>
+    {% empty %}
+      <div class="empty-state">{% trans "No programs have been imported yet." %}</div>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

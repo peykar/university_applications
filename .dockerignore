@@ -9,6 +9,4 @@ coverage.xml
 htmlcov
 media
 staticfiles
-frontend/node_modules
-frontend/dist
 data/rasa/assets

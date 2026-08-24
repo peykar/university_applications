@@ -2,7 +2,7 @@
 	help setup bootstrap migrate makemigrations system-user countries run run-prod \
 	test coverage check ruff format format-check typecheck pre-commit pre-commit-install \
 	rasa-download rasa-import rasa-import-catalogue rasa-import-content rasa-sync \
-	frontend-install frontend-dev frontend-build docker-up docker-prod
+	docker-up docker-prod
 
 help:
 	@echo "TurkDemy development commands"
@@ -13,8 +13,8 @@ help:
 	@echo "  make rasa-import        Import all downloaded RasaStudy data"
 	@echo "  make rasa-sync          Download then import RasaStudy data"
 	@echo "  make check              Run backend quality checks"
-	@echo "  make frontend-dev       Run React/Vite frontend"
 	@echo "  make docker-up          Run development Docker Compose"
+	@echo "  make docker-prod        Run production Docker Compose"
 
 setup:
 	uv sync --all-groups
@@ -87,15 +87,6 @@ rasa-import-content:
 	uv run python manage.py import_rasa_content data/rasa
 
 rasa-sync: rasa-download rasa-import
-
-frontend-install:
-	cd frontend && npm install
-
-frontend-dev:
-	cd frontend && npm run dev
-
-frontend-build:
-	cd frontend && npm run build
 
 docker-up:
 	docker compose up --build

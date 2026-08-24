@@ -89,13 +89,6 @@ uv run python manage.py migrate
 uv run python manage.py runserver
 ```
 
-Frontend:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
 
 Production-style backend:
 
@@ -113,7 +106,7 @@ See:
 - `docs/deployment.md`
 - `docs/i18n.md`
 - `docs/public-and-api.md`
-- `docs/frontend.md`
+- `docs/public-frontend.md`
 
 ## Canonical public URL
 
@@ -127,3 +120,13 @@ TurkDemy uses this to generate absolute links for emails, notifications and
 other out-of-request contexts.
 
 See `docs/site-url-and-email.md`.
+
+
+## Web frontend
+
+Django templates are the primary public frontend. There is no separate
+React/Vite web application.
+
+DRF remains available for integrations and future API clients.
+
+See `docs/public-frontend.md`.

@@ -42,10 +42,7 @@ Django REST Framework is installed as the API foundation.
 
 ## CORS
 
-Allowed browser origins are configured through:
+CORS support remains available for external browser-based API clients.
 
-```dotenv
-CORS_ALLOWED_ORIGINS=http://localhost:5173
-```
-
-This supports a separately hosted React/Vite frontend.
+For the primary Django-template website no CORS configuration is required,
+because pages and API requests are same-origin.

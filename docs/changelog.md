@@ -194,3 +194,15 @@
 - Added regression coverage for string-based FAQ-category mapping.
 - Rebuilt the Makefile with one canonical definition per target, removing
   duplicate-target warnings.
+
+### Django-template frontend consolidation
+- Removed the separate React/Vite frontend.
+- Made Django templates the canonical public website architecture.
+- Removed frontend Docker/Makefile/build configuration.
+- Simplified production Compose to PostgreSQL + Django/Gunicorn.
+- Fixed static asset loading through Django `{% static %}` and
+  `STATICFILES_DIRS`.
+- Added responsive public templates for university/program catalogue,
+  university/program details, FAQ and contact.
+- Added a language selector and RTL layout direction for Persian/Arabic.
+- Kept Django REST Framework as an optional API/integration layer.

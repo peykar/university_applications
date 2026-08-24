@@ -1,11 +1,32 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% block title %}{% trans "Programs" %} — TurkDemy{% endblock %}
 {% block content %}
-<h1>{% trans "Programs" %}</h1>
-<form method="get"><input name="q" value="{{ request.GET.q }}" placeholder="{% trans 'Search' %}"><button>{% trans "Search" %}</button></form>
-<ul>
-{% for program in programs %}
-<li><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a> — {{ program.university.name_en }}</li>
-{% empty %}<li>{% trans "No results." %}</li>{% endfor %}
-</ul>
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">{% trans "Catalogue" %}</p>
+    <h1>{% trans "Programs" %}</h1>
+  </div>
+</div>
+
+<form method="get" class="search-bar">
+  <input name="q" value="{{ request.GET.q }}" placeholder="{% trans 'Search programs or universities' %}">
+  <button class="button" type="submit">{% trans "Search" %}</button>
+</form>
+
+<div class="card-grid">
+  {% for program in programs %}
+    <article class="card">
+      <p class="eyebrow">{{ program.get_degree_display }}</p>
+      <h2><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a></h2>
+      <p>{{ program.university.name_en }}</p>
+      <div class="badges">
+        <span class="badge">{{ program.program_language.name_en }}</span>
+        {% if program.duration %}<span class="badge">{{ program.duration }} {% trans "years" %}</span>{% endif %}
+      </div>
+    </article>
+  {% empty %}
+    <div class="empty-state">{% trans "No results." %}</div>
+  {% endfor %}
+</div>
 {% endblock %}

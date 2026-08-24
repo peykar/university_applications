@@ -63,3 +63,12 @@ Local development defaults to SQLite.
 
 `data/rasa/` is reserved for RasaStudy source dumps/assets.
 `data/fixtures/` is reserved for project-maintained fixture/reference data.
+
+
+## Web frontend
+
+Django templates are the primary public frontend. TurkDemy intentionally does
+not maintain a separate React/Vite web application.
+
+DRF is retained as an API/integration layer, not as a requirement for the
+website itself.
