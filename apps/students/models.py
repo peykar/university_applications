@@ -24,7 +24,17 @@ class EnglishTestType(models.TextChoices):
 
 
 class Student(BaseModel):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="student_profile")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="students",
+        help_text=_(
+            "Authenticated account that owns/manages this student record. "
+            "One account may manage multiple students."
+        ),
+    )
     agent = models.ForeignKey(Agent, on_delete=models.SET_NULL, null=True, blank=True, related_name="students")
 
     first_name = models.CharField(max_length=150)

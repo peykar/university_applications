@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Apply" %} — {{ program.name_en }}{% endblock %}
+{% block content %}
+<div class="apply-program-layout">
+  <section>
+    <p class="eyebrow">{% trans "Apply / express interest" %}</p>
+    <h1>{{ program.name_en }}</h1>
+    <p class="lead">{{ program.university.name_en }} · {{ program.get_degree_display }} · {{ program.program_language.name_en }}</p>
+  </section>
+
+  {% if form.fields.lead.queryset.exists %}
+    <form method="post" class="form-card">
+      {% csrf_token %}
+      <h2>{% trans "Choose an applicant" %}</h2>
+      <p class="muted">{% trans "The applicant can be you or any person you manage through your account." %}</p>
+      {{ form.as_p }}
+      <button class="button" type="submit">{% trans "Add program" %}</button>
+    </form>
+  {% else %}
+    <div class="empty-state">
+      <h2>{% trans "Create an applicant first" %}</h2>
+      <p>{% trans "You need an applicant profile before you can add a program." %}</p>
+      <a class="button" href="{% url 'lead-create' %}?next_program={{ program.slug_en }}">{% trans "Create applicant" %}</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

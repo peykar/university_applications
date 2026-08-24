@@ -272,7 +272,8 @@
       <p class="eyebrow">{% trans "Need help?" %}</p>
       <h3>{% trans "Questions about this program?" %}</h3>
       <p>{% trans "Contact TurkDemy for guidance about requirements, tuition and the application process." %}</p>
-      <a class="button" href="{% url 'contact' %}">{% trans "Contact TurkDemy" %}</a>
+      <a class="button button-accent" href="{% url 'apply-program' program.slug_en %}">{% trans "Apply / I'm interested" %}</a>
+      <a class="button button-secondary" href="{% url 'contact' %}">{% trans "Ask TurkDemy" %}</a>
       <a class="secondary-card-link" href="{% url 'program-list' %}?university={{ program.university.slug_en }}">{% trans "Browse this university's programs" %}</a>
     </div>
   </aside>

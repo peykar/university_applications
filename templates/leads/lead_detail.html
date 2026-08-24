@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ lead }} — TurkDemy{% endblock %}
+{% block content %}
+<section class="applicant-hero">
+  <div class="applicant-title">
+    <div class="applicant-avatar applicant-avatar-large">{{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}</div>
+    <div>
+      <p class="eyebrow">{% trans "Applicant" %}</p>
+      <h1>{{ lead }}</h1>
+      <div class="applicant-status-row">
+        <span class="lead-status lead-status-{{ lead.status }}">{{ lead.get_status_display }}</span>
+        {% if lead.needs_program_recommendation %}
+          <span class="badge">{% trans "Needs program recommendations" %}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="applicant-hero-actions">
+    <a class="button button-secondary" href="{% url 'lead-edit' lead.id %}">{% trans "Edit profile" %}</a>
+    <a class="button" href="{% url 'lead-preferences' lead.id %}">{% trans "Study preferences" %}</a>
+  </div>
+</section>
+
+<div class="applicant-workspace">
+  <main>
+    <section class="lead-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">{% trans "Programs" %}</p><h2>{% trans "Program interests & recommendations" %}</h2></div>
+        <a class="section-link" href="{% url 'program-list' %}">{% trans "Find programs" %} →</a>
+      </div>
+
+      <div class="lead-interest-list">
+        {% for interest in interests %}
+          <article class="lead-interest-card">
+            <div>
+              <div class="interest-source-line">
+                <span class="interest-source interest-source-{{ interest.source }}">{{ interest.get_source_display }}</span>
+                <span class="lead-status">{{ interest.get_status_display }}</span>
+              </div>
+              <h3><a href="{% url 'program-detail' interest.program.slug_en %}">{{ interest.program.name_en }}</a></h3>
+              <p>{{ interest.program.university.name_en }} · {{ interest.program.get_degree_display }} · {{ interest.program.program_language.name_en }}</p>
+              {% if interest.program_offering %}
+                <p class="interest-offering">{{ interest.program_offering.academic_year.name_en }} · {{ interest.program_offering.semester.name_en }} · {{ interest.program_offering.currency }} {{ interest.program_offering.tuition|floatformat:0 }}</p>
+              {% endif %}
+              {% if interest.suggestion_reason %}<p class="suggestion-reason">{{ interest.suggestion_reason }}</p>{% endif %}
+            </div>
+
+            {% if interest.status == "suggested" %}
+              <form method="post" action="{% url 'lead-interest-response' lead.id interest.id %}" class="interest-actions">
+                {% csrf_token %}
+                <button class="button small-button" name="response" value="interested">{% trans "I'm interested" %}</button>
+                <button class="button button-secondary small-button" name="response" value="declined">{% trans "Not for me" %}</button>
+              </form>
+            {% elif interest.status == "interested" %}
+              <form method="post" action="{% url 'lead-interest-response' lead.id interest.id %}" class="interest-actions">
+                {% csrf_token %}
+                <button class="button button-secondary small-button" name="response" value="shortlisted">{% trans "Add to shortlist" %}</button>
+              </form>
+            {% endif %}
+          </article>
+        {% empty %}
+          <div class="empty-state">
+            {% if lead.needs_program_recommendation %}
+              <p>{% trans "No recommendations yet. TurkDemy staff/system can review your preferences and suggest programs." %}</p>
+            {% else %}
+              <p>{% trans "No programs selected yet." %}</p>
+            {% endif %}
+            <a class="button button-secondary" href="{% url 'program-list' %}">{% trans "Browse programs" %}</a>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="lead-panel">
+      <div class="section-heading"><div><p class="eyebrow">{% trans "Files" %}</p><h2>{% trans "Documents" %}</h2></div></div>
+      <div class="lead-document-list">
+        {% for document in documents %}
+          <div class="lead-document-row">
+            <div>
+              <strong>{{ document.get_document_type_display }}</strong>
+              <span>{{ document.name }}</span>
+            </div>
+            <div>
+              {% if document.is_verified %}<span class="badge badge-success">{% trans "Verified" %}</span>{% else %}<span class="badge">{% trans "Pending review" %}</span>{% endif %}
+              <a href="{{ document.file.url }}">{% trans "Open" %}</a>
+            </div>
+          </div>
+        {% empty %}
+          <p class="muted">{% trans "No documents uploaded yet." %}</p>
+        {% endfor %}
+      </div>
+
+      <details class="lead-upload-panel">
+        <summary>{% trans "Upload document" %}</summary>
+        <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-upload' lead.id %}" class="compact-form">
+          {% csrf_token %}
+          {{ document_form.as_p }}
+          <button class="button" type="submit">{% trans "Upload" %}</button>
+        </form>
+      </details>
+    </section>
+
+    <section class="lead-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">{% trans "Conversation" %}</p><h2>{% trans "Messages with TurkDemy" %}</h2></div>
+      </div>
+      <div class="lead-chat">
+        <div class="lead-chat-messages">
+          {% for message in lead_messages %}
+            <article class="chat-message chat-message-{{ message.sender_type }}{% if message.sender == request.user %} chat-message-own{% endif %}">
+              <div class="chat-message-meta">
+                <strong>
+                  {% if message.sender_type == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}
+                </strong>
+                <time>{{ message.created_at|date:"Y-m-d H:i" }}</time>
+              </div>
+              {% if message.body %}<div class="chat-message-body">{{ message.body|linebreaksbr }}</div>{% endif %}
+              {% for attachment in message.attachments.all %}
+                <a class="chat-attachment" href="{{ attachment.file.url }}">📎 {{ attachment.original_name }}</a>
+              {% endfor %}
+            </article>
+          {% empty %}
+            <div class="empty-chat">{% trans "No messages yet. You can ask TurkDemy about this applicant here." %}</div>
+          {% endfor %}
+        </div>
+
+        {% if not conversation.is_closed %}
+          <form method="post" enctype="multipart/form-data" action="{% url 'lead-send-message' lead.id %}" class="chat-compose">
+            {% csrf_token %}
+            {{ message_form.body }}
+            <div class="chat-compose-actions">
+              {{ message_form.attachment }}
+              <button class="button" type="submit">{% trans "Send" %}</button>
+            </div>
+          </form>
+        {% else %}
+          <div class="empty-state">{% trans "This conversation is closed." %}</div>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+
+  <aside class="applicant-sidebar">
+    <section class="sidebar-card">
+      <p class="eyebrow">{% trans "Profile" %}</p>
+      <dl class="sidebar-facts">
+        <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:"—" }}</dd></div>
+        <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
+        <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
+        <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }}{% if lead.city_of_residence %}, {{ lead.city_of_residence }}{% endif %}</dd></div>
+      </dl>
+    </section>
+
+    <section class="sidebar-card">
+      <p class="eyebrow">{% trans "Study preferences" %}</p>
+      {% with pref=lead.preferences %}
+        {% if pref.tuition_min or pref.tuition_max %}
+          <p><strong>{% trans "Tuition:" %}</strong> {{ pref.tuition_currency }} {{ pref.tuition_min|default:"0" }} – {{ pref.tuition_max|default:"∞" }}</p>
+        {% endif %}
+        {% if pref.preferred_degrees %}<p><strong>{% trans "Degrees:" %}</strong> {{ pref.preferred_degrees|join:", " }}</p>{% endif %}
+        <p><strong>{% trans "Languages:" %}</strong> {% for item in pref.preferred_languages.all %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</p>
+        <p><strong>{% trans "Cities:" %}</strong> {% for item in pref.preferred_cities.all %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</p>
+      {% endwith %}
+      <a href="{% url 'lead-preferences' lead.id %}">{% trans "Edit preferences" %} →</a>
+    </section>
+
+    {% if lead.converted_student %}
+      <section class="sidebar-card converted-sidebar-card">
+        <p class="eyebrow">{% trans "Validated" %}</p>
+        <h3>{% trans "Student record created" %}</h3>
+        <p>{% trans "This applicant has been finalized and converted." %}</p>
+      </section>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

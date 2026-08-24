@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ title }} — TurkDemy{% endblock %}
+{% block content %}
+<div class="lead-form-layout">
+  <div>
+    <p class="eyebrow">{% trans "Applicant profile" %}</p>
+    <h1>{{ title }}</h1>
+    <p class="muted">{% trans "This information is provisional until TurkDemy staff validate and finalize it." %}</p>
+  </div>
+  <form method="post" class="form-card lead-profile-form">
+    {% csrf_token %}
+    {% if next_program %}<input type="hidden" name="next_program" value="{{ next_program }}">{% endif %}
+    {{ form.as_p }}
+    <div class="form-actions">
+      <button class="button" type="submit">{% trans "Save applicant" %}</button>
+      <a href="{% url 'lead-list' %}">{% trans "Cancel" %}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "My applicants" %} — TurkDemy{% endblock %}
+{% block content %}
+<div class="section-heading applicant-page-heading">
+  <div>
+    <p class="eyebrow">{% trans "Applications workspace" %}</p>
+    <h1>{% trans "My applicants" %}</h1>
+    <p class="muted">{% trans "Manage each applicant separately, including preferences, programs, documents and messages." %}</p>
+  </div>
+  <a class="button" href="{% url 'lead-create' %}">{% trans "Add applicant" %}</a>
+</div>
+
+<div class="applicant-card-grid">
+  {% for lead in leads %}
+    <article class="applicant-card">
+      <div class="applicant-card-head">
+        <div class="applicant-avatar">{{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}</div>
+        <div>
+          <h2><a href="{% url 'lead-detail' lead.id %}">{{ lead }}</a></h2>
+          <span class="lead-status lead-status-{{ lead.status }}">{{ lead.get_status_display }}</span>
+        </div>
+      </div>
+      <dl class="applicant-mini-facts">
+        <div><dt>{% trans "Programs" %}</dt><dd>{{ lead.program_interests.count }}</dd></div>
+        <div><dt>{% trans "Recommendation help" %}</dt><dd>{% if lead.needs_program_recommendation %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</dd></div>
+      </dl>
+      {% if lead.converted_student %}
+        <p class="converted-note">{% trans "Converted to validated student record." %}</p>
+      {% endif %}
+      <a class="card-action" href="{% url 'lead-detail' lead.id %}">{% trans "Open applicant" %} →</a>
+    </article>
+  {% empty %}
+    <div class="empty-state">
+      <h2>{% trans "No applicants yet" %}</h2>
+      <p>{% trans "Create an applicant when you are ready to start exploring or applying for programs." %}</p>
+      <a class="button" href="{% url 'lead-create' %}">{% trans "Add your first applicant" %}</a>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,15 +1,43 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Dashboard" %} — TurkDemy{% endblock %}
 {% block content %}
-<h1>Dashboard</h1>
-{% if student %}
-<p>{{ student.first_name }} {{ student.last_name }}</p>
-<h2>Applications</h2>
-<ul>
-{% for application in applications %}
-<li>{{ application.program_offering.program.name_en }} — {{ application.status }}</li>
-{% empty %}<li>No applications yet.</li>{% endfor %}
-</ul>
-{% else %}
-<p>No student profile exists yet. <a href="{% url 'profile' %}">Create your profile</a>.</p>
-{% endif %}
+<div class="section-heading">
+  <div><p class="eyebrow">{% trans "Account" %}</p><h1>{% trans "Dashboard" %}</h1></div>
+  <a class="button" href="{% url 'lead-create' %}">{% trans "Add applicant" %}</a>
+</div>
+
+<section class="section">
+  <div class="section-heading">
+    <h2>{% trans "Applicants" %}</h2>
+    <a href="{% url 'lead-list' %}">{% trans "View all" %} →</a>
+  </div>
+  <div class="applicant-card-grid compact-applicant-grid">
+    {% for lead in leads %}
+      <article class="applicant-card">
+        <h3><a href="{% url 'lead-detail' lead.id %}">{{ lead }}</a></h3>
+        <span class="lead-status">{{ lead.get_status_display }}</span>
+        <p class="muted">{{ lead.program_interests.count }} {% trans "program interests" %}</p>
+      </article>
+    {% empty %}
+      <div class="empty-state">{% trans "No applicants yet." %}</div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <h2>{% trans "Applications" %}</h2>
+  <div class="more-program-list">
+    {% for application in applications %}
+      <div class="more-program-row">
+        <div>
+          <strong>{{ application.student }} — {{ application.program_offering.program.name_en }}</strong>
+          <span>{{ application.program_offering.program.university.name_en }} · {{ application.get_status_display }}</span>
+        </div>
+      </div>
+    {% empty %}
+      <div class="empty-state">{% trans "No formal applications yet." %}</div>
+    {% endfor %}
+  </div>
+</section>
 {% endblock %}

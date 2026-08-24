@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Study preferences" %} — {{ lead }}{% endblock %}
+{% block content %}
+<div class="lead-form-layout">
+  <div>
+    <p class="eyebrow">{% trans "Program matching" %}</p>
+    <h1>{% trans "Study preferences" %}</h1>
+    <p class="lead-context">{{ lead }}</p>
+    <p class="muted">{% trans "Tell us the broad criteria that matter. Staff/system can use them to suggest suitable programs." %}</p>
+  </div>
+  <form method="post" class="form-card lead-profile-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="form-actions">
+      <button class="button" type="submit">{% trans "Save preferences" %}</button>
+      <a href="{% url 'lead-detail' lead.id %}">{% trans "Back to applicant" %}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

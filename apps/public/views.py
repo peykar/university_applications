@@ -456,44 +456,37 @@ def about(request):
 
 @login_required
 def dashboard(request):
-    student = Student.objects.filter(user=request.user).first()
-    applications = (
-        Application.objects.filter(student=student)
-        .select_related(
-            "program_offering__program__university",
-            "program_offering__academic_year",
-            "program_offering__semester",
-        )
-        if student
-        else Application.objects.none()
+    students = Student.objects.filter(user=request.user).prefetch_related(
+        "applications__program_offering__program__university"
     )
+    applications = Application.objects.filter(
+        student__user=request.user
+    ).select_related(
+        "student",
+        "program_offering__program__university",
+        "program_offering__academic_year",
+        "program_offering__semester",
+    )
+    leads = request.user.leads.select_related("converted_student").order_by(
+        "-updated_at"
+    )[:8]
+
     return render(
         request,
         "public/dashboard.html",
         {
-            "student": student,
+            "students": students,
             "applications": applications,
+            "leads": leads,
         },
     )
 
 
 @login_required
 def profile(request):
-    student = Student.objects.filter(user=request.user).first()
-
-    if request.method == "POST":
-        form = StudentProfileForm(request.POST, instance=student)
-        if form.is_valid():
-            student = form.save(commit=False)
-            student.user = request.user
-            student.save()
-            messages.success(request, "Profile updated.")
-            return redirect("profile")
-    else:
-        form = StudentProfileForm(instance=student)
-
-    return render(
+    messages.info(
         request,
-        "public/profile.html",
-        {"form": form},
+        "Applicant profiles are managed separately because one account can manage multiple people.",
     )
+    return redirect("lead-list")
+

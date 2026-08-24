@@ -20,6 +20,7 @@ urlpatterns += i18n_patterns(
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     path("", include("apps.public.urls")),
+    path("", include("apps.leads.urls")),
 )
 
 if settings.DEBUG:

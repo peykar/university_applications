@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     "apps.universities",
     "apps.students",
     "apps.applications",
+    "apps.leads.apps.LeadsConfig",
     "apps.content",
     "apps.public",
     "apps.api",

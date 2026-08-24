@@ -283,3 +283,19 @@
 - Added more programs from the same university.
 - Added a sticky guidance/contact card.
 - Added `docs/program-detail.md`.
+
+### Applicant / Lead workflow
+- Added dedicated `leads` Django app.
+- Added multiple Leads per authenticated account.
+- Added broad study preferences and program recommendation flag.
+- Added user/agent/system program interests and suggestions.
+- Added provisional Lead documents with verification/conversion links.
+- Added per-Lead conversation, messages, attachments and read receipts.
+- Added Lead activity history.
+- Added deterministic system recommendation service.
+- Added explicit Lead finalization and transactional Student conversion.
+- Qualified program interests can become formal Applications.
+- Changed `Student.user` from one-to-one to many-students-per-account ownership.
+- Added customer Applicant workspace and login-required Apply flow.
+- Added staff Admin actions for recommendations, finalization and conversion.
+- Added workflow tests and documentation.

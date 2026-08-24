@@ -27,3 +27,5 @@
 - `homepage.md`
 - `program-filters.md`
 - `program-detail.md`
+- `leads.md`
+- `lead-user-journey.md`
