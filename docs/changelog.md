@@ -104,3 +104,19 @@
 - FAQ endpoint variants are auto-detected by response shape.
 - FAQ assets such as `audio_url` are included in asset discovery/download.
 - Added `make rasa-download`.
+
+### Rasa management-command importers
+- Added `import_rasa_catalogue`.
+- Added `import_rasa_content`.
+- Added aggregate `import_rasa_data`.
+- Rasa flattened program fees are mapped into `ProgramOffering`.
+- Rasa `boost_score` maps to TurkDemy `listing_priority`.
+- Added importer tests and Makefile targets.
+
+### Rasa university media import
+- Catalogue importer now reads `assets_manifest.json`.
+- University logo assets populate `University.logo`.
+- University banner/cover assets populate `University.banner`.
+- Additional university image assets populate `UniversityMedia`.
+- Media is saved through Django storage APIs.
+- Added `docs/rasa-mapping.md` as the canonical mapping reference.

@@ -77,3 +77,14 @@ uv run python scripts/download_rasastudy.py   --faq-url https://rasastudy.com/ap
 The old Rasa/TGate dump format used `cats` for categories and `faqs` for FAQ
 records. FAQ fields may include `audio_url`; the downloader therefore includes
 audio files in asset discovery.
+
+## Import into TurkDemy
+
+After downloading:
+
+```bash
+uv run python manage.py populate_countries
+uv run python manage.py import_rasa_data data/rasa
+```
+
+See `docs/rasa-import.md`.

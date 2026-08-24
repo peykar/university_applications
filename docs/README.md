@@ -12,3 +12,5 @@
 - `changelog.md`
 - `linting-and-quality.md`
 - `rasa-data.md`
+- `rasa-import.md`
+- `rasa-mapping.md`

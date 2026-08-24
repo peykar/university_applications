@@ -53,3 +53,15 @@ This downloads universities, programs, FAQ categories, FAQs, and referenced
 public assets into `data/rasa/`.
 
 See `docs/rasa-data.md`.
+
+## Import downloaded RasaStudy data
+
+```bash
+make rasa-download
+uv run python manage.py populate_countries
+make rasa-import
+```
+
+See `docs/rasa-import.md`.
+
+Detailed RasaStudy mapping is documented in `docs/rasa-mapping.md`.

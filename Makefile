@@ -50,3 +50,13 @@ pre-commit:
 
 rasa-download:
 	uv run python scripts/download_rasastudy.py --output data/rasa
+
+
+rasa-import:
+	uv run python manage.py import_rasa_data data/rasa
+
+rasa-import-catalogue:
+	uv run python manage.py import_rasa_catalogue data/rasa
+
+rasa-import-content:
+	uv run python manage.py import_rasa_content data/rasa
