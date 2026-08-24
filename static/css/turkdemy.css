@@ -207,3 +207,98 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut
   .university-program-filters{grid-template-columns:1fr}
   .filter-search-wide{grid-column:auto}
 }
+
+/* ============================================================
+   Program filter sidebar usability
+   ============================================================ */
+.filter-sidebar{
+  position:sticky;
+  top:86px;
+  align-self:start;
+  max-height:calc(100vh - 102px);
+  overflow:hidden;
+}
+
+.mobile-filter-toggle{
+  max-height:inherit;
+}
+
+.catalogue-filter-form{
+  max-height:calc(100vh - 102px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+  padding-bottom:88px;
+}
+
+.filter-help{
+  margin:0 0 16px;
+  padding:10px 11px;
+  border-radius:9px;
+  background:#f4f7fa;
+  color:var(--muted);
+  font-size:.78rem;
+  line-height:1.45;
+}
+
+.filter-actions{
+  position:sticky;
+  bottom:-20px;
+  z-index:4;
+  display:grid;
+  gap:7px;
+  margin:20px -20px -20px;
+  padding:14px 20px 16px;
+  border-top:1px solid var(--border);
+  background:rgba(255,255,255,.98);
+  box-shadow:0 -10px 24px rgba(20,35,60,.06);
+  backdrop-filter:blur(6px);
+}
+
+.filter-submit{
+  width:100%;
+}
+
+.clear-filters{
+  min-height:32px;
+}
+
+/* Slight scrollbar styling without relying on a custom JS widget. */
+.catalogue-filter-form{
+  scrollbar-width:thin;
+  scrollbar-color:#b8c2cc transparent;
+}
+.catalogue-filter-form::-webkit-scrollbar{
+  width:8px;
+}
+.catalogue-filter-form::-webkit-scrollbar-thumb{
+  background:#b8c2cc;
+  border-radius:999px;
+}
+.catalogue-filter-form::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+@media(max-width:820px){
+  .filter-sidebar{
+    position:static;
+    max-height:none;
+    overflow:visible;
+  }
+
+  .mobile-filter-toggle{
+    max-height:none;
+  }
+
+  .catalogue-filter-form{
+    max-height:none;
+    overflow:visible;
+    padding-bottom:20px;
+  }
+
+  .filter-actions{
+    position:sticky;
+    bottom:0;
+    margin:20px -20px -20px;
+  }
+}

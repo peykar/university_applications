@@ -84,3 +84,22 @@ their primary key remains the fallback until those reference models expose
 stable slugs.
 
 This keeps URLs readable, shareable and less coupled to database IDs.
+
+## Filter panel behavior
+
+On desktop, the Programs filter sidebar is sticky and independently scrollable.
+
+The action area containing:
+
+```text
+Apply filters
+Clear all filters
+```
+
+is sticky at the bottom of the filter panel, so it remains reachable even when
+the complete filter set is taller than the browser viewport.
+
+Filters are submitted as normal GET query parameters. They are not applied
+until the user presses **Apply filters**.
+
+On smaller screens, the filter panel returns to normal page scrolling.

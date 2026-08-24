@@ -266,3 +266,10 @@
 - Kept natural enum/code values for degree, university type and currency.
 - Academic-year/semester IDs are retained only when their models do not expose
   slugs.
+
+### Program filter sidebar usability
+- Made the desktop Programs filter sidebar independently scrollable.
+- Added a sticky bottom action area so `Apply filters` and `Clear all filters`
+  remain accessible.
+- Added a short instruction explaining that filters are applied on submit.
+- Kept normal page scrolling behavior on smaller screens.

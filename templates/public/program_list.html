@@ -15,6 +15,7 @@
     <details class="mobile-filter-toggle" open>
       <summary>{% trans "Filters" %}</summary>
       <form method="get" class="catalogue-filter-form">
+        <p class="filter-help">{% trans "Choose one or more filters, then press Apply filters." %}</p>
         <div class="filter-group">
           <label for="program-q">{% trans "Search" %}</label>
           <input id="program-q" type="search" name="q" value="{{ filters.q }}" placeholder="{% trans 'Program or university' %}">
@@ -122,8 +123,10 @@
           <label class="filter-checkbox"><input type="checkbox" name="erasmus" value="1"{% if filters.erasmus %} checked{% endif %}> {% trans "Erasmus+" %}</label>
         </div>
 
-        <button class="button filter-submit" type="submit">{% trans "Apply filters" %}</button>
-        <a class="clear-filters" href="{% url 'program-list' %}">{% trans "Clear all filters" %}</a>
+        <div class="filter-actions">
+          <button class="button filter-submit" type="submit">{% trans "Apply filters" %}</button>
+          <a class="clear-filters" href="{% url 'program-list' %}">{% trans "Clear all filters" %}</a>
+        </div>
       </form>
     </details>
   </aside>
