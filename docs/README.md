@@ -11,3 +11,4 @@
 - `model-field-guidelines.md`
 - `changelog.md`
 - `linting-and-quality.md`
+- `rasa-data.md`

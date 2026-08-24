@@ -96,3 +96,11 @@
 - Added pre-commit hooks.
 - Added Makefile targets for linting, formatting, typing, tests and the complete quality gate.
 - Fixed the pytest Django settings path after the TurkDemy project rename.
+
+### Rasa FAQ downloader
+- Added `scripts/download_rasastudy.py` to TurkDemy.
+- Downloader now exports FAQ categories and FAQs in addition to universities
+  and programs.
+- FAQ endpoint variants are auto-detected by response shape.
+- FAQ assets such as `audio_url` are included in asset discovery/download.
+- Added `make rasa-download`.

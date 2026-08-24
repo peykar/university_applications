@@ -42,3 +42,14 @@ make check
 
 See `docs/linting-and-quality.md` for Ruff, Black, mypy, pytest, coverage and
 pre-commit commands.
+
+## Download RasaStudy data
+
+```bash
+make rasa-download
+```
+
+This downloads universities, programs, FAQ categories, FAQs, and referenced
+public assets into `data/rasa/`.
+
+See `docs/rasa-data.md`.
