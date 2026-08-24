@@ -174,3 +174,20 @@ method. A usable method is currently counted as:
 Manual email attachment uses django-allauth's `EmailAddress.send_confirmation()`
 model API. This is compatible with current django-allauth versions and uses the
 configured code-based email verification flow.
+
+## Google verified-email synchronization
+
+When a connected Google identity contains `email_verified=true`, TurkDemy
+synchronizes the matching address into django-allauth's `EmailAddress` table as
+verified. If the user has no other primary email, that address also becomes
+primary. This enables email-code login without asking the customer to verify
+the same Google-owned address again.
+
+Existing installations can repair already-connected Google accounts with:
+
+```bash
+uv run --env-file .env python manage.py sync_social_emails
+```
+
+The synchronization never transfers an email address that already belongs to a
+different TurkDemy user.

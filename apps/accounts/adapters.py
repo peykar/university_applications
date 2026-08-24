@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from allauth.account.models import EmailAddress
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.socialaccount.models import SocialLogin
 from django.contrib.auth.models import AbstractBaseUser
-from django.db import transaction
+
+from .models import User
+from .social_email import ensure_verified_login_email
 
 
 class TurkDemySocialAccountAdapter(DefaultSocialAccountAdapter):
@@ -47,31 +48,6 @@ class TurkDemySocialAccountAdapter(DefaultSocialAccountAdapter):
         return user, email
 
     @staticmethod
-    @transaction.atomic
     def _ensure_verified_email(user: AbstractBaseUser, email: str) -> None:
-        email = email.lower()
-
-        address, _ = EmailAddress.objects.get_or_create(
-            user=user,
-            email=email,
-            defaults={
-                "verified": True,
-                "primary": False,
-            },
-        )
-
-        update_fields: list[str] = []
-
-        if not address.verified:
-            address.verified = True
-            update_fields.append("verified")
-
-        if (
-            not EmailAddress.objects.filter(user=user, primary=True).exclude(pk=address.pk).exists()
-            and not address.primary
-        ):
-            address.primary = True
-            update_fields.append("primary")
-
-        if update_fields:
-            address.save(update_fields=update_fields)
+        if isinstance(user, User):
+            ensure_verified_login_email(user, email)

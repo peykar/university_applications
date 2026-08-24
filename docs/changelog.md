@@ -423,3 +423,10 @@
   `EmailAddress.send_confirmation()` call.
 - The mocked method records the request keyword argument without exposing
   the model instance in `call.args`.
+
+### Google verified-email synchronization
+- Google `email_verified=true` now synchronizes to allauth `EmailAddress`.
+- Matching Google emails become verified and primary when appropriate.
+- Added `sync_social_emails` to repair existing connected Google accounts.
+- Sign-in methods now distinguishes verified email login from pending email.
+- Added conflict protection and regression tests.

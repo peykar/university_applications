@@ -87,8 +87,10 @@
       <div class="signin-method-content">
         <div class="signin-method-title-row">
           <h2>{% trans "Email" %}</h2>
-          {% if email_addresses %}
-            <span class="badge badge-success">{% trans "Configured" %}</span>
+          {% if has_verified_email %}
+            <span class="badge badge-success">{% trans "Verified email login" %}</span>
+          {% elif email_addresses %}
+            <span class="badge">{% trans "Verification pending" %}</span>
           {% else %}
             <span class="badge">{% trans "Not configured" %}</span>
           {% endif %}

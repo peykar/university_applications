@@ -5,19 +5,26 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from .models import User
+from .social_email import ensure_verified_login_email, google_verified_email
 
 
 @receiver(post_save, sender=SocialAccount)
 def sync_social_identity(sender, instance: SocialAccount, **kwargs) -> None:
     """Mirror useful Telegram identity fields onto TurkDemy's User model."""
-    if instance.provider != "telegram":
-        return
-
     user = instance.user
     if not isinstance(user, User):
         return
 
     extra_data = instance.extra_data or {}
+
+    if instance.provider == "google":
+        email = google_verified_email(extra_data)
+        if email:
+            ensure_verified_login_email(user, email)
+        return
+
+    if instance.provider != "telegram":
+        return
     username = extra_data.get("username") or ""
 
     changed_fields: list[str] = []

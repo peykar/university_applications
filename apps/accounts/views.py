@@ -44,6 +44,7 @@ def sign_in_methods(request: HttpRequest) -> HttpResponse:
             "google_account": social_accounts.get("google"),
             "telegram_account": social_accounts.get("telegram"),
             "email_addresses": email_addresses,
+            "has_verified_email": email_addresses.filter(verified=True).exists(),
             "add_email_form": AddLoginEmailForm(user=user),
             "usable_login_method_count": _usable_login_method_count(user),
         },
@@ -70,6 +71,10 @@ def add_login_email(request: HttpRequest) -> HttpResponse:
                 "email_addresses": EmailAddress.objects.filter(user=user).order_by(
                     "-primary", "-verified", "email"
                 ),
+                "has_verified_email": EmailAddress.objects.filter(
+                    user=user,
+                    verified=True,
+                ).exists(),
                 "add_email_form": form,
                 "usable_login_method_count": _usable_login_method_count(user),
             },
