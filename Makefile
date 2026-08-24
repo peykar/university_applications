@@ -93,3 +93,6 @@ docker-up:
 
 docker-prod:
 	docker compose -f docker-compose.prod.yml up --build -d
+
+phone-check:
+	uv run python manage.py check_phone_library

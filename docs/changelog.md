@@ -225,3 +225,11 @@
 - Added process, trust, FAQ preview, CTA and richer footer sections.
 - Uses imported university banner media for the hero when available.
 - Added `docs/homepage.md`.
+
+### Phone validator import fix
+- Changed phone validation to import `phonenumbers.phonenumberutil` primitives
+  directly instead of relying on top-level `phonenumbers` re-exports.
+- Added regression tests for international/E.164 validation and the public
+  contact form.
+- Added `check_phone_library` / `make phone-check` diagnostics to show exactly
+  which `phonenumbers` module Python loads.
