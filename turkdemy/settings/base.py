@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
+    "apps.core.apps.CoreConfig",
     "apps.accounts",
     "apps.agents",
     "apps.geography",

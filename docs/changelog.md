@@ -242,3 +242,9 @@
 - Removed the explicit `phonenumbers` dependency to avoid mixed/ambiguous
   phone-number backends.
 - Updated `make phone-check` and regression tests.
+
+### Core app registration fix
+- Registered `apps.core` in `INSTALLED_APPS` using `CoreConfig`.
+- This makes core management commands such as `check_phone_library`
+  discoverable by Django.
+- Ensured the core management-command package structure is complete.
