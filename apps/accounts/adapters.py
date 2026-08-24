@@ -3,6 +3,7 @@ from __future__ import annotations
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.socialaccount.models import SocialLogin
 from django.contrib.auth.models import AbstractBaseUser
+from django.urls import reverse
 
 from .models import User
 from .social_email import ensure_verified_login_email
@@ -24,6 +25,10 @@ class TurkDemySocialAccountAdapter(DefaultSocialAccountAdapter):
     """
 
     TRUSTED_VERIFIED_EMAIL_PROVIDERS = frozenset({"google"})
+
+    def get_connect_redirect_url(self, request, socialaccount) -> str:
+        """Return users to TurkDemy's canonical sign-in-methods page."""
+        return reverse("sign-in-methods")
 
     def authenticate_by_email(
         self,

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Email addresses" %} — TurkDemy{% endblock %}
+{% block content %}
+<section class="account-methods-page">
+  <div class="section-heading account-methods-heading">
+    <div>
+      <p class="eyebrow">{% trans "Account security" %}</p>
+      <h1>{% trans "Email addresses" %}</h1>
+      <p class="muted">
+        {% trans "Email sign-in is managed together with your other TurkDemy sign-in methods." %}
+      </p>
+    </div>
+  </div>
+  <div class="signin-method-safety">
+    <a class="button" href="{% url 'sign-in-methods' %}">
+      {% trans "Manage sign-in methods" %}
+    </a>
+  </div>
+</section>
+{% endblock %}

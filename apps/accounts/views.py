@@ -225,3 +225,9 @@ def disconnect_social_account(
         f"{provider.title()} disconnected.",
     )
     return redirect("sign-in-methods")
+
+
+@login_required
+def allauth_connections_redirect(request: HttpRequest) -> HttpResponse:
+    """Redirect django-allauth's default connection UI to TurkDemy's UI."""
+    return redirect("sign-in-methods")

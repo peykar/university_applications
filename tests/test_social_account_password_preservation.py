@@ -2,6 +2,7 @@ from allauth.account.models import EmailAddress
 from allauth.socialaccount.models import SocialAccount, SocialLogin
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.urls import reverse
 
 from apps.accounts.adapters import TurkDemySocialAccountAdapter
 
@@ -16,6 +17,13 @@ class SocialAccountPasswordPreservationTests(TestCase):
             password="existing-password-123",
             is_staff=True,
             is_superuser=True,
+        )
+
+    def test_connect_redirect_uses_turkdemy_sign_in_methods(self):
+        adapter = TurkDemySocialAccountAdapter()
+        self.assertEqual(
+            adapter.get_connect_redirect_url(None, None),
+            reverse("sign-in-methods"),
         )
 
     def test_verified_google_email_is_recorded_before_email_authentication(self):

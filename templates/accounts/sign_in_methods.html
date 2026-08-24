@@ -37,7 +37,7 @@
             </button>
           </form>
         {% elif google_login_enabled %}
-          <form method="post" action="{% provider_login_url 'google' process='connect' action='reauthenticate' %}">
+          <form method="post" action="{% provider_login_url 'google' process='connect' action='reauthenticate' next=request.path %}">
             {% csrf_token %}
             <button class="button" type="submit">{% trans "Connect Google" %}</button>
           </form>
@@ -72,7 +72,7 @@
             </button>
           </form>
         {% elif telegram_login_enabled %}
-          <form method="post" action="{% provider_login_url 'telegram' process='connect' %}">
+          <form method="post" action="{% provider_login_url 'telegram' process='connect' next=request.path %}">
             {% csrf_token %}
             <button class="button" type="submit">{% trans "Connect Telegram" %}</button>
           </form>

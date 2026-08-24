@@ -18,6 +18,14 @@ class SignInMethodsTests(TestCase):
         )
         self.client.force_login(self.user)
 
+    def test_default_allauth_connections_url_redirects_to_turkdemy_page(self):
+        response = self.client.get("/accounts/3rdparty/")
+        self.assertRedirects(
+            response,
+            reverse("sign-in-methods"),
+            fetch_redirect_response=False,
+        )
+
     def test_page_requires_login(self):
         self.client.logout()
         response = self.client.get(reverse("sign-in-methods"))

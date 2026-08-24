@@ -430,3 +430,9 @@
 - Added `sync_social_emails` to repair existing connected Google accounts.
 - Sign-in methods now distinguishes verified email login from pending email.
 - Added conflict protection and regression tests.
+
+### Canonical TurkDemy social connection UI
+- Successful Google/Telegram connect flows return to Sign-in methods.
+- `/accounts/3rdparty/` redirects to TurkDemy's canonical connection page.
+- Added styled safety-net overrides for allauth connection/email/password pages.
+- Added regression tests for connection redirects.

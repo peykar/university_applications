@@ -191,3 +191,19 @@ uv run --env-file .env python manage.py sync_social_emails
 
 The synchronization never transfers an email address that already belongs to a
 different TurkDemy user.
+
+## Canonical connection-management page
+
+TurkDemy uses one customer-facing page for authentication connections:
+
+```text
+/accounts/settings/sign-in-methods/
+```
+
+django-allauth's built-in `/accounts/3rdparty/` endpoint is redirected to this
+page. The social-account adapter also returns successful `process="connect"`
+flows to the same URL.
+
+This prevents django-allauth's default unstyled account-connection page from
+appearing after Google/Telegram connections while keeping allauth responsible
+for the underlying secure connection workflow.

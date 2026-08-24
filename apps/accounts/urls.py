@@ -4,6 +4,11 @@ from . import views
 
 urlpatterns = [
     path(
+        "3rdparty/",
+        views.allauth_connections_redirect,
+        name="socialaccount_connections_redirect",
+    ),
+    path(
         "settings/sign-in-methods/",
         views.sign_in_methods,
         name="sign-in-methods",

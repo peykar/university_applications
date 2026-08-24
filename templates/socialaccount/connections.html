@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n socialaccount %}
+{% block title %}{% trans "Sign-in methods" %} — TurkDemy{% endblock %}
+{% block content %}
+<section class="account-methods-page">
+  <div class="section-heading account-methods-heading">
+    <div>
+      <p class="eyebrow">{% trans "Account security" %}</p>
+      <h1>{% trans "Sign-in methods" %}</h1>
+      <p class="muted">
+        {% trans "Manage Google, Telegram, and email access from TurkDemy's account settings." %}
+      </p>
+    </div>
+  </div>
+
+  <div class="signin-method-safety">
+    <strong>{% trans "This page has moved" %}</strong>
+    <p>
+      {% trans "TurkDemy now manages all sign-in methods from one account-security page." %}
+    </p>
+    <a class="button" href="{% url 'sign-in-methods' %}">
+      {% trans "Open sign-in methods" %}
+    </a>
+  </div>
+</section>
+{% endblock %}
