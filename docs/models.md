@@ -198,6 +198,17 @@ Important fields include:
 - educational background
 - notes
 
+### High-school GPA fields
+
+`Student.high_school_gpa` stores the student's final high-school grade or GPA
+in the original grading system.
+
+`Student.high_school_gpa_scale` stores the maximum value of that grading scale.
+
+Examples: `17.5 / 20`, `3.5 / 4`, `7.8 / 10`, or `87.5 / 100`.
+
+Keeping both values preserves the student's original grading system.
+
 ## StudentDocument
 
 Reusable student-owned documents.

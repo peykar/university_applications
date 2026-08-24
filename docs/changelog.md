@@ -58,3 +58,7 @@
 - Default is `0`; higher values indicate greater internal listing priority.
 - Chose the explicit name `listing_priority` instead of RasaStudy's
   `boost_score`.
+
+### High-school GPA help text
+- Added explanatory help text to `Student.high_school_gpa`.
+- Added explanatory help text to `Student.high_school_gpa_scale`.

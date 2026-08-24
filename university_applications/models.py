@@ -678,8 +678,18 @@ class Student(BaseModel):
     birthdate = models.DateField(null=True, blank=True)
     english_test_type = models.CharField(max_length=20, choices=EnglishTestType.choices, blank=True)
     english_language_test_score = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    high_school_gpa = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    high_school_gpa_scale = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    high_school_gpa = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True, blank=True,
+        help_text=_(
+            "Student's final high-school grade or GPA in the original grading system, for example 17.5 on a 20-point scale or 3.5 on a 4-point scale."
+        ),
+    )
+    high_school_gpa_scale = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True, blank=True,
+        help_text=_(
+            "Maximum value of the grading scale used for the high-school grade or GPA, for example 20, 4, 10, or 100."
+        ),
+    )
     father_name = models.CharField(max_length=255, blank=True)
     mother_name = models.CharField(max_length=255, blank=True)
     passport_no = models.CharField(max_length=100, blank=True, db_index=True)
