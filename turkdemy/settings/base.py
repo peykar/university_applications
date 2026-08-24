@@ -1,7 +1,11 @@
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-only-change-me")
 DEBUG = os.getenv("DJANGO_DEBUG", "1") == "1"
@@ -72,3 +76,17 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
+
+
+def env_bool(name: str, default: bool = False) -> bool:
+    return os.getenv(name, "1" if default else "0").strip().lower() in {
+        "1", "true", "yes", "on"
+    }
+
+
+# Non-human audit identity used by management commands/importers.
+SYSTEM_USER_USERNAME = os.getenv("SYSTEM_USER_USERNAME", "system")
+SYSTEM_USER_EMAIL = os.getenv("SYSTEM_USER_EMAIL", "system@turkdemy.local")
+SYSTEM_USER_IS_ACTIVE = env_bool("SYSTEM_USER_IS_ACTIVE", False)
+SYSTEM_USER_IS_STAFF = env_bool("SYSTEM_USER_IS_STAFF", False)
+SYSTEM_USER_IS_SUPERUSER = env_bool("SYSTEM_USER_IS_SUPERUSER", False)

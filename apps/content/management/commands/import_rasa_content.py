@@ -10,6 +10,7 @@ from django.db import transaction
 from django.utils.text import slugify
 
 from apps.content.models import FAQ, FAQCategory
+from apps.core.audit import audited_update_or_create, get_system_user
 
 
 def load_json(path: Path) -> Any:
@@ -35,6 +36,7 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         source = Path(options["source"]).resolve()
+        self.system_user = get_system_user()
 
         categories_payload = load_json(source / "faq_categories.json")
         faqs_payload = load_json(source / "faqs.json")
@@ -108,9 +110,11 @@ class Command(BaseCommand):
             "is_active": bool(item.get("active", item.get("is_active", True))),
         }
 
-        return FAQCategory.objects.update_or_create(
-            key=key,
+        return audited_update_or_create(
+            FAQCategory.objects,
+            lookup={"key": key},
             defaults=defaults,
+            actor=self.system_user,
         )
 
     def _resolve_category(
@@ -154,8 +158,12 @@ class Command(BaseCommand):
             "is_active": bool(item.get("active", item.get("is_active", True))),
         }
 
-        return FAQ.objects.update_or_create(
-            category=category,
-            question_en=question_en or canonical_question,
+        return audited_update_or_create(
+            FAQ.objects,
+            lookup={
+                "category": category,
+                "question_en": question_en or canonical_question,
+            },
             defaults=defaults,
+            actor=self.system_user,
         )

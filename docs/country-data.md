@@ -19,3 +19,8 @@ uv run python manage.py populate_countries --deactivate-missing
 Rows are deactivated rather than deleted to protect foreign-key references.
 
 The project intentionally does not populate every city worldwide; `Student.city_of_residence` remains free text.
+
+## Audit fields
+
+`populate_countries` uses the configured system audit user for created/updated
+reference records.

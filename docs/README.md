@@ -15,3 +15,5 @@
 - `rasa-import.md`
 - `rasa-mapping.md`
 - `admin.md`
+- `configuration.md`
+- `auditing.md`

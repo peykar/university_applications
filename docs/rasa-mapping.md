@@ -186,3 +186,20 @@ Country(TR)
 
 This is explicitly a fallback until TurkDemy has a canonical Türkiye
 administrative geography dataset.
+
+## Audit mapping
+
+Rasa source records do not control TurkDemy's audit-user foreign keys.
+TurkDemy assigns the configured non-human system user during import:
+
+```text
+new imported row:
+  created_by = system user
+  updated_by = system user
+
+existing row updated by re-import:
+  created_by = preserved
+  updated_by = system user
+```
+
+The system identity is configured through `.env`; see `docs/auditing.md`.

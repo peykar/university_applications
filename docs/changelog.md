@@ -132,3 +132,12 @@
 - Added contact handled/unhandled actions.
 - Added TurkDemy admin branding.
 - Added `docs/admin.md`.
+
+### Configurable system audit user
+- Added shared system-user audit helpers in `apps/core/audit.py`.
+- System username/email/permissions are configurable through `.env`.
+- Added `python-dotenv` for `.env` loading.
+- System user defaults to inactive, non-staff and non-superuser with an unusable password.
+- Rasa imports and country population now set `created_by`/`updated_by` consistently.
+- Re-imports preserve the original `created_by` while changing `updated_by` to the system actor.
+- Added `ensure_system_user` management command and audit tests.

@@ -13,6 +13,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils.text import slugify
 
+from apps.core.audit import audited_get_or_create, audited_update_or_create, get_system_user
 from apps.geography.models import City, Country, Province
 from apps.universities.models import (
     AcademicYear,
@@ -178,6 +179,7 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         source = Path(options["source"]).resolve()
+        self.system_user = get_system_user()
         universities_payload = load_json(source / "universities.json")
         programs_payload = load_json(source / "programs.json")
 
@@ -270,33 +272,37 @@ class Command(BaseCommand):
             ) from exc
 
     def _get_academic_year(self, name: str) -> AcademicYear:
-        academic_year, _ = AcademicYear.objects.get_or_create(
-            name_en=name,
+        academic_year, _ = audited_get_or_create(
+            AcademicYear.objects,
+            lookup={"name_en": name},
             defaults={
                 "name_fa": name,
                 "name_tr": name,
                 "name_ar": name,
                 "is_active": True,
             },
+            actor=self.system_user,
         )
         return academic_year
 
     def _get_semester(self, name: str) -> Semester:
-        semester, _ = Semester.objects.get_or_create(
-            name_en=name,
+        semester, _ = audited_get_or_create(
+            Semester.objects,
+            lookup={"name_en": name},
             defaults={
                 "name_fa": name,
                 "name_tr": name,
                 "name_ar": name,
                 "is_active": True,
             },
+            actor=self.system_user,
         )
         return semester
 
     def _get_city(self, country: Country, city_name: str) -> City:
-        province, _ = Province.objects.get_or_create(
-            country=country,
-            name_en=city_name,
+        province, _ = audited_get_or_create(
+            Province.objects,
+            lookup={"country": country, "name_en": city_name},
             defaults={
                 "name_fa": city_name,
                 "name_tr": city_name,
@@ -307,11 +313,12 @@ class Command(BaseCommand):
                 "slug_ar": normalize_slug(city_name, "province"),
                 "is_active": True,
             },
+            actor=self.system_user,
         )
 
-        city, _ = City.objects.get_or_create(
-            province=province,
-            name_en=city_name,
+        city, _ = audited_get_or_create(
+            City.objects,
+            lookup={"province": province, "name_en": city_name},
             defaults={
                 "name_fa": city_name,
                 "name_tr": city_name,
@@ -322,6 +329,7 @@ class Command(BaseCommand):
                 "slug_ar": normalize_slug(city_name, "city"),
                 "is_active": True,
             },
+            actor=self.system_user,
         )
         return city
 
@@ -374,9 +382,13 @@ class Command(BaseCommand):
         if isinstance(ranking, int):
             defaults["ranking_urap"] = ranking
 
-        university, created = University.objects.update_or_create(
-            slug_en=normalize_slug(slug, f"university-{item.get('id', '')}"),
+        university, created = audited_update_or_create(
+            University.objects,
+            lookup={
+                "slug_en": normalize_slug(slug, f"university-{item.get('id', '')}")
+            },
             defaults=defaults,
+            actor=self.system_user,
         )
 
         self._apply_university_assets(
@@ -466,6 +478,8 @@ class Command(BaseCommand):
                 title=marker,
                 sort_order=sort_order,
                 is_active=True,
+                created_by=self.system_user,
+                updated_by=self.system_user,
             )
 
             with path.open("rb") as handle:
@@ -554,8 +568,9 @@ class Command(BaseCommand):
             },
         )
 
-        language, _ = ProgramLanguage.objects.get_or_create(
-            slug_en=normalize_slug(key, "unknown"),
+        language, _ = audited_get_or_create(
+            ProgramLanguage.objects,
+            lookup={"slug_en": normalize_slug(key, "unknown")},
             defaults={
                 **names,
                 "slug_fa": normalize_slug(names["name_fa"], key),
@@ -563,6 +578,7 @@ class Command(BaseCommand):
                 "slug_ar": normalize_slug(names["name_ar"], key),
                 "is_active": True,
             },
+            actor=self.system_user,
         )
         return language
 
@@ -578,9 +594,9 @@ class Command(BaseCommand):
         canonical = name_en or name_tr or name_fa or name_ar
         slug = normalize_slug(canonical, f"department-{university.id}")
 
-        department, _ = Department.objects.update_or_create(
-            university=university,
-            slug_en=slug,
+        department, _ = audited_update_or_create(
+            Department.objects,
+            lookup={"university": university, "slug_en": slug},
             defaults={
                 "name_en": canonical,
                 "name_fa": name_fa,
@@ -591,6 +607,7 @@ class Command(BaseCommand):
                 "slug_ar": normalize_slug(name_ar or canonical, slug),
                 "is_active": True,
             },
+            actor=self.system_user,
         )
         return department
 
@@ -627,10 +644,11 @@ class Command(BaseCommand):
             "is_active": bool(item.get("active", True)),
         }
 
-        return Program.objects.update_or_create(
-            university=university,
-            slug_en=slug,
+        return audited_update_or_create(
+            Program.objects,
+            lookup={"university": university, "slug_en": slug},
             defaults=defaults,
+            actor=self.system_user,
         )
 
     def _upsert_offering(
@@ -662,9 +680,13 @@ class Command(BaseCommand):
             "is_active": bool(item.get("active", True)),
         }
 
-        return ProgramOffering.objects.update_or_create(
-            program=program,
-            academic_year=academic_year,
-            semester=semester,
+        return audited_update_or_create(
+            ProgramOffering.objects,
+            lookup={
+                "program": program,
+                "academic_year": academic_year,
+                "semester": semester,
+            },
             defaults=defaults,
+            actor=self.system_user,
         )

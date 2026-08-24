@@ -67,3 +67,14 @@ See `docs/rasa-import.md`.
 Detailed RasaStudy mapping is documented in `docs/rasa-mapping.md`.
 
 Internal admin behavior is documented in `docs/admin.md`.
+
+## Automated audit user
+
+Copy `.env.example` to `.env` and configure the non-human system identity used
+by management commands. Defaults are non-staff/non-superuser.
+
+```bash
+uv run python manage.py ensure_system_user
+```
+
+See `docs/configuration.md` and `docs/auditing.md`.

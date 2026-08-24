@@ -123,3 +123,9 @@ proper Turkish province/city dataset.
 ## Mapping reference
 
 See `docs/rasa-mapping.md` for the canonical source-to-model mapping, including media handling.
+
+## Audit actor
+
+Rasa imports use the `.env`-configured system user. New imported rows receive
+both `created_by` and `updated_by`; re-imported rows preserve `created_by` and
+set `updated_by` to the system user. See `docs/auditing.md`.

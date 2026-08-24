@@ -29,3 +29,13 @@ make run
 /health/
 /health/ready/
 ```
+
+## System audit user
+
+After migrations, the non-human audit identity can be created/validated with:
+
+```bash
+uv run python manage.py ensure_system_user
+```
+
+It is also created lazily by audited management commands. See `docs/auditing.md`.

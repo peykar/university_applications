@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.test import TestCase
 
@@ -113,6 +114,17 @@ class RasaImporterTests(TestCase):
             self.assertEqual(ProgramOffering.objects.count(), 1)
             self.assertEqual(FAQCategory.objects.count(), 1)
             self.assertEqual(FAQ.objects.count(), 1)
+
+            system_user = get_user_model().objects.get(username="system")
+            university = University.objects.get()
+            program = Program.objects.get()
+            faq = FAQ.objects.get()
+            self.assertEqual(university.created_by, system_user)
+            self.assertEqual(university.updated_by, system_user)
+            self.assertEqual(program.created_by, system_user)
+            self.assertEqual(program.updated_by, system_user)
+            self.assertEqual(faq.created_by, system_user)
+            self.assertEqual(faq.updated_by, system_user)
 
             # Idempotency
             call_command("import_rasa_data", str(source))

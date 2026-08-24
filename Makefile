@@ -60,3 +60,6 @@ rasa-import-catalogue:
 
 rasa-import-content:
 	uv run python manage.py import_rasa_content data/rasa
+
+system-user:
+	uv run python manage.py ensure_system_user
