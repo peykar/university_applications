@@ -203,3 +203,17 @@ existing row updated by re-import:
 ```
 
 The system identity is configured through `.env`; see `docs/auditing.md`.
+
+## Numeric source normalization
+
+RasaStudy may serialize integer-like values as decimal strings, for example:
+
+```text
+duration_years = "5.0"
+quota = "40.0"
+boost_score = "2.0"
+```
+
+The importer accepts integral decimal representations and normalizes them to
+integers. Non-integral values such as `"5.5"` are not coerced into integer
+fields.

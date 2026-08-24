@@ -175,3 +175,9 @@
 - Added explicit `phonenumbers` because project code imports it directly.
 - Restored the complete development toolchain dependencies.
 - Rebuilt `pyproject.toml` as valid TOML and added `docs/dependency-audit.md`.
+
+### Rasa numeric parsing fix
+- Added tolerant integer parsing for Rasa values serialized as decimal strings.
+- `duration_years="5.0"` now imports as `Program.duration=5`.
+- Applied the same normalization to `boost_score` and `quota`.
+- Added regression coverage for decimal-string integer values.

@@ -65,10 +65,11 @@ class RasaImporterTests(TestCase):
                                 "name_en": "Computer Engineering",
                                 "degree": "bachelor",
                                 "language": "english",
-                                "duration_years": 4,
+                                "duration_years": "4.0",
                                 "tuition_usd": 6000,
                                 "tuition_discounted_usd": 5000,
-                                "boost_score": 2,
+                                "quota": "40.0",
+                                "boost_score": "2.0",
                             }
                         ]
                     }
@@ -111,7 +112,12 @@ class RasaImporterTests(TestCase):
 
             self.assertEqual(University.objects.count(), 1)
             self.assertEqual(Program.objects.count(), 1)
+            program = Program.objects.get()
+            self.assertEqual(program.duration, 4)
+            self.assertEqual(program.listing_priority, 2)
             self.assertEqual(ProgramOffering.objects.count(), 1)
+            offering = ProgramOffering.objects.get()
+            self.assertEqual(offering.quota, 40)
             self.assertEqual(FAQCategory.objects.count(), 1)
             self.assertEqual(FAQ.objects.count(), 1)
 

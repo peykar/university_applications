@@ -89,6 +89,28 @@ def as_decimal(value: Any) -> Decimal | None:
         return None
 
 
+def as_int(value: Any) -> int | None:
+    """
+    Parse integer-like source values safely.
+
+    RasaStudy sometimes serializes integer quantities as decimal strings,
+    for example "5.0". Accept those values while rejecting non-integral
+    decimals such as "5.5".
+    """
+    if value in (None, ""):
+        return None
+
+    try:
+        number = Decimal(str(value))
+    except (InvalidOperation, TypeError, ValueError):
+        return None
+
+    if number != number.to_integral_value():
+        return None
+
+    return int(number)
+
+
 def normalize_slug(value: str | None, fallback: str) -> str:
     candidate = (value or "").strip()
     if candidate:
@@ -373,7 +395,7 @@ class Command(BaseCommand):
             "is_moh_approved": bool(item.get("moh_approved")),
             "has_erasmus": bool(item.get("erasmus")),
             "has_dormitory": bool(item.get("has_dorm")),
-            "listing_priority": int(item.get("boost_score") or 0),
+            "listing_priority": as_int(item.get("boost_score")) or 0,
             "is_active": bool(item.get("active", True)),
             "is_featured": bool(item.get("featured", False)),
         }
@@ -639,8 +661,8 @@ class Command(BaseCommand):
             "degree": degree,
             "thesis_type": thesis_type,
             "program_language": language,
-            "duration": int(item["duration_years"]) if item.get("duration_years") else None,
-            "listing_priority": int(item.get("boost_score") or 0),
+            "duration": as_int(item.get("duration_years")),
+            "listing_priority": as_int(item.get("boost_score")) or 0,
             "is_active": bool(item.get("active", True)),
         }
 
@@ -675,7 +697,7 @@ class Command(BaseCommand):
             "tuition_discounted": discounted,
             "tuition_cash": cash,
             "tuition_annual_installment": installment,
-            "quota": item.get("quota"),
+            "quota": as_int(item.get("quota")),
             "deadline": item.get("deadline") or None,
             "is_active": bool(item.get("active", True)),
         }
