@@ -15,5 +15,9 @@ class AuthenticationConfigurationTests(SimpleTestCase):
         self.assertEqual(reverse("account_login"), "/accounts/login/")
         self.assertEqual(reverse("account_signup"), "/accounts/signup/")
 
+    def test_social_login_does_not_require_second_email_verification(self):
+        self.assertEqual(settings.ACCOUNT_EMAIL_VERIFICATION, "mandatory")
+        self.assertEqual(settings.SOCIALACCOUNT_EMAIL_VERIFICATION, "none")
+
     def test_social_login_is_post_only(self):
         self.assertFalse(settings.SOCIALACCOUNT_LOGIN_ON_GET)

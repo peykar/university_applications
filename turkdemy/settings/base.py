@@ -204,6 +204,10 @@ ACCOUNT_SIGNUP_FORM_HONEYPOT_FIELD = "company_website"
 
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_REQUIRED = False
+# Google already verifies its email identity; do not require a second
+# TurkDemy email-code step after social authentication. Direct email
+# signup/login remains protected by ACCOUNT_EMAIL_VERIFICATION.
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 SOCIALACCOUNT_STORE_TOKENS = False
 SOCIALACCOUNT_LOGIN_ON_GET = False

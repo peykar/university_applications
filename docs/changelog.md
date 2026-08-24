@@ -387,3 +387,9 @@
 - Removed Black from `make format`, `make format-check`, and `make check`.
 - Ruff is now the single code formatter; Ruff linting remains enabled separately.
 
+
+### Skip duplicate email verification after social login
+- Set `SOCIALACCOUNT_EMAIL_VERIFICATION = "none"`.
+- Google login no longer triggers a second TurkDemy email verification code.
+- Direct email signup/login remains mandatory-verification/passwordless.
+- Added a regression test for the configuration split.

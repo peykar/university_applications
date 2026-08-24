@@ -88,3 +88,22 @@ proxy_set_header X-Forwarded-Host $host;
 
 This makes django-allauth generate the public HTTPS callback URL instead of
 an internal `http://` URL when Django is behind Nginx.
+
+## Social-provider email verification
+
+Regular email authentication remains mandatory-verification:
+
+```python
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+```
+
+Social authentication does not require a second TurkDemy verification step:
+
+```python
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+```
+
+This means Google users are not asked to verify the same Google email again
+after Google has authenticated them. Direct email signup/login still uses the
+TurkDemy email-code flow. Telegram is unaffected because it normally does not
+supply an email address.
