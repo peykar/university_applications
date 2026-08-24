@@ -491,3 +491,15 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut
 .link-button{padding:0;border:0;background:none;color:#0B3A67;font:inherit;font-size:.78rem;font-weight:800;cursor:pointer}.danger-link{color:#9a3434}.add-login-email-form{padding-top:16px;border-top:1px solid var(--border)}.add-login-email-form p{margin:0 0 12px}.add-login-email-form label{display:block;margin-bottom:5px;font-size:.78rem;font-weight:800}.add-login-email-form input{width:100%;max-width:420px;padding:10px 11px;border:1px solid var(--border);border-radius:9px;font:inherit}
 .signin-method-safety{margin-top:18px;padding:15px 17px;border-radius:12px;background:#f4f7f9;color:#526173;font-size:.83rem}.signin-method-safety p{margin:.3rem 0 0}
 @media(max-width:650px){.signin-method-card{grid-template-columns:1fr}.account-email-row{align-items:flex-start;flex-direction:column}.signin-method-title-row{align-items:flex-start}}
+
+.auth-provider-icon{
+  width:27px;
+  height:27px;
+  display:block;
+  flex:0 0 27px;
+}
+.signin-method-icon img{
+  width:34px;
+  height:34px;
+  display:block;
+}

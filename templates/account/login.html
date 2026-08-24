@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n socialaccount %}
+{% load i18n socialaccount static %}
 {% block title %}{% trans "Sign in" %} — TurkDemy{% endblock %}
 {% block content %}
 <section class="auth-shell">
@@ -13,13 +13,13 @@
       {% if google_login_enabled %}
         <form method="post" action="{% provider_login_url 'google' process='login' %}">
           {% csrf_token %}
-          <button class="auth-provider-button" type="submit"><span class="auth-provider-mark">G</span>{% trans "Continue with Google" %}</button>
+          <button class="auth-provider-button" type="submit"><img class="auth-provider-icon" src="{% static 'icons/auth/google.svg' %}" alt="" aria-hidden="true">{% trans "Continue with Google" %}</button>
         </form>
       {% endif %}
       {% if telegram_login_enabled %}
         <form method="post" action="{% provider_login_url 'telegram' process='login' %}">
           {% csrf_token %}
-          <button class="auth-provider-button" type="submit"><span class="auth-provider-mark">T</span>{% trans "Continue with Telegram" %}</button>
+          <button class="auth-provider-button" type="submit"><img class="auth-provider-icon" src="{% static 'icons/auth/telegram.svg' %}" alt="" aria-hidden="true">{% trans "Continue with Telegram" %}</button>
         </form>
       {% endif %}
     </div>

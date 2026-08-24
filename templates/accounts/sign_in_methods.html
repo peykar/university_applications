@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n socialaccount %}
+{% load i18n socialaccount static %}
 {% block title %}{% trans "Sign-in methods" %} — TurkDemy{% endblock %}
 {% block content %}
 <section class="account-methods-page">
@@ -15,7 +15,7 @@
 
   <div class="signin-method-grid">
     <article class="signin-method-card">
-      <div class="signin-method-icon">G</div>
+      <div class="signin-method-icon"><img src="{% static 'icons/auth/google.svg' %}" alt="" aria-hidden="true"></div>
       <div class="signin-method-content">
         <div class="signin-method-title-row">
           <h2>Google</h2>
@@ -48,7 +48,7 @@
     </article>
 
     <article class="signin-method-card">
-      <div class="signin-method-icon">T</div>
+      <div class="signin-method-icon"><img src="{% static 'icons/auth/telegram.svg' %}" alt="" aria-hidden="true"></div>
       <div class="signin-method-content">
         <div class="signin-method-title-row">
           <h2>Telegram</h2>
@@ -83,7 +83,7 @@
     </article>
 
     <article class="signin-method-card signin-method-card-email">
-      <div class="signin-method-icon">@</div>
+      <div class="signin-method-icon"><img src="{% static 'icons/auth/email.svg' %}" alt="" aria-hidden="true"></div>
       <div class="signin-method-content">
         <div class="signin-method-title-row">
           <h2>{% trans "Email" %}</h2>

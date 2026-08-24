@@ -31,6 +31,26 @@ class SignInMethodsTests(TestCase):
         response = self.client.get(reverse("sign-in-methods"))
         self.assertEqual(response.status_code, 302)
 
+    def test_page_uses_provider_icons(self):
+        SocialAccount.objects.create(
+            user=self.user,
+            provider="google",
+            uid="google-icon-test",
+            extra_data={"email": "customer@example.com"},
+        )
+        SocialAccount.objects.create(
+            user=self.user,
+            provider="telegram",
+            uid="telegram-icon-test",
+            extra_data={"username": "customer"},
+        )
+
+        response = self.client.get(reverse("sign-in-methods"))
+
+        self.assertContains(response, "icons/auth/google.svg")
+        self.assertContains(response, "icons/auth/telegram.svg")
+        self.assertContains(response, "icons/auth/email.svg")
+
     def test_page_lists_connected_social_accounts(self):
         SocialAccount.objects.create(
             user=self.user,

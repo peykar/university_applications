@@ -436,3 +436,9 @@
 - `/accounts/3rdparty/` redirects to TurkDemy's canonical connection page.
 - Added styled safety-net overrides for allauth connection/email/password pages.
 - Added regression tests for connection redirects.
+
+### Authentication provider icons
+- Replaced text `G`/`T` placeholders with Google and Telegram SVG icons.
+- Added a consistent email SVG icon.
+- Updated the login page and Sign-in methods page.
+- Added regression coverage for provider icon rendering.

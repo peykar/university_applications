@@ -19,5 +19,15 @@ class AuthenticationConfigurationTests(SimpleTestCase):
         self.assertEqual(settings.ACCOUNT_EMAIL_VERIFICATION, "mandatory")
         self.assertEqual(settings.SOCIALACCOUNT_EMAIL_VERIFICATION, "none")
 
+    def test_login_template_uses_provider_icons(self):
+        from pathlib import Path
+
+        from django.conf import settings
+
+        template = Path(settings.BASE_DIR) / "templates" / "account" / "login.html"
+        source = template.read_text(encoding="utf-8")
+        self.assertIn("icons/auth/google.svg", source)
+        self.assertIn("icons/auth/telegram.svg", source)
+
     def test_social_login_is_post_only(self):
         self.assertFalse(settings.SOCIALACCOUNT_LOGIN_ON_GET)
