@@ -402,3 +402,24 @@
   email.
 - Existing `is_staff` and `is_superuser` flags remain untouched.
 - Added regression coverage for legacy admin accounts.
+
+### Account sign-in method management
+- Added `/accounts/settings/sign-in-methods/`.
+- Added Google and Telegram `process="connect"` workflows.
+- Added manual email attachment + allauth verification flow.
+- Added verified-primary-email management.
+- Added Google/Telegram disconnect actions.
+- Prevented users from removing their last usable sign-in method.
+- Added conflicts checks for email addresses already owned by another account.
+- Added tests and account-security styling.
+
+### Allauth email confirmation API compatibility
+- Replaced the removed `allauth.account.utils.send_email_confirmation` helper.
+- Manual login-email verification now calls `EmailAddress.send_confirmation()`.
+- Added regression coverage for the add-email verification flow.
+
+### Email confirmation mock assertion fix
+- Corrected the sign-in-method regression test for the bound
+  `EmailAddress.send_confirmation()` call.
+- The mocked method records the request keyword argument without exposing
+  the model instance in `call.args`.

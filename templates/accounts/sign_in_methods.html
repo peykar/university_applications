@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load i18n socialaccount %}
+{% block title %}{% trans "Sign-in methods" %} — TurkDemy{% endblock %}
+{% block content %}
+<section class="account-methods-page">
+  <div class="section-heading account-methods-heading">
+    <div>
+      <p class="eyebrow">{% trans "Account security" %}</p>
+      <h1>{% trans "Sign-in methods" %}</h1>
+      <p class="muted">
+        {% trans "Connect more than one method so you can always access the same TurkDemy account." %}
+      </p>
+    </div>
+  </div>
+
+  <div class="signin-method-grid">
+    <article class="signin-method-card">
+      <div class="signin-method-icon">G</div>
+      <div class="signin-method-content">
+        <div class="signin-method-title-row">
+          <h2>Google</h2>
+          {% if google_account %}
+            <span class="badge badge-success">{% trans "Connected" %}</span>
+          {% else %}
+            <span class="badge">{% trans "Not connected" %}</span>
+          {% endif %}
+        </div>
+
+        {% if google_account %}
+          {% if google_account.extra_data.email %}
+            <p>{{ google_account.extra_data.email }}</p>
+          {% endif %}
+          <form method="post" action="{% url 'disconnect-social-account' 'google' %}">
+            {% csrf_token %}
+            <button class="button button-secondary" type="submit">
+              {% trans "Disconnect Google" %}
+            </button>
+          </form>
+        {% elif google_login_enabled %}
+          <form method="post" action="{% provider_login_url 'google' process='connect' action='reauthenticate' %}">
+            {% csrf_token %}
+            <button class="button" type="submit">{% trans "Connect Google" %}</button>
+          </form>
+        {% else %}
+          <p class="muted">{% trans "Google login is not configured." %}</p>
+        {% endif %}
+      </div>
+    </article>
+
+    <article class="signin-method-card">
+      <div class="signin-method-icon">T</div>
+      <div class="signin-method-content">
+        <div class="signin-method-title-row">
+          <h2>Telegram</h2>
+          {% if telegram_account %}
+            <span class="badge badge-success">{% trans "Connected" %}</span>
+          {% else %}
+            <span class="badge">{% trans "Not connected" %}</span>
+          {% endif %}
+        </div>
+
+        {% if telegram_account %}
+          {% if telegram_account.extra_data.username %}
+            <p>@{{ telegram_account.extra_data.username }}</p>
+          {% else %}
+            <p>{% trans "Telegram account connected" %}</p>
+          {% endif %}
+          <form method="post" action="{% url 'disconnect-social-account' 'telegram' %}">
+            {% csrf_token %}
+            <button class="button button-secondary" type="submit">
+              {% trans "Disconnect Telegram" %}
+            </button>
+          </form>
+        {% elif telegram_login_enabled %}
+          <form method="post" action="{% provider_login_url 'telegram' process='connect' %}">
+            {% csrf_token %}
+            <button class="button" type="submit">{% trans "Connect Telegram" %}</button>
+          </form>
+        {% else %}
+          <p class="muted">{% trans "Telegram login is not configured." %}</p>
+        {% endif %}
+      </div>
+    </article>
+
+    <article class="signin-method-card signin-method-card-email">
+      <div class="signin-method-icon">@</div>
+      <div class="signin-method-content">
+        <div class="signin-method-title-row">
+          <h2>{% trans "Email" %}</h2>
+          {% if email_addresses %}
+            <span class="badge badge-success">{% trans "Configured" %}</span>
+          {% else %}
+            <span class="badge">{% trans "Not configured" %}</span>
+          {% endif %}
+        </div>
+
+        <div class="account-email-list">
+          {% for address in email_addresses %}
+            <div class="account-email-row">
+              <div>
+                <strong>{{ address.email }}</strong>
+                <div class="account-email-badges">
+                  {% if address.primary %}<span>{% trans "Primary" %}</span>{% endif %}
+                  {% if address.verified %}
+                    <span>{% trans "Verified" %}</span>
+                  {% else %}
+                    <span>{% trans "Unverified" %}</span>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="account-email-actions">
+                {% if address.verified and not address.primary %}
+                  <form method="post" action="{% url 'make-login-email-primary' address.id %}">
+                    {% csrf_token %}
+                    <button class="link-button" type="submit">{% trans "Make primary" %}</button>
+                  </form>
+                {% endif %}
+
+                <form method="post" action="{% url 'remove-login-email' address.id %}">
+                  {% csrf_token %}
+                  <button class="link-button danger-link" type="submit">{% trans "Remove" %}</button>
+                </form>
+              </div>
+            </div>
+          {% empty %}
+            <p class="muted">
+              {% trans "Add a verified email to use passwordless email-code login." %}
+            </p>
+          {% endfor %}
+        </div>
+
+        <form method="post" action="{% url 'add-login-email' %}" class="add-login-email-form">
+          {% csrf_token %}
+          {{ add_email_form.as_p }}
+          <button class="button" type="submit">{% trans "Add and verify email" %}</button>
+        </form>
+      </div>
+    </article>
+  </div>
+
+  <div class="signin-method-safety">
+    <strong>{% trans "Account protection" %}</strong>
+    <p>
+      {% blocktrans with count=usable_login_method_count %}
+        You currently have {{ count }} usable sign-in method(s). TurkDemy will not let you remove your last one.
+      {% endblocktrans %}
+    </p>
+  </div>
+</section>
+{% endblock %}

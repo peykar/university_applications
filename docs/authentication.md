@@ -132,3 +132,45 @@ uv run --env-file .env python manage.py changepassword <username>
 ```
 
 Future Google logins will preserve that restored password.
+
+## Connecting additional sign-in methods
+
+Authenticated users can manage login methods at:
+
+```text
+/accounts/settings/sign-in-methods/
+```
+
+The page supports:
+
+- connecting Google to the currently logged-in TurkDemy user;
+- connecting Telegram to the currently logged-in TurkDemy user;
+- adding and verifying an email address for passwordless email-code login;
+- choosing a verified primary email;
+- removing email addresses;
+- disconnecting Google or Telegram.
+
+Social connections use django-allauth's `process="connect"` flow, not the
+normal login flow. This guarantees the newly authenticated provider is
+attached to the already authenticated TurkDemy `User`.
+
+Google connection requests reauthentication so the customer explicitly chooses
+which Google account to attach.
+
+TurkDemy does not silently merge identities that already belong to another
+account. Email additions reject an address that belongs to another User or
+allauth `EmailAddress`, and django-allauth prevents connecting a social
+identity that is already owned by another user.
+
+The UI also prevents the customer from removing their last usable sign-in
+method. A usable method is currently counted as:
+
+- a connected SocialAccount;
+- a verified allauth EmailAddress;
+- or an existing usable Django password.
+
+## Email verification API
+
+Manual email attachment uses django-allauth's `EmailAddress.send_confirmation()`
+model API. This is compatible with current django-allauth versions and uses the
+configured code-based email verification flow.

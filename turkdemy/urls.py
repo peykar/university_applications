@@ -13,6 +13,7 @@ urlpatterns: list[URLPattern | URLResolver] = [
     path("i18n/", include("django.conf.urls.i18n")),
     path("health/", include("apps.health.urls")),
     path("api/v1/", include("apps.api.urls")),
+    path("accounts/", include("apps.accounts.urls")),
     path("accounts/", include("allauth.urls")),
 ]
 
