@@ -87,3 +87,12 @@
 - Added health/readiness endpoints.
 - Added `data/rasa/` and `data/fixtures/`.
 - Added Dockerfile, docker-compose, Makefile, `.python-version`, and pre-commit config.
+
+### Linting and code-quality toolchain
+- Added Black.
+- Expanded Ruff rules, including Django-specific checks and import sorting.
+- Added mypy and django-stubs.
+- Added pytest coverage tooling.
+- Added pre-commit hooks.
+- Added Makefile targets for linting, formatting, typing, tests and the complete quality gate.
+- Fixed the pytest Django settings path after the TurkDemy project rename.

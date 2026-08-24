@@ -14,18 +14,96 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "black>=25.1",
+    "coverage[toml]>=7.6",
+    "django-stubs>=5.2",
+    "mypy>=1.15",
+    "pre-commit>=4.2",
     "pytest>=8",
+    "pytest-cov>=6",
     "pytest-django>=4.11",
     "ruff>=0.12",
 ]
+
 
 [tool.uv]
 package = false
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "config.settings"
+DJANGO_SETTINGS_MODULE = "turkdemy.settings.local"
 python_files = ["test_*.py", "tests.py"]
+testpaths = ["tests", "apps"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--tb=short",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+exclude = """
+/(
+    \.git
+  | \.venv
+  | migrations
+  | staticfiles
+  | media
+)/
+"""
 
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+extend-exclude = [
+    "*/migrations/*",
+    "staticfiles",
+    "media",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+    "UP",
+    "SIM",
+    "DJ",
+    "RUF",
+]
+ignore = [
+    "DJ001",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "turkdemy"]
+
+[tool.mypy]
+python_version = "3.11"
+plugins = ["mypy_django_plugin.main"]
+check_untyped_defs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+exclude = [
+    "migrations/",
+]
+
+[tool.django-stubs]
+django_settings_module = "turkdemy.settings.local"
+
+[tool.coverage.run]
+branch = true
+source = ["apps", "turkdemy"]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 70

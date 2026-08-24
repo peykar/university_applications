@@ -24,3 +24,21 @@ http://127.0.0.1:8000/health/ready/
 ```
 
 Project documentation lives in `docs/`.
+
+## Code quality
+
+Install development dependencies and Git hooks:
+
+```bash
+uv sync --all-groups
+uv run pre-commit install
+```
+
+Run the complete quality gate:
+
+```bash
+make check
+```
+
+See `docs/linting-and-quality.md` for Ruff, Black, mypy, pytest, coverage and
+pre-commit commands.

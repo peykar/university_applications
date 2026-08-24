@@ -10,3 +10,4 @@
 - `faq-and-contact.md`
 - `model-field-guidelines.md`
 - `changelog.md`
+- `linting-and-quality.md`
