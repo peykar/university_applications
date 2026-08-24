@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans "Universities" %}</h1>
+<form method="get"><input name="q" value="{{ request.GET.q }}" placeholder="{% trans 'Search' %}"><button>{% trans "Search" %}</button></form>
+<ul>
+{% for university in universities %}
+<li><a href="{% url 'university-detail' university.slug_en %}">{{ university.name_en }}</a> — {{ university.city.name_en }}</li>
+{% empty %}<li>{% trans "No results." %}</li>{% endfor %}
+</ul>
+{% endblock %}

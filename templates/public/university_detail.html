@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ university.name_en }}</h1>
+{% if university.logo %}<img src="{{ university.logo.url }}" alt="{{ university.name_en }}" class="hero-logo">{% endif %}
+<p>{{ university.description_en }}</p>
+<p>{{ university.city.name_en }}</p>
+<h2>Programs</h2>
+<ul>
+{% for program in university.programs.all %}
+<li><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -141,3 +141,17 @@
 - Rasa imports and country population now set `created_by`/`updated_by` consistently.
 - Re-imports preserve the original `created_by` while changing `updated_by` to the system actor.
 - Added `ensure_system_user` management command and audit tests.
+
+### Production/full-stack foundation
+- Added `DATABASE_URL` support through `dj-database-url`.
+- Added PostgreSQL/psycopg support.
+- Added Gunicorn.
+- Added development and production Docker Compose files.
+- Added database-aware readiness checks.
+- Enabled Django password validators.
+- Enabled LocaleMiddleware, explicit EN/FA/TR/AR languages and locale paths.
+- Added environment-configured CSRF trusted origins.
+- Added Django REST Framework and CORS support.
+- Added initial public forms, views and server-rendered pages.
+- Added a separate React/TypeScript/Vite frontend.
+- Added `.dockerignore` and `.editorconfig`.

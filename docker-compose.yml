@@ -1,8 +1,32 @@
 services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: turkdemy
+      POSTGRES_USER: turkdemy
+      POSTGRES_PASSWORD: turkdemy
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U turkdemy -d turkdemy"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   web:
     build: .
     command: uv run python manage.py runserver 0.0.0.0:8000
-    ports:
-      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://turkdemy:turkdemy@db:5432/turkdemy
     volumes:
       - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

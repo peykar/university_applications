@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ program.name_en }}</h1>
+<p><a href="{% url 'university-detail' program.university.slug_en %}">{{ program.university.name_en }}</a></p>
+<p>{{ program.description_en }}</p>
+<p>Degree: {{ program.get_degree_display }}</p>
+<p>Language: {{ program.program_language.name_en }}</p>
+<h2>Offerings</h2>
+<table>
+<tr><th>Academic year</th><th>Semester</th><th>Tuition</th><th>Deadline</th></tr>
+{% for offering in program.offerings.all %}
+<tr><td>{{ offering.academic_year }}</td><td>{{ offering.semester }}</td><td>{{ offering.currency }} {{ offering.tuition }}</td><td>{{ offering.deadline|default:"—" }}</td></tr>
+{% endfor %}
+</table>
+{% endblock %}

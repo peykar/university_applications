@@ -12,6 +12,12 @@ dependencies = [
     "phonenumbers>=9,<10",
     "pycountry>=24.6.1",
     "Babel>=2.15",
+    "dj-database-url>=2.3,<3",
+    "psycopg[binary,
+    "gunicorn>=23,<24",
+    "djangorestframework>=3.16,<4",
+    "django-cors-headers>=4.7,<5",
+]>=3.2,<4",
 ]
 
 [dependency-groups]

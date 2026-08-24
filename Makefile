@@ -63,3 +63,22 @@ rasa-import-content:
 
 system-user:
 	uv run python manage.py ensure_system_user
+
+
+run-prod:
+	uv run gunicorn turkdemy.wsgi:application --bind 0.0.0.0:8000 --workers 3
+
+frontend-install:
+	cd frontend && npm install
+
+frontend-dev:
+	cd frontend && npm run dev
+
+frontend-build:
+	cd frontend && npm run build
+
+docker-up:
+	docker compose up --build
+
+docker-prod:
+	docker compose -f docker-compose.prod.yml up --build -d

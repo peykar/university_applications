@@ -78,3 +78,39 @@ uv run python manage.py ensure_system_user
 ```
 
 See `docs/configuration.md` and `docs/auditing.md`.
+
+## Full-stack development
+
+Backend:
+
+```bash
+uv sync --all-groups
+uv run python manage.py migrate
+uv run python manage.py runserver
+```
+
+Frontend:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Production-style backend:
+
+```bash
+make run-prod
+```
+
+Docker development:
+
+```bash
+make docker-up
+```
+
+See:
+- `docs/deployment.md`
+- `docs/i18n.md`
+- `docs/public-and-api.md`
+- `docs/frontend.md`

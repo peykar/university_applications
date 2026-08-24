@@ -1,3 +1,4 @@
+from django.db import connection
 from django.http import JsonResponse
 
 
@@ -6,4 +7,22 @@ def health(request):
 
 
 def ready(request):
-    return JsonResponse({"status": "ready"})
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
+    except Exception:
+        return JsonResponse(
+            {
+                "status": "not-ready",
+                "database": "unavailable",
+            },
+            status=503,
+        )
+
+    return JsonResponse(
+        {
+            "status": "ready",
+            "database": "ok",
+        }
+    )

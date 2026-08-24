@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+{% if student %}
+<p>{{ student.first_name }} {{ student.last_name }}</p>
+<h2>Applications</h2>
+<ul>
+{% for application in applications %}
+<li>{{ application.program_offering.program.name_en }} — {{ application.status }}</li>
+{% empty %}<li>No applications yet.</li>{% endfor %}
+</ul>
+{% else %}
+<p>No student profile exists yet. <a href="{% url 'profile' %}">Create your profile</a>.</p>
+{% endif %}
+{% endblock %}

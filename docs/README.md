@@ -17,3 +17,7 @@
 - `admin.md`
 - `configuration.md`
 - `auditing.md`
+- `deployment.md`
+- `i18n.md`
+- `public-and-api.md`
+- `frontend.md`
