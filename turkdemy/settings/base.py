@@ -261,3 +261,10 @@ SYSTEM_USER_EMAIL = os.getenv(
 SYSTEM_USER_IS_ACTIVE = env_bool("SYSTEM_USER_IS_ACTIVE", False)
 SYSTEM_USER_IS_STAFF = env_bool("SYSTEM_USER_IS_STAFF", False)
 SYSTEM_USER_IS_SUPERUSER = env_bool("SYSTEM_USER_IS_SUPERUSER", False)
+
+
+# Reverse-proxy HTTPS handling.
+# Nginx forwards X-Forwarded-Proto, so Django/allauth can generate correct
+# absolute HTTPS callback URLs (for example Google OAuth redirects).
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True

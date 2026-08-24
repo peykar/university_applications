@@ -376,3 +376,8 @@
   `dict[str, dict[str, Any]]`.
 - This allows environment-dependent `APP` provider configuration to be added
   without mypy treating nested provider values as generic `object`.
+
+### Reverse-proxy HTTPS callback fix
+- Added `SECURE_PROXY_SSL_HEADER` for `X-Forwarded-Proto`.
+- Enabled `USE_X_FORWARDED_HOST`.
+- Social authentication callbacks now use the public HTTPS scheme behind Nginx.

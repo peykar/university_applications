@@ -68,3 +68,23 @@ make check
 ```
 
 Provider buttons are only displayed when their credentials are configured.
+
+## Reverse proxy and HTTPS callbacks
+
+TurkDemy trusts Nginx's forwarded HTTPS scheme:
+
+```python
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
+```
+
+The production Nginx site should forward:
+
+```nginx
+proxy_set_header Host $host;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_set_header X-Forwarded-Host $host;
+```
+
+This makes django-allauth generate the public HTTPS callback URL instead of
+an internal `http://` URL when Django is behind Nginx.
