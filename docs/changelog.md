@@ -381,3 +381,9 @@
 - Added `SECURE_PROXY_SSL_HEADER` for `X-Forwarded-Proto`.
 - Enabled `USE_X_FORWARDED_HOST`.
 - Social authentication callbacks now use the public HTTPS scheme behind Nginx.
+
+### Ruff-only formatting
+- Removed Black from the development dependencies and pre-commit hooks.
+- Removed Black from `make format`, `make format-check`, and `make check`.
+- Ruff is now the single code formatter; Ruff linting remains enabled separately.
+

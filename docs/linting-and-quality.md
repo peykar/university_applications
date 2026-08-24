@@ -6,15 +6,13 @@ TurkDemy uses complementary development tools rather than relying on one linter.
 
 - **Ruff** — fast Python linting, import sorting, Django-specific checks, bugbear,
   pyupgrade, simplification and selected Ruff rules.
-- **Black** — canonical Python code formatting.
 - **mypy + django-stubs** — static type checking with Django awareness.
 - **pytest + pytest-django** — test runner.
 - **coverage / pytest-cov** — test coverage reporting.
 - **pre-commit** — runs quality checks before commits.
 
-Ruff formatting and Black intentionally use the same line length (`100`).
-Black remains enabled because TurkDemy explicitly standardizes on Black as the
-canonical formatter, while Ruff provides the broader linting rule set.
+Ruff is the project's single formatter as well as its primary linter. The formatter
+and lint configuration share a line length of `100`.
 
 ## Initial setup
 

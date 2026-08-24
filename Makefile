@@ -45,11 +45,9 @@ ruff:
 format:
 	uv run ruff check . --fix
 	uv run ruff format .
-	uv run black .
 
 format-check:
 	uv run ruff format --check .
-	uv run black --check .
 
 typecheck:
 	uv run mypy apps turkdemy
@@ -63,7 +61,6 @@ coverage:
 check:
 	uv run ruff check .
 	uv run ruff format --check .
-	uv run black --check .
 	uv run mypy apps turkdemy
 	uv run python manage.py check
 	uv run pytest

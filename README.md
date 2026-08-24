@@ -40,7 +40,7 @@ Run the complete quality gate:
 make check
 ```
 
-See `docs/linting-and-quality.md` for Ruff, Black, mypy, pytest, coverage and
+See `docs/linting-and-quality.md` for Ruff, mypy, pytest, coverage and
 pre-commit commands.
 
 ## Download RasaStudy data
