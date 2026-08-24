@@ -273,3 +273,13 @@
   remain accessible.
 - Added a short instruction explaining that filters are applied on submit.
 - Kept normal page scrolling behavior on smaller screens.
+
+### Rich program detail page
+- Rebuilt program detail as a richer decision page.
+- Added university banner/logo/media and university recognition/context.
+- Replaced the simple offerings table with tuition/intake cards.
+- Added deadline open/closed status and extra pricing/deposit fields.
+- Added similar-program ranking across the catalogue.
+- Added more programs from the same university.
+- Added a sticky guidance/contact card.
+- Added `docs/program-detail.md`.

@@ -26,3 +26,4 @@
 - `branding.md`
 - `homepage.md`
 - `program-filters.md`
+- `program-detail.md`

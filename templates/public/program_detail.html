@@ -1,57 +1,280 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{{ program.name_en }} — TurkDemy{% endblock %}
+{% block title %}{{ program.name_en }} · {{ program.university.name_en }} — TurkDemy{% endblock %}
+{% block meta_description %}{{ program.name_en }} at {{ program.university.name_en }}. {{ program.get_degree_display }}, {{ program.program_language.name_en }}{% if program.duration %}, {{ program.duration }} years{% endif %}.{% endblock %}
+
 {% block content %}
-<section class="detail-hero">
-  <div>
-    <p class="eyebrow">{{ program.get_degree_display }}</p>
-    <h1>{{ program.name_en }}</h1>
-    <p class="lead">
-      <a href="{% url 'university-detail' program.university.slug_en %}">{{ program.university.name_en }}</a>
-    </p>
-    <div class="badges">
-      <span class="badge">{{ program.program_language.name_en }}</span>
-      {% if program.duration %}<span class="badge">{{ program.duration }} {% trans "years" %}</span>{% endif %}
+<section class="program-detail-hero{% if program.university.banner %} program-detail-hero-photo{% endif %}"
+  {% if program.university.banner %}style="--program-hero:url('{{ program.university.banner.url }}')"{% endif %}>
+  <div class="program-detail-overlay"></div>
+  <div class="program-detail-hero-inner">
+    <div class="program-detail-copy">
+      <div class="program-breadcrumbs">
+        <a href="{% url 'program-list' %}">{% trans "Programs" %}</a>
+        <span>/</span>
+        <a href="{% url 'university-detail' program.university.slug_en %}">{{ program.university.name_en }}</a>
+      </div>
+
+      <p class="eyebrow program-degree-label">{{ program.get_degree_display }}</p>
+      <h1>{{ program.name_en }}</h1>
+      <p class="program-hero-university">
+        <a href="{% url 'university-detail' program.university.slug_en %}">{{ program.university.name_en }}</a>
+        · {{ program.university.city.name_en }}
+      </p>
+
+      <div class="program-fact-pills">
+        <span>{{ program.program_language.name_en }}</span>
+        {% if program.department %}<span>{{ program.department.name_en }}</span>{% endif %}
+        {% if program.duration %}<span>{{ program.duration }} {% trans "years" %}</span>{% endif %}
+        {% if program.thesis_type %}<span>{{ program.get_thesis_type_display }}</span>{% endif %}
+      </div>
     </div>
+
+    <aside class="program-university-mini-card">
+      {% if program.university.logo %}
+        <img src="{{ program.university.logo.url }}" alt="{{ program.university.name_en }}">
+      {% endif %}
+      <strong>{{ program.university.name_en }}</strong>
+      <span>{{ program.university.city.name_en }} · {{ program.university.get_university_type_display }}</span>
+      <a href="{% url 'university-detail' program.university.slug_en %}">{% trans "View university" %} →</a>
+    </aside>
   </div>
 </section>
 
-{% if program.description_en %}
-<section class="section prose">
-  <h2>{% trans "Program overview" %}</h2>
-  <p>{{ program.description_en }}</p>
+<section class="program-summary-grid">
+  <article class="program-summary-card">
+    <span>{% trans "Degree" %}</span>
+    <strong>{{ program.get_degree_display }}</strong>
+  </article>
+  <article class="program-summary-card">
+    <span>{% trans "Language" %}</span>
+    <strong>{{ program.program_language.name_en }}</strong>
+  </article>
+  <article class="program-summary-card">
+    <span>{% trans "Duration" %}</span>
+    <strong>{% if program.duration %}{{ program.duration }} {% trans "years" %}{% else %}—{% endif %}</strong>
+  </article>
+  <article class="program-summary-card">
+    <span>{% trans "University" %}</span>
+    <strong>{{ program.university.name_en }}</strong>
+  </article>
 </section>
-{% endif %}
 
-<section class="section">
-  <h2>{% trans "Available offerings" %}</h2>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>{% trans "Academic year" %}</th>
-          <th>{% trans "Semester" %}</th>
-          <th>{% trans "Tuition" %}</th>
-          <th>{% trans "Quota" %}</th>
-          <th>{% trans "Deadline" %}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for offering in program.offerings.all %}
-          {% if offering.is_active %}
-          <tr>
-            <td>{{ offering.academic_year }}</td>
-            <td>{{ offering.semester }}</td>
-            <td>{{ offering.currency }} {{ offering.tuition }}</td>
-            <td>{{ offering.quota|default:"—" }}</td>
-            <td>{{ offering.deadline|default:"—" }}</td>
-          </tr>
-          {% endif %}
+<div class="program-detail-layout">
+  <main>
+    {% if program.description_en %}
+      <section class="detail-section prose program-overview">
+        <p class="eyebrow">{% trans "Program overview" %}</p>
+        <h2>{% trans "About this program" %}</h2>
+        <div class="rich-text">{{ program.description_en|linebreaks }}</div>
+      </section>
+    {% endif %}
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">{% trans "Intakes and tuition" %}</p>
+          <h2>{% trans "Available offerings" %}</h2>
+        </div>
+        <span class="muted">{{ offerings|length }} {% trans "active offerings" %}</span>
+      </div>
+
+      <div class="offering-card-grid">
+        {% for offering in offerings %}
+          <article class="offering-card">
+            <div class="offering-card-head">
+              <div>
+                <strong>{{ offering.academic_year.name_en }}</strong>
+                <span>{{ offering.semester.name_en }}</span>
+              </div>
+              {% if offering.deadline %}
+                {% if offering.deadline >= today %}
+                  <span class="offering-status offering-open">{% trans "Open" %}</span>
+                {% else %}
+                  <span class="offering-status offering-closed">{% trans "Closed" %}</span>
+                {% endif %}
+              {% endif %}
+            </div>
+
+            <div class="offering-price-block">
+              {% if offering.tuition_discounted %}
+                <span class="old-price">{{ offering.currency }} {{ offering.tuition|floatformat:0 }}</span>
+                <strong>{{ offering.currency }} {{ offering.tuition_discounted|floatformat:0 }}</strong>
+                {% if offering.tuition_discount_percentage %}
+                  <small>{{ offering.tuition_discount_percentage|floatformat:0 }}% {% trans "discount" %}</small>
+                {% endif %}
+              {% else %}
+                <strong>{{ offering.currency }} {{ offering.tuition|floatformat:0 }}</strong>
+              {% endif %}
+              <span>{{ offering.get_fee_basis_display }}</span>
+            </div>
+
+            <dl class="offering-facts">
+              {% if offering.tuition_cash %}
+                <div><dt>{% trans "Cash tuition" %}</dt><dd>{{ offering.currency }} {{ offering.tuition_cash|floatformat:0 }}</dd></div>
+              {% endif %}
+              {% if offering.tuition_annual_installment %}
+                <div><dt>{% trans "Installment tuition" %}</dt><dd>{{ offering.currency }} {{ offering.tuition_annual_installment|floatformat:0 }}</dd></div>
+              {% endif %}
+              {% if offering.deposit %}
+                <div><dt>{% trans "Deposit" %}</dt><dd>{{ offering.currency }} {{ offering.deposit|floatformat:0 }}</dd></div>
+              {% endif %}
+              <div><dt>{% trans "Quota" %}</dt><dd>{{ offering.quota|default:"—" }}</dd></div>
+              <div><dt>{% trans "Deadline" %}</dt><dd>{{ offering.deadline|default:"—" }}</dd></div>
+            </dl>
+          </article>
         {% empty %}
-          <tr><td colspan="5">{% trans "No active offerings." %}</td></tr>
+          <div class="empty-state">{% trans "No active offerings are currently available for this program." %}</div>
         {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</section>
+      </div>
+    </section>
+
+    <section class="detail-section university-showcase">
+      <div class="university-showcase-header">
+        <div class="university-showcase-title">
+          {% if program.university.logo %}
+            <img src="{{ program.university.logo.url }}" alt="{{ program.university.name_en }}">
+          {% endif %}
+          <div>
+            <p class="eyebrow">{% trans "University" %}</p>
+            <h2>{{ program.university.name_en }}</h2>
+            <p>{{ program.university.city.name_en }} · {{ program.university.get_university_type_display }}</p>
+          </div>
+        </div>
+        <a class="button button-secondary" href="{% url 'university-detail' program.university.slug_en %}">{% trans "Explore university" %}</a>
+      </div>
+
+      <div class="university-info-grid">
+        <div>
+          <span>{% trans "Programs" %}</span>
+          <strong>{{ university_program_count }}</strong>
+        </div>
+        <div>
+          <span>{% trans "YÖK" %}</span>
+          <strong>{% if program.university.is_yok_recognized %}{% trans "Recognized" %}{% else %}—{% endif %}</strong>
+        </div>
+        <div>
+          <span>{% trans "MOE" %}</span>
+          <strong>{% if program.university.is_moe_approved %}{% trans "Approved" %}{% else %}—{% endif %}</strong>
+        </div>
+        <div>
+          <span>{% trans "MOH" %}</span>
+          <strong>{% if program.university.is_moh_approved %}{% trans "Approved" %}{% else %}—{% endif %}</strong>
+        </div>
+        <div>
+          <span>{% trans "Erasmus+" %}</span>
+          <strong>{% if program.university.has_erasmus %}{% trans "Available" %}{% else %}—{% endif %}</strong>
+        </div>
+        <div>
+          <span>{% trans "Dormitory" %}</span>
+          <strong>{% if program.university.has_dormitory %}{% trans "Available" %}{% else %}—{% endif %}</strong>
+        </div>
+      </div>
+
+      {% if program.university.description_en %}
+        <div class="university-description">{{ program.university.description_en|truncatewords:80 }}</div>
+      {% endif %}
+
+      {% if program.university.banner or university_media %}
+        <div class="university-media-grid">
+          {% if program.university.banner %}
+            <a class="university-media-item university-media-featured" href="{{ program.university.banner.url }}">
+              <img src="{{ program.university.banner.url }}" alt="{{ program.university.name_en }}">
+            </a>
+          {% endif %}
+          {% for media in university_media %}
+            <a class="university-media-item" href="{{ media.image.url }}">
+              <img src="{{ media.image.url }}" alt="{{ program.university.name_en }}">
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="university-showcase-actions">
+        <a href="{% url 'university-detail' program.university.slug_en %}">{% trans "See all university programs" %} →</a>
+        {% if program.university.website %}
+          <a href="{{ program.university.website }}" target="_blank" rel="noopener">{% trans "University website" %} ↗</a>
+        {% endif %}
+      </div>
+    </section>
+
+    {% if similar_programs %}
+      <section class="detail-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">{% trans "Explore alternatives" %}</p>
+            <h2>{% trans "Similar programs" %}</h2>
+          </div>
+          <a class="section-link" href="{% url 'program-list' %}?degree={{ program.degree }}{% if program.department %}&field={{ program.department.slug_en }}{% endif %}">{% trans "View more" %} →</a>
+        </div>
+
+        <div class="related-program-grid">
+          {% for related in similar_programs %}
+            <article class="related-program-card">
+              <div class="related-program-university">
+                {% if related.university.logo %}
+                  <img src="{{ related.university.logo.url }}" alt="{{ related.university.name_en }}">
+                {% endif %}
+                <span>{{ related.university.name_en }}</span>
+              </div>
+              <p class="eyebrow">{{ related.get_degree_display }}</p>
+              <h3><a href="{% url 'program-detail' related.slug_en %}">{{ related.name_en }}</a></h3>
+              <p class="muted">{{ related.university.city.name_en }} · {{ related.program_language.name_en }}</p>
+              <div class="badges">
+                {% if related.department %}<span class="badge">{{ related.department.name_en }}</span>{% endif %}
+                {% if related.duration %}<span class="badge">{{ related.duration }} {% trans "years" %}</span>{% endif %}
+              </div>
+              <div class="related-program-price">
+                {% if related.min_active_tuition %}
+                  <strong>{{ related.min_active_tuition|floatformat:0 }}</strong>
+                  <span>{% trans "minimum active tuition" %}</span>
+                {% else %}
+                  <strong>—</strong>
+                  <span>{% trans "tuition unavailable" %}</span>
+                {% endif %}
+              </div>
+              <a class="card-action" href="{% url 'program-detail' related.slug_en %}">{% trans "View program" %}</a>
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if more_from_university %}
+      <section class="detail-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">{{ program.university.name_en }}</p>
+            <h2>{% trans "More programs at this university" %}</h2>
+          </div>
+          <a class="section-link" href="{% url 'university-detail' program.university.slug_en %}">{% trans "View all" %} →</a>
+        </div>
+
+        <div class="more-program-list">
+          {% for related in more_from_university %}
+            <a class="more-program-row" href="{% url 'program-detail' related.slug_en %}">
+              <div>
+                <strong>{{ related.name_en }}</strong>
+                <span>{{ related.get_degree_display }} · {{ related.program_language.name_en }}{% if related.department %} · {{ related.department.name_en }}{% endif %}</span>
+              </div>
+              {% if related.min_active_tuition %}
+                <span class="more-program-price">{{ related.min_active_tuition|floatformat:0 }}</span>
+              {% endif %}
+            </a>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  </main>
+
+  <aside class="program-detail-sidebar">
+    <div class="program-contact-card">
+      <p class="eyebrow">{% trans "Need help?" %}</p>
+      <h3>{% trans "Questions about this program?" %}</h3>
+      <p>{% trans "Contact TurkDemy for guidance about requirements, tuition and the application process." %}</p>
+      <a class="button" href="{% url 'contact' %}">{% trans "Contact TurkDemy" %}</a>
+      <a class="secondary-card-link" href="{% url 'program-list' %}?university={{ program.university.slug_en }}">{% trans "Browse this university's programs" %}</a>
+    </div>
+  </aside>
+</div>
 {% endblock %}

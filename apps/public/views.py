@@ -3,9 +3,10 @@ from urllib.parse import urlencode
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Count, Min, Q
+from django.db.models import Case, Count, IntegerField, Min, Prefetch, Q, Value, When
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
 
 from apps.applications.models import Application
 from apps.content.models import FAQ, FAQCategory
@@ -18,8 +19,10 @@ from apps.universities.models import (
     Department,
     Program,
     ProgramLanguage,
+    ProgramOffering,
     Semester,
     University,
+    UniversityMedia,
     UniversityType,
 )
 
@@ -272,19 +275,150 @@ def program_list(request):
 
 
 def program_detail(request, slug):
+    active_offerings = ProgramOffering.objects.filter(
+        is_active=True,
+    ).select_related(
+        "academic_year",
+        "semester",
+    ).order_by(
+        "academic_year__name_en",
+        "semester__name_en",
+        "tuition",
+    )
+
+    active_media = UniversityMedia.objects.filter(
+        is_active=True,
+    ).order_by("sort_order", "created_at")
+
     program = get_object_or_404(
         Program.objects.select_related(
             "university",
+            "university__city",
+            "university__city__province",
+            "university__city__province__country",
             "department",
             "program_language",
-        ).prefetch_related("offerings"),
+        ).prefetch_related(
+            Prefetch("offerings", queryset=active_offerings, to_attr="active_offerings"),
+            Prefetch("university__media", queryset=active_media, to_attr="active_media"),
+        ),
         slug_en=slug,
         is_active=True,
+        university__is_active=True,
     )
+
+    similarity_filter = Q(degree=program.degree)
+    if program.department_id:
+        similarity_filter |= Q(department__slug_en=program.department.slug_en)
+    if program.program_language_id:
+        similarity_filter |= Q(program_language=program.program_language)
+
+    similarity_cases = []
+    if program.department_id:
+        similarity_cases.extend(
+            [
+                When(
+                    department__slug_en=program.department.slug_en,
+                    degree=program.degree,
+                    program_language=program.program_language,
+                    then=Value(6),
+                ),
+                When(
+                    department__slug_en=program.department.slug_en,
+                    degree=program.degree,
+                    then=Value(5),
+                ),
+                When(
+                    department__slug_en=program.department.slug_en,
+                    program_language=program.program_language,
+                    then=Value(4),
+                ),
+                When(
+                    department__slug_en=program.department.slug_en,
+                    then=Value(3),
+                ),
+            ]
+        )
+
+    similarity_cases.extend(
+        [
+            When(
+                degree=program.degree,
+                program_language=program.program_language,
+                then=Value(2),
+            ),
+            When(degree=program.degree, then=Value(1)),
+        ]
+    )
+
+    similar_programs = (
+        Program.objects.filter(
+            is_active=True,
+            university__is_active=True,
+        )
+        .filter(similarity_filter)
+        .exclude(pk=program.pk)
+        .select_related(
+            "university",
+            "university__city",
+            "department",
+            "program_language",
+        )
+        .annotate(
+            similarity_score=Case(
+                *similarity_cases,
+                default=Value(0),
+                output_field=IntegerField(),
+            ),
+            min_active_tuition=Min(
+                "offerings__tuition",
+                filter=Q(offerings__is_active=True),
+            ),
+        )
+        .order_by(
+            "-similarity_score",
+            "-listing_priority",
+            "university__name_en",
+            "name_en",
+        )[:6]
+    )
+
+    more_from_university = (
+        Program.objects.filter(
+            university=program.university,
+            is_active=True,
+        )
+        .exclude(pk=program.pk)
+        .select_related(
+            "department",
+            "program_language",
+        )
+        .annotate(
+            min_active_tuition=Min(
+                "offerings__tuition",
+                filter=Q(offerings__is_active=True),
+            )
+        )
+        .order_by("-listing_priority", "name_en")[:4]
+    )
+
+    university_program_count = Program.objects.filter(
+        university=program.university,
+        is_active=True,
+    ).count()
+
     return render(
         request,
         "public/program_detail.html",
-        {"program": program},
+        {
+            "program": program,
+            "offerings": program.active_offerings,
+            "university_media": program.university.active_media[:6],
+            "similar_programs": similar_programs,
+            "more_from_university": more_from_university,
+            "university_program_count": university_program_count,
+            "today": timezone.localdate(),
+        },
     )
 
 
