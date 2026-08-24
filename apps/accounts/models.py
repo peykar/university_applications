@@ -12,7 +12,7 @@ from apps.core.validators import validate_phone_number
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    email = models.EmailField(unique=True, null=True, blank=True)
+    email = models.EmailField(unique=True, null=True, blank=True)  # type: ignore[assignment]
     cell = models.CharField(
         max_length=20,
         unique=True,

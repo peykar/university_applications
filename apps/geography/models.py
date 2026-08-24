@@ -18,7 +18,7 @@ class Country(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
     )
 
     class Meta:
-        ordering = ["name_en"]
+        ordering = ("name_en",)
 
     def __str__(self):
         return self.name_en

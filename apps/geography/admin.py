@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+from typing import ClassVar
 
 from django.contrib import admin
 
@@ -18,7 +20,7 @@ class CountryAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "iso2",
         "iso3",
     )
-    prepopulated_fields = {"slug_en": ("name_en",)}
+    prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
 
 
 @admin.register(Province)
@@ -32,7 +34,7 @@ class ProvinceAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "name_ar",
     )
     autocomplete_fields = ("country",)
-    prepopulated_fields = {"slug_en": ("name_en",)}
+    prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
 
 
 @admin.register(City)
@@ -48,7 +50,7 @@ class CityAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "province__country__name_en",
     )
     autocomplete_fields = ("province",)
-    prepopulated_fields = {"slug_en": ("name_en",)}
+    prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
 
     @admin.display(description="Country")
     def country_name(self, obj):

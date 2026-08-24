@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
@@ -33,7 +32,8 @@ class CustomUserAdmin(UserAdmin):
     )
     readonly_fields = ("cell_verified_at", "date_joined")
 
-    fieldsets = UserAdmin.fieldsets + (
+    fieldsets = (
+        *(UserAdmin.fieldsets or ()),
         (
             "Additional identities",
             {
@@ -47,7 +47,8 @@ class CustomUserAdmin(UserAdmin):
         ),
     )
 
-    add_fieldsets = UserAdmin.add_fieldsets + (
+    add_fieldsets = (
+        *(UserAdmin.add_fieldsets or ()),
         (
             "Additional identities",
             {

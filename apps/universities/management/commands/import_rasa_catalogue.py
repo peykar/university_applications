@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 import hashlib
@@ -17,8 +16,8 @@ from apps.core.audit import audited_get_or_create, audited_update_or_create, get
 from apps.geography.models import City, Country, Province
 from apps.universities.models import (
     AcademicYear,
-    Department,
     DegreeType,
+    Department,
     Program,
     ProgramLanguage,
     ProgramOffering,
@@ -27,7 +26,6 @@ from apps.universities.models import (
     UniversityMedia,
     UniversityType,
 )
-
 
 LANGUAGE_MAP = {
     "english": {
@@ -116,7 +114,6 @@ def normalize_slug(value: str | None, fallback: str) -> str:
     if candidate:
         return slugify(candidate, allow_unicode=True) or fallback
     return fallback
-
 
 
 def load_asset_manifest(source: Path) -> list[dict[str, Any]]:
@@ -240,12 +237,12 @@ class Command(BaseCommand):
                 university_updated += 1
 
         for item in programs:
-            university = self._resolve_program_university(
+            resolved_university = self._resolve_program_university(
                 item,
                 university_by_rasa_id=university_by_rasa_id,
                 university_by_slug=university_by_slug,
             )
-            if university is None:
+            if resolved_university is None:
                 self.stderr.write(
                     self.style.WARNING(
                         f"Skipping program {item.get('id')}: could not resolve university."
@@ -253,7 +250,7 @@ class Command(BaseCommand):
                 )
                 continue
 
-            program, created = self._upsert_program(item, university)
+            program, created = self._upsert_program(item, resolved_university)
             if created:
                 program_created += 1
             else:
@@ -363,17 +360,12 @@ class Command(BaseCommand):
     ) -> tuple[University, bool]:
         slug = str(item.get("slug") or item.get("name_en") or item.get("id") or "university")
         city_name = str(
-            item.get("city_en")
-            or item.get("city_tr")
-            or item.get("city_fa")
-            or "Unknown"
+            item.get("city_en") or item.get("city_tr") or item.get("city_fa") or "Unknown"
         )
         city = self._get_city(country, city_name)
 
         university_type = (
-            UniversityType.PRIVATE
-            if item.get("type") == "private"
-            else UniversityType.PUBLIC
+            UniversityType.PRIVATE if item.get("type") == "private" else UniversityType.PUBLIC
         )
 
         defaults = {
@@ -406,9 +398,7 @@ class Command(BaseCommand):
 
         university, created = audited_update_or_create(
             University.objects,
-            lookup={
-                "slug_en": normalize_slug(slug, f"university-{item.get('id', '')}")
-            },
+            lookup={"slug_en": normalize_slug(slug, f"university-{item.get('id', '')}")},
             defaults=defaults,
             actor=self.system_user,
         )
@@ -447,7 +437,10 @@ class Command(BaseCommand):
                 logo_asset = asset
                 continue
 
-            if source_field in {"banner", "banner_url", "cover", "cover_url"} and banner_asset is None:
+            if (
+                source_field in {"banner", "banner_url", "cover", "cover_url"}
+                and banner_asset is None
+            ):
                 banner_asset = asset
                 continue
 
@@ -531,9 +524,7 @@ class Command(BaseCommand):
 
         source_url = str(asset.get("url") or "")
         expected_token = (
-            hashlib.sha256(source_url.encode("utf-8")).hexdigest()[:12]
-            if source_url
-            else ""
+            hashlib.sha256(source_url.encode("utf-8")).hexdigest()[:12] if source_url else ""
         )
 
         field_file = getattr(instance, field_name)
@@ -543,9 +534,7 @@ class Command(BaseCommand):
             return
 
         filename = (
-            f"{prefix}-{expected_token}-{path.name}"
-            if expected_token
-            else f"{prefix}-{path.name}"
+            f"{prefix}-{expected_token}-{path.name}" if expected_token else f"{prefix}-{path.name}"
         )
 
         with path.open("rb") as handle:

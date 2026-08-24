@@ -26,15 +26,24 @@ class University(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin)
 
     is_yok_recognized = models.BooleanField(
         default=False,
-        help_text=_("Whether the university is recognized by YÖK (the Council of Higher Education of Türkiye)."),
+        help_text=_(
+            "Whether the university is recognized by YÖK "
+            "(the Council of Higher Education of Türkiye)."
+        ),
     )
     is_moe_approved = models.BooleanField(
         default=False,
-        help_text=_("Whether the university is approved by the relevant Ministry of Education for the target student market."),
+        help_text=_(
+            "Whether the university is approved by the relevant Ministry of Education "
+            "for the target student market."
+        ),
     )
     is_moh_approved = models.BooleanField(
         default=False,
-        help_text=_("Whether the university is approved by the relevant Ministry of Health for the target student market."),
+        help_text=_(
+            "Whether the university is approved by the relevant Ministry of Health "
+            "for the target student market."
+        ),
     )
     has_erasmus = models.BooleanField(
         default=False,
@@ -42,19 +51,40 @@ class University(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin)
     )
     has_dormitory = models.BooleanField(
         default=False,
-        help_text=_("Whether the university provides or officially offers student dormitory accommodation."),
+        help_text=_(
+            "Whether the university provides or officially offers student dormitory accommodation."
+        ),
     )
 
-    ranking_qs = models.PositiveIntegerField(null=True, blank=True, help_text=_("University ranking position according to QS World University Rankings."))
-    ranking_the = models.PositiveIntegerField(null=True, blank=True, help_text=_("University ranking position according to Times Higher Education (THE)."))
-    ranking_arwu = models.PositiveIntegerField(null=True, blank=True, help_text=_("University ranking position according to ARWU."))
-    ranking_urap = models.PositiveIntegerField(null=True, blank=True, help_text=_("University ranking position according to URAP."))
+    ranking_qs = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("University ranking position according to QS World University Rankings."),
+    )
+    ranking_the = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("University ranking position according to Times Higher Education (THE)."),
+    )
+    ranking_arwu = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("University ranking position according to ARWU."),
+    )
+    ranking_urap = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("University ranking position according to URAP."),
+    )
 
     is_featured = models.BooleanField(default=False)
     listing_priority = models.IntegerField(
         default=0,
         db_index=True,
-        help_text=_("Internal priority used to influence this item's position in listings. Higher values receive greater priority."),
+        help_text=_(
+            "Internal priority used to influence this item's position in listings. "
+            "Higher values receive greater priority."
+        ),
     )
 
     def __str__(self):
@@ -143,21 +173,34 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
         choices=ThesisType.choices,
         null=True,
         blank=True,
-        help_text=_("Indicates whether a graduate program is thesis or non-thesis, when applicable."),
+        help_text=_(
+            "Indicates whether a graduate program is thesis or non-thesis, when applicable."
+        ),
     )
-    program_language = models.ForeignKey(ProgramLanguage, on_delete=models.PROTECT, related_name="programs")
+    program_language = models.ForeignKey(
+        ProgramLanguage,
+        on_delete=models.PROTECT,
+        related_name="programs",
+    )
     duration = models.PositiveSmallIntegerField(null=True, blank=True)
     listing_priority = models.IntegerField(
         default=0,
         db_index=True,
-        help_text=_("Internal priority used to influence this item's position in listings. Higher values receive greater priority."),
+        help_text=_(
+            "Internal priority used to influence this item's position in listings. "
+            "Higher values receive greater priority."
+        ),
     )
 
     def clean(self):
         super().clean()
-        if self.department_id and self.department.university_id != self.university_id:
+        department = self.department if self.department_id else None
+        if department is not None and department.university_id != self.university_id:
             from django.core.exceptions import ValidationError
-            raise ValidationError({"department": _("Department must belong to the selected university.")})
+
+            raise ValidationError(
+                {"department": _("Department must belong to the selected university.")}
+            )
 
     def __str__(self):
         return self.name_en
@@ -176,25 +219,54 @@ class FeeBasis(models.TextChoices):
 
 class ProgramOffering(BaseModel, ActiveMixin):
     program = models.ForeignKey(Program, on_delete=models.CASCADE, related_name="offerings")
-    academic_year = models.ForeignKey(AcademicYear, on_delete=models.PROTECT, related_name="program_offerings")
-    semester = models.ForeignKey(Semester, on_delete=models.PROTECT, related_name="program_offerings")
+    academic_year = models.ForeignKey(
+        AcademicYear,
+        on_delete=models.PROTECT,
+        related_name="program_offerings",
+    )
+    semester = models.ForeignKey(
+        Semester,
+        on_delete=models.PROTECT,
+        related_name="program_offerings",
+    )
 
     fee_basis = models.CharField(
         max_length=30,
         choices=FeeBasis.choices,
-        help_text=_("Specifies what period or unit the tuition amount applies to, such as per year or for the full program."),
+        help_text=_(
+            "Specifies what period or unit the tuition amount applies to, "
+            "such as per year or for the full program."
+        ),
     )
     currency = models.CharField(max_length=3, choices=Currency.choices)
-    tuition = models.DecimalField(max_digits=12, decimal_places=2, help_text=_("Standard tuition amount before discounts for this program offering."))
-    tuition_discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    tuition = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        help_text=_("Standard tuition amount before discounts for this program offering."),
+    )
+    tuition_discount_percentage = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True, blank=True
+    )
     tuition_discounted = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    cash_discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    cash_discount_percentage = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True, blank=True
+    )
     tuition_cash = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    tuition_annual_installment = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    tuition_annual_installment = models.DecimalField(
+        max_digits=12, decimal_places=2, null=True, blank=True
+    )
     deposit = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     pre_school_fees = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    quota = models.PositiveIntegerField(null=True, blank=True, help_text=_("Number of admission places available for this offering, when known."))
-    deadline = models.DateField(null=True, blank=True, help_text=_("Last date on which an application can be submitted for this offering."))
+    quota = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_("Number of admission places available for this offering, when known."),
+    )
+    deadline = models.DateField(
+        null=True,
+        blank=True,
+        help_text=_("Last date on which an application can be submitted for this offering."),
+    )
 
     def __str__(self):
         return f"{self.program} - {self.academic_year} - {self.semester}"

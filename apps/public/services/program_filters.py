@@ -153,20 +153,18 @@ def apply_program_filters(
             offerings = offerings.filter(currency=state.currency)
 
         if state.academic_year:
-            offerings = offerings.filter(academic_year_id=state.academic_year)
+            offerings = offerings.filter(academic_year__slug_en=state.academic_year)
 
         if state.semester:
-            offerings = offerings.filter(semester_id=state.semester)
+            offerings = offerings.filter(semester__slug_en=state.semester)
 
         if state.open_only:
             today = timezone.localdate()
-            offerings = offerings.filter(
-                Q(deadline__isnull=True) | Q(deadline__gte=today)
-            )
+            offerings = offerings.filter(Q(deadline__isnull=True) | Q(deadline__gte=today))
 
-        queryset = queryset.annotate(
-            matching_offering=Exists(offerings)
-        ).filter(matching_offering=True)
+        queryset = queryset.annotate(matching_offering=Exists(offerings)).filter(
+            matching_offering=True
+        )
 
     return queryset.annotate(
         min_active_tuition=Min(

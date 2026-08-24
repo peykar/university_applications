@@ -20,8 +20,18 @@ class Agent(BaseModel):
     cell = models.CharField(max_length=20, blank=True, validators=[validate_phone_number])
     landline = models.CharField(max_length=20, blank=True, validators=[validate_phone_number])
 
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="agents", blank=True)
-    parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, related_name="sub_agents")
+    users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="agents",
+        blank=True,
+    )
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="sub_agents",
+    )
     is_active = models.BooleanField(default=True)
 
     def clean(self):
@@ -40,7 +50,7 @@ class Agent(BaseModel):
         seen = {self.pk} if self.pk else set()
         while ancestor:
             if ancestor.pk in seen:
-                errors["parent"] = _("Agent hierarchy cannot contain a cycle.")
+                errors["parent"] = str(_("Agent hierarchy cannot contain a cycle."))
                 break
             seen.add(ancestor.pk)
             ancestor = ancestor.parent
@@ -62,11 +72,14 @@ class Agent(BaseModel):
 class AgentDocument(BaseModel):
     agent = models.ForeignKey(Agent, on_delete=models.CASCADE, related_name="documents")
     name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, help_text=_("Internal description visible to staff users."))
+    description = models.TextField(
+        blank=True,
+        help_text=_("Internal description visible to staff users."),
+    )
     file = models.FileField(upload_to=agent_document_upload_path)
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ("-created_at",)
 
     def __str__(self):
         return f"{self.agent.company_name} - {self.name}"

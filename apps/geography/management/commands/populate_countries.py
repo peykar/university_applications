@@ -1,13 +1,11 @@
+import pycountry
+from babel import Locale
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils.text import slugify
 
-import pycountry
-from babel import Locale
-
 from apps.core.audit import audited_update_or_create, get_system_user
 from apps.geography.models import Country
-
 
 LOCALES = {code: Locale.parse(code) for code in ("en", "fa", "tr", "ar")}
 
@@ -21,10 +19,7 @@ class Command(BaseCommand):
         system_user = get_system_user()
         for item in pycountry.countries:
             iso2 = item.alpha_2
-            names = {
-                code: LOCALES[code].territories.get(iso2, item.name)
-                for code in LOCALES
-            }
+            names = {code: LOCALES[code].territories.get(iso2, item.name) for code in LOCALES}
             _, was_created = audited_update_or_create(
                 Country.objects,
                 lookup={"iso2": iso2},

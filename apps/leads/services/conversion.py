@@ -83,8 +83,10 @@ def _copy_verified_documents(
 
     for source in lead.documents.filter(is_verified=True):
         if source.converted_student_document_id:
-            copied.append(source.converted_student_document)
-            continue
+            converted_document = source.converted_student_document
+            if converted_document is not None:
+                copied.append(converted_document)
+                continue
 
         source.file.open("rb")
         try:
@@ -136,9 +138,7 @@ def _create_applications(
     )
 
     missing_offering = [
-        interest.program.name_en
-        for interest in qualified
-        if interest.program_offering_id is None
+        interest.program.name_en for interest in qualified if interest.program_offering_id is None
     ]
     if missing_offering:
         raise ValidationError(
@@ -152,10 +152,14 @@ def _create_applications(
 
     for interest in qualified:
         if interest.converted_application_id:
-            applications.append(interest.converted_application)
-            continue
+            converted_application = interest.converted_application
+            if converted_application is not None:
+                applications.append(converted_application)
+                continue
 
         offering = interest.program_offering
+        if offering is None:
+            raise ValidationError("Qualified program interest has no program offering.")
         tuition = (
             offering.tuition_discounted
             if offering.tuition_discounted is not None
@@ -205,15 +209,16 @@ def convert_lead_to_student(
     actor = performed_by or get_system_user()
 
     if lead.status not in {LeadStatus.FINALIZED, LeadStatus.CONVERTED}:
-        raise ValidationError(
-            "Lead must be finalized before it can be converted to a student."
-        )
+        raise ValidationError("Lead must be finalized before it can be converted to a student.")
 
     _validate_for_finalization(lead)
 
     student = lead.converted_student
 
     if student is None:
+        nationality = lead.nationality
+        if nationality is None:
+            raise ValidationError("Nationality must be validated before conversion.")
         student = Student.objects.create(
             user=lead.user,
             agent=lead.agent,
@@ -221,7 +226,7 @@ def convert_lead_to_student(
             middle_name=lead.middle_name,
             last_name=lead.last_name,
             country_of_birth=lead.country_of_birth,
-            nationality=lead.nationality,
+            nationality=nationality,
             gender=lead.gender,
             email=lead.email,
             cell=lead.cell,
@@ -267,8 +272,7 @@ def convert_lead_to_student(
         lead=lead,
         activity_type=LeadActivityType.CONVERTED,
         description=(
-            f"Converted to Student {student.pk}; "
-            f"{len(applications)} application(s) created/linked."
+            f"Converted to Student {student.pk}; {len(applications)} application(s) created/linked."
         ),
         is_customer_visible=True,
         created_by=actor,

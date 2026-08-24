@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+from typing import ClassVar, cast
+
 from django import forms
 
 from apps.geography.models import City
-from apps.students.models import DocumentType, EnglishTestType, Gender
 from apps.universities.models import (
-    Currency,
     DegreeType,
     Department,
     ProgramLanguage,
@@ -44,7 +44,7 @@ class LeadForm(forms.ModelForm):
             "educational_background",
             "needs_program_recommendation",
         )
-        widgets = {
+        widgets: ClassVar[dict[str, forms.Widget]] = {
             "birthdate": forms.DateInput(attrs={"type": "date"}),
             "passport_date_of_issue": forms.DateInput(attrs={"type": "date"}),
             "passport_date_of_expiry": forms.DateInput(attrs={"type": "date"}),
@@ -81,40 +81,56 @@ class LeadPreferenceForm(forms.ModelForm):
             "requires_erasmus",
             "notes",
         )
-        widgets = {
-            "preferred_languages": forms.CheckboxSelectMultiple,
-            "preferred_cities": forms.CheckboxSelectMultiple,
-            "preferred_universities": forms.CheckboxSelectMultiple,
-            "preferred_departments": forms.CheckboxSelectMultiple,
+        widgets: ClassVar[dict[str, forms.Widget]] = {
+            "preferred_languages": forms.CheckboxSelectMultiple(),
+            "preferred_cities": forms.CheckboxSelectMultiple(),
+            "preferred_universities": forms.CheckboxSelectMultiple(),
+            "preferred_departments": forms.CheckboxSelectMultiple(),
             "requires_dormitory": forms.Select(
-                choices=(("", "No preference"), ("true", "Required"), ("false", "Not required"))
+                choices=(
+                    ("", "No preference"),
+                    ("true", "Required"),
+                    ("false", "Not required"),
+                )
             ),
             "requires_erasmus": forms.Select(
-                choices=(("", "No preference"), ("true", "Required"), ("false", "Not required"))
+                choices=(
+                    ("", "No preference"),
+                    ("true", "Required"),
+                    ("false", "Not required"),
+                )
             ),
             "notes": forms.Textarea(attrs={"rows": 3}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["preferred_languages"].queryset = ProgramLanguage.objects.filter(
+        preferred_languages_field = cast(
+            forms.ModelMultipleChoiceField, self.fields["preferred_languages"]
+        )
+        preferred_languages_field.queryset = ProgramLanguage.objects.filter(
             is_active=True
         ).order_by("name_en")
-        self.fields["preferred_cities"].queryset = City.objects.filter(
-            is_active=True
-        ).order_by("name_en")
-        self.fields["preferred_universities"].queryset = University.objects.filter(
-            is_active=True
-        ).order_by("name_en")
-        self.fields["preferred_departments"].queryset = Department.objects.filter(
-            is_active=True
-        ).order_by("name_en")
+        preferred_cities_field = cast(
+            forms.ModelMultipleChoiceField, self.fields["preferred_cities"]
+        )
+        preferred_cities_field.queryset = City.objects.filter(is_active=True).order_by("name_en")
+        preferred_universities_field = cast(
+            forms.ModelMultipleChoiceField, self.fields["preferred_universities"]
+        )
+        preferred_universities_field.queryset = University.objects.filter(is_active=True).order_by(
+            "name_en"
+        )
+        preferred_departments_field = cast(
+            forms.ModelMultipleChoiceField, self.fields["preferred_departments"]
+        )
+        preferred_departments_field.queryset = Department.objects.filter(is_active=True).order_by(
+            "name_en"
+        )
 
         if self.instance and self.instance.pk:
             self.initial["preferred_degrees"] = self.instance.preferred_degrees
-            self.initial["preferred_university_types"] = (
-                self.instance.preferred_university_types
-            )
+            self.initial["preferred_university_types"] = self.instance.preferred_university_types
 
     def clean_requires_dormitory(self):
         value = self.data.get("requires_dormitory", "")
@@ -148,7 +164,7 @@ class LeadMessageForm(forms.Form):
     attachment = forms.FileField(required=False)
 
     def clean(self):
-        cleaned = super().clean()
+        cleaned = super().clean() or {}
         if not cleaned.get("body") and not cleaned.get("attachment"):
             raise forms.ValidationError("Write a message or attach a file.")
         return cleaned
@@ -164,10 +180,10 @@ class ApplyProgramForm(forms.Form):
 
     def __init__(self, *args, user, program, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["lead"].queryset = Lead.objects.filter(user=user).order_by(
-            "-updated_at"
-        )
-        self.fields["offering"].queryset = ProgramOffering.objects.filter(
+        lead_field = cast(forms.ModelChoiceField, self.fields["lead"])
+        offering_field = cast(forms.ModelChoiceField, self.fields["offering"])
+        lead_field.queryset = Lead.objects.filter(user=user).order_by("-updated_at")
+        offering_field.queryset = ProgramOffering.objects.filter(
             program=program,
             is_active=True,
         ).select_related("academic_year", "semester")

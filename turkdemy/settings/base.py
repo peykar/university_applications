@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
 import dj_database_url
 
@@ -137,30 +137,10 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "UserAttributeSimilarityValidator"
-        )
-    },
-    {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "MinimumLengthValidator"
-        )
-    },
-    {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "CommonPasswordValidator"
-        )
-    },
-    {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "NumericPasswordValidator"
-        )
-    },
+    {"NAME": ("django.contrib.auth.password_validation.UserAttributeSimilarityValidator")},
+    {"NAME": ("django.contrib.auth.password_validation.MinimumLengthValidator")},
+    {"NAME": ("django.contrib.auth.password_validation.CommonPasswordValidator")},
+    {"NAME": ("django.contrib.auth.password_validation.NumericPasswordValidator")},
 ]
 
 LANGUAGE_CODE = "en"
@@ -181,15 +161,11 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = os.getenv("DJANGO_STATIC_URL", "/static/")
-STATIC_ROOT = Path(
-    os.getenv("DJANGO_STATIC_ROOT", str(BASE_DIR / "staticfiles"))
-)
+STATIC_ROOT = Path(os.getenv("DJANGO_STATIC_ROOT", str(BASE_DIR / "staticfiles")))
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = os.getenv("DJANGO_MEDIA_URL", "/media/")
-MEDIA_ROOT = Path(
-    os.getenv("DJANGO_MEDIA_ROOT", str(BASE_DIR / "media"))
-)
+MEDIA_ROOT = Path(os.getenv("DJANGO_MEDIA_ROOT", str(BASE_DIR / "media")))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"

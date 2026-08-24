@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import suppress
 from pathlib import Path
 
 from django.conf import settings
@@ -180,11 +181,11 @@ class Lead(BaseModel):
 
     class Meta:
         ordering = ("-created_at",)
-        indexes = [
+        indexes = (
             models.Index(fields=("user", "status")),
             models.Index(fields=("assigned_to", "status")),
             models.Index(fields=("needs_program_recommendation", "status")),
-        ]
+        )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}".strip()
@@ -356,7 +357,7 @@ class LeadProgramInterest(BaseModel):
 
     class Meta:
         ordering = ("-created_at",)
-        constraints = [
+        constraints = (
             models.UniqueConstraint(
                 fields=("lead", "program"),
                 condition=models.Q(program_offering__isnull=True),
@@ -367,14 +368,12 @@ class LeadProgramInterest(BaseModel):
                 condition=models.Q(program_offering__isnull=False),
                 name="unique_lead_program_offering_interest",
             ),
-        ]
+        )
 
     def clean(self):
         super().clean()
-        if (
-            self.program_offering_id
-            and self.program_offering.program_id != self.program_id
-        ):
+        offering = self.program_offering if self.program_offering_id else None
+        if offering is not None and offering.program_id != self.program_id:
             raise ValidationError(
                 {"program_offering": _("Offering must belong to the selected program.")}
             )
@@ -505,9 +504,7 @@ class LeadMessage(BaseModel):
     def clean(self):
         super().clean()
         if self.sender_type != LeadMessageSenderType.SYSTEM and not self.sender_id:
-            raise ValidationError(
-                {"sender": _("Customer/staff messages require a sender.")}
-            )
+            raise ValidationError({"sender": _("Customer/staff messages require a sender.")})
         if not self.body and not self.pk:
             # An attachment can be added immediately after message creation;
             # public form still requires either body or attachment.
@@ -519,8 +516,7 @@ class LeadMessage(BaseModel):
 
 def lead_message_attachment_upload_path(instance, filename):
     return (
-        f"leads/{instance.message.conversation.lead_id}/"
-        f"messages/{instance.message_id}/{filename}"
+        f"leads/{instance.message.conversation.lead_id}/messages/{instance.message_id}/{filename}"
     )
 
 
@@ -540,10 +536,8 @@ class LeadMessageAttachment(BaseModel):
             if not self.original_name:
                 self.original_name = Path(self.file.name).name
             if self.size is None:
-                try:
+                with suppress(OSError, ValueError):
                     self.size = self.file.size
-                except (OSError, ValueError):
-                    pass
         return super().save(*args, **kwargs)
 
     def __str__(self):
@@ -564,12 +558,12 @@ class LeadMessageRead(BaseModel):
     read_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        constraints = [
+        constraints = (
             models.UniqueConstraint(
                 fields=("message", "user"),
                 name="unique_lead_message_read",
-            )
-        ]
+            ),
+        )
 
     def __str__(self):
         return f"{self.user} read {self.message_id}"

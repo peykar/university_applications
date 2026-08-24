@@ -12,11 +12,9 @@ from .models import (
     LeadDocument,
     LeadMessage,
     LeadMessageAttachment,
-    LeadMessageRead,
     LeadPreference,
     LeadProgramInterest,
     LeadProgramInterestSource,
-    LeadStatus,
 )
 from .services.conversion import convert_lead_to_student, finalize_lead
 from .services.recommendations import recommend_programs_for_lead

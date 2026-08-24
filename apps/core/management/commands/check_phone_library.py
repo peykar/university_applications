@@ -8,8 +8,6 @@ class Command(BaseCommand):
     help = "Verify TurkDemy phone-number parsing through django-phonenumber-field."
 
     def handle(self, *args, **options):
-        self.stdout.write(
-            f"PhoneNumber class: {PhoneNumber.__module__}.{PhoneNumber.__name__}"
-        )
+        self.stdout.write(f"PhoneNumber class: {PhoneNumber.__module__}.{PhoneNumber.__name__}")
         result = normalize_phone_number("+31612345678")
         self.stdout.write(self.style.SUCCESS(f"Parser OK: {result}"))

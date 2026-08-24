@@ -117,9 +117,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "file",
-                    models.FileField(
-                        upload_to=apps.agents.models.agent_document_upload_path
-                    ),
+                    models.FileField(upload_to=apps.agents.models.agent_document_upload_path),
                 ),
                 (
                     "agent",

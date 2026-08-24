@@ -1,3 +1,5 @@
+from collections.abc import Sequence
+from typing import ClassVar
 
 from django.contrib import admin
 from django.utils.html import format_html
@@ -86,7 +88,7 @@ class UniversityAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "city__province__country__name_en",
     )
     autocomplete_fields = ("city",)
-    prepopulated_fields = {"slug_en": ("name_en",)}
+    prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
     ordering = ("-listing_priority", "name_en")
     inlines = (UniversityMediaInline,)
     readonly_fields = ("logo_preview", "banner_preview")
@@ -199,7 +201,7 @@ class UniversityAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
     def mark_unfeatured(self, request, queryset):
         queryset.update(is_featured=False)
 
-    actions = (
+    actions: Sequence[str] = (
         "mark_active",
         "mark_inactive",
         "mark_featured",
@@ -227,7 +229,7 @@ class DepartmentAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "university__name_en",
     )
     autocomplete_fields = ("university",)
-    prepopulated_fields = {"slug_en": ("name_en",)}
+    prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
 
 
 @admin.register(ProgramLanguage)
@@ -235,7 +237,7 @@ class ProgramLanguageAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin
     list_display = ("name_en", "is_active")
     list_filter = ("is_active",)
     search_fields = ("name_en", "name_fa", "name_tr", "name_ar")
-    prepopulated_fields = {"slug_en": ("name_en",)}
+    prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
 
 
 @admin.register(AcademicYear)
@@ -284,7 +286,7 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "department",
         "program_language",
     )
-    prepopulated_fields = {"slug_en": ("name_en",)}
+    prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
     ordering = ("-listing_priority", "university__name_en", "name_en")
     inlines = (ProgramOfferingInline,)
 

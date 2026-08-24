@@ -306,3 +306,27 @@
 - Added `apps.core.services.audit` as a backward-compatible re-export so older
   local imports do not break.
 - Updated affected tests to use the canonical audit helper.
+
+### Repository-wide lint cleanup
+- Fixed the Ruff issues reported by `make check`, including line length, import ordering,
+  unused imports, simplification rules, mutable class attributes, and redundant noqa markers.
+- Cleaned the newly added Leads workflow files as well as existing accounts, agents,
+  applications, content, geography, students, universities, scripts, tests, and settings.
+- Preserved the country-population locale map while reorganizing its imports.
+
+### Pre-commit mypy and Lead constraint fix
+- Fixed `LeadMessageRead.Meta.constraints` so the single
+  `UniqueConstraint` is stored in a one-item tuple.
+- Changed the pre-commit mypy hook to run through the project's `uv`
+  environment instead of pre-commit's isolated mypy virtualenv.
+- Pre-commit mypy now uses the same command scope as project checks:
+  `uv run mypy apps turkdemy`.
+- This prevents missing runtime dependencies such as `dj-database-url`
+  inside the mypy Django plugin bootstrap.
+
+### Mypy cleanup
+- Fixed nullable relationship narrowing in lead conversion, program validation, and public program views.
+- Fixed Django form field/widget typing without disabling type checking.
+- Fixed admin mixin/action typing and prepopulated field annotations.
+- Fixed URL pattern typing and Rasa importer optional-result narrowing.
+- Offering filters now resolve academic year and semester by slug instead of passing slugs to UUID foreign-key lookups.

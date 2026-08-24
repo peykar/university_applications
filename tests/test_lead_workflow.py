@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.urls import reverse
 
+from apps.geography.models import City, Country, Province
 from apps.leads.models import (
     Lead,
     LeadMessage,
@@ -15,7 +16,6 @@ from apps.leads.models import (
     LeadStatus,
 )
 from apps.leads.services.conversion import convert_lead_to_student, finalize_lead
-from apps.geography.models import Country
 from apps.students.models import Gender, Student
 from apps.universities.models import (
     AcademicYear,
@@ -29,7 +29,6 @@ from apps.universities.models import (
     University,
     UniversityType,
 )
-from apps.geography.models import City, Province
 
 User = get_user_model()
 
@@ -196,9 +195,7 @@ class LeadWorkflowTests(TestCase):
         )
         lead = self.make_lead()
         self.client.force_login(other)
-        response = self.client.get(
-            reverse("lead-detail", kwargs={"lead_id": lead.pk})
-        )
+        response = self.client.get(reverse("lead-detail", kwargs={"lead_id": lead.pk}))
         self.assertEqual(response.status_code, 404)
 
     def test_customer_message_is_bound_to_own_lead(self):

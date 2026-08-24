@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
@@ -173,9 +172,7 @@ def lead_detail(request, lead_id):
     lead = _customer_lead(request.user, lead_id)
     conversation = ensure_conversation(lead)
 
-    message_qs = conversation.messages.select_related("sender").prefetch_related(
-        "attachments"
-    )
+    message_qs = conversation.messages.select_related("sender").prefetch_related("attachments")
     for message in message_qs.exclude(sender=request.user):
         LeadMessageRead.objects.get_or_create(
             message=message,
@@ -206,9 +203,9 @@ def lead_detail(request, lead_id):
             "lead_messages": message_qs,
             "message_form": LeadMessageForm(),
             "document_form": LeadDocumentForm(),
-            "activities": lead.activities.filter(
-                is_customer_visible=True
-            ).order_by("-created_at")[:20],
+            "activities": lead.activities.filter(is_customer_visible=True).order_by("-created_at")[
+                :20
+            ],
         },
     )
 
@@ -314,8 +311,7 @@ def lead_interest_response(request, lead_id, interest_id):
         lead=lead,
         activity_type=LeadActivityType.PROGRAM_RESPONSE,
         description=(
-            f"Program response: {interest.program.name_en} → "
-            f"{interest.get_status_display()}."
+            f"Program response: {interest.program.name_en} → {interest.get_status_display()}."
         ),
         is_customer_visible=True,
         created_by=request.user,

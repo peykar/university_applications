@@ -35,36 +35,67 @@ class Student(BaseModel):
             "One account may manage multiple students."
         ),
     )
-    agent = models.ForeignKey(Agent, on_delete=models.SET_NULL, null=True, blank=True, related_name="students")
+    agent = models.ForeignKey(
+        Agent,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="students",
+    )
 
     first_name = models.CharField(max_length=150)
     middle_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150)
 
-    country_of_birth = models.ForeignKey(Country, on_delete=models.PROTECT, null=True, blank=True, related_name="students_born")
-    nationality = models.ForeignKey(Country, on_delete=models.PROTECT, related_name="students_nationality")
+    country_of_birth = models.ForeignKey(
+        Country,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="students_born",
+    )
+    nationality = models.ForeignKey(
+        Country,
+        on_delete=models.PROTECT,
+        related_name="students_nationality",
+    )
     gender = models.CharField(max_length=20, choices=Gender.choices)
 
     email = models.EmailField(blank=True)
     cell = models.CharField(max_length=20, blank=True, validators=[validate_phone_number])
     birthdate = models.DateField(null=True, blank=True)
 
-    english_test_type = models.CharField(max_length=20, choices=EnglishTestType.choices, blank=True)
-    english_language_test_score = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    english_test_type = models.CharField(
+        max_length=20,
+        choices=EnglishTestType.choices,
+        blank=True,
+    )
+    english_language_test_score = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
 
     high_school_gpa = models.DecimalField(
         max_digits=5,
         decimal_places=2,
         null=True,
         blank=True,
-        help_text=_("Student's final high-school grade or GPA in the original grading system, for example 17.5 on a 20-point scale or 3.5 on a 4-point scale."),
+        help_text=_(
+            "Student's final high-school grade or GPA in the original grading "
+            "system, for example 17.5 on a 20-point scale or 3.5 on a 4-point scale."
+        ),
     )
     high_school_gpa_scale = models.DecimalField(
         max_digits=5,
         decimal_places=2,
         null=True,
         blank=True,
-        help_text=_("Maximum value of the grading scale used for the high-school grade or GPA, for example 20, 4, 10, or 100."),
+        help_text=_(
+            "Maximum value of the grading scale used for the high-school grade "
+            "or GPA, for example 20, 4, 10, or 100."
+        ),
     )
 
     father_name = models.CharField(max_length=255, blank=True)
@@ -76,8 +107,18 @@ class Student(BaseModel):
     passport_date_of_issue = models.DateField(null=True, blank=True)
     passport_date_of_expiry = models.DateField(null=True, blank=True)
 
-    country_of_residence = models.ForeignKey(Country, on_delete=models.PROTECT, null=True, blank=True, related_name="students_residing")
-    city_of_residence = models.CharField(max_length=255, blank=True, help_text=_("City of residence as free text."))
+    country_of_residence = models.ForeignKey(
+        Country,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="students_residing",
+    )
+    city_of_residence = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text=_("City of residence as free text."),
+    )
     address = models.TextField(blank=True)
     educational_background = models.TextField(blank=True)
     notes = models.TextField(blank=True)

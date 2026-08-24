@@ -52,9 +52,7 @@ class Migration(migrations.Migration):
                 ("tuition", models.DecimalField(decimal_places=2, max_digits=12)),
                 (
                     "deposit",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=12, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True),
                 ),
                 ("notes", models.TextField(blank=True)),
                 (

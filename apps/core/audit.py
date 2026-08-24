@@ -23,9 +23,7 @@ def get_system_user():
     if not email:
         raise ImproperlyConfigured("SYSTEM_USER_EMAIL must not be empty.")
     if settings.SYSTEM_USER_IS_SUPERUSER and not settings.SYSTEM_USER_IS_STAFF:
-        raise ImproperlyConfigured(
-            "SYSTEM_USER_IS_SUPERUSER=1 requires SYSTEM_USER_IS_STAFF=1."
-        )
+        raise ImproperlyConfigured("SYSTEM_USER_IS_SUPERUSER=1 requires SYSTEM_USER_IS_STAFF=1.")
 
     user, created = User.objects.get_or_create(
         username=username,

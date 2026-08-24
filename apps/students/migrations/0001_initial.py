@@ -73,9 +73,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "english_language_test_score",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=6, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True),
                 ),
                 (
                     "high_school_gpa",
@@ -231,9 +229,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "file",
-                    models.FileField(
-                        upload_to=apps.students.models.student_document_upload_path
-                    ),
+                    models.FileField(upload_to=apps.students.models.student_document_upload_path),
                 ),
                 ("short_description", models.CharField(blank=True, max_length=500)),
                 (

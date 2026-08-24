@@ -359,45 +359,31 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "tuition_discount_percentage",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=5, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=5, null=True),
                 ),
                 (
                     "tuition_discounted",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=12, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True),
                 ),
                 (
                     "cash_discount_percentage",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=5, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=5, null=True),
                 ),
                 (
                     "tuition_cash",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=12, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True),
                 ),
                 (
                     "tuition_annual_installment",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=12, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True),
                 ),
                 (
                     "deposit",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=12, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True),
                 ),
                 (
                     "pre_school_fees",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=12, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True),
                 ),
                 (
                     "quota",

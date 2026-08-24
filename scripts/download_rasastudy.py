@@ -44,7 +44,6 @@ from urllib.parse import unquote, urljoin, urlparse
 
 import httpx
 
-
 BASE_URL = "https://rasastudy.com"
 API_BASE = f"{BASE_URL}/api/v1"
 
@@ -193,10 +192,7 @@ def is_probable_asset(value: str, key: str | None = None) -> bool:
     ):
         return value.startswith("/") or value.startswith("http")
 
-    if value.startswith("/ep/"):
-        return True
-
-    return False
+    return value.startswith("/ep/")
 
 
 def discover_assets(
@@ -345,18 +341,19 @@ class RasaDownloader:
             except (httpx.HTTPError, httpx.TimeoutException) as exc:
                 last_error = exc
 
-                if allow_not_found and isinstance(exc, httpx.HTTPStatusError):
-                    if exc.response.status_code in {404, 405}:
-                        return None
+                if (
+                    allow_not_found
+                    and isinstance(exc, httpx.HTTPStatusError)
+                    and exc.response.status_code in {404, 405}
+                ):
+                    return None
 
                 if attempt == retries:
                     break
 
                 wait = min(2**attempt, 20)
                 print(
-                    f"Request failed ({attempt}/{retries}): {url}\n"
-                    f"  {exc}\n"
-                    f"Retrying in {wait}s..."
+                    f"Request failed ({attempt}/{retries}): {url}\n  {exc}\nRetrying in {wait}s..."
                 )
                 await asyncio.sleep(wait)
 
@@ -413,11 +410,7 @@ class RasaDownloader:
         actual_limit = int(first.get("limit", self.limit)) or self.limit
         pages = max(1, (total + actual_limit - 1) // actual_limit)
 
-        print(
-            f"Programs reported by API: {total}\n"
-            f"Page size: {actual_limit}\n"
-            f"Pages: {pages}"
-        )
+        print(f"Programs reported by API: {total}\nPage size: {actual_limit}\nPages: {pages}")
 
         all_programs = list(first_programs)
 
@@ -483,15 +476,12 @@ class RasaDownloader:
             try:
                 data = response.json()
             except ValueError:
-                print(f"  Skipping: response is not JSON.")
+                print("  Skipping: response is not JSON.")
                 continue
 
             rows = extract_list(data, expected_keys)
             if rows is None:
-                print(
-                    f"  Skipping: JSON did not contain any of "
-                    f"{', '.join(expected_keys)}."
-                )
+                print(f"  Skipping: JSON did not contain any of {', '.join(expected_keys)}.")
                 continue
 
             dump_json(self.raw_dir / raw_filename, data)
@@ -655,9 +645,7 @@ class RasaDownloader:
         url_path = unquote(parsed.path)
 
         parts = [
-            safe_filename(part)
-            for part in PurePosixPath(url_path).parts
-            if part not in {"", "/"}
+            safe_filename(part) for part in PurePosixPath(url_path).parts if part not in {"", "/"}
         ]
 
         if not parts:
@@ -747,18 +735,12 @@ class RasaDownloader:
 
         print("\nDownloading assets...")
 
-        await asyncio.gather(
-            *(self.download_asset(url, info) for url, info in assets.items())
-        )
+        await asyncio.gather(*(self.download_asset(url, info) for url, info in assets.items()))
 
         manifest = list(assets.values())
         dump_json(self.output / "assets_manifest.json", manifest)
 
-        downloaded = sum(
-            1
-            for item in manifest
-            if item.get("status") in {"downloaded", "existing"}
-        )
+        downloaded = sum(1 for item in manifest if item.get("status") in {"downloaded", "existing"})
         failed = sum(1 for item in manifest if item.get("status") == "failed")
 
         print(f"Assets available locally: {downloaded}")

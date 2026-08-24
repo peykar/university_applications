@@ -11,16 +11,15 @@ repos:
     hooks:
       - id: black
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.15.0
+  - repo: local
     hooks:
       - id: mypy
-        additional_dependencies:
-          - django-stubs>=5.2
-          - Django>=5.2,<5.3
-          - phonenumbers>=9,<10
-          - pycountry>=24.6.1
-          - Babel>=2.15
+        name: mypy
+        entry: uv run mypy apps turkdemy
+        language: system
+        pass_filenames: false
+        require_serial: true
+
 
   - repo: local
     hooks:

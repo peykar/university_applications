@@ -1,10 +1,12 @@
+from collections.abc import Sequence
+from typing import ClassVar
 
 from django.contrib import admin
 from django.utils import timezone
 
 from apps.core.admin import ActiveActionsMixin, AuditAdminMixin
 
-from .models import ContactSubmission, FAQ, FAQCategory
+from .models import FAQ, ContactSubmission, FAQCategory
 
 
 class FAQInline(admin.TabularInline):
@@ -31,7 +33,7 @@ class FAQCategoryAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "name_tr",
         "name_ar",
     )
-    prepopulated_fields = {"key": ("name_en",)}
+    prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"key": ("name_en",)}
     inlines = (FAQInline,)
 
 

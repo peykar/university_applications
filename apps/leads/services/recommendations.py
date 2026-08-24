@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from django.db.models import Exists, OuterRef, Q
+from django.db.models import Exists, OuterRef
 
 from apps.core.audit import get_system_user
 from apps.universities.models import Program, ProgramOffering
@@ -75,15 +75,11 @@ def recommend_programs_for_lead(
     if city_ids:
         programs = programs.filter(university__city_id__in=city_ids)
 
-    university_ids = list(
-        preferences.preferred_universities.values_list("id", flat=True)
-    )
+    university_ids = list(preferences.preferred_universities.values_list("id", flat=True))
     if university_ids:
         programs = programs.filter(university_id__in=university_ids)
 
-    department_names = list(
-        preferences.preferred_departments.values_list("name_en", flat=True)
-    )
+    department_names = list(preferences.preferred_departments.values_list("name_en", flat=True))
     if department_names:
         programs = programs.filter(department__name_en__in=department_names)
 
@@ -103,9 +99,9 @@ def recommend_programs_for_lead(
     matching_offerings = _matching_offerings(lead)
     if has_tuition_filter:
         correlated = matching_offerings.filter(program_id=OuterRef("pk"))
-        programs = programs.annotate(
-            has_matching_offering=Exists(correlated)
-        ).filter(has_matching_offering=True)
+        programs = programs.annotate(has_matching_offering=Exists(correlated)).filter(
+            has_matching_offering=True
+        )
 
     programs = programs.order_by(
         "-listing_priority",
@@ -119,16 +115,18 @@ def recommend_programs_for_lead(
         if len(created) >= limit:
             break
 
-        if LeadProgramInterest.objects.filter(
-            lead=lead,
-            program=program,
-        ).exclude(status=LeadProgramInterestStatus.DECLINED).exists():
+        if (
+            LeadProgramInterest.objects.filter(
+                lead=lead,
+                program=program,
+            )
+            .exclude(status=LeadProgramInterestStatus.DECLINED)
+            .exists()
+        ):
             continue
 
         offering = (
-            matching_offerings.filter(program=program)
-            .order_by("tuition", "deadline")
-            .first()
+            matching_offerings.filter(program=program).order_by("tuition", "deadline").first()
         )
 
         interest = LeadProgramInterest.objects.create(

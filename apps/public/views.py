@@ -26,7 +26,7 @@ from apps.universities.models import (
     UniversityType,
 )
 
-from .forms import ContactForm, StudentProfileForm
+from .forms import ContactForm
 from .services.program_filters import apply_program_filters, read_program_filters
 
 
@@ -46,20 +46,22 @@ def _program_filter_options(*, university=None):
         "language_choices": ProgramLanguage.objects.filter(
             is_active=True,
             programs__in=base_programs,
-        ).distinct().order_by("name_en"),
-        "field_choices": (
-            departments.exclude(slug_en="")
-            .order_by("name_en")
-            .distinct()
-        ),
+        )
+        .distinct()
+        .order_by("name_en"),
+        "field_choices": (departments.exclude(slug_en="").order_by("name_en").distinct()),
         "academic_year_choices": AcademicYear.objects.filter(
             is_active=True,
             program_offerings__program__in=base_programs,
-        ).distinct().order_by("name_en"),
+        )
+        .distinct()
+        .order_by("name_en"),
         "semester_choices": Semester.objects.filter(
             is_active=True,
             program_offerings__program__in=base_programs,
-        ).distinct().order_by("name_en"),
+        )
+        .distinct()
+        .order_by("name_en"),
         "currency_choices": Currency.choices,
     }
 
@@ -118,15 +120,12 @@ def home(request):
         .order_by("-program_count", "name_en")[:10]
     )
 
-    faq_preview = (
-        active_faqs.select_related("category")
-        .order_by("category__sort_order", "sort_order", "question_en")[:6]
-    )
+    faq_preview = active_faqs.select_related("category").order_by(
+        "category__sort_order", "sort_order", "question_en"
+    )[:6]
 
     hero_university = (
-        active_universities.exclude(banner="")
-        .order_by("-is_featured", "-listing_priority")
-        .first()
+        active_universities.exclude(banner="").order_by("-is_featured", "-listing_priority").first()
     )
 
     filter_options = _program_filter_options()
@@ -185,14 +184,18 @@ def university_detail(request, slug):
     )
 
     state = read_program_filters(request.GET)
-    programs = Program.objects.filter(
-        university=university,
-        is_active=True,
-    ).select_related(
-        "university",
-        "department",
-        "program_language",
-    ).prefetch_related("offerings")
+    programs = (
+        Program.objects.filter(
+            university=university,
+            is_active=True,
+        )
+        .select_related(
+            "university",
+            "department",
+            "program_language",
+        )
+        .prefetch_related("offerings")
+    )
 
     programs = apply_program_filters(programs, state).order_by(
         "-listing_priority",
@@ -223,15 +226,19 @@ def university_detail(request, slug):
 def program_list(request):
     state = read_program_filters(request.GET)
 
-    programs = Program.objects.filter(
-        is_active=True,
-        university__is_active=True,
-    ).select_related(
-        "university",
-        "university__city",
-        "department",
-        "program_language",
-    ).prefetch_related("offerings")
+    programs = (
+        Program.objects.filter(
+            is_active=True,
+            university__is_active=True,
+        )
+        .select_related(
+            "university",
+            "university__city",
+            "department",
+            "program_language",
+        )
+        .prefetch_related("offerings")
+    )
 
     programs = apply_program_filters(programs, state).order_by(
         "-listing_priority",
@@ -251,11 +258,15 @@ def program_list(request):
             "university_choices": University.objects.filter(
                 is_active=True,
                 programs__is_active=True,
-            ).distinct().order_by("name_en"),
+            )
+            .distinct()
+            .order_by("name_en"),
             "city_choices": City.objects.filter(
                 is_active=True,
                 universities__programs__is_active=True,
-            ).distinct().order_by("name_en"),
+            )
+            .distinct()
+            .order_by("name_en"),
             "university_type_choices": UniversityType.choices,
         }
     )
@@ -275,15 +286,19 @@ def program_list(request):
 
 
 def program_detail(request, slug):
-    active_offerings = ProgramOffering.objects.filter(
-        is_active=True,
-    ).select_related(
-        "academic_year",
-        "semester",
-    ).order_by(
-        "academic_year__name_en",
-        "semester__name_en",
-        "tuition",
+    active_offerings = (
+        ProgramOffering.objects.filter(
+            is_active=True,
+        )
+        .select_related(
+            "academic_year",
+            "semester",
+        )
+        .order_by(
+            "academic_year__name_en",
+            "semester__name_en",
+            "tuition",
+        )
     )
 
     active_media = UniversityMedia.objects.filter(
@@ -308,33 +323,34 @@ def program_detail(request, slug):
     )
 
     similarity_filter = Q(degree=program.degree)
-    if program.department_id:
-        similarity_filter |= Q(department__slug_en=program.department.slug_en)
+    department = program.department if program.department_id else None
+    if department is not None:
+        similarity_filter |= Q(department__slug_en=department.slug_en)
     if program.program_language_id:
         similarity_filter |= Q(program_language=program.program_language)
 
     similarity_cases = []
-    if program.department_id:
+    if department is not None:
         similarity_cases.extend(
             [
                 When(
-                    department__slug_en=program.department.slug_en,
+                    department__slug_en=department.slug_en,
                     degree=program.degree,
                     program_language=program.program_language,
                     then=Value(6),
                 ),
                 When(
-                    department__slug_en=program.department.slug_en,
+                    department__slug_en=department.slug_en,
                     degree=program.degree,
                     then=Value(5),
                 ),
                 When(
-                    department__slug_en=program.department.slug_en,
+                    department__slug_en=department.slug_en,
                     program_language=program.program_language,
                     then=Value(4),
                 ),
                 When(
-                    department__slug_en=program.department.slug_en,
+                    department__slug_en=department.slug_en,
                     then=Value(3),
                 ),
             ]
@@ -412,8 +428,8 @@ def program_detail(request, slug):
         "public/program_detail.html",
         {
             "program": program,
-            "offerings": program.active_offerings,
-            "university_media": program.university.active_media[:6],
+            "offerings": getattr(program, "active_offerings", []),
+            "university_media": getattr(program.university, "active_media", [])[:6],
             "similar_programs": similar_programs,
             "more_from_university": more_from_university,
             "university_program_count": university_program_count,
@@ -423,9 +439,7 @@ def program_detail(request, slug):
 
 
 def faq(request):
-    categories = FAQCategory.objects.filter(is_active=True).prefetch_related(
-        "faqs"
-    )
+    categories = FAQCategory.objects.filter(is_active=True).prefetch_related("faqs")
     return render(
         request,
         "public/faq.html",
@@ -459,17 +473,13 @@ def dashboard(request):
     students = Student.objects.filter(user=request.user).prefetch_related(
         "applications__program_offering__program__university"
     )
-    applications = Application.objects.filter(
-        student__user=request.user
-    ).select_related(
+    applications = Application.objects.filter(student__user=request.user).select_related(
         "student",
         "program_offering__program__university",
         "program_offering__academic_year",
         "program_offering__semester",
     )
-    leads = request.user.leads.select_related("converted_student").order_by(
-        "-updated_at"
-    )[:8]
+    leads = request.user.leads.select_related("converted_student").order_by("-updated_at")[:8]
 
     return render(
         request,
@@ -489,4 +499,3 @@ def profile(request):
         "Applicant profiles are managed separately because one account can manage multiple people.",
     )
     return redirect("lead-list")
-

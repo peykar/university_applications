@@ -20,10 +20,28 @@ class ApplicationStatus(models.TextChoices):
 
 
 class Application(BaseModel):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="applications")
-    agent = models.ForeignKey(Agent, on_delete=models.SET_NULL, null=True, blank=True, related_name="applications")
-    program_offering = models.ForeignKey(ProgramOffering, on_delete=models.PROTECT, related_name="applications")
-    status = models.CharField(max_length=30, choices=ApplicationStatus.choices, default=ApplicationStatus.DRAFT)
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name="applications",
+    )
+    agent = models.ForeignKey(
+        Agent,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="applications",
+    )
+    program_offering = models.ForeignKey(
+        ProgramOffering,
+        on_delete=models.PROTECT,
+        related_name="applications",
+    )
+    status = models.CharField(
+        max_length=30,
+        choices=ApplicationStatus.choices,
+        default=ApplicationStatus.DRAFT,
+    )
     tuition = models.DecimalField(max_digits=12, decimal_places=2)
     deposit = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     notes = models.TextField(blank=True)
@@ -33,14 +51,27 @@ class Application(BaseModel):
 
 
 class ApplicationDocument(BaseModel):
-    application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name="documents")
-    student_document = models.ForeignKey(StudentDocument, on_delete=models.CASCADE, related_name="applications")
+    application = models.ForeignKey(
+        Application,
+        on_delete=models.CASCADE,
+        related_name="documents",
+    )
+    student_document = models.ForeignKey(
+        StudentDocument,
+        on_delete=models.CASCADE,
+        related_name="applications",
+    )
     is_required = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
     verification_notes = models.TextField(blank=True)
 
     def clean(self):
         super().clean()
-        if self.student_document_id and self.application_id:
-            if self.student_document.student_id != self.application.student_id:
-                raise ValidationError({"student_document": _("Document must belong to the application student.")})
+        if (
+            self.student_document_id
+            and self.application_id
+            and self.student_document.student_id != self.application.student_id
+        ):
+            raise ValidationError(
+                {"student_document": _("Document must belong to the application student.")}
+            )

@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 import json
@@ -69,8 +68,8 @@ class Command(BaseCommand):
                 updated_categories += 1
 
         for item in faqs:
-            category = self._resolve_category(item, category_by_source_id)
-            if category is None:
+            resolved_category = self._resolve_category(item, category_by_source_id)
+            if resolved_category is None:
                 self.stderr.write(
                     self.style.WARNING(
                         f"Skipping FAQ {item.get('id')}: no category could be resolved."
@@ -78,7 +77,7 @@ class Command(BaseCommand):
                 )
                 continue
 
-            _, created = self._upsert_faq(item, category)
+            _, created = self._upsert_faq(item, resolved_category)
             if created:
                 created_faqs += 1
             else:
