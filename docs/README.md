@@ -24,3 +24,4 @@
 - `dependency-audit.md`
 - `public-frontend.md`
 - `branding.md`
+- `homepage.md`

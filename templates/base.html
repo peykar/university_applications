@@ -69,10 +69,16 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <strong>TurkDemy</strong>
-      <span>{% trans "University discovery and admissions." %}</span>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="{% static 'branding/turkdemy-logo-horizontal.svg' %}" alt="TurkDemy">
+        <p>{% trans "University discovery and admissions support for international students in Türkiye." %}</p>
+      </div>
+      <div><strong>{% trans "Explore" %}</strong><a href="{% url 'university-list' %}">{% trans "Universities" %}</a><a href="{% url 'program-list' %}">{% trans "Programs" %}</a><a href="{% url 'faq' %}">{% trans "FAQ" %}</a></div>
+      <div><strong>{% trans "Students" %}</strong>{% if request.user.is_authenticated %}<a href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a><a href="{% url 'profile' %}">{% trans "Profile" %}</a>{% else %}<a href="{% url 'login' %}">{% trans "Login" %}</a>{% endif %}</div>
+      <div><strong>TurkDemy</strong><a href="{% url 'about' %}">{% trans "About" %}</a><a href="{% url 'contact' %}">{% trans "Contact" %}</a></div>
     </div>
+    <div class="container footer-bottom"><span>© {% now "Y" %} TurkDemy</span><span>{% trans "Study in Türkiye with clarity." %}</span></div>
   </footer>
 </body>
 </html>

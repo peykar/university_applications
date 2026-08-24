@@ -217,3 +217,11 @@
 - Ensured the base template loads Django static tags.
 - Strengthened header/logo layout rules so the SVG cannot collapse or disappear.
 - Added a direct static-asset verification URL to the branding docs.
+
+### Homepage experience redesign
+- Added hero catalogue search and live catalogue statistics.
+- Added featured-university cards with program counts and recognition metadata.
+- Added study-field discovery and tuition-aware popular program rows.
+- Added process, trust, FAQ preview, CTA and richer footer sections.
+- Uses imported university banner media for the hero when available.
+- Added `docs/homepage.md`.

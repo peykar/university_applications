@@ -1,33 +1,68 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block title %}TurkDemy — {% trans "Study in Türkiye" %}{% endblock %}
+{% block meta_description %}{% trans "Find universities and programs in Türkiye, compare tuition, and manage your application with TurkDemy." %}{% endblock %}
+
 {% block content %}
-<section class="hero">
-  <div>
-    <p class="eyebrow">{% trans "Universities in Türkiye" %}</p>
-    <h1>{% trans "Find the right university and program." %}</h1>
-    <p class="lead">{% trans "Explore universities, compare programs and manage your application in one place." %}</p>
+<section class="home-hero{% if hero_university and hero_university.banner %} home-hero-photo{% endif %}"
+  {% if hero_university and hero_university.banner %}style="--hero-image:url('{{ hero_university.banner.url }}')"{% endif %}>
+  <div class="home-hero-overlay"></div>
+  <div class="home-hero-content">
+    <p class="eyebrow hero-eyebrow">{% trans "Study in Türkiye" %}</p>
+    <h1>{% trans "Find the right university and build your future." %}</h1>
+    <p class="hero-copy">
+      {% blocktrans with program_count=program_count university_count=university_count %}
+      Search {{ program_count }} programs across {{ university_count }} universities and compare your options in one place.
+      {% endblocktrans %}
+    </p>
+
+    <form method="get" class="hero-search" role="search">
+      <label class="sr-only" for="hero-search-input">{% trans "Search programs or universities" %}</label>
+      <input id="hero-search-input" type="search" name="q"
+        placeholder="{% trans 'Search medicine, dentistry, engineering, university…' %}" autocomplete="off">
+      <button class="button button-accent" type="submit">{% trans "Search programs" %}</button>
+    </form>
+
     <div class="hero-actions">
-      <a class="button" href="{% url 'university-list' %}">{% trans "Explore universities" %}</a>
-      <a class="button button-secondary" href="{% url 'program-list' %}">{% trans "Browse programs" %}</a>
+      <a class="button button-light" href="{% url 'university-list' %}">{% trans "Explore universities" %}</a>
+      <a class="button button-outline-light" href="{% url 'program-list' %}">{% trans "Browse all programs" %}</a>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="stats-strip" aria-label="{% trans 'TurkDemy catalogue statistics' %}">
+  <div class="stat-item"><strong>{{ university_count }}</strong><span>{% trans "universities" %}</span></div>
+  <div class="stat-item"><strong>{{ program_count }}</strong><span>{% trans "programs" %}</span></div>
+  <div class="stat-item"><strong>{{ faq_count }}</strong><span>{% trans "answered questions" %}</span></div>
+  <div class="stat-item stat-highlight"><strong>{% trans "Free" %}</strong><span>{% trans "initial guidance" %}</span></div>
+</section>
+
+<section class="home-section">
   <div class="section-heading">
-    <h2>{% trans "Featured universities" %}</h2>
-    <a href="{% url 'university-list' %}">{% trans "View all" %}</a>
+    <div><p class="eyebrow">{% trans "Explore universities" %}</p><h2>{% trans "Featured universities" %}</h2></div>
+    <a class="section-link" href="{% url 'university-list' %}">{% trans "View all" %} →</a>
   </div>
-  <div class="card-grid">
-    {% for university in universities %}
-      <article class="card">
-        {% if university.logo %}
-          <img class="card-logo" src="{{ university.logo.url }}" alt="{{ university.name_en }}">
-        {% endif %}
+
+  <div class="university-grid">
+    {% for university in featured_universities %}
+      <article class="university-feature-card">
+        <div class="university-card-top">
+          {% if university.logo %}
+            <img class="university-logo" src="{{ university.logo.url }}" alt="{{ university.name_en }}">
+          {% else %}
+            <div class="university-logo university-logo-placeholder">{{ university.name_en|slice:":2"|upper }}</div>
+          {% endif %}
+        </div>
         <h3><a href="{% url 'university-detail' university.slug_en %}">{{ university.name_en }}</a></h3>
-        <p>{{ university.city.name_en }}</p>
-        <p class="muted">{{ university.get_university_type_display }}</p>
+        <p class="card-location">{{ university.city.name_en }}</p>
+        <div class="badges compact-badges">
+          <span class="badge">{{ university.get_university_type_display }}</span>
+          {% if university.is_moe_approved %}<span class="badge badge-success">{% trans "MOE approved" %}</span>{% endif %}
+          {% if university.is_moh_approved %}<span class="badge badge-success">{% trans "MOH approved" %}</span>{% endif %}
+          {% if university.has_erasmus %}<span class="badge">{% trans "Erasmus+" %}</span>{% endif %}
+          <span class="badge">{{ university.active_program_count }} {% trans "programs" %}</span>
+        </div>
+        <a class="card-action" href="{% url 'university-detail' university.slug_en %}">{% trans "Explore university" %}</a>
       </article>
     {% empty %}
       <div class="empty-state">{% trans "No universities have been imported yet." %}</div>
@@ -35,22 +70,104 @@
   </div>
 </section>
 
-<section class="section">
-  <div class="section-heading">
-    <h2>{% trans "Popular programs" %}</h2>
-    <a href="{% url 'program-list' %}">{% trans "View all" %}</a>
-  </div>
-  <div class="card-grid">
-    {% for program in programs %}
-      <article class="card">
-        <p class="eyebrow">{{ program.get_degree_display }}</p>
-        <h3><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a></h3>
-        <p>{{ program.university.name_en }}</p>
-        <p class="muted">{{ program.program_language.name_en }}</p>
-      </article>
-    {% empty %}
-      <div class="empty-state">{% trans "No programs have been imported yet." %}</div>
+{% if study_fields %}
+<section class="home-section study-field-section">
+  <div class="section-heading"><div><p class="eyebrow">{% trans "Find your direction" %}</p><h2>{% trans "What do you want to study?" %}</h2></div></div>
+  <div class="field-chip-grid">
+    {% for field in study_fields %}
+      <a class="field-chip" href="{% url 'program-list' %}?q={{ field.name_en|urlencode }}">
+        <span>{{ field.name_en }}</span>
+        <small>{{ field.program_count }} {% trans "programs" %}</small>
+      </a>
     {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="home-section programs-section">
+  <div class="section-heading">
+    <div><p class="eyebrow">{% trans "Popular choices" %}</p><h2>{% trans "Popular programs" %}</h2></div>
+    <a class="section-link" href="{% url 'program-list' %}">{% trans "View all" %} →</a>
+  </div>
+  <div class="program-list-home">
+    {% for program in popular_programs %}
+      <a class="program-row" href="{% url 'program-detail' program.slug_en %}">
+        <div>
+          <strong>{{ program.name_en }}</strong>
+          <span>{{ program.university.name_en }} · {{ program.get_degree_display }} · {{ program.program_language.name_en }}</span>
+        </div>
+        <div class="program-row-meta">
+          {% if program.min_tuition %}
+            <strong>{{ program.offerings.first.currency|default:"USD" }} {{ program.min_tuition|floatformat:0 }}</strong>
+            <small>{% trans "from" %}</small>
+          {% else %}
+            <strong>{% trans "Contact" %}</strong><small>{% trans "for tuition" %}</small>
+          {% endif %}
+        </div>
+      </a>
+    {% empty %}
+      <div class="empty-state">{% trans "No programs available." %}</div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="home-section process-section">
+  <div class="section-heading process-heading">
+    <div>
+      <p class="eyebrow">{% trans "Simple process" %}</p>
+      <h2>{% trans "From discovery to application." %}</h2>
+      <p class="section-intro">{% trans "TurkDemy keeps your search, documents and application journey connected." %}</p>
+    </div>
+  </div>
+  <div class="process-grid">
+    <article class="process-card"><span>01</span><h3>{% trans "Find a program" %}</h3><p>{% trans "Search universities and programs by field, language and degree." %}</p></article>
+    <article class="process-card"><span>02</span><h3>{% trans "Compare your options" %}</h3><p>{% trans "Review tuition, recognition, language, intake and university information." %}</p></article>
+    <article class="process-card"><span>03</span><h3>{% trans "Prepare your profile" %}</h3><p>{% trans "Keep your personal information and documents together." %}</p></article>
+    <article class="process-card"><span>04</span><h3>{% trans "Track applications" %}</h3><p>{% trans "Follow your application status from one dashboard." %}</p></article>
+  </div>
+</section>
+
+<section class="home-section trust-section">
+  <div class="trust-copy">
+    <p class="eyebrow">{% trans "Built for international students" %}</p>
+    <h2>{% trans "Useful information before you apply." %}</h2>
+    <p>{% trans "TurkDemy brings program information, university recognition, tuition details and application management into one structured platform." %}</p>
+    <a class="button" href="{% url 'about' %}">{% trans "About TurkDemy" %}</a>
+  </div>
+  <div class="trust-points">
+    <div><strong>{% trans "University recognition" %}</strong><span>{% trans "MOE, MOH, YÖK and other university-level indicators where available." %}</span></div>
+    <div><strong>{% trans "Application management" %}</strong><span>{% trans "Track programs, documents and status in your account." %}</span></div>
+    <div><strong>{% trans "Multilingual platform" %}</strong><span>{% trans "English, Persian, Turkish and Arabic support." %}</span></div>
+    <div><strong>{% trans "Structured catalogue" %}</strong><span>{% trans "Programs, intakes, tuition and university information in a consistent format." %}</span></div>
+  </div>
+</section>
+
+{% if faq_preview %}
+<section class="home-section faq-home-section">
+  <div class="section-heading">
+    <div><p class="eyebrow">{% trans "Questions" %}</p><h2>{% trans "Frequently asked questions" %}</h2></div>
+    <a class="section-link" href="{% url 'faq' %}">{% trans "View all FAQ" %} →</a>
+  </div>
+  <div class="faq-list">
+    {% for faq in faq_preview %}
+      <details class="faq-item">
+        <summary>{{ faq.question_en|default:faq.question_fa }}</summary>
+        <div class="faq-answer">{{ faq.answer_en|default:faq.answer_fa }}</div>
+      </details>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="home-cta">
+  <div>
+    <p class="eyebrow">{% trans "Need help choosing?" %}</p>
+    <h2>{% trans "Start with the right program." %}</h2>
+    <p>{% trans "Explore the catalogue or contact TurkDemy if you need help understanding your options." %}</p>
+  </div>
+  <div class="home-cta-actions">
+    <a class="button button-accent" href="{% url 'program-list' %}">{% trans "Find a program" %}</a>
+    <a class="button button-light" href="{% url 'contact' %}">{% trans "Contact us" %}</a>
   </div>
 </section>
 {% endblock %}

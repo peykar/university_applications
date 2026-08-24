@@ -1,31 +1,90 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Count, Min, Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 
 from apps.applications.models import Application
-from apps.content.models import FAQCategory
+from apps.content.models import FAQ, FAQCategory
 from apps.students.models import Student
-from apps.universities.models import Program, University
+from apps.universities.models import Department, Program, University
 
 from .forms import ContactForm, StudentProfileForm
 
 
 def home(request):
-    universities = University.objects.filter(is_active=True).order_by(
-        "-listing_priority",
-        "name_en",
-    )[:8]
-    programs = Program.objects.filter(is_active=True).select_related(
-        "university",
-        "program_language",
-    ).order_by("-listing_priority", "name_en")[:12]
+    search_query = request.GET.get("q", "").strip()
+    if search_query:
+        return redirect(f"{reverse('program-list')}?q={search_query}")
+
+    active_universities = University.objects.filter(is_active=True)
+    active_programs = Program.objects.filter(is_active=True)
+    active_faqs = FAQ.objects.filter(is_active=True)
+
+    featured_universities = (
+        active_universities.select_related("city")
+        .annotate(
+            active_program_count=Count(
+                "programs",
+                filter=Q(programs__is_active=True),
+            )
+        )
+        .order_by("-is_featured", "-listing_priority", "name_en")[:8]
+    )
+
+    popular_programs = (
+        active_programs.select_related(
+            "university",
+            "program_language",
+            "department",
+        )
+        .prefetch_related("offerings")
+        .annotate(
+            min_tuition=Min(
+                "offerings__tuition",
+                filter=Q(offerings__is_active=True),
+            )
+        )
+        .order_by("-listing_priority", "name_en")[:8]
+    )
+
+    study_fields = (
+        Department.objects.filter(
+            is_active=True,
+            programs__is_active=True,
+        )
+        .annotate(
+            program_count=Count(
+                "programs",
+                filter=Q(programs__is_active=True),
+            )
+        )
+        .order_by("-program_count", "name_en")[:10]
+    )
+
+    faq_preview = (
+        active_faqs.select_related("category")
+        .order_by("category__sort_order", "sort_order", "question_en")[:6]
+    )
+
+    hero_university = (
+        active_universities.exclude(banner="")
+        .order_by("-is_featured", "-listing_priority")
+        .first()
+    )
+
     return render(
         request,
         "public/home.html",
         {
-            "universities": universities,
-            "programs": programs,
+            "featured_universities": featured_universities,
+            "popular_programs": popular_programs,
+            "study_fields": study_fields,
+            "faq_preview": faq_preview,
+            "hero_university": hero_university,
+            "university_count": active_universities.count(),
+            "program_count": active_programs.count(),
+            "faq_count": active_faqs.count(),
         },
     )
 
@@ -81,6 +140,7 @@ def program_list(request):
             | Q(name_tr__icontains=query)
             | Q(name_ar__icontains=query)
             | Q(university__name_en__icontains=query)
+            | Q(department__name_en__icontains=query)
         )
     return render(
         request,
