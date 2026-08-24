@@ -94,19 +94,19 @@ def apply_program_filters(
         )
 
     if state.field:
-        queryset = queryset.filter(department__name_en=state.field)
+        queryset = queryset.filter(department__slug_en=state.field)
 
     if state.degree:
         queryset = queryset.filter(degree=state.degree)
 
     if state.language:
-        queryset = queryset.filter(program_language_id=state.language)
+        queryset = queryset.filter(program_language__slug_en=state.language)
 
     if state.university:
-        queryset = queryset.filter(university_id=state.university)
+        queryset = queryset.filter(university__slug_en=state.university)
 
     if state.city:
-        queryset = queryset.filter(university__city_id=state.city)
+        queryset = queryset.filter(university__city__slug_en=state.city)
 
     if state.university_type:
         queryset = queryset.filter(university__university_type=state.university_type)

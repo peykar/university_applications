@@ -114,8 +114,8 @@ class ProgramFilterTests(TestCase):
             ProgramFilterState(
                 q="Computer",
                 degree="bachelor",
-                language=str(self.language.pk),
-                field="Engineering",
+                language=self.language.slug_en,
+                field="engineering",
             ),
         )
         self.assertEqual(qs.count(), 1)
@@ -124,7 +124,7 @@ class ProgramFilterTests(TestCase):
         qs = apply_program_filters(
             Program.objects.all(),
             ProgramFilterState(
-                semester=str(self.spring.pk),
+                semester=self.spring.slug_en,
                 tuition_max="9000",
             ),
         )
@@ -134,7 +134,7 @@ class ProgramFilterTests(TestCase):
         qs = apply_program_filters(
             Program.objects.all(),
             ProgramFilterState(
-                semester=str(self.fall.pk),
+                semester=self.fall.slug_en,
                 tuition_max="9000",
                 currency="USD",
                 open_only=True,

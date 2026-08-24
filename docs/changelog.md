@@ -258,3 +258,11 @@
 - Offering-level filters use one correlated ProgramOffering match.
 - Added 24-item pagination with filter preservation.
 - Added filter regression tests and `docs/program-filters.md`.
+
+### Slug-based catalogue filters
+- Replaced public filter IDs with slugs for university, city, language and
+  department/field.
+- Homepage study-field links now use department slugs.
+- Kept natural enum/code values for degree, university type and currency.
+- Academic-year/semester IDs are retained only when their models do not expose
+  slugs.

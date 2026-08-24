@@ -65,3 +65,22 @@ only matches a Program when a single offering satisfies both conditions.
 
 Program listings use 24 results per page and preserve all active query-string
 filters while navigating pages.
+
+## Filter URL values
+
+Public catalogue URLs use human-readable stable values whenever the model
+provides them:
+
+- `field`: department slug
+- `language`: program-language slug
+- `university`: university slug
+- `city`: city slug
+- `degree`: enum/code (already URL-friendly)
+- `university_type`: enum/code
+- `currency`: ISO-style currency code
+
+Academic year and semester use their model slug when available; otherwise
+their primary key remains the fallback until those reference models expose
+stable slugs.
+
+This keeps URLs readable, shareable and less coupled to database IDs.

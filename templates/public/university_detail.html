@@ -48,7 +48,7 @@
     <select name="field">
       <option value="">{% trans "Any field" %}</option>
       {% for field in field_choices %}
-        <option value="{{ field }}"{% if filters.field == field %} selected{% endif %}>{{ field }}</option>
+        <option value="{{ field.slug_en }}"{% if filters.field == field.slug_en %} selected{% endif %}>{{ field.name_en }}</option>
       {% endfor %}
     </select>
 
@@ -62,7 +62,7 @@
     <select name="language">
       <option value="">{% trans "Any language" %}</option>
       {% for language in language_choices %}
-        <option value="{{ language.id }}"{% if filters.language == language.id|stringformat:"s" %} selected{% endif %}>{{ language.name_en }}</option>
+        <option value="{{ language.slug_en }}"{% if filters.language == language.slug_en %} selected{% endif %}>{{ language.name_en }}</option>
       {% endfor %}
     </select>
 

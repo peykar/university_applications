@@ -45,10 +45,9 @@ def _program_filter_options(*, university=None):
             programs__in=base_programs,
         ).distinct().order_by("name_en"),
         "field_choices": (
-            departments.values_list("name_en", flat=True)
-            .exclude(name_en="")
-            .distinct()
+            departments.exclude(slug_en="")
             .order_by("name_en")
+            .distinct()
         ),
         "academic_year_choices": AcademicYear.objects.filter(
             is_active=True,
@@ -110,7 +109,7 @@ def home(request):
             is_active=True,
             programs__is_active=True,
         )
-        .values("name_en")
+        .values("name_en", "slug_en")
         .annotate(program_count=Count("programs", distinct=True))
         .exclude(name_en="")
         .order_by("-program_count", "name_en")[:10]
