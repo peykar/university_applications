@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" role="img" aria-labelledby="t d">
+<title id="t">TurkDemy</title><desc id="d">Academic logo with graduation cap, open book, Turkish crescent and star.</desc>
+<g transform="translate(42 20)">
+<path fill="#0B3A67" d="M20 52 132 2l112 50-112 50z"/><path fill="#0B3A67" d="M62 73v42c22 20 48 29 70 29s48-9 70-29V73l-70 31z"/>
+<path fill="#E3062C" d="M229 57h8v53h-8z"/><circle fill="#E3062C" cx="233" cy="112" r="8"/><path fill="#E3062C" d="M228 120h10l8 38h-26z"/>
+<path fill="#0B3A67" d="M112 85h40v94h-40z"/><path fill="#0B3A67" d="M22 186c38-15 72-13 110 8v48c-37-20-72-22-110-7z"/>
+<path fill="#0B3A67" d="M242 186c-38-15-72-13-110 8v48c37-20 72-22 110-7z"/><path fill="#E3062C" d="M132 193C111 157 84 124 47 101c11 54 35 105 85 141z"/>
+<circle fill="#fff" cx="88" cy="154" r="22"/><circle fill="#E3062C" cx="97" cy="148" r="19"/>
+<path fill="#fff" d="m119 145 4 9 10 1-8 6 3 10-9-6-9 6 3-10-8-6 10-1z"/>
+<g fill="#0B3A67"><rect x="164" y="160" width="6" height="42"/><path d="m167 149 5 11h-10z"/><rect x="184" y="171" width="34" height="31"/><path d="M181 171c5-14 12-21 20-21s15 7 20 21z"/><rect x="226" y="151" width="10" height="51"/><path d="m231 139 6 12h-12z"/></g>
+</g><text x="330" y="145" font-family="Arial,Helvetica,sans-serif" font-size="94" font-weight="700" fill="#0B3A67">Turk</text>
+<text x="525" y="145" font-family="Arial,Helvetica,sans-serif" font-size="94" font-weight="700" fill="#E3062C">Demy</text>
+<text x="334" y="194" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="600" letter-spacing="4" fill="#0B3A67">STUDY IN TÜRKİYE</text></svg>

@@ -206,3 +206,8 @@
   university/program details, FAQ and contact.
 - Added a language selector and RTL layout direction for Persian/Arabic.
 - Kept Django REST Framework as an optional API/integration layer.
+\n### TurkDemy brand assets
+- Added native SVG primary, horizontal, emblem and monochrome logo variants.
+- Added favicon ICO/PNG, Apple Touch, Android/PWA icons and web manifest.
+- Integrated branding into the Django base template.
+- Added `docs/branding.md`.

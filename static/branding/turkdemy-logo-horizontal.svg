@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 150"><g transform="translate(8 5)">
+<path fill="#0B3A67" d="M8 30 70 2l62 28-62 28z"/><path fill="#0B3A67" d="M30 43v24c12 11 27 16 40 16s28-5 40-16V43L70 61z"/>
+<path fill="#0B3A67" d="M60 52h20v48H60z"/><path fill="#0B3A67" d="M8 104c22-9 41-7 62 5v27c-21-11-40-12-62-4z"/>
+<path fill="#0B3A67" d="M132 104c-22-9-41-7-62 5v27c21-11 40-12 62-4z"/><path fill="#E3062C" d="M70 108C58 88 43 70 22 57c7 31 20 59 48 79z"/>
+<circle fill="#fff" cx="45" cy="88" r="12"/><circle fill="#E3062C" cx="50" cy="85" r="10"/><path fill="#fff" d="m62 83 2 5 6 1-5 3 2 6-5-4-5 4 2-6-5-3 6-1z"/></g>
+<text x="165" y="93" font-family="Arial,Helvetica,sans-serif" font-size="74" font-weight="700" fill="#0B3A67">Turk</text><text x="315" y="93" font-family="Arial,Helvetica,sans-serif" font-size="74" font-weight="700" fill="#E3062C">Demy</text></svg>

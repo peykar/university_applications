@@ -23,3 +23,4 @@
 - `site-url-and-email.md`
 - `dependency-audit.md`
 - `public-frontend.md`
+- `branding.md`
