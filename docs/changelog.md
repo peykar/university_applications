@@ -155,3 +155,11 @@
 - Added initial public forms, views and server-rendered pages.
 - Added a separate React/TypeScript/Vite frontend.
 - Added `.dockerignore` and `.editorconfig`.
+
+### Canonical site URL and email configuration
+- Added environment-driven `SITE_URL`.
+- Added shared absolute URL helpers for emails/notifications/background tasks.
+- Added environment-driven Django SMTP/email configuration.
+- Added shared email sending helper.
+- Updated `.env.example`.
+- Added `docs/site-url-and-email.md`.

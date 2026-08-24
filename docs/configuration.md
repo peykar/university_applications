@@ -29,3 +29,22 @@ SYSTEM_USER_IS_SUPERUSER=0
 ```
 
 See `docs/auditing.md` for system-user behavior and security constraints.
+
+## Public URL and email
+
+```dotenv
+SITE_URL=https://turkdemy.com
+DJANGO_ALLOWED_HOSTS=turkdemy.com,www.turkdemy.com
+DJANGO_CSRF_TRUSTED_ORIGINS=https://turkdemy.com,https://www.turkdemy.com
+
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=...
+EMAIL_PORT=587
+EMAIL_USE_TLS=1
+EMAIL_HOST_USER=...
+EMAIL_HOST_PASSWORD=...
+DEFAULT_FROM_EMAIL=TurkDemy <noreply@turkdemy.com>
+SUPPORT_EMAIL=support@turkdemy.com
+```
+
+See `docs/site-url-and-email.md`.

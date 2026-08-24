@@ -114,3 +114,16 @@ See:
 - `docs/i18n.md`
 - `docs/public-and-api.md`
 - `docs/frontend.md`
+
+## Canonical public URL
+
+Configure the public domain through `.env`:
+
+```dotenv
+SITE_URL=https://turkdemy.com
+```
+
+TurkDemy uses this to generate absolute links for emails, notifications and
+other out-of-request contexts.
+
+See `docs/site-url-and-email.md`.

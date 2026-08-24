@@ -21,3 +21,4 @@
 - `i18n.md`
 - `public-and-api.md`
 - `frontend.md`
+- `site-url-and-email.md`
