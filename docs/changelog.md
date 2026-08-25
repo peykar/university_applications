@@ -573,3 +573,12 @@
 - Compressed trust, FAQ, CTA and footer sections to reduce page length.
 - Polished the hamburger menu as a compact mobile sheet.
 - Kept the desktop homepage layout unchanged.
+
+### Unified university cards
+- Added one shared university-card template used by both Home and Universities.
+- University catalogue cards now expose the same metadata as Featured universities.
+- Added active program counts to the Universities queryset.
+- Standardized type, YÖK, MOE, MOH, Erasmus, dormitory and program-count badges.
+- Kept layout differences in CSS only: carousel-style on mobile Home, normal
+  catalogue grid/list on the Universities page.
+- Added regression tests to prevent the two card implementations from drifting.

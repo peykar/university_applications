@@ -14,20 +14,9 @@
   <button class="button" type="submit">{% trans "Search" %}</button>
 </form>
 
-<div class="card-grid">
+<div class="university-grid university-list-grid">
   {% for university in universities %}
-    <article class="card university-card">
-      {% if university.logo %}
-        <img class="card-logo" src="{{ university.logo.url }}" alt="{{ university.name_en }}">
-      {% endif %}
-      <h2><a href="{% url 'university-detail' university.slug_en %}">{{ university.name_en }}</a></h2>
-      <p>{{ university.city.name_en }}</p>
-      <div class="badges">
-        <span class="badge">{{ university.get_university_type_display }}</span>
-        {% if university.has_erasmus %}<span class="badge">{% trans "Erasmus+" %}</span>{% endif %}
-        {% if university.has_dormitory %}<span class="badge">{% trans "Dormitory" %}</span>{% endif %}
-      </div>
-    </article>
+    {% include "public/includes/university_card.html" with university=university %}
   {% empty %}
     <div class="empty-state">{% trans "No results." %}</div>
   {% endfor %}

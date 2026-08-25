@@ -2706,3 +2706,50 @@ html[dir="rtl"] .program-card-cta span[aria-hidden="true"]{
     grid-template-columns:1fr!important;
   }
 }
+
+
+/* Shared university card */
+.university-list-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  margin-top:20px;
+}
+
+.university-catalogue-card{
+  min-width:0;
+}
+
+.university-card-badges{
+  align-content:flex-start;
+}
+
+.university-catalogue-card .card-action{
+  margin-top:auto;
+}
+
+@media(max-width:980px){
+  .university-list-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:760px){
+  /*
+   * Home keeps the swipeable university row via `.home-section .university-grid`.
+   * Dedicated Universities catalogue stays a normal single-column list.
+   */
+  .university-list-grid{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin-inline:0!important;
+    padding-inline:0!important;
+    overflow:visible!important;
+  }
+
+  .university-list-grid .university-catalogue-card{
+    width:100%!important;
+    max-width:100%!important;
+    min-height:0!important;
+  }
+}

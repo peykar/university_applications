@@ -162,10 +162,19 @@ def home(request):
 
 def university_list(request):
     query = request.GET.get("q", "").strip()
-    qs = University.objects.filter(is_active=True).select_related(
-        "city",
-        "city__province",
-        "city__province__country",
+    qs = (
+        University.objects.filter(is_active=True)
+        .select_related(
+            "city",
+            "city__province",
+            "city__province__country",
+        )
+        .annotate(
+            active_program_count=Count(
+                "programs",
+                filter=Q(programs__is_active=True),
+            )
+        )
     )
     if query:
         qs = qs.filter(

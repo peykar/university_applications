@@ -62,25 +62,7 @@
 
   <div class="university-grid">
     {% for university in featured_universities %}
-      <article class="university-feature-card">
-        <div class="university-card-top">
-          {% if university.logo %}
-            <img class="university-logo" src="{{ university.logo.url }}" alt="{{ university.name_en }}">
-          {% else %}
-            <div class="university-logo university-logo-placeholder">{{ university.name_en|slice:":2"|upper }}</div>
-          {% endif %}
-        </div>
-        <h3><a href="{% url 'university-detail' university.slug_en %}">{{ university.name_en }}</a></h3>
-        <p class="card-location">{{ university.city.name_en }}</p>
-        <div class="badges compact-badges">
-          <span class="badge">{{ university.get_university_type_display }}</span>
-          {% if university.is_moe_approved %}<span class="badge badge-success">{% trans "MOE approved" %}</span>{% endif %}
-          {% if university.is_moh_approved %}<span class="badge badge-success">{% trans "MOH approved" %}</span>{% endif %}
-          {% if university.has_erasmus %}<span class="badge">{% trans "Erasmus+" %}</span>{% endif %}
-          <span class="badge">{{ university.active_program_count }} {% trans "programs" %}</span>
-        </div>
-        <a class="card-action" href="{% url 'university-detail' university.slug_en %}">{% trans "Explore university" %}</a>
-      </article>
+      {% include "public/includes/university_card.html" with university=university %}
     {% empty %}
       <div class="empty-state">{% trans "No universities have been imported yet." %}</div>
     {% endfor %}

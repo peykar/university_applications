@@ -1,0 +1,63 @@
+{% load i18n %}
+<article class="university-feature-card university-catalogue-card">
+  <div class="university-card-top">
+    {% if university.logo %}
+      <img
+        class="university-logo"
+        src="{{ university.logo.url }}"
+        alt="{{ university.name_en }}"
+      >
+    {% else %}
+      <div class="university-logo university-logo-placeholder">
+        {{ university.name_en|slice:":2"|upper }}
+      </div>
+    {% endif %}
+  </div>
+
+  <h3>
+    <a href="{% url 'university-detail' university.slug_en %}">
+      {{ university.name_en }}
+    </a>
+  </h3>
+
+  <p class="card-location">
+    {{ university.city.name_en }}
+    {% if university.city.province and university.city.province.name_en != university.city.name_en %}
+      · {{ university.city.province.name_en }}
+    {% endif %}
+  </p>
+
+  <div class="badges compact-badges university-card-badges">
+    <span class="badge">{{ university.get_university_type_display }}</span>
+
+    {% if university.active_program_count is not None %}
+      <span class="badge">
+        {{ university.active_program_count }} {% trans "programs" %}
+      </span>
+    {% endif %}
+
+    {% if university.is_yok_recognized %}
+      <span class="badge badge-success">{% trans "YÖK recognized" %}</span>
+    {% endif %}
+
+    {% if university.is_moe_approved %}
+      <span class="badge badge-success">{% trans "MOE approved" %}</span>
+    {% endif %}
+
+    {% if university.is_moh_approved %}
+      <span class="badge badge-success">{% trans "MOH approved" %}</span>
+    {% endif %}
+
+    {% if university.has_erasmus %}
+      <span class="badge">{% trans "Erasmus+" %}</span>
+    {% endif %}
+
+    {% if university.has_dormitory %}
+      <span class="badge">{% trans "Dormitory" %}</span>
+    {% endif %}
+  </div>
+
+  <a class="card-action" href="{% url 'university-detail' university.slug_en %}">
+    {% trans "Explore university" %}
+  </a>
+</article>
