@@ -523,3 +523,12 @@
 - Added explicit ultra-narrow safeguards for small phones.
 - Moved Programs filter JavaScript out of the HTML title block into the page script block.
 - Added regression tests for the mobile shell and template title safety.
+
+### Mobile filter scrolling fix
+- Made the Programs mobile filter drawer use a fixed `100dvh` viewport.
+- Changed the drawer layout to a two-row grid: sticky header + scrollable form.
+- Enabled independent touch scrolling with `overflow-y:auto`,
+  `-webkit-overflow-scrolling:touch`, and `touch-action:pan-y`.
+- Added bottom padding so the final filter controls are not hidden behind the
+  sticky Apply action.
+- Added regression coverage for mobile drawer scrolling.

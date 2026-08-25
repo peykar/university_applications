@@ -1941,3 +1941,54 @@ html[dir="rtl"] .program-card-cta span[aria-hidden="true"]{
     padding-inline:10px!important;
   }
 }
+
+
+/* Mobile filter drawer scroll reliability fix */
+@media(max-width:760px){
+  .programs-filter-panel{
+    height:100dvh!important;
+    max-height:100dvh!important;
+    overscroll-behavior:contain;
+  }
+
+  .programs-filter-panel .mobile-filter-toggle{
+    display:grid!important;
+    grid-template-rows:auto minmax(0,1fr)!important;
+    height:100dvh!important;
+    max-height:100dvh!important;
+    min-height:0!important;
+  }
+
+  .programs-filter-panel .mobile-filter-toggle>summary{
+    position:sticky;
+    top:0;
+    z-index:5;
+    flex:none!important;
+  }
+
+  .programs-filter-panel .catalogue-filter-form{
+    display:block!important;
+    min-height:0!important;
+    height:auto!important;
+    max-height:100%!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+    touch-action:pan-y;
+    padding-bottom:88px!important;
+  }
+
+  .filter-actions-balanced{
+    position:sticky!important;
+    bottom:0!important;
+    z-index:6!important;
+    margin-top:18px!important;
+  }
+
+  html.filters-modal-open,
+  html.filters-modal-open body{
+    height:100%;
+    overflow:hidden!important;
+  }
+}
