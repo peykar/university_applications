@@ -482,3 +482,12 @@
 - Reworked mobile filters into a full-width touch-friendly panel.
 - Improved mobile checkbox grid and action buttons.
 - Preserved all existing filter names and business logic.
+
+### Programs mobile filter drawer
+- Kept the accepted compact desktop filter layout.
+- Gave Tuition two usable amount fields with a full-width currency selector.
+- Polished checkbox states and Apply/Clear actions.
+- Replaced the stacked mobile sidebar with a full-screen filter drawer.
+- Added a mobile Filters trigger above results, close/backdrop/Escape behavior,
+  scrollable filter content, and sticky Apply/Clear actions.
+- All filters remain visible in the drawer; none are hidden as advanced options.

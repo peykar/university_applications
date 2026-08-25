@@ -1,6 +1,41 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Programs" %} — TurkDemy{% endblock %}
+{% block title %}{% trans "Programs" %} — TurkDemy<script>
+(() => {
+  const trigger = document.querySelector(".mobile-filter-trigger");
+  const panel = document.querySelector(".programs-filter-panel");
+  const backdrop = document.querySelector(".programs-filter-backdrop");
+  const details = panel?.querySelector(".mobile-filter-toggle");
+  if (!trigger || !panel || !backdrop || !details) return;
+
+  const openFilters = () => {
+    details.open = true;
+    panel.classList.add("mobile-filters-open");
+    backdrop.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+    document.documentElement.classList.add("filters-modal-open");
+  };
+  const closeFilters = () => {
+    panel.classList.remove("mobile-filters-open");
+    backdrop.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+    document.documentElement.classList.remove("filters-modal-open");
+  };
+
+  trigger.addEventListener("click", openFilters);
+  backdrop.addEventListener("click", closeFilters);
+  details.querySelector("summary")?.addEventListener("click", (event) => {
+    if (window.matchMedia("(max-width: 760px)").matches) {
+      event.preventDefault();
+      closeFilters();
+    }
+  });
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeFilters();
+  });
+})();
+</script>
+{% endblock %}
 {% block content %}
 <section class="programs-hero">
   <div class="programs-hero-copy">
@@ -23,6 +58,7 @@
       <summary>
         <span>{% trans "Filters" %}</span>
         <span class="filter-summary-count">{% trans "Refine results" %}</span>
+        <span class="mobile-filter-close" aria-hidden="true">×</span>
       </summary>
 <form method="get" class="catalogue-filter-form">
         <p class="filter-help">{% trans "Choose one or more filters, then press Apply filters." %}</p>
@@ -104,7 +140,7 @@
           <div class="filter-tuition-row">
             <input type="number" name="tuition_min" min="0" step="1" value="{{ filters.tuition_min }}" placeholder="{% trans 'From' %}">
             <input type="number" name="tuition_max" min="0" step="1" value="{{ filters.tuition_max }}" placeholder="{% trans 'To' %}">
-            <select name="currency" aria-label="{% trans 'Currency' %}">
+            <select class="filter-currency" name="currency" aria-label="{% trans 'Currency' %}">
               <option value="">{% trans "Any currency" %}</option>
               {% for value, label in currency_choices %}
                 <option value="{{ value }}"{% if filters.currency == value %} selected{% endif %}>{{ value }}</option>
@@ -152,6 +188,14 @@
   </aside>
 
   <section class="programs-results-panel">
+    <button class="mobile-filter-trigger" type="button" aria-expanded="false">
+      <span class="mobile-filter-trigger-icon" aria-hidden="true">☷</span>
+      <span>{% trans "Filters" %}</span>
+      <span class="mobile-filter-trigger-meta">{{ program_result_count }}</span>
+    </button>
+
+    <div class="programs-filter-backdrop" hidden></div>
+
     <div class="programs-results-toolbar">
       <div>
         <span class="programs-result-count">{{ program_result_count }}</span>
