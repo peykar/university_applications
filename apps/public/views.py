@@ -7,6 +7,7 @@ from django.db.models import Case, Count, IntegerField, Min, Prefetch, Q, Value,
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from apps.applications.models import Application
 from apps.content.models import FAQ, FAQCategory
@@ -223,6 +224,133 @@ def university_detail(request, slug):
     )
 
 
+def _build_active_program_filters(request, options) -> list[dict[str, str]]:
+    """Create removable chips for active program filters."""
+    chips: list[dict[str, str]] = []
+
+    def add(name: str, label) -> None:
+        if not request.GET.get(name) or not label:
+            return
+        params = request.GET.copy()
+        params.pop(name, None)
+        params.pop("page", None)
+        query = params.urlencode()
+        chips.append(
+            {
+                "name": name,
+                "label": str(label),
+                "remove_url": f"{request.path}?{query}" if query else request.path,
+            }
+        )
+
+    add("q", request.GET.get("q"))
+
+    field = next(
+        (
+            item
+            for item in options.get("field_choices", [])
+            if item.slug_en == request.GET.get("field")
+        ),
+        None,
+    )
+    add("field", getattr(field, "name_en", None))
+
+    degree_value = request.GET.get("degree")
+    add(
+        "degree",
+        next(
+            (label for value, label in options.get("degree_choices", []) if value == degree_value),
+            None,
+        ),
+    )
+
+    language = next(
+        (
+            item
+            for item in options.get("language_choices", [])
+            if item.slug_en == request.GET.get("language")
+        ),
+        None,
+    )
+    add("language", getattr(language, "name_en", None))
+
+    university = next(
+        (
+            item
+            for item in options.get("university_choices", [])
+            if item.slug_en == request.GET.get("university")
+        ),
+        None,
+    )
+    add("university", getattr(university, "name_en", None))
+
+    city = next(
+        (
+            item
+            for item in options.get("city_choices", [])
+            if item.slug_en == request.GET.get("city")
+        ),
+        None,
+    )
+    add("city", getattr(city, "name_en", None))
+
+    university_type_value = request.GET.get("university_type")
+    add(
+        "university_type",
+        next(
+            (
+                label
+                for value, label in options.get("university_type_choices", [])
+                if value == university_type_value
+            ),
+            None,
+        ),
+    )
+
+    tuition_min = request.GET.get("tuition_min")
+    if tuition_min:
+        add("tuition_min", _("From %(amount)s") % {"amount": tuition_min})
+
+    tuition_max = request.GET.get("tuition_max")
+    if tuition_max:
+        add("tuition_max", _("Up to %(amount)s") % {"amount": tuition_max})
+
+    add("currency", request.GET.get("currency"))
+
+    academic_year = next(
+        (
+            item
+            for item in options.get("academic_year_choices", [])
+            if str(item.id) == request.GET.get("academic_year")
+        ),
+        None,
+    )
+    add("academic_year", getattr(academic_year, "name_en", None))
+
+    semester = next(
+        (
+            item
+            for item in options.get("semester_choices", [])
+            if str(item.id) == request.GET.get("semester")
+        ),
+        None,
+    )
+    add("semester", getattr(semester, "name_en", None))
+
+    boolean_labels = {
+        "open": _("Open applications"),
+        "moe": _("MOE approved"),
+        "moh": _("MOH approved"),
+        "yok": _("YÖK recognized"),
+        "erasmus": _("Erasmus+"),
+    }
+    for name, label in boolean_labels.items():
+        if request.GET.get(name):
+            add(name, label)
+
+    return chips
+
+
 def program_list(request):
     state = read_program_filters(request.GET)
 
@@ -271,17 +399,20 @@ def program_list(request):
         }
     )
 
+    context = {
+        "programs": page_obj.object_list,
+        "page_obj": page_obj,
+        "program_result_count": paginator.count,
+        "filters": state,
+        "query_without_page": query_params.urlencode(),
+        **options,
+    }
+    context["active_filters"] = _build_active_program_filters(request, context)
+
     return render(
         request,
         "public/program_list.html",
-        {
-            "programs": page_obj.object_list,
-            "page_obj": page_obj,
-            "program_result_count": paginator.count,
-            "filters": state,
-            "query_without_page": query_params.urlencode(),
-            **options,
-        },
+        context,
     )
 
 

@@ -45,11 +45,6 @@
       {% trans "Explore universities and compare study options by field, degree, language, tuition and intake." %}
     </p>
   </div>
-
-  <div class="programs-hero-stat">
-    <strong>{{ program_result_count }}</strong>
-    <span>{% trans "matching programs" %}</span>
-  </div>
 </section>
 
 <div class="programs-catalogue-shell">
@@ -181,7 +176,6 @@
 
         <div class="filter-actions filter-actions-balanced">
           <button class="button filter-submit" type="submit">{% trans "Apply filters" %}</button>
-          <a class="clear-filters" href="{% url 'program-list' %}">{% trans "Clear all filters" %}</a>
         </div>
       </form>
     </details>
@@ -197,12 +191,25 @@
     <div class="programs-filter-backdrop" hidden></div>
 
     <div class="programs-results-toolbar">
-      <div>
+      <div class="programs-results-summary">
         <span class="programs-result-count">{{ program_result_count }}</span>
         <span class="muted">{% trans "programs found" %}</span>
       </div>
-      <a class="programs-clear-link" href="{% url 'program-list' %}">{% trans "Reset filters" %}</a>
+      {% if active_filters %}
+        <a class="programs-clear-link" href="{% url 'program-list' %}">{% trans "Clear all" %}</a>
+      {% endif %}
     </div>
+
+    {% if active_filters %}
+      <div class="active-filter-bar" aria-label="{% trans 'Active filters' %}">
+        {% for item in active_filters %}
+          <a class="active-filter-chip" href="{{ item.remove_url }}">
+            <span>{{ item.label }}</span>
+            <span class="active-filter-remove" aria-hidden="true">×</span>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
 
     <div class="programs-result-grid">
       {% for program in programs %}

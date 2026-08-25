@@ -491,3 +491,11 @@
 - Added a mobile Filters trigger above results, close/backdrop/Escape behavior,
   scrollable filter content, and sticky Apply/Clear actions.
 - All filters remain visible in the drawer; none are hidden as advanced options.
+
+### Removable active program filters
+- Removed the duplicate matching-program count from the Programs hero.
+- Kept one result count above the catalogue.
+- Added removable active-filter chips that preserve all other query parameters.
+- Added one Clear all action for active filters.
+- Removed the redundant sidebar Clear all action.
+- Active chips scroll horizontally on mobile.
