@@ -1,41 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Programs" %} — TurkDemy<script>
-(() => {
-  const trigger = document.querySelector(".mobile-filter-trigger");
-  const panel = document.querySelector(".programs-filter-panel");
-  const backdrop = document.querySelector(".programs-filter-backdrop");
-  const details = panel?.querySelector(".mobile-filter-toggle");
-  if (!trigger || !panel || !backdrop || !details) return;
-
-  const openFilters = () => {
-    details.open = true;
-    panel.classList.add("mobile-filters-open");
-    backdrop.hidden = false;
-    trigger.setAttribute("aria-expanded", "true");
-    document.documentElement.classList.add("filters-modal-open");
-  };
-  const closeFilters = () => {
-    panel.classList.remove("mobile-filters-open");
-    backdrop.hidden = true;
-    trigger.setAttribute("aria-expanded", "false");
-    document.documentElement.classList.remove("filters-modal-open");
-  };
-
-  trigger.addEventListener("click", openFilters);
-  backdrop.addEventListener("click", closeFilters);
-  details.querySelector("summary")?.addEventListener("click", (event) => {
-    if (window.matchMedia("(max-width: 760px)").matches) {
-      event.preventDefault();
-      closeFilters();
-    }
-  });
-  window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeFilters();
-  });
-})();
-</script>
-{% endblock %}
+{% block title %}{% trans "Programs" %} — TurkDemy{% endblock %}
 {% block content %}
 <section class="programs-hero">
   <div class="programs-hero-copy">
@@ -283,4 +248,42 @@
     </div>
   </section>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(() => {
+  const trigger = document.querySelector(".mobile-filter-trigger");
+  const panel = document.querySelector(".programs-filter-panel");
+  const backdrop = document.querySelector(".programs-filter-backdrop");
+  const details = panel?.querySelector(".mobile-filter-toggle");
+  if (!trigger || !panel || !backdrop || !details) return;
+
+  const openFilters = () => {
+    details.open = true;
+    panel.classList.add("mobile-filters-open");
+    backdrop.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+    document.documentElement.classList.add("filters-modal-open");
+  };
+  const closeFilters = () => {
+    panel.classList.remove("mobile-filters-open");
+    backdrop.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+    document.documentElement.classList.remove("filters-modal-open");
+  };
+
+  trigger.addEventListener("click", openFilters);
+  backdrop.addEventListener("click", closeFilters);
+  details.querySelector("summary")?.addEventListener("click", (event) => {
+    if (window.matchMedia("(max-width: 760px)").matches) {
+      event.preventDefault();
+      closeFilters();
+    }
+  });
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeFilters();
+  });
+})();
+</script>
 {% endblock %}

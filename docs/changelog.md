@@ -514,3 +514,12 @@
 - Added the same one-column/mobile-width safeguards to shared public card grids
   used by university, program-detail, application and home-page lists.
 - Added regression coverage for filter-drawer containment and mobile grid sizing.
+
+### Global mobile shell correction
+- Replaced the crowded desktop navigation on mobile with a compact logo + menu button.
+- Added a touch-friendly mobile navigation menu shared by every public page.
+- Tightened global mobile page spacing and ensured content uses the viewport width.
+- Improved Programs cards, hero, active-filter chips and controls on narrow screens.
+- Added explicit ultra-narrow safeguards for small phones.
+- Moved Programs filter JavaScript out of the HTML title block into the page script block.
+- Added regression tests for the mobile shell and template title safety.

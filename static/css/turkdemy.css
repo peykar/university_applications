@@ -1677,3 +1677,267 @@ html[dir="rtl"] .program-card-cta span[aria-hidden="true"]{
     justify-content:center!important;
   }
 }
+
+
+/* Global mobile shell and ultra-narrow catalogue polish */
+.mobile-nav-toggle,
+.mobile-site-menu{
+  display:none;
+}
+
+@media(max-width:760px){
+  .site-header{
+    position:sticky;
+    top:0;
+  }
+
+  .nav-wrap{
+    min-height:60px!important;
+    padding-block:8px!important;
+    flex-wrap:nowrap!important;
+    gap:10px!important;
+  }
+
+  .brand{
+    min-width:0!important;
+    flex:1 1 auto;
+  }
+
+  .brand img{
+    width:138px!important;
+    max-width:72vw;
+    max-height:38px!important;
+  }
+
+  .main-nav,
+  .nav-actions{
+    display:none!important;
+  }
+
+  .mobile-nav-toggle{
+    display:grid;
+    flex:0 0 42px;
+    width:42px;
+    height:42px;
+    place-content:center;
+    gap:4px;
+    padding:0;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#fff;
+    cursor:pointer;
+  }
+
+  .mobile-nav-toggle span{
+    display:block;
+    width:18px;
+    height:2px;
+    border-radius:2px;
+    background:#17375e;
+  }
+
+  .mobile-site-menu{
+    display:block;
+    position:absolute;
+    z-index:50;
+    inset-inline:0;
+    top:100%;
+    max-height:calc(100dvh - 60px);
+    padding:12px 11px max(16px,env(safe-area-inset-bottom));
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    background:#fff;
+    box-shadow:0 16px 35px rgba(18,36,61,.12);
+    overflow-y:auto;
+  }
+
+  .mobile-site-menu[hidden]{
+    display:none!important;
+  }
+
+  .mobile-site-links{
+    display:grid;
+    gap:4px;
+  }
+
+  .mobile-site-links>a,
+  .mobile-menu-button{
+    display:flex;
+    align-items:center;
+    width:100%;
+    min-height:44px;
+    padding:10px 12px;
+    border:0;
+    border-radius:9px;
+    background:transparent;
+    color:#17375e;
+    font:inherit;
+    font-weight:750;
+    text-align:start;
+  }
+
+  .mobile-site-links>a:hover,
+  .mobile-menu-button:hover{
+    background:#f3f6f9;
+    text-decoration:none;
+  }
+
+  .mobile-site-links form{
+    margin:0;
+  }
+
+  .mobile-language-form{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    align-items:center;
+    gap:10px;
+    margin-top:10px;
+    padding:12px;
+    border-top:1px solid var(--border);
+  }
+
+  .mobile-language-form label{
+    color:var(--muted);
+    font-size:.78rem;
+    font-weight:800;
+  }
+
+  .mobile-language-form select{
+    width:100%;
+    min-width:0;
+    min-height:40px;
+    padding:7px 9px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#fff;
+  }
+
+  html.mobile-menu-open body{
+    overflow:hidden;
+  }
+
+  .page-shell{
+    width:calc(100% - 22px)!important;
+    max-width:1160px!important;
+    padding-block:24px 52px!important;
+  }
+
+  .programs-hero{
+    gap:10px!important;
+    padding:18px 0 18px!important;
+  }
+
+  .programs-hero-copy{
+    width:100%;
+    max-width:none;
+  }
+
+  .programs-hero-copy h1{
+    font-size:clamp(2rem,10vw,2.7rem)!important;
+    line-height:1!important;
+  }
+
+  .programs-hero-text{
+    font-size:.9rem!important;
+    line-height:1.55!important;
+  }
+
+  .programs-catalogue-shell{
+    padding-top:14px!important;
+    padding-bottom:38px!important;
+  }
+
+  .programs-results-toolbar{
+    gap:10px!important;
+    margin-bottom:10px!important;
+  }
+
+  .active-filter-bar{
+    padding:8px!important;
+    gap:6px!important;
+    overflow-x:auto;
+    flex-wrap:nowrap!important;
+    scrollbar-width:none;
+  }
+
+  .active-filter-bar::-webkit-scrollbar{
+    display:none;
+  }
+
+  .active-filter-chip{
+    flex:0 0 auto;
+    min-height:30px;
+    white-space:nowrap;
+  }
+
+  .program-discovery-card{
+    padding:15px!important;
+    border-radius:14px!important;
+  }
+
+  .program-card-main{
+    padding-block:13px!important;
+  }
+
+  .program-card-main h2{
+    margin-bottom:8px!important;
+  }
+
+  .program-card-footer{
+    margin-top:auto;
+  }
+
+  .site-footer{
+    width:100%;
+  }
+}
+
+@media(max-width:360px){
+  .container,
+  .page-shell{
+    width:calc(100% - 16px)!important;
+  }
+
+  .brand img{
+    width:118px!important;
+  }
+
+  .programs-hero-copy h1{
+    font-size:1.85rem!important;
+  }
+
+  .programs-result-count,
+  .programs-results-toolbar .muted{
+    font-size:.82rem!important;
+  }
+
+  .program-discovery-card{
+    padding:12px!important;
+  }
+
+  .program-university-brand{
+    min-width:0;
+  }
+
+  .program-university-logo{
+    flex:0 0 auto;
+  }
+
+  .program-card-main h2{
+    font-size:1.05rem!important;
+    line-height:1.15!important;
+  }
+
+  .program-meta{
+    gap:5px!important;
+  }
+
+  .program-meta-chip{
+    font-size:.66rem!important;
+  }
+
+  .program-card-cta{
+    min-height:40px!important;
+    padding-inline:10px!important;
+  }
+}
