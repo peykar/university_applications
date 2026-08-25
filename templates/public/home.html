@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n currency %}
 {% block title %}TurkDemy — {% trans "Study in Türkiye" %}{% endblock %}
 {% block meta_description %}{% trans "Find universities and programs in Türkiye, compare tuition, and manage your application with TurkDemy." %}{% endblock %}
 
@@ -98,6 +98,7 @@
       </a>
     {% endfor %}
   </div>
+  <a class="mobile-browse-all-fields" href="{% url 'program-list' %}">{% trans "Browse all fields" %} →</a>
 </section>
 {% endif %}
 
@@ -115,7 +116,7 @@
         </div>
         <div class="program-row-meta">
           {% if program.min_tuition %}
-            <strong>{{ program.offerings.first.currency|default:"USD" }} {{ program.min_tuition|floatformat:0 }}</strong>
+            <strong>{{ program.min_tuition|currency_amount:program.offerings.first.currency }}</strong>
             <small>{% trans "from" %}</small>
           {% else %}
             <strong>{% trans "Contact" %}</strong><small>{% trans "for tuition" %}</small>

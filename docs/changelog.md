@@ -563,3 +563,13 @@
 - Added icons for Profile, Sign-in methods and Logout.
 - Added Sign-in methods as a permanent account-security card on Profile.
 - Updated mobile navigation to mirror the same information hierarchy.
+
+### Mobile homepage redesign
+- Simplified the mobile hero around program/university search.
+- Moved secondary hero filters to the full Programs catalogue on mobile.
+- Converted Featured universities and application steps into swipeable rows.
+- Capped study-field cards on the homepage and added a Browse all fields link.
+- Made Popular programs substantially denser on phones.
+- Compressed trust, FAQ, CTA and footer sections to reduce page length.
+- Polished the hamburger menu as a compact mobile sheet.
+- Kept the desktop homepage layout unchanged.

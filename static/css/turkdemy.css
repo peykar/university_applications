@@ -2255,3 +2255,454 @@ html[dir="rtl"] .program-card-cta span[aria-hidden="true"]{
     grid-template-columns:1fr;
   }
 }
+
+
+/* Mobile homepage redesign */
+.mobile-browse-all-fields{
+  display:none;
+}
+
+@media(max-width:760px){
+  /* Homepage rhythm */
+  .home-section{
+    padding:38px 0 0!important;
+  }
+
+  .home-section .section-heading{
+    display:flex!important;
+    align-items:end!important;
+    justify-content:space-between!important;
+    gap:14px!important;
+    margin-bottom:16px!important;
+  }
+
+  .home-section .section-heading>div{
+    min-width:0;
+  }
+
+  .home-section .section-heading h2{
+    font-size:1.55rem!important;
+    line-height:1.08!important;
+    letter-spacing:-.025em!important;
+  }
+
+  .home-section .section-link{
+    flex:0 0 auto;
+    font-size:.75rem;
+    font-weight:800;
+  }
+
+  .home-section .eyebrow{
+    margin-bottom:4px;
+    font-size:.62rem;
+  }
+
+  /* Hero: one clear task on mobile */
+  .home-hero{
+    min-height:0!important;
+    margin-top:-24px!important;
+    margin-inline:calc((100vw - (100% + 22px))/-2)!important;
+    padding:44px 18px 24px!important;
+    align-items:flex-end!important;
+    background-position:center!important;
+  }
+
+  .home-hero-photo{
+    background-image:
+      linear-gradient(180deg,rgba(4,23,38,.55) 0%,rgba(4,23,38,.72) 38%,rgba(4,23,38,.94) 100%),
+      var(--hero-image)!important;
+  }
+
+  .home-hero-content{
+    width:100%;
+    max-width:none!important;
+  }
+
+  .home-hero h1{
+    max-width:520px!important;
+    margin:.15rem 0 .65rem!important;
+    font-size:clamp(2.2rem,10.5vw,3rem)!important;
+    line-height:.98!important;
+    letter-spacing:-.045em!important;
+  }
+
+  .home-hero .hero-copy{
+    max-width:520px;
+    margin:0;
+    font-size:.9rem!important;
+    line-height:1.5!important;
+  }
+
+  .hero-search-advanced{
+    margin-top:18px!important;
+  }
+
+  .hero-search-main{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:8px!important;
+  }
+
+  .hero-search-main input{
+    min-height:48px!important;
+    padding:12px 13px!important;
+    border-radius:10px!important;
+    font-size:.88rem!important;
+  }
+
+  .hero-search-main .button{
+    min-height:48px;
+    padding-inline:14px;
+    white-space:nowrap;
+  }
+
+  /* Advanced controls belong on the Programs catalogue on small screens. */
+  .hero-filter-row select{
+    display:none!important;
+  }
+
+  .hero-filter-row{
+    display:flex!important;
+    margin-top:9px!important;
+  }
+
+  .advanced-filter-link{
+    color:#fff!important;
+    font-size:.76rem!important;
+    font-weight:800;
+  }
+
+  .hero-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+    margin-top:15px!important;
+  }
+
+  .hero-actions .button{
+    min-height:44px;
+    padding:9px 10px;
+    font-size:.76rem;
+    text-align:center;
+  }
+
+  /* Compact 2x2 proof strip */
+  .stats-strip{
+    grid-template-columns:1fr 1fr!important;
+    margin-inline:-1px;
+    border-radius:0 0 14px 14px;
+    overflow:hidden;
+  }
+
+  .stat-item{
+    min-height:74px!important;
+    padding:13px!important;
+  }
+
+  .stat-item strong{
+    font-size:1.25rem!important;
+  }
+
+  .stat-item span{
+    font-size:.68rem!important;
+  }
+
+  /* Universities become swipeable cards instead of a very long stack. */
+  .university-grid{
+    display:flex!important;
+    gap:12px!important;
+    width:calc(100% + 11px)!important;
+    max-width:none!important;
+    margin-inline-end:-11px;
+    padding-inline-end:11px;
+    padding-bottom:5px;
+    overflow-x:auto;
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+  }
+
+  .university-grid::-webkit-scrollbar{
+    display:none;
+  }
+
+  .university-feature-card{
+    flex:0 0 min(78vw,280px)!important;
+    width:min(78vw,280px)!important;
+    min-height:225px!important;
+    padding:16px!important;
+    scroll-snap-align:start;
+  }
+
+  .university-feature-card h3{
+    margin:11px 0 3px!important;
+    font-size:.98rem!important;
+  }
+
+  .university-feature-card .compact-badges{
+    gap:5px!important;
+  }
+
+  .university-feature-card .badge{
+    font-size:.61rem!important;
+  }
+
+  .university-feature-card .card-action{
+    margin-top:auto;
+    padding-top:12px;
+  }
+
+  /* Study fields: compact 2-column discovery, cap mobile homepage length. */
+  .field-chip-grid{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+
+  .field-chip{
+    min-height:70px!important;
+    padding:11px!important;
+    border-radius:10px!important;
+  }
+
+  .field-chip span{
+    font-size:.8rem!important;
+    line-height:1.22;
+  }
+
+  .field-chip small{
+    font-size:.66rem!important;
+  }
+
+  .field-chip:nth-child(n+9){
+    display:none!important;
+  }
+
+  .mobile-browse-all-fields{
+    display:inline-flex;
+    margin-top:11px;
+    color:#17375e;
+    font-size:.76rem;
+    font-weight:850;
+  }
+
+  /* Popular programs: compact rows rather than card-sized blocks. */
+  .program-list-home{
+    gap:6px!important;
+  }
+
+  .program-row{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:10px!important;
+    min-height:64px;
+    padding:10px 12px!important;
+    border-radius:10px!important;
+  }
+
+  .program-row>div:first-child{
+    min-width:0;
+  }
+
+  .program-row>div:first-child strong{
+    font-size:.82rem!important;
+    line-height:1.2;
+  }
+
+  .program-row>div:first-child span{
+    margin-top:2px!important;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:.65rem!important;
+  }
+
+  .program-row-meta{
+    min-width:66px!important;
+  }
+
+  .program-row-meta strong{
+    font-size:.8rem!important;
+  }
+
+  .program-row-meta small{
+    font-size:.59rem!important;
+  }
+
+  /* Application journey is a horizontal story, not four tall blocks. */
+  .process-grid{
+    display:flex!important;
+    gap:10px!important;
+    width:calc(100% + 11px)!important;
+    max-width:none!important;
+    margin-top:16px!important;
+    margin-inline-end:-11px;
+    padding-inline-end:11px;
+    overflow-x:auto;
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+  }
+
+  .process-grid::-webkit-scrollbar{
+    display:none;
+  }
+
+  .process-card{
+    flex:0 0 min(72vw,250px)!important;
+    width:min(72vw,250px)!important;
+    min-height:180px!important;
+    padding:18px!important;
+    scroll-snap-align:start;
+  }
+
+  .process-card h3{
+    margin:20px 0 6px!important;
+    font-size:1rem!important;
+  }
+
+  .process-card p{
+    font-size:.78rem!important;
+    line-height:1.45;
+  }
+
+  /* Trust/info becomes compact rather than another full-page stack. */
+  .trust-section{
+    gap:20px!important;
+    margin-top:38px!important;
+    padding:22px 16px!important;
+    border-radius:16px!important;
+  }
+
+  .trust-copy h2{
+    font-size:1.5rem!important;
+    line-height:1.08!important;
+  }
+
+  .trust-copy p{
+    font-size:.82rem!important;
+    line-height:1.55;
+  }
+
+  .trust-points{
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+
+  .trust-points>div{
+    padding:12px!important;
+    border-radius:10px!important;
+  }
+
+  .trust-points strong{
+    font-size:.72rem!important;
+  }
+
+  .trust-points span{
+    font-size:.66rem!important;
+    line-height:1.35;
+  }
+
+  /* FAQ + final CTA */
+  .faq-home-section .faq-list{
+    gap:7px!important;
+  }
+
+  .faq-item summary{
+    padding:13px 14px!important;
+    font-size:.8rem!important;
+  }
+
+  .home-cta{
+    margin:42px 0 10px!important;
+    padding:24px 18px!important;
+    border-radius:16px!important;
+  }
+
+  .home-cta h2{
+    font-size:1.5rem!important;
+  }
+
+  .home-cta p{
+    font-size:.8rem!important;
+    line-height:1.5;
+  }
+
+  .home-cta-actions{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+    margin-top:16px!important;
+  }
+
+  .home-cta-actions .button{
+    min-height:43px;
+    padding:9px 10px;
+    text-align:center;
+  }
+
+  /* Hamburger drawer feels like an account-aware mobile sheet. */
+  .mobile-site-menu{
+    inset-inline:8px!important;
+    top:calc(100% + 6px)!important;
+    max-height:calc(100dvh - 74px)!important;
+    border:1px solid var(--border)!important;
+    border-radius:14px!important;
+    box-shadow:0 22px 48px rgba(18,36,61,.18)!important;
+  }
+
+  .mobile-site-links{
+    gap:2px!important;
+  }
+
+  .mobile-site-links>a,
+  .mobile-menu-button{
+    min-height:42px!important;
+    font-size:.8rem!important;
+  }
+
+  .mobile-language-form{
+    margin-top:8px!important;
+    padding:10px 12px 2px!important;
+  }
+
+  /* Footer is concise on phones. */
+  .site-footer{
+    margin-top:38px!important;
+  }
+
+  .footer-grid{
+    grid-template-columns:1fr 1fr!important;
+    gap:18px 12px!important;
+  }
+
+  .footer-brand{
+    grid-column:1 / -1;
+  }
+
+  .footer-bottom{
+    gap:8px!important;
+    font-size:.62rem!important;
+  }
+}
+
+@media(max-width:420px){
+  .hero-search-main{
+    grid-template-columns:1fr!important;
+  }
+
+  .hero-search-main .button{
+    width:100%;
+  }
+
+  .hero-actions,
+  .home-cta-actions{
+    grid-template-columns:1fr!important;
+  }
+
+  .field-chip-grid{
+    grid-template-columns:1fr 1fr!important;
+  }
+
+  .trust-points{
+    grid-template-columns:1fr!important;
+  }
+}
