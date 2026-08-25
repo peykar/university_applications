@@ -1,19 +1,21 @@
 {% load i18n currency %}
 <article class="program-discovery-card">
   <div class="program-card-topline">
-    <div class="program-university-brand">
-      <div class="program-university-logo">
-        {% if program.university.logo %}
-          <img src="{{ program.university.logo.url }}" alt="{{ program.university.name_en }}">
-        {% else %}
-          <span>{{ program.university.name_en|slice:":1" }}</span>
-        {% endif %}
+    {% if not hide_university_brand %}
+      <div class="program-university-brand">
+        <div class="program-university-logo">
+          {% if program.university.logo %}
+            <img src="{{ program.university.logo.url }}" alt="{{ program.university.name_en }}">
+          {% else %}
+            <span>{{ program.university.name_en|slice:":1" }}</span>
+          {% endif %}
+        </div>
+        <div>
+          <span class="program-university-name">{{ program.university.name_en }}</span>
+          <span class="program-university-city">{{ program.university.city.name_en }}</span>
+        </div>
       </div>
-      <div>
-        <span class="program-university-name">{{ program.university.name_en }}</span>
-        <span class="program-university-city">{{ program.university.city.name_en }}</span>
-      </div>
-    </div>
+    {% endif %}
     <span class="program-degree-pill">{{ program.get_degree_display }}</span>
   </div>
   <div class="program-card-main">

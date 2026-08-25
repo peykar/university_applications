@@ -595,3 +595,13 @@
 - Shared the same program discovery card between both catalogue pages.
 - Added removable active filters, Clear all, result summary and mobile drawer.
 - Standardized tuition display and responsive behavior.
+
+### University detail mobile experience
+- Reworked the mobile university hero with a stronger name/logo hierarchy.
+- Enlarged the university banner and separated identity from the program catalogue.
+- Removed repeated university branding from program cards on university pages.
+- Ensured the filter panel remains an off-canvas drawer and never consumes
+  result width while closed.
+- Added a compact mobile program count, larger filter trigger, comfortable
+  full-width cards, larger typography and clearer pagination.
+- Kept the shared Program card component for consistency with `/programs/`.

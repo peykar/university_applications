@@ -132,6 +132,11 @@
     </aside>
 
     <div class="programs-results-panel">
+      <div class="university-mobile-catalogue-summary">
+        <strong>{{ program_result_count }}</strong>
+        <span>{% trans "programs available" %}</span>
+      </div>
+
       <button class="mobile-filter-trigger" type="button" aria-expanded="false">
         <span class="mobile-filter-trigger-icon" aria-hidden="true">☷</span>
         <span>{% trans "Filters" %}</span>
@@ -159,7 +164,7 @@
       {% endif %}
       <div class="programs-result-grid">
         {% for program in programs %}
-          {% include "public/includes/program_discovery_card.html" with program=program %}
+          {% include "public/includes/program_discovery_card.html" with program=program hide_university_brand=True %}
         {% empty %}
           <div class="programs-empty-state">
             <div class="programs-empty-icon">⌕</div>

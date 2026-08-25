@@ -2788,3 +2788,241 @@ html[dir="rtl"] .program-card-cta span[aria-hidden="true"]{
   .university-program-catalogue{padding-top:26px}
   .university-program-heading{margin-bottom:14px}
 }
+
+
+/* University detail mobile experience */
+.university-mobile-catalogue-summary{
+  display:none;
+}
+
+@media(max-width:760px){
+  /* University identity should feel like a real page hero, not compressed text. */
+  .detail-hero{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    align-items:center!important;
+    gap:16px!important;
+    padding:20px 0 16px!important;
+  }
+
+  .detail-hero>div:first-child{
+    min-width:0;
+  }
+
+  .detail-hero .eyebrow{
+    margin-bottom:5px!important;
+    font-size:.64rem!important;
+    letter-spacing:.1em!important;
+  }
+
+  .detail-hero h1{
+    margin:.15rem 0 .65rem!important;
+    font-size:clamp(2rem,10vw,2.75rem)!important;
+    line-height:.98!important;
+    letter-spacing:-.045em!important;
+    overflow-wrap:anywhere;
+  }
+
+  .detail-hero .badges{
+    gap:6px!important;
+  }
+
+  .detail-hero .badge{
+    padding:5px 7px!important;
+    font-size:.62rem!important;
+  }
+
+  .detail-logo{
+    width:68px!important;
+    height:68px!important;
+    max-width:68px!important;
+    max-height:68px!important;
+    padding:8px!important;
+    border-radius:14px!important;
+    object-fit:contain;
+    background:#fff;
+  }
+
+  /* Give the campus image proper visual weight. */
+  .detail-banner{
+    display:block;
+    width:100%!important;
+    height:auto!important;
+    min-height:185px;
+    max-height:280px;
+    margin:0 0 28px!important;
+    border-radius:15px!important;
+    object-fit:cover;
+    box-shadow:0 8px 24px rgba(18,36,61,.07);
+  }
+
+  .section.prose{
+    margin:0 0 24px!important;
+    padding:18px!important;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:#fff;
+  }
+
+  .section.prose h2{
+    margin-top:0!important;
+    font-size:1.25rem!important;
+  }
+
+  .section.prose p{
+    font-size:.86rem!important;
+    line-height:1.6!important;
+  }
+
+  /* Clearly separate university identity from programme discovery. */
+  .university-program-catalogue{
+    margin-top:0!important;
+    padding-top:10px!important;
+    border-top:1px solid var(--border);
+  }
+
+  .university-program-heading{
+    margin:0 0 13px!important;
+    padding-top:20px;
+  }
+
+  .university-program-heading h2{
+    margin-top:3px!important;
+    font-size:1.55rem!important;
+    line-height:1.08!important;
+  }
+
+  .university-programs-shell{
+    padding-top:0!important;
+  }
+
+  /* Closed filter drawer is never allowed to consume catalogue space. */
+  .university-programs-shell>.programs-filter-panel{
+    display:none!important;
+  }
+
+  .university-programs-shell>.programs-filter-panel.mobile-filters-open{
+    display:block!important;
+  }
+
+  .university-mobile-catalogue-summary{
+    display:flex;
+    align-items:baseline;
+    gap:5px;
+    margin-bottom:10px;
+    color:#65758a;
+    font-size:.78rem;
+  }
+
+  .university-mobile-catalogue-summary strong{
+    color:#17375e;
+    font-size:1rem;
+  }
+
+  .university-programs-shell .mobile-filter-trigger{
+    display:flex!important;
+    min-height:48px!important;
+    margin-bottom:12px!important;
+    border-radius:11px!important;
+    font-size:.84rem!important;
+  }
+
+  /* Desktop result summary is redundant with the compact mobile summary. */
+  .university-programs-shell .programs-results-toolbar{
+    display:none!important;
+  }
+
+  .university-programs-shell .active-filter-bar{
+    margin-bottom:12px!important;
+  }
+
+  .university-programs-shell .programs-result-grid{
+    gap:12px!important;
+  }
+
+  .university-programs-shell .program-discovery-card{
+    min-height:0!important;
+    padding:16px!important;
+    border-radius:14px!important;
+  }
+
+  /* Same university on every card is redundant here; degree sits naturally right. */
+  .university-programs-shell .program-card-topline{
+    min-height:25px;
+    justify-content:flex-end!important;
+  }
+
+  .university-programs-shell .program-degree-pill{
+    padding:5px 8px!important;
+    font-size:.61rem!important;
+  }
+
+  .university-programs-shell .program-card-main{
+    padding:10px 0 15px!important;
+  }
+
+  .university-programs-shell .program-card-main h2{
+    font-size:1.25rem!important;
+    line-height:1.12!important;
+  }
+
+  .university-programs-shell .program-meta-row{
+    margin-top:11px!important;
+    gap:6px!important;
+  }
+
+  .university-programs-shell .program-meta-chip{
+    padding:5px 7px!important;
+    font-size:.66rem!important;
+  }
+
+  .university-programs-shell .program-card-footer{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    align-items:end!important;
+    gap:12px!important;
+    padding-top:13px!important;
+  }
+
+  .university-programs-shell .program-tuition-block strong{
+    font-size:1.16rem!important;
+  }
+
+  .university-programs-shell .program-card-cta{
+    width:auto!important;
+    min-height:40px!important;
+    justify-content:center;
+    padding:9px 12px!important;
+  }
+
+  .university-programs-shell .programs-pagination-wrap{
+    padding-top:22px!important;
+    font-size:.78rem;
+  }
+}
+
+@media(max-width:420px){
+  .detail-hero{
+    grid-template-columns:minmax(0,1fr) 58px!important;
+    gap:12px!important;
+  }
+
+  .detail-logo{
+    width:58px!important;
+    height:58px!important;
+    max-width:58px!important;
+    max-height:58px!important;
+  }
+
+  .detail-banner{
+    min-height:165px;
+  }
+
+  .university-programs-shell .program-card-footer{
+    grid-template-columns:1fr!important;
+  }
+
+  .university-programs-shell .program-card-cta{
+    width:100%!important;
+  }
+}
