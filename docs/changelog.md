@@ -623,3 +623,16 @@
 - Improved applicant detail, interests, documents, messages and sidebar behavior
   on small screens.
 - Added regression coverage for searchable selectors and mobile layout.
+
+### Preference selector deduplication
+- Deduplicated Study preference department choices by normalized English name.
+- Existing duplicate department selections are mapped to the canonical choice
+  when the form is edited.
+- Reduced autocomplete results from 40 to 12 visible matches.
+- Reduced the selector dropdown height on desktop and mobile.
+- Added regression tests for duplicate and blank labels.
+
+### Applicant mobile form test isolation fix
+- Changed `ApplicantMobileFormTests` from `SimpleTestCase` to `TestCase`.
+- `LeadPreferenceForm` now performs database-backed canonical department
+  selection, so its regression test requires normal Django test database access.

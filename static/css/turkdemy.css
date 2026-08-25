@@ -3392,3 +3392,13 @@ html[dir="rtl"] .program-card-cta span[aria-hidden="true"]{
     grid-template-columns:1fr!important;
   }
 }
+
+/* Searchable preference selector result density */
+.multi-picker-options{
+  max-height:210px;
+}
+@media(max-width:760px){
+  .multi-picker-options{
+    max-height:180px;
+  }
+}

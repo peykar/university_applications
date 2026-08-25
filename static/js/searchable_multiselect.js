@@ -45,7 +45,7 @@
       const matches = options
         .filter((option) => !option.selected)
         .filter((option) => option.text.toLocaleLowerCase().includes(query))
-        .slice(0, 40);
+        .slice(0, 12);
 
       if (matches.length === 0) {
         const empty = document.createElement("div");

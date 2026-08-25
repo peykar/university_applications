@@ -1,12 +1,12 @@
 from pathlib import Path
 
 from django.conf import settings
-from django.test import SimpleTestCase
+from django.test import TestCase
 
 from apps.leads.forms import LeadPreferenceForm
 
 
-class ApplicantMobileFormTests(SimpleTestCase):
+class ApplicantMobileFormTests(TestCase):
     def setUp(self):
         base = Path(settings.BASE_DIR)
         self.preferences = (base / "templates" / "leads" / "lead_preferences.html").read_text(

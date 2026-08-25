@@ -17,6 +17,19 @@ from apps.universities.models import (
 from .models import Lead, LeadDocument, LeadPreference
 
 
+def _unique_ids_by_label(rows):
+    """Keep the first model id for each normalized display label."""
+    seen: set[str] = set()
+    unique_ids = []
+    for object_id, label in rows:
+        normalized = (label or "").strip().casefold()
+        if not normalized or normalized in seen:
+            continue
+        seen.add(normalized)
+        unique_ids.append(object_id)
+    return unique_ids
+
+
 class LeadForm(forms.ModelForm):
     class Meta:
         model = Lead
@@ -144,13 +157,31 @@ class LeadPreferenceForm(forms.ModelForm):
         preferred_departments_field = cast(
             forms.ModelMultipleChoiceField, self.fields["preferred_departments"]
         )
-        preferred_departments_field.queryset = Department.objects.filter(is_active=True).order_by(
-            "name_en"
+        department_rows = (
+            Department.objects.filter(is_active=True)
+            .values_list("pk", "name_en")
+            .order_by("name_en", "pk")
         )
+        canonical_department_ids = _unique_ids_by_label(department_rows)
+        preferred_departments_field.queryset = Department.objects.filter(
+            pk__in=canonical_department_ids
+        ).order_by("name_en")
 
         if self.instance and self.instance.pk:
             self.initial["preferred_degrees"] = self.instance.preferred_degrees
             self.initial["preferred_university_types"] = self.instance.preferred_university_types
+
+            canonical_departments_by_name = {
+                (name or "").strip().casefold(): object_id
+                for object_id, name in preferred_departments_field.queryset.values_list(
+                    "pk", "name_en"
+                )
+            }
+            self.initial["preferred_departments"] = [
+                canonical_departments_by_name[normalized]
+                for name in self.instance.preferred_departments.values_list("name_en", flat=True)
+                if (normalized := (name or "").strip().casefold()) in canonical_departments_by_name
+            ]
 
     def clean_requires_dormitory(self):
         value = self.data.get("requires_dormitory", "")
