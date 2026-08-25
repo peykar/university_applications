@@ -665,3 +665,19 @@
 ### Agent workspace test fixture fix
 - Reused the `LeadConversation` automatically created by the Lead post-save signal in Agent Workspace tests.
 - Removed the duplicate conversation creation that violated the one-to-one `LeadConversation.lead` constraint.
+
+### Default lead agent setting
+- Added singleton `LeadAssignmentSettings` with a configurable `default_agent`.
+- Newly created leads automatically receive the active default agent when no
+  explicit agent was supplied.
+- Explicit lead-agent assignments are never overwritten.
+- Added Django Admin management, migration, tests and agent-workspace docs.
+
+### Default lead agent moved to environment setting
+- Replaced the database-backed lead-assignment settings model with
+  `settings.DEFAULT_LEAD_AGENT_ID`.
+- Added `DEFAULT_LEAD_AGENT_ID` to `.env.example`.
+- New leads use the configured active Agent UUID only when no explicit Agent is
+  already set.
+- Added a cleanup migration for the superseded database settings model.
+- Updated tests and Agent Workspace documentation.

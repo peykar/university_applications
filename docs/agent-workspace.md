@@ -38,3 +38,26 @@ documents and update the formal application status.
 Message read receipts are per user, so opening a conversation clears unread
 messages for that agent user without incorrectly marking them read for every
 other user in the agent company.
+
+## Default lead assignment
+
+Default lead ownership is configured through the environment and Django
+settings, not through a database model.
+
+Set the Agent UUID in `.env`:
+
+```env
+DEFAULT_LEAD_AGENT_ID=3fa85f64-5717-4562-b3fc-2c963f66afa6
+```
+
+`turkdemy.settings.base` exposes this as `settings.DEFAULT_LEAD_AGENT_ID`.
+
+- If it is set and points to an active Agent, a new lead with no explicit
+  agent is assigned to that Agent.
+- An explicitly supplied `lead.agent` is never overwritten.
+- If the value is empty, new leads remain unassigned.
+- If the configured Agent does not exist or is inactive, the lead remains
+  unassigned.
+
+The assignment is applied by the Lead `pre_save` signal, so it covers website,
+admin, import, and service-created leads consistently.

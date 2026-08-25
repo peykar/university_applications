@@ -71,6 +71,10 @@ SUPPORT_EMAIL = os.getenv(
     "support@localhost",
 )
 
+# Optional UUID of the Agent automatically assigned to newly created leads.
+# Leave empty to keep new leads unassigned unless an agent is supplied explicitly.
+DEFAULT_LEAD_AGENT_ID = os.getenv("DEFAULT_LEAD_AGENT_ID", "").strip()
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
