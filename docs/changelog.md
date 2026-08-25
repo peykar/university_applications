@@ -465,3 +465,10 @@
 - Added RTL-aware shared layout rules for navigation, auth pages and account cards.
 - Protected emails/usernames with LTR bidi isolation.
 - Added regression tests for language direction.
+
+### Programs catalogue visual redesign
+- Rebuilt the public Programs page as a wider discovery experience.
+- Added a sticky, polished filter panel without changing filter semantics.
+- Added university logos, stronger program hierarchy and richer metadata.
+- Redesigned tuition and detail actions for clearer scanning.
+- Improved empty state, pagination spacing, responsiveness and RTL behavior.

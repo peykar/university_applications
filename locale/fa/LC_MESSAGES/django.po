@@ -226,3 +226,30 @@ msgstr "در حال حاضر %(count)s روش ورود قابل استفاده �
 
 msgid "or"
 msgstr "یا"
+
+msgid "Find your program"
+msgstr ""
+
+msgid "Explore universities and compare study options by field, degree, language, tuition and intake."
+msgstr ""
+
+msgid "Refine results"
+msgstr ""
+
+msgid "programs found"
+msgstr ""
+
+msgid "Reset filters"
+msgstr ""
+
+msgid "Tuition from"
+msgstr ""
+
+msgid "Not available"
+msgstr ""
+
+msgid "View program"
+msgstr ""
+
+msgid "Try broadening your search or clearing some filters."
+msgstr ""

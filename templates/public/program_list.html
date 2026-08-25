@@ -2,19 +2,29 @@
 {% load i18n %}
 {% block title %}{% trans "Programs" %} — TurkDemy{% endblock %}
 {% block content %}
-<div class="page-heading catalogue-heading">
-  <div>
+<section class="programs-hero">
+  <div class="programs-hero-copy">
     <p class="eyebrow">{% trans "Catalogue" %}</p>
-    <h1>{% trans "Programs" %}</h1>
-    <p class="muted">{{ program_result_count }} {% trans "matching programs" %}</p>
+    <h1>{% trans "Find your program" %}</h1>
+    <p class="programs-hero-text">
+      {% trans "Explore universities and compare study options by field, degree, language, tuition and intake." %}
+    </p>
   </div>
-</div>
 
-<div class="catalogue-layout">
-  <aside class="filter-sidebar">
+  <div class="programs-hero-stat">
+    <strong>{{ program_result_count }}</strong>
+    <span>{% trans "matching programs" %}</span>
+  </div>
+</section>
+
+<div class="programs-catalogue-shell">
+  <aside class="programs-filter-panel">
     <details class="mobile-filter-toggle" open>
-      <summary>{% trans "Filters" %}</summary>
-      <form method="get" class="catalogue-filter-form">
+      <summary>
+        <span>{% trans "Filters" %}</span>
+        <span class="filter-summary-count">{% trans "Refine results" %}</span>
+      </summary>
+<form method="get" class="catalogue-filter-form">
         <p class="filter-help">{% trans "Choose one or more filters, then press Apply filters." %}</p>
         <div class="filter-group">
           <label for="program-q">{% trans "Search" %}</label>
@@ -131,37 +141,85 @@
     </details>
   </aside>
 
-  <section class="catalogue-results">
-    <div class="program-result-grid program-result-grid-wide">
+  <section class="programs-results-panel">
+    <div class="programs-results-toolbar">
+      <div>
+        <span class="programs-result-count">{{ program_result_count }}</span>
+        <span class="muted">{% trans "programs found" %}</span>
+      </div>
+      <a class="programs-clear-link" href="{% url 'program-list' %}">{% trans "Reset filters" %}</a>
+    </div>
+
+    <div class="programs-result-grid">
       {% for program in programs %}
-        <article class="program-result-card">
-          <p class="eyebrow">{{ program.get_degree_display }}</p>
-          <h2><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a></h2>
-          <p class="program-university">
-            <a href="{% url 'university-detail' program.university.slug_en %}">{{ program.university.name_en }}</a>
-            · {{ program.university.city.name_en }}
-          </p>
-          <div class="badges">
-            <span class="badge">{{ program.program_language.name_en }}</span>
-            {% if program.department %}<span class="badge">{{ program.department.name_en }}</span>{% endif %}
-            {% if program.duration %}<span class="badge">{{ program.duration }} {% trans "years" %}</span>{% endif %}
+        <article class="program-discovery-card">
+          <div class="program-card-topline">
+            <div class="program-university-brand">
+              <div class="program-university-logo">
+                {% if program.university.logo %}
+                  <img src="{{ program.university.logo.url }}" alt="{{ program.university.name_en }}">
+                {% else %}
+                  <span>{{ program.university.name_en|slice:":1" }}</span>
+                {% endif %}
+              </div>
+              <div>
+                <a class="program-university-name" href="{% url 'university-detail' program.university.slug_en %}">
+                  {{ program.university.name_en }}
+                </a>
+                <span class="program-university-city">{{ program.university.city.name_en }}</span>
+              </div>
+            </div>
+            <span class="program-degree-pill">{{ program.get_degree_display }}</span>
           </div>
-          <div class="program-price">
-            {% if program.min_active_tuition %}
-              <strong>{{ program.min_active_tuition|floatformat:0 }}</strong>
-              <span>{% trans "minimum active tuition" %}</span>
-            {% else %}
-              <strong>—</strong><span>{% trans "tuition unavailable" %}</span>
-            {% endif %}
+
+          <div class="program-card-main">
+            <h2>
+              <a href="{% url 'program-detail' program.slug_en %}">
+                {{ program.name_en }}
+              </a>
+            </h2>
+
+            <div class="program-meta-row">
+              <span class="program-meta-chip">{{ program.program_language.name_en }}</span>
+              {% if program.department %}
+                <span class="program-meta-chip">{{ program.department.name_en }}</span>
+              {% endif %}
+              {% if program.duration %}
+                <span class="program-meta-chip">{{ program.duration }} {% trans "years" %}</span>
+              {% endif %}
+            </div>
           </div>
-          <a class="card-action" href="{% url 'program-detail' program.slug_en %}">{% trans "View details" %}</a>
+
+          <div class="program-card-footer">
+            <div class="program-tuition-block">
+              <span>{% trans "Tuition from" %}</span>
+              {% if program.min_active_tuition %}
+                <strong>{{ program.min_active_tuition|floatformat:0 }}</strong>
+              {% else %}
+                <strong>—</strong>
+                <small>{% trans "Not available" %}</small>
+              {% endif %}
+            </div>
+
+            <a class="program-card-cta" href="{% url 'program-detail' program.slug_en %}">
+              <span>{% trans "View program" %}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </article>
       {% empty %}
-        <div class="empty-state">{% trans "No programs match your filters." %}</div>
+        <div class="programs-empty-state">
+          <div class="programs-empty-icon">⌕</div>
+          <h2>{% trans "No programs match your filters." %}</h2>
+          <p>{% trans "Try broadening your search or clearing some filters." %}</p>
+          <a class="button" href="{% url 'program-list' %}">{% trans "Clear all filters" %}</a>
+        </div>
       {% endfor %}
     </div>
 
-    {% include "public/includes/pagination.html" %}
+    <div class="programs-pagination-wrap">
+      {% include "public/includes/pagination.html" %}
+    </div>
   </section>
 </div>
 {% endblock %}
