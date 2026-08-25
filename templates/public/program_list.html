@@ -25,115 +25,144 @@
         <span class="filter-summary-count">{% trans "Refine results" %}</span>
       </summary>
 <form method="get" class="catalogue-filter-form">
-        <p class="filter-help">{% trans "Choose one or more filters, then press Apply filters." %}</p>
-        <div class="filter-group">
+        <div class="filter-search-block">
           <label for="program-q">{% trans "Search" %}</label>
-          <input id="program-q" type="search" name="q" value="{{ filters.q }}" placeholder="{% trans 'Program or university' %}">
-        </div>
-
-        <div class="filter-group">
-          <label>{% trans "Field" %}</label>
-          <select name="field">
-            <option value="">{% trans "Any field" %}</option>
-            {% for field in field_choices %}
-              <option value="{{ field.slug_en }}"{% if filters.field == field.slug_en %} selected{% endif %}>{{ field.name_en }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label>{% trans "Degree" %}</label>
-          <select name="degree">
-            <option value="">{% trans "Any degree" %}</option>
-            {% for value, label in degree_choices %}
-              <option value="{{ value }}"{% if filters.degree == value %} selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label>{% trans "Language" %}</label>
-          <select name="language">
-            <option value="">{% trans "Any language" %}</option>
-            {% for language in language_choices %}
-              <option value="{{ language.slug_en }}"{% if filters.language == language.slug_en %} selected{% endif %}>{{ language.name_en }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label>{% trans "University" %}</label>
-          <select name="university">
-            <option value="">{% trans "Any university" %}</option>
-            {% for university in university_choices %}
-              <option value="{{ university.slug_en }}"{% if filters.university == university.slug_en %} selected{% endif %}>{{ university.name_en }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label>{% trans "City" %}</label>
-          <select name="city">
-            <option value="">{% trans "Any city" %}</option>
-            {% for city in city_choices %}
-              <option value="{{ city.slug_en }}"{% if filters.city == city.slug_en %} selected{% endif %}>{{ city.name_en }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label>{% trans "University type" %}</label>
-          <select name="university_type">
-            <option value="">{% trans "Any type" %}</option>
-            {% for value, label in university_type_choices %}
-              <option value="{{ value }}"{% if filters.university_type == value %} selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label>{% trans "Tuition" %}</label>
-          <div class="filter-two-col">
-            <input type="number" name="tuition_min" min="0" step="1" value="{{ filters.tuition_min }}" placeholder="{% trans 'From' %}">
-            <input type="number" name="tuition_max" min="0" step="1" value="{{ filters.tuition_max }}" placeholder="{% trans 'To' %}">
+          <div class="filter-search-control">
+            <span class="filter-search-icon" aria-hidden="true">⌕</span>
+            <input id="program-q" type="search" name="q" value="{{ filters.q }}" placeholder="{% trans 'Program or university' %}">
           </div>
-          <select name="currency">
-            <option value="">{% trans "Any currency" %}</option>
-            {% for value, label in currency_choices %}
-              <option value="{{ value }}"{% if filters.currency == value %} selected{% endif %}>{{ value }}</option>
-            {% endfor %}
-          </select>
         </div>
 
-        <div class="filter-group">
-          <label>{% trans "Academic year" %}</label>
-          <select name="academic_year">
-            <option value="">{% trans "Any academic year" %}</option>
-            {% for year in academic_year_choices %}
-              <option value="{{ year.id }}"{% if filters.academic_year == year.id|stringformat:"s" %} selected{% endif %}>{{ year.name_en }}</option>
-            {% endfor %}
-          </select>
+        <div class="filter-section">
+          <div class="filter-section-heading">
+            <span>{% trans "Program" %}</span>
+          </div>
+
+          <div class="filter-group">
+            <label>{% trans "Field" %}</label>
+            <select name="field">
+              <option value="">{% trans "Any field" %}</option>
+              {% for field in field_choices %}
+                <option value="{{ field.slug_en }}"{% if filters.field == field.slug_en %} selected{% endif %}>{{ field.name_en }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="filter-split-row">
+            <div class="filter-group">
+              <label>{% trans "Degree" %}</label>
+              <select name="degree">
+                <option value="">{% trans "Any degree" %}</option>
+                {% for value, label in degree_choices %}
+                  <option value="{{ value }}"{% if filters.degree == value %} selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>{% trans "Language" %}</label>
+              <select name="language">
+                <option value="">{% trans "Any language" %}</option>
+                {% for language in language_choices %}
+                  <option value="{{ language.slug_en }}"{% if filters.language == language.slug_en %} selected{% endif %}>{{ language.name_en }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div class="filter-group">
-          <label>{% trans "Semester / intake" %}</label>
-          <select name="semester">
-            <option value="">{% trans "Any intake" %}</option>
-            {% for semester in semester_choices %}
-              <option value="{{ semester.id }}"{% if filters.semester == semester.id|stringformat:"s" %} selected{% endif %}>{{ semester.name_en }}</option>
-            {% endfor %}
-          </select>
+        <div class="filter-section">
+          <div class="filter-section-heading">
+            <span>{% trans "University" %}</span>
+          </div>
+
+          <div class="filter-group">
+            <label>{% trans "University" %}</label>
+            <select name="university">
+              <option value="">{% trans "Any university" %}</option>
+              {% for university in university_choices %}
+                <option value="{{ university.slug_en }}"{% if filters.university == university.slug_en %} selected{% endif %}>{{ university.name_en }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="filter-split-row">
+            <div class="filter-group">
+              <label>{% trans "City" %}</label>
+              <select name="city">
+                <option value="">{% trans "Any city" %}</option>
+                {% for city in city_choices %}
+                  <option value="{{ city.slug_en }}"{% if filters.city == city.slug_en %} selected{% endif %}>{{ city.name_en }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label>{% trans "University type" %}</label>
+              <select name="university_type">
+                <option value="">{% trans "Any type" %}</option>
+                {% for value, label in university_type_choices %}
+                  <option value="{{ value }}"{% if filters.university_type == value %} selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div class="filter-group filter-checks">
-          <label class="filter-checkbox"><input type="checkbox" name="open" value="1"{% if filters.open_only %} checked{% endif %}> {% trans "Open/ongoing applications" %}</label>
-          <label class="filter-checkbox"><input type="checkbox" name="moe" value="1"{% if filters.moe %} checked{% endif %}> {% trans "MOE approved university" %}</label>
-          <label class="filter-checkbox"><input type="checkbox" name="moh" value="1"{% if filters.moh %} checked{% endif %}> {% trans "MOH approved university" %}</label>
-          <label class="filter-checkbox"><input type="checkbox" name="yok" value="1"{% if filters.yok %} checked{% endif %}> {% trans "YÖK recognized university" %}</label>
-          <label class="filter-checkbox"><input type="checkbox" name="erasmus" value="1"{% if filters.erasmus %} checked{% endif %}> {% trans "Erasmus+" %}</label>
-        </div>
+        <details class="advanced-filter-section">
+          <summary>
+            <span>{% trans "More filters" %}</span>
+            <span class="advanced-filter-chevron" aria-hidden="true">⌄</span>
+          </summary>
 
-        <div class="filter-actions">
+          <div class="advanced-filter-content">
+            <div class="filter-group">
+              <label>{% trans "Tuition" %}</label>
+              <div class="filter-two-col">
+                <input type="number" name="tuition_min" min="0" step="1" value="{{ filters.tuition_min }}" placeholder="{% trans 'From' %}">
+                <input type="number" name="tuition_max" min="0" step="1" value="{{ filters.tuition_max }}" placeholder="{% trans 'To' %}">
+              </div>
+              <select name="currency">
+                <option value="">{% trans "Any currency" %}</option>
+                {% for value, label in currency_choices %}
+                  <option value="{{ value }}"{% if filters.currency == value %} selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="filter-split-row">
+              <div class="filter-group">
+                <label>{% trans "Academic year" %}</label>
+                <select name="academic_year">
+                  <option value="">{% trans "Any academic year" %}</option>
+                  {% for year in academic_year_choices %}
+                    <option value="{{ year.id }}"{% if filters.academic_year == year.id|stringformat:"s" %} selected{% endif %}>{{ year.name_en }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label>{% trans "Semester / intake" %}</label>
+                <select name="semester">
+                  <option value="">{% trans "Any intake" %}</option>
+                  {% for semester in semester_choices %}
+                    <option value="{{ semester.id }}"{% if filters.semester == semester.id|stringformat:"s" %} selected{% endif %}>{{ semester.name_en }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="filter-group filter-checks filter-checks-polished">
+              <label class="filter-checkbox"><input type="checkbox" name="open" value="1"{% if filters.open_only %} checked{% endif %}><span>{% trans "Open/ongoing applications" %}</span></label>
+              <label class="filter-checkbox"><input type="checkbox" name="moe" value="1"{% if filters.moe %} checked{% endif %}><span>{% trans "MOE approved university" %}</span></label>
+              <label class="filter-checkbox"><input type="checkbox" name="moh" value="1"{% if filters.moh %} checked{% endif %}><span>{% trans "MOH approved university" %}</span></label>
+              <label class="filter-checkbox"><input type="checkbox" name="yok" value="1"{% if filters.yok %} checked{% endif %}><span>{% trans "YÖK recognized university" %}</span></label>
+              <label class="filter-checkbox"><input type="checkbox" name="erasmus" value="1"{% if filters.erasmus %} checked{% endif %}><span>{% trans "Erasmus+" %}</span></label>
+            </div>
+          </div>
+        </details>
+
+        <div class="filter-actions filter-actions-polished">
           <button class="button filter-submit" type="submit">{% trans "Apply filters" %}</button>
           <a class="clear-filters" href="{% url 'program-list' %}">{% trans "Clear all filters" %}</a>
         </div>

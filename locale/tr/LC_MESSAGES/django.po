@@ -253,3 +253,6 @@ msgstr ""
 
 msgid "Try broadening your search or clearing some filters."
 msgstr ""
+
+msgid "More filters"
+msgstr "Daha fazla filtre"

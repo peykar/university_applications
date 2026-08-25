@@ -472,3 +472,10 @@
 - Added university logos, stronger program hierarchy and richer metadata.
 - Redesigned tuition and detail actions for clearer scanning.
 - Improved empty state, pagination spacing, responsiveness and RTL behavior.
+
+### Programs filter UX refinement
+- Grouped primary filters into Program and University sections.
+- Added a stronger search control and more compact two-column filter rows.
+- Moved tuition, intake and recognition flags into a collapsible advanced section.
+- Refined checkbox styling and made Apply/Reset actions easier to reach.
+- Preserved all existing query parameter names and filtering behavior.
