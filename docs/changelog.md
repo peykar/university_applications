@@ -473,9 +473,12 @@
 - Redesigned tuition and detail actions for clearer scanning.
 - Improved empty state, pagination spacing, responsiveness and RTL behavior.
 
-### Programs filter UX refinement
-- Grouped primary filters into Program and University sections.
-- Added a stronger search control and more compact two-column filter rows.
-- Moved tuition, intake and recognition flags into a collapsible advanced section.
-- Refined checkbox styling and made Apply/Reset actions easier to reach.
-- Preserved all existing query parameter names and filtering behavior.
+### Programs filter balanced layout
+- Restored all Program filters to always-visible controls.
+- Removed extra Program/University separator sections.
+- Kept compact paired controls for Degree/Language, City/University type,
+  and Academic year/Intake.
+- Improved Tuition layout without hiding currency.
+- Reworked mobile filters into a full-width touch-friendly panel.
+- Improved mobile checkbox grid and action buttons.
+- Preserved all existing filter names and business logic.
