@@ -1505,3 +1505,175 @@ html[dir="rtl"] .program-card-cta span[aria-hidden="true"]{
   .active-filter-bar::-webkit-scrollbar{display:none}
   .active-filter-chip{flex:0 0 auto}
 }
+
+
+/* Final mobile catalogue/list containment fix */
+
+/*
+ * Important:
+ * The mobile filter panel is completely removed from document flow while
+ * closed. Using only transform: translateY(...) on a fixed element can still
+ * produce bad full-page screenshots/stitching and can interact poorly with
+ * transformed ancestors. display:none guarantees the filter form cannot
+ * appear between result cards.
+ */
+@media(max-width:760px){
+  .programs-catalogue-shell{
+    display:block!important;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+  }
+
+  .programs-filter-panel{
+    display:none!important;
+    position:fixed!important;
+    z-index:1200!important;
+    inset:0!important;
+    width:100vw!important;
+    max-width:none!important;
+    min-width:0!important;
+    height:100dvh!important;
+    margin:0!important;
+    padding:0!important;
+    background:#fff;
+    overflow:hidden!important;
+    transform:none!important;
+  }
+
+  .programs-filter-panel.mobile-filters-open{
+    display:block!important;
+  }
+
+  .programs-filter-panel .mobile-filter-toggle{
+    display:flex!important;
+    flex-direction:column;
+    width:100%;
+    height:100dvh;
+    margin:0;
+    border:0!important;
+    border-radius:0!important;
+    background:#fff;
+    box-shadow:none!important;
+    overflow:hidden!important;
+  }
+
+  .programs-filter-panel .catalogue-filter-form{
+    flex:1 1 auto!important;
+    width:100%!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding:16px 16px 0!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+  }
+
+  .programs-results-panel{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+  }
+
+  .programs-result-grid{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    gap:12px!important;
+  }
+
+  .program-discovery-card{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    box-sizing:border-box;
+  }
+
+  .program-card-main h2,
+  .program-university-name,
+  .program-meta-chip{
+    overflow-wrap:anywhere;
+  }
+
+  .mobile-filter-trigger{
+    display:flex!important;
+    width:100%!important;
+  }
+
+  .programs-filter-backdrop{
+    position:fixed!important;
+    z-index:1190!important;
+  }
+
+  /* Shared public listing/card layouts use the full mobile content width too. */
+  .card-grid,
+  .university-grid,
+  .program-result-grid,
+  .program-result-grid-wide,
+  .related-program-grid,
+  .offering-card-grid,
+  .program-summary-grid,
+  .university-info-grid,
+  .university-media-grid,
+  .applicant-card-grid,
+  .compact-applicant-grid,
+  .process-grid,
+  .field-chip-grid{
+    grid-template-columns:minmax(0,1fr)!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+
+  .card,
+  .university-card,
+  .program-result-card,
+  .related-program-card,
+  .offering-card,
+  .program-summary-card,
+  .program-university-mini-card,
+  .applicant-card,
+  .process-card{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box;
+  }
+
+  .page-shell{
+    overflow-x:hidden;
+  }
+}
+
+@media(max-width:480px){
+  .programs-filter-panel .catalogue-filter-form{
+    padding-inline:14px!important;
+  }
+
+  .program-discovery-card{
+    padding:16px!important;
+  }
+
+  .program-card-main{
+    padding-block:16px!important;
+  }
+
+  .program-card-main h2{
+    font-size:1.18rem!important;
+  }
+
+  .program-card-footer{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:12px!important;
+  }
+
+  .program-card-cta{
+    width:100%!important;
+    justify-content:center!important;
+  }
+}

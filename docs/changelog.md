@@ -505,3 +505,12 @@
 - Previous, page-number and Next links now use normal same-tab navigation.
 - Added regression coverage to prevent `target="_blank"`/`window.open()` from
   being introduced into the shared pagination template.
+
+### Mobile catalogue containment fix
+- Removed the closed Programs filter drawer completely from mobile document flow.
+- Prevented the filter form from appearing between program cards or in stitched
+  full-page screenshots.
+- Forced the Programs results panel and cards to use the full mobile content width.
+- Added the same one-column/mobile-width safeguards to shared public card grids
+  used by university, program-detail, application and home-page lists.
+- Added regression coverage for filter-drawer containment and mobile grid sizing.
