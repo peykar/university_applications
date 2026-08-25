@@ -605,3 +605,11 @@
 - Added a compact mobile program count, larger filter trigger, comfortable
   full-width cards, larger typography and clearer pagination.
 - Kept the shared Program card component for consistency with `/programs/`.
+
+### Lead message attachment path fix
+- Increased `LeadMessageAttachment.file` storage-path capacity to 500 characters.
+- Added migration `0002_expand_message_attachment_file_path`.
+- Stored message attachments now use a generated UUID filename while retaining
+  the original extension.
+- The user-facing original filename continues to be stored in `original_name`.
+- Added regression tests for long filenames and bounded storage paths.

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from contextlib import suppress
 from pathlib import Path
+from uuid import uuid4
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -515,8 +516,12 @@ class LeadMessage(BaseModel):
 
 
 def lead_message_attachment_upload_path(instance, filename):
+    """Build a bounded storage path while preserving the original extension."""
+    suffix = Path(filename).suffix.lower()[:16]
+    stored_name = f"{uuid4().hex}{suffix}"
     return (
-        f"leads/{instance.message.conversation.lead_id}/messages/{instance.message_id}/{filename}"
+        f"leads/{instance.message.conversation.lead_id}/"
+        f"messages/{instance.message_id}/{stored_name}"
     )
 
 
@@ -526,7 +531,10 @@ class LeadMessageAttachment(BaseModel):
         on_delete=models.CASCADE,
         related_name="attachments",
     )
-    file = models.FileField(upload_to=lead_message_attachment_upload_path)
+    file = models.FileField(
+        upload_to=lead_message_attachment_upload_path,
+        max_length=500,
+    )
     original_name = models.CharField(max_length=255, blank=True)
     content_type = models.CharField(max_length=128, blank=True)
     size = models.PositiveBigIntegerField(null=True, blank=True)
