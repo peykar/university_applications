@@ -2753,3 +2753,29 @@ html[dir="rtl"] .program-card-cta span[aria-hidden="true"]{
     min-height:0!important;
   }
 }
+
+
+/* Clickable university cards */
+.university-card-link{
+  color:inherit;
+  text-decoration:none;
+  cursor:pointer;
+}
+.university-card-link:hover{
+  color:inherit;
+  text-decoration:none;
+  transform:translateY(-2px);
+  border-color:#cbd7e2;
+  box-shadow:0 14px 34px rgba(18,36,61,.08);
+}
+.university-card-link:focus-visible{
+  outline:3px solid rgba(23,55,94,.24);
+  outline-offset:3px;
+}
+.university-card-link h3{
+  color:#172b47;
+}
+.university-card-link .university-card-action{
+  color:#0b3a67;
+  font-weight:800;
+}

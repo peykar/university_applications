@@ -30,3 +30,15 @@ class UniversityCardConsistencyTests(SimpleTestCase):
             "has_dormitory",
         ):
             self.assertIn(value, self.partial)
+
+    def test_shared_card_is_fully_clickable_without_nested_links(self):
+        self.assertIn(
+            'class="university-feature-card university-catalogue-card university-card-link"',
+            self.partial,
+        )
+        self.assertIn(
+            "href=\"{% url 'university-detail' university.slug_en %}\"",
+            self.partial,
+        )
+        self.assertEqual(self.partial.count("<a"), 1)
+        self.assertEqual(self.partial.count("</a>"), 1)

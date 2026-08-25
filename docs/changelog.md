@@ -582,3 +582,10 @@
 - Kept layout differences in CSS only: carousel-style on mobile Home, normal
   catalogue grid/list on the Universities page.
 - Added regression tests to prevent the two card implementations from drifting.
+
+### Fully clickable university cards
+- Made the entire shared university card a single accessible link.
+- Home Featured universities and the Universities catalogue now both open the
+  university detail page when any part of the card is clicked.
+- Removed nested card links to keep the HTML valid.
+- Added keyboard focus styling and regression coverage.

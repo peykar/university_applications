@@ -1,5 +1,9 @@
 {% load i18n %}
-<article class="university-feature-card university-catalogue-card">
+<a
+  class="university-feature-card university-catalogue-card university-card-link"
+  href="{% url 'university-detail' university.slug_en %}"
+  aria-label="{% blocktrans with name=university.name_en %}Explore {{ name }}{% endblocktrans %}"
+>
   <div class="university-card-top">
     {% if university.logo %}
       <img
@@ -14,11 +18,7 @@
     {% endif %}
   </div>
 
-  <h3>
-    <a href="{% url 'university-detail' university.slug_en %}">
-      {{ university.name_en }}
-    </a>
-  </h3>
+  <h3>{{ university.name_en }}</h3>
 
   <p class="card-location">
     {{ university.city.name_en }}
@@ -57,7 +57,7 @@
     {% endif %}
   </div>
 
-  <a class="card-action" href="{% url 'university-detail' university.slug_en %}">
+  <span class="card-action university-card-action">
     {% trans "Explore university" %}
-  </a>
-</article>
+  </span>
+</a>
