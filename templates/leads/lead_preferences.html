@@ -1,21 +1,133 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n static %}
 {% block title %}{% trans "Study preferences" %} — {{ lead }}{% endblock %}
 {% block content %}
-<div class="lead-form-layout">
-  <div>
+<section class="applicant-form-page">
+  <header class="applicant-form-header">
     <p class="eyebrow">{% trans "Program matching" %}</p>
     <h1>{% trans "Study preferences" %}</h1>
     <p class="lead-context">{{ lead }}</p>
-    <p class="muted">{% trans "Tell us the broad criteria that matter. Staff/system can use them to suggest suitable programs." %}</p>
-  </div>
-  <form method="post" class="form-card lead-profile-form">
+    <p class="muted">
+      {% trans "Tell us the broad criteria that matter. Staff/system can use them to suggest suitable programs." %}
+    </p>
+  </header>
+
+  <form method="post" class="form-card applicant-form-card lead-profile-form">
     {% csrf_token %}
-    {{ form.as_p }}
-    <div class="form-actions">
+
+    {% if form.non_field_errors %}
+      <div class="form-error-summary">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <section class="applicant-form-section">
+      <div class="applicant-form-section-heading">
+        <h2>{% trans "Budget" %}</h2>
+        <p>{% trans "Set a tuition range if you have one." %}</p>
+      </div>
+      <div class="applicant-form-grid applicant-form-grid-3">
+        <div class="applicant-form-field">
+          {{ form.tuition_min.label_tag }}
+          {{ form.tuition_min }}
+          {{ form.tuition_min.errors }}
+        </div>
+        <div class="applicant-form-field">
+          {{ form.tuition_max.label_tag }}
+          {{ form.tuition_max }}
+          {{ form.tuition_max.errors }}
+        </div>
+        <div class="applicant-form-field">
+          {{ form.tuition_currency.label_tag }}
+          {{ form.tuition_currency }}
+          {{ form.tuition_currency.errors }}
+        </div>
+      </div>
+    </section>
+
+    <section class="applicant-form-section">
+      <div class="applicant-form-section-heading">
+        <h2>{% trans "Degree & university type" %}</h2>
+        <p>{% trans "Choose as many options as you are open to." %}</p>
+      </div>
+      <div class="applicant-form-grid">
+        <div class="applicant-choice-panel">
+          <label class="applicant-choice-title">{{ form.preferred_degrees.label }}</label>
+          {{ form.preferred_degrees }}
+          {{ form.preferred_degrees.errors }}
+        </div>
+        <div class="applicant-choice-panel">
+          <label class="applicant-choice-title">{{ form.preferred_university_types.label }}</label>
+          {{ form.preferred_university_types }}
+          {{ form.preferred_university_types.errors }}
+        </div>
+      </div>
+    </section>
+
+    <section class="applicant-form-section">
+      <div class="applicant-form-section-heading">
+        <h2>{% trans "Where & what to study" %}</h2>
+        <p>{% trans "Search and select multiple options. Selected items appear as removable chips." %}</p>
+      </div>
+
+      <div class="applicant-form-grid">
+        <div class="applicant-form-field">
+          {{ form.preferred_languages.label_tag }}
+          {{ form.preferred_languages }}
+          {{ form.preferred_languages.errors }}
+        </div>
+        <div class="applicant-form-field">
+          {{ form.preferred_cities.label_tag }}
+          {{ form.preferred_cities }}
+          {{ form.preferred_cities.errors }}
+        </div>
+        <div class="applicant-form-field applicant-form-field-wide">
+          {{ form.preferred_universities.label_tag }}
+          {{ form.preferred_universities }}
+          {{ form.preferred_universities.errors }}
+        </div>
+        <div class="applicant-form-field applicant-form-field-wide">
+          {{ form.preferred_departments.label_tag }}
+          {{ form.preferred_departments }}
+          {{ form.preferred_departments.errors }}
+        </div>
+      </div>
+    </section>
+
+    <section class="applicant-form-section">
+      <div class="applicant-form-section-heading">
+        <h2>{% trans "Facilities & exchange" %}</h2>
+      </div>
+      <div class="applicant-form-grid">
+        <div class="applicant-form-field">
+          {{ form.requires_dormitory.label_tag }}
+          {{ form.requires_dormitory }}
+          {{ form.requires_dormitory.errors }}
+        </div>
+        <div class="applicant-form-field">
+          {{ form.requires_erasmus.label_tag }}
+          {{ form.requires_erasmus }}
+          {{ form.requires_erasmus.errors }}
+        </div>
+      </div>
+    </section>
+
+    <section class="applicant-form-section">
+      <div class="applicant-form-field">
+        {{ form.notes.label_tag }}
+        {{ form.notes }}
+        {{ form.notes.errors }}
+      </div>
+    </section>
+
+    <div class="form-actions applicant-form-actions">
       <button class="button" type="submit">{% trans "Save preferences" %}</button>
-      <a href="{% url 'lead-detail' lead.id %}">{% trans "Back to applicant" %}</a>
+      <a class="button button-secondary" href="{% url 'lead-detail' lead.id %}">
+        {% trans "Back to applicant" %}
+      </a>
     </div>
   </form>
-</div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/searchable_multiselect.js' %}"></script>
 {% endblock %}

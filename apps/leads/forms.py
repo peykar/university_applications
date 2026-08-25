@@ -82,10 +82,30 @@ class LeadPreferenceForm(forms.ModelForm):
             "notes",
         )
         widgets: ClassVar[dict[str, forms.Widget]] = {
-            "preferred_languages": forms.CheckboxSelectMultiple(),
-            "preferred_cities": forms.CheckboxSelectMultiple(),
-            "preferred_universities": forms.CheckboxSelectMultiple(),
-            "preferred_departments": forms.CheckboxSelectMultiple(),
+            "preferred_languages": forms.SelectMultiple(
+                attrs={
+                    "class": "searchable-multiselect",
+                    "data-placeholder": "Search languages",
+                }
+            ),
+            "preferred_cities": forms.SelectMultiple(
+                attrs={
+                    "class": "searchable-multiselect",
+                    "data-placeholder": "Search cities",
+                }
+            ),
+            "preferred_universities": forms.SelectMultiple(
+                attrs={
+                    "class": "searchable-multiselect",
+                    "data-placeholder": "Search universities",
+                }
+            ),
+            "preferred_departments": forms.SelectMultiple(
+                attrs={
+                    "class": "searchable-multiselect",
+                    "data-placeholder": "Search study fields",
+                }
+            ),
             "requires_dormitory": forms.Select(
                 choices=(
                     ("", "No preference"),

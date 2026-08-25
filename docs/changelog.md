@@ -613,3 +613,13 @@
   the original extension.
 - The user-facing original filename continues to be stored in `original_name`.
 - Added regression tests for long filenames and bounded storage paths.
+
+### Applicant workflow responsive forms
+- Rebuilt Study preferences as grouped, mobile-first sections instead of `form.as_p`.
+- Replaced huge checkbox lists for languages, cities, universities and fields
+  with searchable multi-select controls and removable selected chips.
+- Kept degree and university-type choices visible as compact checkbox groups.
+- Added a shared sticky form action area and responsive applicant form grid.
+- Improved applicant detail, interests, documents, messages and sidebar behavior
+  on small screens.
+- Added regression coverage for searchable selectors and mobile layout.
