@@ -589,3 +589,9 @@
   university detail page when any part of the card is clicked.
 - Removed nested card links to keep the HTML valid.
 - Added keyboard focus styling and regression coverage.
+
+### University detail program catalogue
+- Rebuilt the university program catalogue using the main Programs catalogue UI.
+- Shared the same program discovery card between both catalogue pages.
+- Added removable active filters, Clear all, result summary and mobile drawer.
+- Standardized tuition display and responsive behavior.

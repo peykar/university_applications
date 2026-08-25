@@ -211,7 +211,7 @@ def university_detail(request, slug):
         .prefetch_related("offerings")
     )
 
-    programs = apply_program_filters(programs, state).order_by(
+    programs = annotate_min_active_tuition(apply_program_filters(programs, state)).order_by(
         "-listing_priority",
         "name_en",
     )
@@ -222,18 +222,21 @@ def university_detail(request, slug):
     query_params = request.GET.copy()
     query_params.pop("page", None)
 
+    context = {
+        "university": university,
+        "programs": page_obj.object_list,
+        "page_obj": page_obj,
+        "program_result_count": paginator.count,
+        "filters": state,
+        "query_without_page": query_params.urlencode(),
+        **_program_filter_options(university=university),
+    }
+    context["active_filters"] = _build_active_program_filters(request, context)
+
     return render(
         request,
         "public/university_detail.html",
-        {
-            "university": university,
-            "programs": page_obj.object_list,
-            "page_obj": page_obj,
-            "program_result_count": paginator.count,
-            "filters": state,
-            "query_without_page": query_params.urlencode(),
-            **_program_filter_options(university=university),
-        },
+        context,
     )
 
 

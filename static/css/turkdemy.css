@@ -2779,3 +2779,12 @@ html[dir="rtl"] .program-card-cta span[aria-hidden="true"]{
   color:#0b3a67;
   font-weight:800;
 }
+
+/* University detail catalogue alignment */
+.university-program-catalogue{padding-top:34px}
+.university-program-heading{margin-bottom:20px}
+.university-programs-shell{margin-top:0}
+@media(max-width:760px){
+  .university-program-catalogue{padding-top:26px}
+  .university-program-heading{margin-bottom:14px}
+}

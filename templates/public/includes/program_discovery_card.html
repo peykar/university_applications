@@ -1,0 +1,44 @@
+{% load i18n currency %}
+<article class="program-discovery-card">
+  <div class="program-card-topline">
+    <div class="program-university-brand">
+      <div class="program-university-logo">
+        {% if program.university.logo %}
+          <img src="{{ program.university.logo.url }}" alt="{{ program.university.name_en }}">
+        {% else %}
+          <span>{{ program.university.name_en|slice:":1" }}</span>
+        {% endif %}
+      </div>
+      <div>
+        <span class="program-university-name">{{ program.university.name_en }}</span>
+        <span class="program-university-city">{{ program.university.city.name_en }}</span>
+      </div>
+    </div>
+    <span class="program-degree-pill">{{ program.get_degree_display }}</span>
+  </div>
+  <div class="program-card-main">
+    <h2><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a></h2>
+    <div class="program-meta-row">
+      <span class="program-meta-chip">{{ program.program_language.name_en }}</span>
+      {% if program.department %}
+        <span class="program-meta-chip">{{ program.department.name_en }}</span>
+      {% endif %}
+      {% if program.duration %}
+        <span class="program-meta-chip">{{ program.duration }} {% trans "years" %}</span>
+      {% endif %}
+    </div>
+  </div>
+  <div class="program-card-footer">
+    <div class="program-tuition-block">
+      <span>{% trans "Tuition from" %}</span>
+      {% if program.min_active_tuition %}
+        <strong>{{ program.min_active_tuition|currency_amount:program.min_active_currency }}</strong>
+      {% else %}
+        <strong>—</strong><small>{% trans "Not available" %}</small>
+      {% endif %}
+    </div>
+    <a class="program-card-cta" href="{% url 'program-detail' program.slug_en %}">
+      <span>{% trans "View program" %}</span><span aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>

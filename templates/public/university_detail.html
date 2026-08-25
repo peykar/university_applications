@@ -31,99 +31,183 @@
 </section>
 {% endif %}
 
-<section class="section program-catalogue-section">
-  <div class="section-heading">
+<section class="section university-program-catalogue">
+  <div class="section-heading university-program-heading">
     <div>
       <p class="eyebrow">{% trans "Program catalogue" %}</p>
       <h2>{% trans "Programs at this university" %}</h2>
     </div>
-    <strong class="result-count">{{ program_result_count }} {% trans "programs" %}</strong>
   </div>
 
-  <form method="get" class="university-program-filters">
-    <div class="filter-search-wide">
-      <input type="search" name="q" value="{{ filters.q }}" placeholder="{% trans 'Search programs' %}">
-    </div>
+  <div class="programs-catalogue-shell university-programs-shell">
+    <aside class="programs-filter-panel">
+      <details class="mobile-filter-toggle" open>
+        <summary>
+          <span>{% trans "Filters" %}</span>
+          <span class="filter-summary-count">{% trans "Refine results" %}</span>
+          <span class="mobile-filter-close" aria-hidden="true">×</span>
+        </summary>
+        <form method="get" class="catalogue-filter-form">
+          <p class="filter-help">{% trans "Filter programs offered by this university." %}</p>
+          <div class="filter-group filter-search-group">
+            <label for="university-program-q">{% trans "Search" %}</label>
+            <div class="filter-search-control">
+              <span class="filter-search-icon" aria-hidden="true">⌕</span>
+              <input id="university-program-q" type="search" name="q" value="{{ filters.q }}" placeholder="{% trans 'Search programs' %}">
+            </div>
+          </div>
+          <div class="filter-group">
+            <label>{% trans "Field" %}</label>
+            <select name="field">
+              <option value="">{% trans "Any field" %}</option>
+              {% for field in field_choices %}
+                <option value="{{ field.slug_en }}"{% if filters.field == field.slug_en %} selected{% endif %}>{{ field.name_en }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="filter-pair">
+            <div class="filter-group">
+              <label>{% trans "Degree" %}</label>
+              <select name="degree">
+                <option value="">{% trans "Any degree" %}</option>
+                {% for value, label in degree_choices %}
+                  <option value="{{ value }}"{% if filters.degree == value %} selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>{% trans "Language" %}</label>
+              <select name="language">
+                <option value="">{% trans "Any language" %}</option>
+                {% for language in language_choices %}
+                  <option value="{{ language.slug_en }}"{% if filters.language == language.slug_en %} selected{% endif %}>{{ language.name_en }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="filter-group">
+            <label>{% trans "Tuition" %}</label>
+            <div class="filter-tuition-row">
+              <input type="number" name="tuition_min" min="0" step="1" value="{{ filters.tuition_min }}" placeholder="{% trans 'From' %}">
+              <input type="number" name="tuition_max" min="0" step="1" value="{{ filters.tuition_max }}" placeholder="{% trans 'To' %}">
+              <select class="filter-currency" name="currency" aria-label="{% trans 'Currency' %}">
+                <option value="">{% trans "Any currency" %}</option>
+                {% for value, label in currency_choices %}
+                  <option value="{{ value }}"{% if filters.currency == value %} selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="filter-pair">
+            <div class="filter-group">
+              <label>{% trans "Academic year" %}</label>
+              <select name="academic_year">
+                <option value="">{% trans "Any academic year" %}</option>
+                {% for year in academic_year_choices %}
+                  <option value="{{ year.id }}"{% if filters.academic_year == year.id|stringformat:"s" %} selected{% endif %}>{{ year.name_en }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>{% trans "Semester / intake" %}</label>
+              <select name="semester">
+                <option value="">{% trans "Any intake" %}</option>
+                {% for semester in semester_choices %}
+                  <option value="{{ semester.id }}"{% if filters.semester == semester.id|stringformat:"s" %} selected{% endif %}>{{ semester.name_en }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="filter-checks-grid">
+            <label class="filter-checkbox">
+              <input type="checkbox" name="open" value="1"{% if filters.open_only %} checked{% endif %}>
+              <span>{% trans "Open/ongoing applications" %}</span>
+            </label>
+          </div>
+          <div class="filter-actions filter-actions-balanced">
+            <button class="button filter-submit" type="submit">{% trans "Apply filters" %}</button>
+          </div>
+        </form>
+      </details>
+    </aside>
 
-    <select name="field">
-      <option value="">{% trans "Any field" %}</option>
-      {% for field in field_choices %}
-        <option value="{{ field.slug_en }}"{% if filters.field == field.slug_en %} selected{% endif %}>{{ field.name_en }}</option>
-      {% endfor %}
-    </select>
-
-    <select name="degree">
-      <option value="">{% trans "Any degree" %}</option>
-      {% for value, label in degree_choices %}
-        <option value="{{ value }}"{% if filters.degree == value %} selected{% endif %}>{{ label }}</option>
-      {% endfor %}
-    </select>
-
-    <select name="language">
-      <option value="">{% trans "Any language" %}</option>
-      {% for language in language_choices %}
-        <option value="{{ language.slug_en }}"{% if filters.language == language.slug_en %} selected{% endif %}>{{ language.name_en }}</option>
-      {% endfor %}
-    </select>
-
-    <select name="academic_year">
-      <option value="">{% trans "Any academic year" %}</option>
-      {% for year in academic_year_choices %}
-        <option value="{{ year.id }}"{% if filters.academic_year == year.id|stringformat:"s" %} selected{% endif %}>{{ year.name_en }}</option>
-      {% endfor %}
-    </select>
-
-    <select name="semester">
-      <option value="">{% trans "Any intake" %}</option>
-      {% for semester in semester_choices %}
-        <option value="{{ semester.id }}"{% if filters.semester == semester.id|stringformat:"s" %} selected{% endif %}>{{ semester.name_en }}</option>
-      {% endfor %}
-    </select>
-
-    <select name="currency">
-      <option value="">{% trans "Any currency" %}</option>
-      {% for value, label in currency_choices %}
-        <option value="{{ value }}"{% if filters.currency == value %} selected{% endif %}>{{ value }}</option>
-      {% endfor %}
-    </select>
-
-    <input type="number" name="tuition_min" min="0" step="1" value="{{ filters.tuition_min }}" placeholder="{% trans 'Min tuition' %}">
-    <input type="number" name="tuition_max" min="0" step="1" value="{{ filters.tuition_max }}" placeholder="{% trans 'Max tuition' %}">
-
-    <label class="filter-checkbox">
-      <input type="checkbox" name="open" value="1"{% if filters.open_only %} checked{% endif %}>
-      {% trans "Open/ongoing" %}
-    </label>
-
-    <button class="button" type="submit">{% trans "Apply filters" %}</button>
-    <a class="clear-filters" href="{% url 'university-detail' university.slug_en %}">{% trans "Clear" %}</a>
-  </form>
-
-  <div class="program-result-grid">
-    {% for program in programs %}
-      <article class="program-result-card">
-        <p class="eyebrow">{{ program.get_degree_display }}</p>
-        <h3><a href="{% url 'program-detail' program.slug_en %}">{{ program.name_en }}</a></h3>
-        <p class="muted">
-          {% if program.department %}{{ program.department.name_en }} · {% endif %}
-          {{ program.program_language.name_en }}
-          {% if program.duration %} · {{ program.duration }} {% trans "years" %}{% endif %}
-        </p>
-        <div class="program-price">
-          {% if program.min_active_tuition %}
-            <strong>{{ program.min_active_tuition|currency_amount:program.min_active_currency }}</strong>
-            <span>{% trans "minimum active tuition" %}</span>
-          {% else %}
-            <strong>—</strong><span>{% trans "tuition unavailable" %}</span>
-          {% endif %}
+    <div class="programs-results-panel">
+      <button class="mobile-filter-trigger" type="button" aria-expanded="false">
+        <span class="mobile-filter-trigger-icon" aria-hidden="true">☷</span>
+        <span>{% trans "Filters" %}</span>
+        <span class="mobile-filter-trigger-meta">{{ program_result_count }}</span>
+      </button>
+      <div class="programs-filter-backdrop" hidden></div>
+      <div class="programs-results-toolbar">
+        <div class="programs-results-summary">
+          <span class="programs-result-count">{{ program_result_count }}</span>
+          <span class="muted">{% trans "programs found" %}</span>
         </div>
-        <a class="card-action" href="{% url 'program-detail' program.slug_en %}">{% trans "View program" %}</a>
-      </article>
-    {% empty %}
-      <div class="empty-state">{% trans "No programs match these filters." %}</div>
-    {% endfor %}
+        {% if active_filters %}
+          <a class="programs-clear-link" href="{% url 'university-detail' university.slug_en %}">{% trans "Clear all" %}</a>
+        {% endif %}
+      </div>
+      {% if active_filters %}
+        <div class="active-filter-bar" aria-label="{% trans 'Active filters' %}">
+          {% for item in active_filters %}
+            <a class="active-filter-chip" href="{{ item.remove_url }}">
+              <span>{{ item.label }}</span>
+              <span class="active-filter-remove" aria-hidden="true">×</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+      <div class="programs-result-grid">
+        {% for program in programs %}
+          {% include "public/includes/program_discovery_card.html" with program=program %}
+        {% empty %}
+          <div class="programs-empty-state">
+            <div class="programs-empty-icon">⌕</div>
+            <h2>{% trans "No programs match your filters." %}</h2>
+            <p>{% trans "Try broadening your search or clearing some filters." %}</p>
+            <a class="button" href="{% url 'university-detail' university.slug_en %}">{% trans "Clear all filters" %}</a>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="programs-pagination-wrap">
+        {% include "public/includes/pagination.html" %}
+      </div>
+    </div>
   </div>
-
-  {% include "public/includes/pagination.html" %}
 </section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(() => {
+  const trigger = document.querySelector(".mobile-filter-trigger");
+  const panel = document.querySelector(".programs-filter-panel");
+  const backdrop = document.querySelector(".programs-filter-backdrop");
+  const details = panel?.querySelector(".mobile-filter-toggle");
+  if (!trigger || !panel || !backdrop || !details) return;
+  const closeFilters = () => {
+    panel.classList.remove("mobile-filters-open");
+    backdrop.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+    document.documentElement.classList.remove("filters-modal-open");
+  };
+  trigger.addEventListener("click", () => {
+    details.open = true;
+    panel.classList.add("mobile-filters-open");
+    backdrop.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+    document.documentElement.classList.add("filters-modal-open");
+  });
+  backdrop.addEventListener("click", closeFilters);
+  details.querySelector("summary")?.addEventListener("click", (event) => {
+    if (window.matchMedia("(max-width: 760px)").matches) {
+      event.preventDefault();
+      closeFilters();
+    }
+  });
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeFilters();
+  });
+})();
+</script>
 {% endblock %}
