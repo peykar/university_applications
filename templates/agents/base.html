@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Agent workspace" %} — TurkDemy{% endblock %}
+{% block content %}
+<main class="agent-workspace">
+  <div class="container">
+    <div class="agent-workspace-head">
+      <div>
+        <div class="eyebrow">{% trans "AGENT WORKSPACE" %}</div>
+        <h1>{% block agent_title %}{% trans "Agent workspace" %}{% endblock %}</h1>
+      </div>
+      <nav class="agent-tabs" aria-label="{% trans 'Agent workspace' %}">
+        <a href="{% url 'agent-dashboard' %}">{% trans "Overview" %}</a>
+        <a href="{% url 'agent-applicant-list' %}">{% trans "Applicants" %}</a>
+        <a href="{% url 'agent-message-inbox' %}">{% trans "Messages" %}</a>
+        <a href="{% url 'agent-application-list' %}">{% trans "Applications" %}</a>
+      </nav>
+    </div>
+    {% block agent_content %}{% endblock %}
+  </div>
+</main>
+{% endblock %}

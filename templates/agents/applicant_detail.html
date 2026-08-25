@@ -1,0 +1,57 @@
+{% extends "agents/base.html" %}{% load i18n %}
+{% block agent_title %}{{ lead }}{% endblock %}
+{% block agent_content %}
+<div class="agent-detail-grid">
+<div>
+<section class="agent-panel">
+ <div class="agent-panel-head"><div><h2>{% trans "Applicant" %}</h2><p>{{ lead.email|default:lead.user.email }}</p></div><span class="status-pill">{{ lead.get_status_display }}</span></div>
+ <dl class="agent-facts">
+  <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
+  <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
+  <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }} {{ lead.city_of_residence }}</dd></div>
+  <div><dt>{% trans "Agent" %}</dt><dd>{{ lead.agent|default:"—" }}</dd></div>
+ </dl>
+ <form class="agent-inline-form" method="post" action="{% url 'agent-applicant-status' lead.pk %}">{% csrf_token %}
+  <label>{% trans "Workflow status" %}<select name="status">{% for value,label in status_choices %}<option value="{{ value }}"{% if lead.status == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+  <button class="button" type="submit">{% trans "Update status" %}</button>
+ </form>
+</section>
+
+<section class="agent-panel" id="messages">
+ <div class="agent-panel-head"><h2>{% trans "Conversation" %}</h2></div>
+ <div class="agent-chat">
+ {% for message in lead_messages %}
+  <article class="agent-message {% if message.sender_type == 'customer' %}from-customer{% else %}from-agent{% endif %}">
+   <header><strong>{{ message.get_sender_type_display }}</strong><time>{{ message.created_at|date:"M j, H:i" }}</time></header>
+   {% if message.body %}<p>{{ message.body|linebreaksbr }}</p>{% endif %}
+   {% for attachment in message.attachments.all %}<a href="{{ attachment.file.url }}" target="_blank" rel="noopener">{{ attachment.original_name|default:"Attachment" }}</a>{% endfor %}
+  </article>
+ {% empty %}<p class="empty-state">{% trans "No messages yet." %}</p>{% endfor %}
+ </div>
+ {% if not conversation.is_closed %}
+ <form class="agent-reply" method="post" enctype="multipart/form-data" action="{% url 'agent-applicant-message' lead.pk %}">{% csrf_token %}
+  {{ message_form.body }}{{ message_form.attachment }}<button class="button" type="submit">{% trans "Send reply" %}</button>
+ </form>
+ {% endif %}
+</section>
+</div>
+
+<aside>
+<section class="agent-panel">
+ <div class="agent-panel-head"><h2>{% trans "Study preferences" %}</h2></div>
+ {% if lead.preferences %}
+ <dl class="agent-facts agent-facts-single">
+  <div><dt>{% trans "Tuition" %}</dt><dd>{{ lead.preferences.tuition_min|default:"—" }} – {{ lead.preferences.tuition_max|default:"—" }} {{ lead.preferences.tuition_currency }}</dd></div>
+  <div><dt>{% trans "Universities" %}</dt><dd>{% for item in lead.preferences.preferred_universities.all %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</dd></div>
+  <div><dt>{% trans "Departments" %}</dt><dd>{% for item in lead.preferences.preferred_departments.all %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</dd></div>
+ </dl>{% else %}<p class="empty-state">{% trans "No study preferences." %}</p>{% endif %}
+</section>
+<section class="agent-panel"><div class="agent-panel-head"><h2>{% trans "Documents" %}</h2></div>
+<div class="agent-list">{% for document in documents %}<div class="agent-list-row"><span><strong>{{ document.get_document_type_display }}</strong><small>{{ document.name }}</small></span>{% if document.is_verified %}<span class="status-pill">{% trans "Verified" %}</span>{% else %}<span class="status-pill warning">{% trans "Needs review" %}</span>{% endif %}</div>{% empty %}<p class="empty-state">{% trans "No documents." %}</p>{% endfor %}</div>
+</section>
+<section class="agent-panel"><div class="agent-panel-head"><h2>{% trans "Program interests" %}</h2></div>
+<div class="agent-list">{% for interest in interests %}<div class="agent-list-row"><span><strong>{{ interest.program.name_en }}</strong><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill">{{ interest.get_status_display }}</span></div>{% empty %}<p class="empty-state">{% trans "No program interests." %}</p>{% endfor %}</div>
+</section>
+</aside>
+</div>
+{% endblock %}

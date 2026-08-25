@@ -1,0 +1,12 @@
+{% extends "agents/base.html" %}{% load i18n %}
+{% block agent_title %}{% trans "Messages" %}{% endblock %}
+{% block agent_content %}
+<section class="agent-panel"><div class="agent-list">
+{% for lead in leads %}
+<a class="agent-list-row" href="{% url 'agent-applicant-detail' lead.pk %}#messages">
+ <span><strong>{{ lead }}</strong><small>{{ lead.email|default:lead.user.email }}</small></span>
+ <span>{% if lead.unread_count %}<b class="unread-badge">{{ lead.unread_count }}</b>{% else %}<span class="status-pill">{% trans "Read" %}</span>{% endif %}</span>
+</a>
+{% empty %}<p class="empty-state">{% trans "No conversations yet." %}</p>{% endfor %}
+</div></section>
+{% endblock %}

@@ -650,3 +650,18 @@
 - Clicking the search input now explicitly opens the option list, while focus
   also opens it for keyboard navigation.
 - Escape and outside-click continue to close the selector normally.
+
+### Agent operations workspace
+- Added a dedicated agent dashboard at `/agent/`.
+- Added agent-scoped applicant queue, applicant detail, message inbox and replies.
+- Added program-request handling for customer catalogue applications.
+- Added formal application queue/detail and status management.
+- Added per-agent-user unread message handling.
+- Added strict queryset-level tenant isolation through `Agent.users`.
+- Added desktop/mobile Agent workspace navigation and responsive UI.
+- Added regression tests for access isolation, read receipts and replies.
+- Added `docs/agent-workspace.md`.
+
+### Agent workspace test fixture fix
+- Reused the `LeadConversation` automatically created by the Lead post-save signal in Agent Workspace tests.
+- Removed the duplicate conversation creation that violated the one-to-one `LeadConversation.lead` constraint.

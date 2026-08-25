@@ -1,0 +1,33 @@
+{% extends "agents/base.html" %}{% load i18n %}
+{% block agent_title %}{% trans "Applications" %}{% endblock %}
+{% block agent_content %}
+<section class="agent-panel">
+<div class="agent-panel-head"><div><h2>{% trans "Program requests" %}</h2><p>{% trans "Programs customers selected from the catalogue. These are pre-application requests until converted to a formal application." %}</p></div></div>
+<div class="agent-table-wrap"><table class="agent-table"><thead><tr><th>{% trans "Applicant" %}</th><th>{% trans "Program" %}</th><th>{% trans "University" %}</th><th>{% trans "Intake" %}</th><th>{% trans "Status" %}</th></tr></thead><tbody>
+{% for interest in program_requests %}
+<tr>
+<td><a href="{% url 'agent-applicant-detail' interest.lead.pk %}">{{ interest.lead }}</a></td>
+<td>{{ interest.program.name_en }}</td><td>{{ interest.program.university.name_en }}</td>
+<td>{{ interest.program_offering|default:"—" }}</td>
+<td><form class="table-status-form" method="post" action="{% url 'agent-program-request-status' interest.pk %}">{% csrf_token %}
+<select name="status" aria-label="{% trans 'Program request status' %}">
+<option value="interested"{% if interest.status == "interested" %} selected{% endif %}>{% trans "Interested" %}</option>
+<option value="shortlisted"{% if interest.status == "shortlisted" %} selected{% endif %}>{% trans "Shortlisted" %}</option>
+<option value="qualified"{% if interest.status == "qualified" %} selected{% endif %}>{% trans "Qualified" %}</option>
+<option value="declined"{% if interest.status == "declined" %} selected{% endif %}>{% trans "Declined" %}</option>
+</select><button type="submit">{% trans "Save" %}</button></form></td>
+</tr>
+{% empty %}<tr><td colspan="5">{% trans "No customer program requests yet." %}</td></tr>{% endfor %}
+</tbody></table></div></section>
+
+<section class="agent-panel">
+<div class="agent-panel-head"><div><h2>{% trans "Formal applications" %}</h2><p>{% trans "Applications created after an applicant has been converted to a student." %}</p></div></div>
+<form class="agent-filterbar" method="get">
+<select name="status"><option value="">{% trans "All statuses" %}</option>{% for value,label in status_choices %}<option value="{{ value }}"{% if selected_status == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+<button class="button" type="submit">{% trans "Filter" %}</button><a href="{% url 'agent-application-list' %}">{% trans "Clear" %}</a>
+</form>
+<div class="agent-table-wrap"><table class="agent-table"><thead><tr><th>{% trans "Student" %}</th><th>{% trans "Program" %}</th><th>{% trans "University" %}</th><th>{% trans "Status" %}</th><th>{% trans "Updated" %}</th></tr></thead><tbody>
+{% for application in applications %}<tr><td><a href="{% url 'agent-application-detail' application.pk %}">{{ application.student }}</a></td><td>{{ application.program_offering.program.name_en }}</td><td>{{ application.program_offering.program.university.name_en }}</td><td><span class="status-pill">{{ application.get_status_display }}</span></td><td>{{ application.updated_at|date:"M j, Y" }}</td></tr>
+{% empty %}<tr><td colspan="5">{% trans "No formal applications match these filters." %}</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}

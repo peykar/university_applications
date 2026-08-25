@@ -1,0 +1,59 @@
+{% extends "agents/base.html" %}
+{% load i18n %}
+{% block agent_title %}{% trans "Operations overview" %}{% endblock %}
+{% block agent_content %}
+<section class="agent-metrics">
+  <a href="{% url 'agent-applicant-list' %}?status=new" class="agent-metric"><strong>{{ new_lead_count }}</strong><span>{% trans "New applicants" %}</span></a>
+  <a href="{% url 'agent-message-inbox' %}" class="agent-metric"><strong>{{ unread_message_count }}</strong><span>{% trans "Unread messages" %}</span></a>
+  <a href="{% url 'agent-application-list' %}" class="agent-metric"><strong>{{ application_action_count }}</strong><span>{% trans "Applications needing action" %}</span></a>
+  <a href="{% url 'agent-applicant-list' %}" class="agent-metric"><strong>{{ recommendation_count }}</strong><span>{% trans "Need recommendations" %}</span></a>
+  <a href="{% url 'agent-applicant-list' %}" class="agent-metric"><strong>{{ unverified_document_count }}</strong><span>{% trans "Unverified documents" %}</span></a>
+</section>
+
+<div class="agent-dashboard-grid">
+  <section class="agent-panel">
+    <div class="agent-panel-head"><h2>{% trans "Recent applicants" %}</h2><a href="{% url 'agent-applicant-list' %}">{% trans "View all" %}</a></div>
+    <div class="agent-list">
+      {% for lead in recent_leads %}
+        <a class="agent-list-row" href="{% url 'agent-applicant-detail' lead.pk %}">
+          <span><strong>{{ lead }}</strong><small>{{ lead.email|default:lead.user.email }}</small></span>
+          <span class="status-pill">{{ lead.get_status_display }}</span>
+        </a>
+      {% empty %}<p class="empty-state">{% trans "No applicants yet." %}</p>{% endfor %}
+    </div>
+  </section>
+
+  <section class="agent-panel">
+    <div class="agent-panel-head"><h2>{% trans "Unread messages" %}</h2><a href="{% url 'agent-message-inbox' %}">{% trans "Inbox" %}</a></div>
+    <div class="agent-list">
+      {% for message in recent_messages %}
+        <a class="agent-list-row" href="{% url 'agent-applicant-detail' message.conversation.lead.pk %}#messages">
+          <span><strong>{{ message.conversation.lead }}</strong><small>{{ message.body|truncatechars:72|default:"Attachment" }}</small></span>
+          <time>{{ message.created_at|date:"M j, H:i" }}</time>
+        </a>
+      {% empty %}<p class="empty-state">{% trans "You're all caught up." %}</p>{% endfor %}
+    </div>
+  </section>
+</div>
+
+<section class="agent-panel">
+  <div class="agent-panel-head"><h2>{% trans "Recent program requests" %}</h2><a href="{% url 'agent-application-list' %}">{% trans "View all" %}</a></div>
+  <div class="agent-list">
+  {% for interest in recent_program_requests %}
+    <a class="agent-list-row" href="{% url 'agent-applicant-detail' interest.lead.pk %}">
+      <span><strong>{{ interest.lead }} · {{ interest.program.name_en }}</strong><small>{{ interest.program.university.name_en }}</small></span>
+      <span class="status-pill">{{ interest.get_status_display }}</span>
+    </a>
+  {% empty %}<p class="empty-state">{% trans "No customer program requests yet." %}</p>{% endfor %}
+  </div>
+</section>
+
+<section class="agent-panel">
+  <div class="agent-panel-head"><h2>{% trans "Recent applications" %}</h2><a href="{% url 'agent-application-list' %}">{% trans "View all" %}</a></div>
+  <div class="agent-table-wrap"><table class="agent-table"><thead><tr><th>{% trans "Student" %}</th><th>{% trans "Program" %}</th><th>{% trans "University" %}</th><th>{% trans "Status" %}</th></tr></thead><tbody>
+  {% for application in recent_applications %}
+    <tr data-href="{% url 'agent-application-detail' application.pk %}"><td><a href="{% url 'agent-application-detail' application.pk %}">{{ application.student }}</a></td><td>{{ application.program_offering.program.name_en }}</td><td>{{ application.program_offering.program.university.name_en }}</td><td><span class="status-pill">{{ application.get_status_display }}</span></td></tr>
+  {% empty %}<tr><td colspan="4">{% trans "No applications yet." %}</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endblock %}

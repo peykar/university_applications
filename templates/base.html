@@ -41,6 +41,9 @@
           <nav class="workspace-nav" aria-label="{% trans 'User workspace' %}">
             <a href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
             <a href="{% url 'lead-list' %}">{% trans "Applicants" %}</a>
+            {% if request.user.is_superuser or request.user.agents.exists %}
+              <a href="{% url 'agent-dashboard' %}">{% trans "Agent workspace" %}</a>
+            {% endif %}
           </nav>
         {% endif %}
 
@@ -144,6 +147,9 @@
           <div class="mobile-menu-section-label">{% trans "Dashboard" %}</div>
           <a href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
           <a href="{% url 'lead-list' %}">{% trans "Applicants" %}</a>
+          {% if request.user.is_superuser or request.user.agents.exists %}
+            <a href="{% url 'agent-dashboard' %}">{% trans "Agent workspace" %}</a>
+          {% endif %}
 
           <div class="mobile-menu-section-label">{% trans "Profile" %}</div>
           <a href="{% url 'profile' %}">{% trans "Profile" %}</a>

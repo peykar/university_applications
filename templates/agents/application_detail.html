@@ -1,0 +1,22 @@
+{% extends "agents/base.html" %}{% load i18n %}
+{% block agent_title %}{% trans "Application" %} · {{ application.student }}{% endblock %}
+{% block agent_content %}
+<div class="agent-detail-grid">
+<section class="agent-panel">
+ <div class="agent-panel-head"><div><h2>{{ application.program_offering.program.name_en }}</h2><p>{{ application.program_offering.program.university.name_en }}</p></div><span class="status-pill">{{ application.get_status_display }}</span></div>
+ <dl class="agent-facts">
+  <div><dt>{% trans "Student" %}</dt><dd>{{ application.student }}</dd></div>
+  <div><dt>{% trans "Agent" %}</dt><dd>{{ application.agent|default:application.student.agent|default:"—" }}</dd></div>
+  <div><dt>{% trans "Tuition" %}</dt><dd>{{ application.tuition }}</dd></div>
+  <div><dt>{% trans "Deposit" %}</dt><dd>{{ application.deposit|default:"—" }}</dd></div>
+ </dl>
+ <form class="agent-inline-form" method="post" action="{% url 'agent-application-status' application.pk %}">{% csrf_token %}
+ <label>{% trans "Application status" %}<select name="status">{% for value,label in status_choices %}<option value="{{ value }}"{% if application.status == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+ <button class="button" type="submit">{% trans "Update status" %}</button></form>
+ {% if application.notes %}<div class="agent-notes"><h3>{% trans "Notes" %}</h3><p>{{ application.notes|linebreaksbr }}</p></div>{% endif %}
+</section>
+<aside><section class="agent-panel"><div class="agent-panel-head"><h2>{% trans "Application documents" %}</h2></div>
+<div class="agent-list">{% for document in application.documents.all %}<div class="agent-list-row"><span><strong>{{ document.student_document.get_document_type_display }}</strong><small>{% if document.is_required %}{% trans "Required" %}{% endif %}</small></span>{% if document.is_verified %}<span class="status-pill">{% trans "Verified" %}</span>{% else %}<span class="status-pill warning">{% trans "Needs review" %}</span>{% endif %}</div>{% empty %}<p class="empty-state">{% trans "No application documents." %}</p>{% endfor %}</div>
+</section></aside>
+</div>
+{% endblock %}

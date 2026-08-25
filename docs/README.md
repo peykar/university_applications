@@ -29,3 +29,5 @@
 - `program-detail.md`
 - `leads.md`
 - `lead-user-journey.md`
+
+- [Agent workspace](agent-workspace.md) — agent operations, permissions, messages, program requests, and formal applications.
