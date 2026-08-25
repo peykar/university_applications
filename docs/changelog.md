@@ -552,3 +552,14 @@
 - Exposed the existing AcademicYear fixture as `self.year` in
   `ProgramFilterTests`.
 - Fixed the regression test for matching minimum tuition and currency.
+
+### Header navigation information architecture
+- Separated public navigation from authenticated workspace/account actions.
+- Moved Dashboard and Applicants into a workspace group on the utility side.
+- Moved the language selector beside the account controls instead of the
+  middle of the primary navigation.
+- Replaced top-level Profile / Sign-in methods / Logout links with an account
+  dropdown.
+- Added icons for Profile, Sign-in methods and Logout.
+- Added Sign-in methods as a permanent account-security card on Profile.
+- Updated mobile navigation to mirror the same information hierarchy.

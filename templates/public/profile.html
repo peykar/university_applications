@@ -1,9 +1,42 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Profile" %} — TurkDemy{% endblock %}
 {% block content %}
-<h1>Profile</h1>
-<form method="post">
-{% csrf_token %}
-{{ form.as_p }}
-<button type="submit">Save</button>
-</form>
+<section class="profile-page">
+  <div class="page-heading profile-heading">
+    <div>
+      <p class="eyebrow">{% trans "Profile" %}</p>
+      <h1>{% trans "Your account" %}</h1>
+      <p class="muted">{% trans "Manage your personal information and account access." %}</p>
+    </div>
+  </div>
+
+  <div class="profile-layout">
+    <section class="profile-card">
+      <div class="profile-card-heading">
+        <h2>{% trans "Personal information" %}</h2>
+      </div>
+      <form method="post" class="profile-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button" type="submit">{% trans "Save changes" %}</button>
+      </form>
+    </section>
+
+    <aside class="profile-security-card">
+      <div class="profile-security-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <path d="M8.5 11.5 11 14l4.5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 3 5 6v5c0 4.4 2.4 7.8 7 10 4.6-2.2 7-5.6 7-10V6l-7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>{% trans "Sign-in methods" %}</h2>
+      <p>{% trans "Manage Google, Telegram and verified email access to your TurkDemy account." %}</p>
+      <a class="profile-security-link" href="{% url 'sign-in-methods' %}">
+        <span>{% trans "Manage sign-in methods" %}</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </aside>
+  </div>
+</section>
 {% endblock %}
