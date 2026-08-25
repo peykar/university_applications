@@ -636,3 +636,17 @@
 - Changed `ApplicantMobileFormTests` from `SimpleTestCase` to `TestCase`.
 - `LeadPreferenceForm` now performs database-backed canonical department
   selection, so its regression test requires normal Django test database access.
+
+### Searchable multi-select continuous selection
+- Fixed searchable preference selectors closing after each selected item.
+- The dropdown now stays open while the search input remains focused.
+- Users can select multiple universities, cities, languages or fields in one
+  continuous interaction without clicking outside and reopening the selector.
+- Escape and outside-click behavior still close the dropdown.
+
+### Searchable multi-select reopen behavior
+- Restored close-after-selection behavior for searchable preference selectors.
+- Fixed reopening when the search input remains focused after a selection.
+- Clicking the search input now explicitly opens the option list, while focus
+  also opens it for keyboard navigation.
+- Escape and outside-click continue to close the selector normally.

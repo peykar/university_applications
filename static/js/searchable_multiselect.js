@@ -65,7 +65,7 @@
           search.value = "";
           select.dispatchEvent(new Event("change", { bubbles: true }));
           render();
-          search.focus();
+          optionsPanel.classList.remove("is-open");
         });
         optionsPanel.append(button);
       });
@@ -77,10 +77,13 @@
     };
 
     search.addEventListener("input", renderOptions);
-    search.addEventListener("focus", () => {
+    const openOptions = () => {
       optionsPanel.classList.add("is-open");
       renderOptions();
-    });
+    };
+
+    search.addEventListener("focus", openOptions);
+    search.addEventListener("click", openOptions);
     search.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         optionsPanel.classList.remove("is-open");
