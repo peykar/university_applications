@@ -499,3 +499,9 @@
 - Added one Clear all action for active filters.
 - Removed the redundant sidebar Clear all action.
 - Active chips scroll horizontally on mobile.
+
+### Pagination current-tab navigation
+- Pagination links no longer force a new browser tab.
+- Previous, page-number and Next links now use normal same-tab navigation.
+- Added regression coverage to prevent `target="_blank"`/`window.open()` from
+  being introduced into the shared pagination template.
