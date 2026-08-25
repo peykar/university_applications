@@ -5,7 +5,7 @@ from decimal import Decimal, InvalidOperation
 from typing import Any
 from uuid import UUID
 
-from django.db.models import Exists, Min, OuterRef, Q, QuerySet
+from django.db.models import Exists, OuterRef, Q, QuerySet, Subquery
 from django.utils import timezone
 
 from apps.universities.models import Program, ProgramOffering
@@ -86,9 +86,9 @@ def apply_program_filters(
     Apply programme-level and offering-level filters.
 
     All offering-related criteria are applied to one correlated
-    ProgramOffering subquery. This prevents false matches where, for example,
-    the requested semester belongs to one offering but the requested tuition
-    belongs to another.
+    ProgramOffering subquery. The displayed minimum tuition and currency are
+    also selected from the same offering, so a price is never shown without
+    (or with the wrong) currency.
     """
     if state.q:
         queryset = queryset.filter(
@@ -137,6 +137,36 @@ def apply_program_filters(
     tuition_min = _decimal(state.tuition_min)
     tuition_max = _decimal(state.tuition_max)
 
+    offerings = ProgramOffering.objects.filter(
+        program_id=OuterRef("pk"),
+        is_active=True,
+    )
+
+    if tuition_min is not None:
+        offerings = offerings.filter(tuition__gte=tuition_min)
+
+    if tuition_max is not None:
+        offerings = offerings.filter(tuition__lte=tuition_max)
+
+    if state.currency:
+        offerings = offerings.filter(currency=state.currency)
+
+    if state.academic_year:
+        academic_year_id = _uuid(state.academic_year)
+        if academic_year_id is None:
+            return queryset.none()
+        offerings = offerings.filter(academic_year_id=academic_year_id)
+
+    if state.semester:
+        semester_id = _uuid(state.semester)
+        if semester_id is None:
+            return queryset.none()
+        offerings = offerings.filter(semester_id=semester_id)
+
+    if state.open_only:
+        today = timezone.localdate()
+        offerings = offerings.filter(Q(deadline__isnull=True) | Q(deadline__gte=today))
+
     has_offering_filter = any(
         (
             tuition_min is not None,
@@ -149,43 +179,36 @@ def apply_program_filters(
     )
 
     if has_offering_filter:
-        offerings = ProgramOffering.objects.filter(
-            program_id=OuterRef("pk"),
-            is_active=True,
-        )
-
-        if tuition_min is not None:
-            offerings = offerings.filter(tuition__gte=tuition_min)
-
-        if tuition_max is not None:
-            offerings = offerings.filter(tuition__lte=tuition_max)
-
-        if state.currency:
-            offerings = offerings.filter(currency=state.currency)
-
-        if state.academic_year:
-            academic_year_id = _uuid(state.academic_year)
-            if academic_year_id is None:
-                return queryset.none()
-            offerings = offerings.filter(academic_year_id=academic_year_id)
-
-        if state.semester:
-            semester_id = _uuid(state.semester)
-            if semester_id is None:
-                return queryset.none()
-            offerings = offerings.filter(semester_id=semester_id)
-
-        if state.open_only:
-            today = timezone.localdate()
-            offerings = offerings.filter(Q(deadline__isnull=True) | Q(deadline__gte=today))
-
         queryset = queryset.annotate(matching_offering=Exists(offerings)).filter(
             matching_offering=True
         )
 
+    cheapest_offering = offerings.order_by("tuition", "pk")
+
     return queryset.annotate(
-        min_active_tuition=Min(
-            "offerings__tuition",
-            filter=Q(offerings__is_active=True),
-        )
+        min_active_tuition=Subquery(
+            cheapest_offering.values("tuition")[:1],
+        ),
+        min_active_currency=Subquery(
+            cheapest_offering.values("currency")[:1],
+        ),
     ).distinct()
+
+
+def annotate_min_active_tuition(
+    queryset: QuerySet[Program],
+) -> QuerySet[Program]:
+    """Annotate a Program queryset with the cheapest active tuition + currency."""
+    cheapest_offering = ProgramOffering.objects.filter(
+        program_id=OuterRef("pk"),
+        is_active=True,
+    ).order_by("tuition", "pk")
+
+    return queryset.annotate(
+        min_active_tuition=Subquery(
+            cheapest_offering.values("tuition")[:1],
+        ),
+        min_active_currency=Subquery(
+            cheapest_offering.values("currency")[:1],
+        ),
+    )

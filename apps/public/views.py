@@ -28,7 +28,11 @@ from apps.universities.models import (
 )
 
 from .forms import ContactForm
-from .services.program_filters import apply_program_filters, read_program_filters
+from .services.program_filters import (
+    annotate_min_active_tuition,
+    apply_program_filters,
+    read_program_filters,
+)
 
 
 def _program_filter_options(*, university=None):
@@ -498,7 +502,7 @@ def program_detail(request, slug):
         ]
     )
 
-    similar_programs = (
+    similar_programs = annotate_min_active_tuition(
         Program.objects.filter(
             is_active=True,
             university__is_active=True,
@@ -517,10 +521,6 @@ def program_detail(request, slug):
                 default=Value(0),
                 output_field=IntegerField(),
             ),
-            min_active_tuition=Min(
-                "offerings__tuition",
-                filter=Q(offerings__is_active=True),
-            ),
         )
         .order_by(
             "-similarity_score",
@@ -530,7 +530,7 @@ def program_detail(request, slug):
         )[:6]
     )
 
-    more_from_university = (
+    more_from_university = annotate_min_active_tuition(
         Program.objects.filter(
             university=program.university,
             is_active=True,
@@ -539,12 +539,6 @@ def program_detail(request, slug):
         .select_related(
             "department",
             "program_language",
-        )
-        .annotate(
-            min_active_tuition=Min(
-                "offerings__tuition",
-                filter=Q(offerings__is_active=True),
-            )
         )
         .order_by("-listing_priority", "name_en")[:4]
     )

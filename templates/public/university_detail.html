@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n currency %}
 {% block title %}{{ university.name_en }} — TurkDemy{% endblock %}
 {% block content %}
 <section class="detail-hero">
@@ -111,7 +111,7 @@
         </p>
         <div class="program-price">
           {% if program.min_active_tuition %}
-            <strong>{{ program.min_active_tuition|floatformat:0 }}</strong>
+            <strong>{{ program.min_active_tuition|currency_amount:program.min_active_currency }}</strong>
             <span>{% trans "minimum active tuition" %}</span>
           {% else %}
             <strong>—</strong><span>{% trans "tuition unavailable" %}</span>

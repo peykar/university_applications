@@ -532,3 +532,23 @@
 - Added bottom padding so the final filter controls are not hidden behind the
   sticky Apply action.
 - Added regression coverage for mobile drawer scrolling.
+
+### Tuition currency on programme cards
+- Program cards now show tuition amounts together with their ISO currency code.
+- The minimum tuition and currency are selected from the exact same active
+  ProgramOffering, preventing mismatched amount/currency combinations.
+- Offering-level filters also affect the displayed minimum tuition/currency.
+- Updated Programs, University detail, and related-program cards.
+
+### Currency display formatting
+- Added central Django currency template filters.
+- Programme/catalogue cards now use compact currency symbols (`$15,000`,
+  `€12,500`, `₺8,500`).
+- Detailed tuition/offerings use symbol + ISO code (`$15,000 USD`, etc.).
+- Stored values and filter query parameters remain ISO currency codes.
+- Unknown currencies safely fall back to their ISO code.
+
+### Program tuition-currency test fixture fix
+- Exposed the existing AcademicYear fixture as `self.year` in
+  `ProgramFilterTests`.
+- Fixed the regression test for matching minimum tuition and currency.

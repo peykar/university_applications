@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n currency %}
 {% block title %}{% trans "Programs" %} — TurkDemy{% endblock %}
 {% block content %}
 <section class="programs-hero">
@@ -220,7 +220,7 @@
             <div class="program-tuition-block">
               <span>{% trans "Tuition from" %}</span>
               {% if program.min_active_tuition %}
-                <strong>{{ program.min_active_tuition|floatformat:0 }}</strong>
+                <strong>{{ program.min_active_tuition|currency_amount:program.min_active_currency }}</strong>
               {% else %}
                 <strong>—</strong>
                 <small>{% trans "Not available" %}</small>

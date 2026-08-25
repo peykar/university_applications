@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n currency %}
 {% block title %}{{ program.name_en }} · {{ program.university.name_en }} — TurkDemy{% endblock %}
 {% block meta_description %}{{ program.name_en }} at {{ program.university.name_en }}. {{ program.get_degree_display }}, {{ program.program_language.name_en }}{% if program.duration %}, {{ program.duration }} years{% endif %}.{% endblock %}
 
@@ -98,26 +98,26 @@
 
             <div class="offering-price-block">
               {% if offering.tuition_discounted %}
-                <span class="old-price">{{ offering.currency }} {{ offering.tuition|floatformat:0 }}</span>
-                <strong>{{ offering.currency }} {{ offering.tuition_discounted|floatformat:0 }}</strong>
+                <span class="old-price">{{ offering.tuition|currency_amount_full:offering.currency }}</span>
+                <strong>{{ offering.tuition_discounted|currency_amount_full:offering.currency }}</strong>
                 {% if offering.tuition_discount_percentage %}
                   <small>{{ offering.tuition_discount_percentage|floatformat:0 }}% {% trans "discount" %}</small>
                 {% endif %}
               {% else %}
-                <strong>{{ offering.currency }} {{ offering.tuition|floatformat:0 }}</strong>
+                <strong>{{ offering.tuition|currency_amount_full:offering.currency }}</strong>
               {% endif %}
               <span>{{ offering.get_fee_basis_display }}</span>
             </div>
 
             <dl class="offering-facts">
               {% if offering.tuition_cash %}
-                <div><dt>{% trans "Cash tuition" %}</dt><dd>{{ offering.currency }} {{ offering.tuition_cash|floatformat:0 }}</dd></div>
+                <div><dt>{% trans "Cash tuition" %}</dt><dd>{{ offering.tuition_cash|currency_amount_full:offering.currency }}</dd></div>
               {% endif %}
               {% if offering.tuition_annual_installment %}
-                <div><dt>{% trans "Installment tuition" %}</dt><dd>{{ offering.currency }} {{ offering.tuition_annual_installment|floatformat:0 }}</dd></div>
+                <div><dt>{% trans "Installment tuition" %}</dt><dd>{{ offering.tuition_annual_installment|currency_amount_full:offering.currency }}</dd></div>
               {% endif %}
               {% if offering.deposit %}
-                <div><dt>{% trans "Deposit" %}</dt><dd>{{ offering.currency }} {{ offering.deposit|floatformat:0 }}</dd></div>
+                <div><dt>{% trans "Deposit" %}</dt><dd>{{ offering.deposit|currency_amount_full:offering.currency }}</dd></div>
               {% endif %}
               <div><dt>{% trans "Quota" %}</dt><dd>{{ offering.quota|default:"—" }}</dd></div>
               <div><dt>{% trans "Deadline" %}</dt><dd>{{ offering.deadline|default:"—" }}</dd></div>
@@ -226,7 +226,7 @@
               </div>
               <div class="related-program-price">
                 {% if related.min_active_tuition %}
-                  <strong>{{ related.min_active_tuition|floatformat:0 }}</strong>
+                  <strong>{{ related.min_active_tuition|currency_amount:related.min_active_currency }}</strong>
                   <span>{% trans "minimum active tuition" %}</span>
                 {% else %}
                   <strong>—</strong>
@@ -258,7 +258,7 @@
                 <span>{{ related.get_degree_display }} · {{ related.program_language.name_en }}{% if related.department %} · {{ related.department.name_en }}{% endif %}</span>
               </div>
               {% if related.min_active_tuition %}
-                <span class="more-program-price">{{ related.min_active_tuition|floatformat:0 }}</span>
+                <span class="more-program-price">{{ related.min_active_tuition|currency_amount:related.min_active_currency }}</span>
               {% endif %}
             </a>
           {% endfor %}

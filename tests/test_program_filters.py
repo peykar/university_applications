@@ -160,6 +160,7 @@ class ProgramFilterTests(TestCase):
             updated_by=user,
         )
 
+        self.year = year
         self.fall = fall
         self.spring = spring
         self.language = language
@@ -197,3 +198,34 @@ class ProgramFilterTests(TestCase):
             ),
         )
         self.assertEqual(qs.count(), 1)
+
+    def test_minimum_tuition_includes_matching_currency(self):
+        program = self.program
+        ProgramOffering.objects.filter(program=program).delete()
+
+        ProgramOffering.objects.create(
+            program=program,
+            academic_year=self.year,
+            semester=self.fall,
+            fee_basis="annual",
+            currency="USD",
+            tuition=Decimal("15000"),
+            is_active=True,
+        )
+        ProgramOffering.objects.create(
+            program=program,
+            academic_year=self.year,
+            semester=self.spring,
+            fee_basis="annual",
+            currency="EUR",
+            tuition=Decimal("12000"),
+            is_active=True,
+        )
+
+        result = apply_program_filters(
+            Program.objects.filter(pk=program.pk),
+            ProgramFilterState(),
+        ).get()
+
+        self.assertEqual(result.min_active_tuition, Decimal("12000"))
+        self.assertEqual(result.min_active_currency, "EUR")
