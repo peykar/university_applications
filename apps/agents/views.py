@@ -257,9 +257,17 @@ def applicant_internal_notes(request, lead_id):
     LeadActivity.objects.create(
         lead=lead,
         activity_type=LeadActivityType.NOTE,
-        description=(
-            f"Internal notes updated. Previous: {old_notes or '—'} → New: {new_notes or '—'}"
-        ),
+        description="Internal notes updated.",
+        metadata={
+            "changes": [
+                {
+                    "field": "notes",
+                    "label": "Internal notes",
+                    "old": old_notes or "—",
+                    "new": new_notes or "—",
+                }
+            ]
+        },
         is_customer_visible=False,
         created_by=request.user,
         updated_by=request.user,
@@ -303,7 +311,8 @@ def applicant_edit(request, lead_id):
         LeadActivity.objects.create(
             lead=updated_lead,
             activity_type=LeadActivityType.NOTE,
-            description=("Applicant data updated by agent user. " + "; ".join(changes) + "."),
+            description="Applicant data updated.",
+            metadata={"changes": changes},
             is_customer_visible=False,
             created_by=request.user,
             updated_by=request.user,

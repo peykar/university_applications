@@ -28,9 +28,23 @@ class AgentInternalNotesActivityTests(SimpleTestCase):
         self.assertIn("activity.get_activity_type_display", self.template)
         self.assertIn("activity.created_by", self.template)
         self.assertIn("activity.description", self.template)
+        self.assertIn("activity.metadata.changes", self.template)
 
     def test_activity_queryset_includes_actor(self):
         self.assertIn(
             'lead.activities.select_related("created_by")',
             self.views,
         )
+
+    def test_activity_changes_are_structured_and_collapsible(self):
+        self.assertIn('metadata={"changes": changes}', self.views)
+        self.assertIn('class="activity-change-row"', self.template)
+        self.assertIn("forloop.counter > 10", self.template)
+        self.assertIn("data-activity-show-more", self.template)
+
+    def test_internal_badge_is_not_repeated_on_every_activity(self):
+        self.assertNotIn(
+            '<span class="activity-visibility internal">',
+            self.template,
+        )
+        self.assertIn("Customer visible", self.template)

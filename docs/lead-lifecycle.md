@@ -101,3 +101,34 @@ The **Activity** panel renders the latest LeadActivity records as a timeline.
 Each entry shows the activity type, actor, timestamp, description, and whether
 the event is internal or customer-visible. The timeline is newest-first and
 loads actor information with `select_related("created_by")`.
+
+
+### Structured activity metadata
+
+`LeadActivity` now has a `metadata` JSON field for structured audit details.
+Applicant edits and internal-note edits store field-level changes as
+`label`/`old`/`new` values rather than embedding them in one long description.
+The Agent Workspace renders those changes as scannable rows.
+
+The timeline initially shows the 10 newest activities and offers **Show more**
+when older entries exist. Because the whole Activity panel is agent-only,
+ordinary internal entries no longer repeat an Internal badge; only
+customer-visible events receive a visibility badge.
+
+
+### LeadActivity metadata migration compatibility
+
+The structured activity `metadata` field is part of the initial schema for
+fresh and test databases. Migration `0016_leadactivity_metadata` is also kept
+as an idempotent compatibility migration for existing databases: it inspects
+the physical `LeadActivity` table and adds the column only if it is missing.
+
+
+### Migration test policy
+
+TurkDemy periodically recreates/squashes its development migrations, so tests
+must not depend on a particular migration filename or on the presence of a
+historical compatibility migration. Fresh schema correctness is exercised by
+Django's test database creation and the application test suite. Existing
+deployed databases should run the migration generated for their own migration
+history before deploying a model schema change.

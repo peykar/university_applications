@@ -487,6 +487,7 @@ class LeadActivity(BaseModel):
         choices=LeadActivityType.choices,
     )
     description = models.TextField()
+    metadata = models.JSONField(default=dict, blank=True)
     is_customer_visible = models.BooleanField(default=False)
 
     class Meta:

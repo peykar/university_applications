@@ -4160,3 +4160,35 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   background:#f1f3f5;
   color:#6b7783;
 }
+
+
+/* Structured Lead activity audit log */
+.activity-title{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.activity-extra{display:none}
+.activity-expanded .activity-extra{display:grid}
+.activity-show-more{margin:2px 0 0 28px}
+.activity-changes{
+  display:grid;
+  margin-top:8px;
+  border:1px solid #e5eaee;
+  border-radius:8px;
+  overflow:hidden;
+}
+.activity-change-row{
+  display:grid;
+  grid-template-columns:minmax(105px,.8fr) minmax(0,1fr) 18px minmax(0,1fr);
+  gap:8px;
+  align-items:start;
+  padding:7px 9px;
+  background:#fbfcfd;
+  font-size:.69rem;
+}
+.activity-change-row+ .activity-change-row{border-top:1px solid #e8edf1}
+.activity-change-row strong{color:#536579}
+.activity-change-old{color:#7f8b96;overflow-wrap:anywhere}
+.activity-change-new{color:#31485c;font-weight:650;overflow-wrap:anywhere}
+.activity-change-arrow{text-align:center;color:#9ba7b1}
+@media(max-width:700px){
+  .activity-change-row{grid-template-columns:1fr 16px 1fr}
+  .activity-change-row strong{grid-column:1/-1}
+}
