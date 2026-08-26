@@ -71,3 +71,10 @@ enters the normal Lead document review workflow and an internal
 
 After finalization, Lead data is no longer edited and documents are no longer
 uploaded to the Lead; subsequent maintenance belongs on the Student record.
+
+
+Agent Workspace keeps **Edit applicant** and **Upload document** as compact
+section-level secondary actions so Finalize remains the primary lifecycle
+action. The Applicant section also exposes a subtle last-updated indicator;
+hovering it shows who last updated the Lead and when, using the existing
+`updated_by` and `updated_at` audit fields.

@@ -4025,3 +4025,29 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .agent-edit-grid label:has(textarea){grid-column:1/-1}
 .agent-edit-actions{grid-column:1/-1}
 @media(max-width:700px){.agent-edit-grid{grid-template-columns:1fr}.agent-edit-grid label:has(textarea),.agent-edit-actions{grid-column:auto}}
+
+
+/* Compact section actions and applicant audit hint */
+.section-action{
+  appearance:none;
+  border:0;
+  padding:2px 0;
+  background:transparent;
+  color:#315d7d;
+  font:inherit;
+  font-size:.72rem;
+  font-weight:800;
+  line-height:1.35;
+  cursor:pointer;
+}
+.section-action:hover{color:#123f68;text-decoration:underline}
+.section-action:focus-visible{outline:2px solid currentColor;outline-offset:3px;border-radius:2px}
+.section-audit{display:flex;justify-content:flex-end;margin-top:-3px;margin-bottom:8px}
+.section-audit-indicator{
+  color:#8a96a1;
+  font-size:.66rem;
+  font-weight:650;
+  cursor:help;
+  text-decoration:underline dotted;
+  text-underline-offset:3px;
+}
