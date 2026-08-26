@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -91,3 +93,13 @@ class AgentWorkspaceTests(TestCase):
         reply = self.lead.conversation.messages.order_by("-created_at").first()
         self.assertEqual(reply.sender_type, LeadMessageSenderType.STAFF)
         self.assertEqual(reply.sender, self.agent_user)
+
+    def test_agent_program_names_link_to_public_program_page(self):
+        template = (
+            Path(__file__).resolve().parents[1] / "templates" / "agents" / "applicant_detail.html"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            "href=\"{% url 'program-detail' interest.program.slug_en %}\"",
+            template,
+        )
+        self.assertIn("agent-program-link", template)

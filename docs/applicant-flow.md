@@ -63,3 +63,8 @@ not itself the formal university application workflow. Converting a Lead into a
 Student therefore does not automatically create `Application` records from
 these associations. Formal applications are created separately after the agent
 and applicant decide which programs to proceed with.
+
+
+Agent Workspace program names link to the public program detail page in a new
+tab so advisors can inspect the catalogue entry without losing their place in
+the applicant workspace.

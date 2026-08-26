@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
  </div>
 </section>
 <section class="agent-panel"><div class="agent-panel-head"><h2>{% trans "Programs" %}</h2></div>
-<div class="agent-list">{% for interest in interests %}<div class="agent-list-row"><span><strong>{{ interest.program.name_en }}</strong><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill">{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</span></div>{% empty %}<p class="empty-state">{% trans "No programs." %}</p>{% endfor %}</div>
+<div class="agent-list">{% for interest in interests %}<div class="agent-list-row"><span><a class="agent-program-link" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener"><strong>{{ interest.program.name_en }}</strong></a><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill">{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</span></div>{% empty %}<p class="empty-state">{% trans "No programs." %}</p>{% endfor %}</div>
 </section>
 </aside>
 </div>

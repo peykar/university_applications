@@ -3935,3 +3935,14 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   color:#123f68;
   text-decoration:underline;
 }
+
+
+/* Agent program links */
+.agent-program-link{
+  color:inherit;
+  text-decoration:none;
+}
+.agent-program-link:hover{
+  color:#123f68;
+  text-decoration:underline;
+}
