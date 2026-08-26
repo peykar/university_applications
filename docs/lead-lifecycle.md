@@ -18,3 +18,18 @@ Closing is a manual terminal workflow action with optional `close_reason`,
 
 Validation is not a lead status. `finalize_lead()` performs validation and records
 validation metadata. Conversion to `Student` sets the lead status to `finalized`.
+
+
+## Agent-user responsibility
+
+Every active user belonging to the Lead's `Agent` can see the Lead. The
+`assigned_to` field only identifies the person responsible for handling it.
+
+Agent Workspace shows the responsible user's real display name, adding
+**(You)** for the current user. Active leads support:
+
+- **Assign to me** — immediately take responsibility.
+- **Assign agent** — choose an active user of the Lead's Agent when unassigned.
+- **Reassign** — move responsibility to another active user of the same Agent.
+
+Assignment and reassignment are recorded in `LeadActivity`.

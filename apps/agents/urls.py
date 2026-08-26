@@ -21,6 +21,11 @@ urlpatterns = [
         name="agent-applicant-assign-to-me",
     ),
     path(
+        "agent/applicants/<uuid:lead_id>/assign/",
+        views.applicant_assign,
+        name="agent-applicant-assign",
+    ),
+    path(
         "agent/applicants/<uuid:lead_id>/messages/",
         views.applicant_message,
         name="agent-applicant-message",

@@ -797,3 +797,12 @@
 - Added close/reopen workflow with close audit metadata.
 - Finalized now specifically means converted to Student; validation is no longer a status.
 - Agent list/detail show the responsible agent user.
+
+### Agent responsibility controls
+- Agent Workspace now shows the responsible user's full name and `(You)` for
+  the current user.
+- Added Assign agent / Reassign modal restricted to active users of the Lead's
+  Agent.
+- Kept Assign to me as the fastest takeover action.
+- Clarified that assignment controls responsibility, not lead visibility.
+- Replaced the small Close applicant disclosure with a proper modal action.

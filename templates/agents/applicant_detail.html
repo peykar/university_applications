@@ -42,33 +42,119 @@ document.addEventListener("DOMContentLoaded", () => {
   <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
   <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }} {{ lead.city_of_residence }}</dd></div>
   <div><dt>{% trans "Agent" %}</dt><dd>{{ lead.agent|default:"—" }}</dd></div>
-  <div><dt>{% trans "Responsible" %}</dt><dd>{% if lead.assigned_to == request.user %}{% trans "You" %}{% elif lead.assigned_to %}{{ lead.assigned_to.get_full_name|default:lead.assigned_to.username }}{% else %}{% trans "Unassigned" %}{% endif %}</dd></div>
+  <div>
+   <dt>{% trans "Responsible agent" %}</dt>
+   <dd>
+    {% if lead.assigned_to %}
+      {{ lead.assigned_to.get_full_name|default:lead.assigned_to.username }}{% if lead.assigned_to == request.user %} <span class="responsible-you">({% trans "You" %})</span>{% endif %}
+    {% else %}
+      <span class="muted">{% trans "Unassigned" %}</span>
+    {% endif %}
+   </dd>
+  </div>
  </dl>
+
  <div class="agent-workflow-actions">
-  {% if lead.status != "finalized" and lead.status != "closed" and lead.assigned_to != request.user %}
-   <form method="post" action="{% url 'agent-applicant-assign-to-me' lead.pk %}">{% csrf_token %}
-    <button class="button" type="submit">{% if lead.assigned_to %}{% trans "Assign to me" %}{% else %}{% trans "Assign to me" %}{% endif %}</button>
-   </form>
+  {% if lead.status != "finalized" and lead.status != "closed" %}
+   {% if lead.assigned_to != request.user %}
+    <form method="post" action="{% url 'agent-applicant-assign-to-me' lead.pk %}">
+     {% csrf_token %}
+     <button class="button" type="submit">{% trans "Assign to me" %}</button>
+    </form>
+   {% endif %}
+
+   {% if agent_users %}
+    <button
+      type="button"
+      class="button button-secondary modal-trigger"
+      data-modal-target="assign-agent-modal"
+    >
+      {% if lead.assigned_to %}{% trans "Reassign" %}{% else %}{% trans "Assign agent" %}{% endif %}
+    </button>
+   {% endif %}
   {% endif %}
+
   {% if lead.status == "closed" %}
-   <form method="post" action="{% url 'agent-applicant-status' lead.pk %}">{% csrf_token %}
+   <form method="post" action="{% url 'agent-applicant-status' lead.pk %}">
+    {% csrf_token %}
     <input type="hidden" name="action" value="reopen">
     <button class="button button-secondary" type="submit">{% trans "Reopen" %}</button>
    </form>
-   {% if lead.close_reason %}<p class="workflow-close-reason"><strong>{% trans "Close reason:" %}</strong> {{ lead.close_reason }}</p>{% endif %}
+   {% if lead.close_reason %}
+    <p class="workflow-close-reason"><strong>{% trans "Close reason:" %}</strong> {{ lead.close_reason }}</p>
+   {% endif %}
   {% elif lead.status != "finalized" %}
-   <details class="agent-close-lead">
-    <summary>{% trans "Close applicant" %}</summary>
-    <form method="post" action="{% url 'agent-applicant-status' lead.pk %}">{% csrf_token %}
-     <input type="hidden" name="action" value="close">
-     <label>{% trans "Reason" %} <span class="muted">{% trans "(optional)" %}</span>
-      <textarea name="close_reason" rows="2"></textarea>
-     </label>
-     <button class="button button-secondary" type="submit">{% trans "Close applicant" %}</button>
-    </form>
-   </details>
+   <button
+     type="button"
+     class="button button-secondary workflow-close-button modal-trigger"
+     data-modal-target="close-applicant-modal"
+   >{% trans "Close applicant" %}</button>
   {% endif %}
  </div>
+
+ {% if lead.status != "finalized" and lead.status != "closed" and agent_users %}
+ <dialog class="agent-modal" id="assign-agent-modal" aria-labelledby="assign-agent-title">
+  <div class="agent-modal-card">
+   <div class="agent-modal-head">
+    <div>
+     <span class="eyebrow">{% trans "Responsibility" %}</span>
+     <h2 id="assign-agent-title">{% if lead.assigned_to %}{% trans "Reassign applicant" %}{% else %}{% trans "Assign applicant" %}{% endif %}</h2>
+     <p>{% trans "Choose an active user from this applicant's agent." %}</p>
+    </div>
+    <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+   </div>
+
+   <form method="post" action="{% url 'agent-applicant-assign' lead.pk %}" class="agent-modal-form">
+    {% csrf_token %}
+    <label>
+     <span>{% trans "Responsible agent" %}</span>
+     <select name="user_id" required>
+      <option value="">{% trans "Choose an agent user" %}</option>
+      {% for agent_user in agent_users %}
+       <option value="{{ agent_user.pk }}"{% if lead.assigned_to_id == agent_user.pk %} selected{% endif %}>
+        {{ agent_user.get_full_name|default:agent_user.username }}{% if agent_user == request.user %} ({% trans "You" %}){% endif %}
+       </option>
+      {% endfor %}
+     </select>
+    </label>
+    <p class="modal-help">
+     {% trans "All users of the agent can still see this applicant. This only changes who is responsible for working on it." %}
+    </p>
+    <div class="agent-modal-actions">
+     <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+     <button class="button" type="submit">{% if lead.assigned_to %}{% trans "Reassign" %}{% else %}{% trans "Assign" %}{% endif %}</button>
+    </div>
+   </form>
+  </div>
+ </dialog>
+ {% endif %}
+
+ {% if lead.status != "finalized" and lead.status != "closed" %}
+ <dialog class="agent-modal" id="close-applicant-modal" aria-labelledby="close-applicant-title">
+  <div class="agent-modal-card">
+   <div class="agent-modal-head">
+    <div>
+     <span class="eyebrow">{% trans "Lead lifecycle" %}</span>
+     <h2 id="close-applicant-title">{% trans "Close applicant" %}</h2>
+     <p>{% trans "Close this lead when you no longer plan to continue working on it." %}</p>
+    </div>
+    <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+   </div>
+   <form method="post" action="{% url 'agent-applicant-status' lead.pk %}" class="agent-modal-form">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="close">
+    <label>
+     <span>{% trans "Reason" %} <small>{% trans "(optional)" %}</small></span>
+     <textarea name="close_reason" rows="3" placeholder="{% trans 'Why is this applicant being closed?' %}"></textarea>
+    </label>
+    <div class="agent-modal-actions">
+     <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+     <button class="button button-secondary" type="submit">{% trans "Close applicant" %}</button>
+    </div>
+   </form>
+  </div>
+ </dialog>
+ {% endif %}
 </section>
 
 <section class="agent-panel" id="messages">

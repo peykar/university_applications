@@ -193,11 +193,20 @@ def applicant_detail(request, lead_id):
             defaults={"created_by": request.user, "updated_by": request.user},
         )
 
+    agent_users = (
+        lead.agent.users.filter(is_active=True).order_by(
+            "first_name", "last_name", "email", "username"
+        )
+        if lead.agent_id
+        else []
+    )
+
     return render(
         request,
         "agents/applicant_detail.html",
         {
             "lead": lead,
+            "agent_users": agent_users,
             "lead_messages": lead_messages,
             "conversation": conversation,
             "message_form": LeadMessageForm(),
@@ -284,6 +293,38 @@ def applicant_status(request, lead_id):
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 
+def _user_display_name(user) -> str:
+    return user.get_full_name() or user.get_username() or user.email
+
+
+def _assign_lead(lead, *, target_user, performed_by) -> None:
+    previous = lead.assigned_to
+    lead.assigned_to = target_user
+    lead.updated_by = performed_by
+    lead.save(update_fields=("assigned_to", "updated_by", "updated_at"))
+
+    if previous == target_user:
+        return
+
+    if previous:
+        activity_type = LeadActivityType.REASSIGNED
+        description = (
+            f"Reassigned from {_user_display_name(previous)} to {_user_display_name(target_user)}."
+        )
+    else:
+        activity_type = LeadActivityType.ASSIGNED
+        description = f"Assigned to {_user_display_name(target_user)}."
+
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=activity_type,
+        description=description,
+        is_customer_visible=False,
+        created_by=performed_by,
+        updated_by=performed_by,
+    )
+
+
 @login_required
 @require_POST
 def applicant_assign_to_me(request, lead_id):
@@ -292,32 +333,60 @@ def applicant_assign_to_me(request, lead_id):
         messages.error(request, "This applicant can no longer be assigned.")
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
-    previous = lead.assigned_to
-    if previous == request.user:
+    if lead.assigned_to_id == request.user.pk:
         messages.info(request, "You are already responsible for this applicant.")
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
-    lead.assigned_to = request.user
-    lead.updated_by = request.user
-    lead.save(update_fields=("assigned_to", "updated_by", "updated_at"))
+    if not lead.agent_id or not lead.agent.users.filter(pk=request.user.pk).exists():
+        messages.error(request, "You are not an active user of this applicant's agent.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
 
-    activity_type = LeadActivityType.REASSIGNED if previous else LeadActivityType.ASSIGNED
-    if previous:
-        description = (
-            f"Reassigned from {previous.get_full_name() or previous.get_username()} "
-            f"to {request.user.get_full_name() or request.user.get_username()}."
-        )
-    else:
-        description = f"Assigned to {request.user.get_full_name() or request.user.get_username()}."
-    LeadActivity.objects.create(
-        lead=lead,
-        activity_type=activity_type,
-        description=description,
-        is_customer_visible=False,
-        created_by=request.user,
-        updated_by=request.user,
+    _assign_lead(
+        lead,
+        target_user=request.user,
+        performed_by=request.user,
     )
     messages.success(request, "You are now responsible for this applicant.")
+    return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+
+@login_required
+@require_POST
+def applicant_assign(request, lead_id):
+    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
+        messages.error(request, "This applicant can no longer be assigned.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    user_id = (request.POST.get("user_id") or "").strip()
+    if not user_id or not lead.agent_id:
+        messages.error(request, "Choose a responsible agent user.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    target_user = lead.agent.users.filter(
+        pk=user_id,
+        is_active=True,
+    ).first()
+    if target_user is None:
+        messages.error(
+            request,
+            "The selected user does not belong to this applicant's agent.",
+        )
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    if lead.assigned_to_id == target_user.pk:
+        messages.info(request, "This user is already responsible for the applicant.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    _assign_lead(
+        lead,
+        target_user=target_user,
+        performed_by=request.user,
+    )
+    messages.success(
+        request,
+        f"{_user_display_name(target_user)} is now responsible for this applicant.",
+    )
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 

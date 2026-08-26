@@ -3956,3 +3956,17 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .agent-close-lead label{display:grid;gap:5px;font-weight:700}
 .agent-close-lead textarea{width:100%;box-sizing:border-box;resize:vertical}
 .workflow-close-reason{width:100%;margin:4px 0 0;color:#667586;font-size:.76rem}
+
+
+/* Agent responsibility controls */
+.responsible-you{color:var(--muted);font-size:.76rem;font-weight:600}
+.agent-workflow-actions{align-items:center}
+.workflow-close-button{margin-left:auto}
+#assign-agent-modal select{width:100%}
+@media(max-width:700px){
+  .workflow-close-button{margin-left:0}
+  .agent-workflow-actions{align-items:stretch}
+  .agent-workflow-actions>form,
+  .agent-workflow-actions>button{width:100%}
+  .agent-workflow-actions>form .button{width:100%}
+}

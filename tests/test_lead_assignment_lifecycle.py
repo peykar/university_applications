@@ -36,3 +36,29 @@ class LeadAssignmentLifecycleStructureTests(SimpleTestCase):
         self.assertNotIn("Workflow status", self.detail)
         self.assertIn('name="action" value="close"', self.detail)
         self.assertIn('name="action" value="reopen"', self.detail)
+
+    def test_agent_can_reassign_to_agent_user(self):
+        self.assertIn("def applicant_assign(request, lead_id)", self.views)
+        self.assertIn(
+            "lead.agent.users.filter(",
+            self.views,
+        )
+        self.assertIn("agent-applicant-assign", self.detail)
+        self.assertIn("Reassign", self.detail)
+
+    def test_assignment_modal_explains_visibility_vs_responsibility(self):
+        self.assertIn(
+            "All users of the agent can still see this applicant",
+            self.detail,
+        )
+
+    def test_current_responsible_user_shows_name_and_you(self):
+        self.assertIn(
+            "lead.assigned_to.get_full_name|default:lead.assigned_to.username",
+            self.detail,
+        )
+        self.assertIn('({% trans "You" %})', self.detail)
+
+    def test_close_applicant_uses_modal_action(self):
+        self.assertIn('data-modal-target="close-applicant-modal"', self.detail)
+        self.assertIn('id="close-applicant-modal"', self.detail)
