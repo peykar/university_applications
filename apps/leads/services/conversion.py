@@ -45,40 +45,6 @@ def _validate_for_finalization(lead: Lead) -> None:
         raise ValidationError(errors)
 
 
-@transaction.atomic
-def finalize_lead(lead: Lead, *, performed_by=None) -> Lead:
-    actor = performed_by or get_system_user()
-    _validate_for_finalization(lead)
-
-    lead.validated_by = actor
-    lead.validated_at = timezone.now()
-    lead.updated_by = actor
-    lead.save(
-        update_fields=(
-            "validated_by",
-            "validated_at",
-            "updated_by",
-            "updated_at",
-        )
-    )
-
-    LeadActivity.objects.create(
-        lead=lead,
-        activity_type=LeadActivityType.VALIDATED,
-        description="Applicant data validated and ready for conversion.",
-        is_customer_visible=True,
-        created_by=actor,
-        updated_by=actor,
-    )
-
-    send_system_message(
-        lead,
-        "Your applicant profile has been validated and is ready for conversion.",
-        performed_by=actor,
-    )
-    return lead
-
-
 def _copy_verified_documents(
     lead: Lead,
     student: Student,
@@ -129,81 +95,87 @@ def _copy_verified_documents(
 
 
 @transaction.atomic
-def convert_lead_to_student(
+def finalize_lead(
     lead: Lead,
     *,
     performed_by=None,
 ) -> Student:
     """
-    Convert a finalized Lead into the canonical Student record.
+    Atomically finalize a Lead and create its canonical Student record.
+
+    The agent-facing operation is deliberately one step: validate the Lead,
+    create the Student, copy verified documents, link Lead -> Student, and mark
+    the Lead FINALIZED. If any validation or persistence step fails, the
+    transaction rolls back and the Lead remains in its previous lifecycle
+    state.
 
     Safe to call again: an already converted student is reused.
 
-    Applicant program associations are intentionally not converted into formal
-    university applications. Agents create formal Application records only
-    after discussing the program list with the applicant.
+    Applicant program interests remain Lead history and are intentionally not
+    converted into formal university applications.
     """
     actor = performed_by or get_system_user()
 
     if lead.status == LeadStatus.CLOSED:
-        raise ValidationError("A closed lead cannot be converted to a student.")
+        raise ValidationError("A closed lead cannot be finalized.")
     if lead.converted_student_id:
         student = lead.converted_student
         if student is None:
             raise ValidationError("Converted student record could not be loaded.")
         return student
-    if not lead.validated_at:
-        raise ValidationError("Lead must be validated before it can be converted to a student.")
 
     _validate_for_finalization(lead)
 
-    student = lead.converted_student
+    nationality = lead.nationality
+    if nationality is None:
+        raise ValidationError("Nationality must be validated before finalization.")
 
-    if student is None:
-        nationality = lead.nationality
-        if nationality is None:
-            raise ValidationError("Nationality must be validated before conversion.")
-        student = Student.objects.create(
-            user=lead.user,
-            agent=lead.agent,
-            first_name=lead.first_name,
-            middle_name=lead.middle_name,
-            last_name=lead.last_name,
-            country_of_birth=lead.country_of_birth,
-            nationality=nationality,
-            gender=lead.gender,
-            email=lead.email,
-            cell=lead.cell,
-            birthdate=lead.birthdate,
-            english_test_type=lead.english_test_type,
-            english_language_test_score=lead.english_language_test_score,
-            high_school_gpa=lead.high_school_gpa,
-            high_school_gpa_scale=lead.high_school_gpa_scale,
-            father_name=lead.father_name,
-            mother_name=lead.mother_name,
-            passport_no=lead.passport_no,
-            passport_issuing_authority=lead.passport_issuing_authority,
-            passport_date_of_issue=lead.passport_date_of_issue,
-            passport_date_of_expiry=lead.passport_date_of_expiry,
-            country_of_residence=lead.country_of_residence,
-            city_of_residence=lead.city_of_residence,
-            address=lead.address,
-            educational_background=lead.educational_background,
-            notes=lead.notes,
-            created_by=actor,
-            updated_by=actor,
-        )
-
-        lead.converted_student = student
+    student = Student.objects.create(
+        user=lead.user,
+        agent=lead.agent,
+        first_name=lead.first_name,
+        middle_name=lead.middle_name,
+        last_name=lead.last_name,
+        country_of_birth=lead.country_of_birth,
+        nationality=nationality,
+        gender=lead.gender,
+        email=lead.email,
+        cell=lead.cell,
+        birthdate=lead.birthdate,
+        english_test_type=lead.english_test_type,
+        english_language_test_score=lead.english_language_test_score,
+        high_school_gpa=lead.high_school_gpa,
+        high_school_gpa_scale=lead.high_school_gpa_scale,
+        father_name=lead.father_name,
+        mother_name=lead.mother_name,
+        passport_no=lead.passport_no,
+        passport_issuing_authority=lead.passport_issuing_authority,
+        passport_date_of_issue=lead.passport_date_of_issue,
+        passport_date_of_expiry=lead.passport_date_of_expiry,
+        country_of_residence=lead.country_of_residence,
+        city_of_residence=lead.city_of_residence,
+        address=lead.address,
+        educational_background=lead.educational_background,
+        notes=lead.notes,
+        created_by=actor,
+        updated_by=actor,
+    )
 
     _copy_verified_documents(lead, student, actor=actor)
+
+    now = timezone.now()
+    lead.converted_student = student
     lead.status = LeadStatus.FINALIZED
-    lead.converted_at = lead.converted_at or timezone.now()
+    lead.validated_by = actor
+    lead.validated_at = now
+    lead.converted_at = now
     lead.updated_by = actor
     lead.save(
         update_fields=(
             "converted_student",
             "status",
+            "validated_by",
+            "validated_at",
             "converted_at",
             "updated_by",
             "updated_at",
@@ -226,3 +198,8 @@ def convert_lead_to_student(
     )
 
     return student
+
+
+# Backward-compatible service alias for callers that still use the old name.
+# There is no separate conversion phase anymore.
+convert_lead_to_student = finalize_lead

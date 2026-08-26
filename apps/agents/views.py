@@ -28,7 +28,7 @@ from apps.leads.models import (
     LeadProgramInterest,
     LeadStatus,
 )
-from apps.leads.services.conversion import convert_lead_to_student, finalize_lead
+from apps.leads.services.conversion import finalize_lead
 from apps.leads.services.messaging import ensure_conversation, send_system_message
 
 from .forms import (
@@ -664,8 +664,7 @@ def applicant_finalize(request, lead_id):
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     try:
-        finalize_lead(lead, performed_by=request.user)
-        student = convert_lead_to_student(lead, performed_by=request.user)
+        student = finalize_lead(lead, performed_by=request.user)
     except ValidationError as exc:
         if hasattr(exc, "message_dict"):
             detail = " ".join(

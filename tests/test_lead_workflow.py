@@ -14,7 +14,7 @@ from apps.leads.models import (
     LeadProgramInterestSource,
     LeadStatus,
 )
-from apps.leads.services.conversion import convert_lead_to_student, finalize_lead
+from apps.leads.services.conversion import finalize_lead
 from apps.students.models import Gender, Student
 from apps.universities.models import (
     AcademicYear,
@@ -208,7 +208,7 @@ class LeadWorkflowTests(TestCase):
         self.assertEqual(message.sender, self.user)
         self.assertEqual(message.sender_type, LeadMessageSenderType.CUSTOMER)
 
-    def test_finalized_lead_converts_to_student_and_application(self):
+    def test_finalizing_lead_creates_student_without_application(self):
         lead = self.make_lead()
         LeadProgramInterest.objects.create(
             lead=lead,
@@ -220,31 +220,31 @@ class LeadWorkflowTests(TestCase):
             updated_by=self.staff,
         )
 
-        finalize_lead(lead, performed_by=self.staff)
-        lead.refresh_from_db()
-        self.assertIsNotNone(lead.validated_at)
-        self.assertNotEqual(lead.status, LeadStatus.FINALIZED)
+        student = finalize_lead(lead, performed_by=self.staff)
 
-        student = convert_lead_to_student(lead, performed_by=self.staff)
         self.assertIsInstance(student, Student)
         self.assertEqual(student.user, self.user)
         self.assertEqual(student.applications.count(), 0)
 
         lead.refresh_from_db()
+        self.assertIsNotNone(lead.validated_at)
         self.assertEqual(lead.status, LeadStatus.FINALIZED)
         self.assertEqual(lead.converted_student, student)
 
-    def test_conversion_is_idempotent_after_student_exists(self):
+    def test_finalization_is_idempotent_after_student_exists(self):
         lead = self.make_lead()
-        finalize_lead(lead, performed_by=self.staff)
-        first_student = convert_lead_to_student(lead, performed_by=self.staff)
+        first_student = finalize_lead(lead, performed_by=self.staff)
         lead.refresh_from_db()
 
-        second_student = convert_lead_to_student(lead, performed_by=self.staff)
+        second_student = finalize_lead(lead, performed_by=self.staff)
 
         self.assertEqual(second_student.pk, first_student.pk)
 
-    def test_conversion_requires_finalization(self):
-        lead = self.make_lead()
+    def test_finalization_rejects_invalid_lead(self):
+        lead = self.make_lead(first_name="")
         with self.assertRaises(ValidationError):
-            convert_lead_to_student(lead, performed_by=self.staff)
+            finalize_lead(lead, performed_by=self.staff)
+
+        lead.refresh_from_db()
+        self.assertNotEqual(lead.status, LeadStatus.FINALIZED)
+        self.assertIsNone(lead.converted_student)

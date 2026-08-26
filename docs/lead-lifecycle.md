@@ -202,3 +202,29 @@ during `Student.save()`.
 
 The shared `normalize_phone_number()` helper converts `phonenumbers` parsing
 exceptions to `ValueError`, giving callers one stable validation contract.
+
+
+### Atomic Lead finalization
+
+Agent-facing finalization is one atomic business operation. There is no
+agent-visible or persisted "validated, ready for conversion" phase.
+
+`finalize_lead()` now performs the complete transition inside one database
+transaction:
+
+1. Reject closed Leads and reuse an already converted Student.
+2. Validate all required Lead data, including international phone format.
+3. Create the canonical Student from Lead fields.
+4. Copy only verified Lead documents to Student documents.
+5. Link `Lead.converted_student`.
+6. Set validation/conversion audit timestamps and actor.
+7. Set `Lead.status = FINALIZED`.
+8. Create one FINALIZED activity and one customer-visible system message.
+
+If validation, Student creation, document copying, or any later database step
+fails, the transaction rolls back. The Lead therefore remains in its previous
+lifecycle state (normally ASSIGNED), no intermediate VALIDATED activity is
+created, and the agent receives the validation error on the Applicant page.
+
+Program interests, messages, and Lead activity history remain attached to the
+Lead; program interests do not automatically become Applications.

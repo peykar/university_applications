@@ -13,10 +13,16 @@ class AgentFinalizeWorkflowTests(SimpleTestCase):
             encoding="utf-8"
         )
 
-    def test_finalize_endpoint_validates_then_converts(self):
+    def test_finalize_endpoint_runs_atomic_finalization(self):
         self.assertIn("def applicant_finalize", self.views)
-        self.assertIn("finalize_lead(lead, performed_by=request.user)", self.views)
-        self.assertIn("convert_lead_to_student(lead, performed_by=request.user)", self.views)
+        self.assertIn(
+            "student = finalize_lead(lead, performed_by=request.user)",
+            self.views,
+        )
+        self.assertNotIn(
+            "convert_lead_to_student(lead, performed_by=request.user)",
+            self.views,
+        )
 
     def test_only_responsible_agent_gets_finalize_action(self):
         self.assertIn("lead.assigned_to == request.user", self.template)
