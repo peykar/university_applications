@@ -27,7 +27,7 @@
   <main>
     <section class="lead-panel">
       <div class="section-heading">
-        <div><p class="eyebrow">{% trans "Programs" %}</p><h2>{% trans "Program interests & recommendations" %}</h2></div>
+        <div><p class="eyebrow">{% trans "Programs" %}</p><h2>{% trans "Applications & program interests" %}</h2></div>
         <a class="section-link" href="{% url 'program-list' %}">{% trans "Find programs" %} →</a>
       </div>
 
@@ -36,13 +36,34 @@
           <article class="lead-interest-card">
             <div>
               <div class="interest-source-line">
-                <span class="interest-source interest-source-{{ interest.source }}">{{ interest.get_source_display }}</span>
-                <span class="lead-status">{{ interest.get_status_display }}</span>
+                {% if interest.status == "applied" %}
+                  <span class="interest-source interest-source-user">{% trans "Application" %}</span>
+                {% elif interest.source == "agent" or interest.source == "system" %}
+                  <span class="interest-source interest-source-{{ interest.source }}">{% trans "Recommendation" %}</span>
+                {% else %}
+                  <span class="interest-source interest-source-{{ interest.source }}">{% trans "Program interest" %}</span>
+                {% endif %}
+                <span class="lead-status lead-interest-status-{{ interest.status }}">{{ interest.get_status_display }}</span>
               </div>
               <h3><a href="{% url 'program-detail' interest.program.slug_en %}">{{ interest.program.name_en }}</a></h3>
               <p>{{ interest.program.university.name_en }} · {{ interest.program.get_degree_display }} · {{ interest.program.program_language.name_en }}</p>
-              {% if interest.program_offering %}
-                <p class="interest-offering">{{ interest.program_offering.academic_year.name_en }} · {{ interest.program_offering.semester.name_en }} · {{ interest.program_offering.currency }} {{ interest.program_offering.tuition|floatformat:0 }}</p>
+              {% if interest.status == "applied" %}
+                <div class="interest-intake">
+                  <span>{% trans "Intake" %}</span>
+                  {% if interest.program_offering %}
+                    <strong>
+                      {{ interest.program_offering.semester.name_en }}
+                      {{ interest.program_offering.academic_year.name_en }}
+                    </strong>
+                  {% else %}
+                    <strong>{% trans "Any intake / decide later" %}</strong>
+                  {% endif %}
+                </div>
+              {% elif interest.program_offering %}
+                <p class="interest-offering">
+                  {{ interest.program_offering.academic_year.name_en }} ·
+                  {{ interest.program_offering.semester.name_en }}
+                </p>
               {% endif %}
               {% if interest.suggestion_reason %}<p class="suggestion-reason">{{ interest.suggestion_reason }}</p>{% endif %}
             </div>

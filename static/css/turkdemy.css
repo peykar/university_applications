@@ -3767,3 +3767,10 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   .program-apply-actions{display:grid;grid-template-columns:1fr;padding:15px 16px}
   .program-apply-actions .button{justify-content:center;text-align:center}
 }
+
+
+/* Application state cards */
+.lead-interest-status-applied{background:#e5f4ec;color:#17613d}
+.interest-intake{display:flex;gap:8px;align-items:center;margin-top:10px;color:#536174;font-size:.78rem}
+.interest-intake span{font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.interest-intake strong{color:#173452}

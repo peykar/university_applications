@@ -747,3 +747,10 @@
 - Shared branded emails and allauth-generated account emails now use the localized display name.
 - Domains remain canonical and untranslated.
 - Added regression tests and documentation.
+
+### Explicit application status
+- Added `applied` to `LeadProgramInterestStatus`.
+- Program Apply actions now create/promote interests to `applied`.
+- Applicant detail distinguishes applications, interests and recommendations.
+- Applied programs show their intake or "Any intake / decide later".
+- Success messaging now says "Application started for <program>".

@@ -33,3 +33,14 @@ The second step is labelled **When would you like to start?** rather than
 decide later**.
 
 Submitting a new person creates the Lead and program interest atomically.
+
+## Application vs interest
+
+A customer clicking **Apply** creates/promotes the program relation to the
+explicit `applied` state. Generic saved interests remain `interested`, user
+shortlists remain `shortlisted`, and agent/system suggestions are presented as
+recommendations.
+
+On the applicant page the section is labelled **Applications & program
+interests**. Applied programs show the selected intake, or **Any intake /
+decide later** when no specific offering was chosen.

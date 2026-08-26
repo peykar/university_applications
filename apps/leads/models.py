@@ -294,8 +294,9 @@ class LeadProgramInterestSource(models.TextChoices):
 
 
 class LeadProgramInterestStatus(models.TextChoices):
-    SUGGESTED = "suggested", _("Suggested")
+    SUGGESTED = "suggested", _("Recommended")
     INTERESTED = "interested", _("Interested")
+    APPLIED = "applied", _("Applied")
     SHORTLISTED = "shortlisted", _("Shortlisted")
     DECLINED = "declined", _("Declined")
     QUALIFIED = "qualified", _("Qualified")

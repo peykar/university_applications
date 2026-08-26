@@ -83,7 +83,7 @@ def lead_create(request):
                             program_offering=None,
                             defaults={
                                 "source": LeadProgramInterestSource.USER,
-                                "status": LeadProgramInterestStatus.INTERESTED,
+                                "status": LeadProgramInterestStatus.APPLIED,
                                 "created_by": request.user,
                                 "updated_by": request.user,
                             },
@@ -391,8 +391,8 @@ def apply_program(request, slug):
                 },
             )
 
-            if not created and interest.status == LeadProgramInterestStatus.DECLINED:
-                interest.status = LeadProgramInterestStatus.INTERESTED
+            if not created and interest.status != LeadProgramInterestStatus.APPLIED:
+                interest.status = LeadProgramInterestStatus.APPLIED
                 interest.source = LeadProgramInterestSource.USER
                 interest.updated_by = request.user
                 interest.save(
@@ -413,7 +413,7 @@ def apply_program(request, slug):
                 updated_by=request.user,
             )
 
-        messages.success(request, "Program added to the applicant.")
+        messages.success(request, f"Application started for {program.name_en}.")
         return redirect("lead-detail", lead_id=lead.pk)
 
     return render(
