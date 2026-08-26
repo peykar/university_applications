@@ -370,6 +370,12 @@ def lead_document_upload_path(instance, filename):
     return f"leads/{instance.lead_id}/documents/{filename}"
 
 
+class LeadDocumentReviewStatus(models.TextChoices):
+    PENDING = "pending", _("Needs review")
+    APPROVED = "approved", _("Approved")
+    REJECTED = "rejected", _("Rejected")
+
+
 class LeadDocument(BaseModel):
     lead = models.ForeignKey(
         Lead,
@@ -384,6 +390,32 @@ class LeadDocument(BaseModel):
     file = models.FileField(upload_to=lead_document_upload_path)
     description = models.TextField(blank=True)
 
+    review_status = models.CharField(
+        max_length=16,
+        choices=LeadDocumentReviewStatus.choices,
+        default=LeadDocumentReviewStatus.PENDING,
+        db_index=True,
+    )
+    reviewed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+    review_note = models.TextField(blank=True)
+    source_message_attachment = models.OneToOneField(
+        "LeadMessageAttachment",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="promoted_document",
+        help_text=_("Chat attachment this document was promoted from, when applicable."),
+    )
+
+    # Kept for compatibility with existing conversion code. It is synchronized
+    # with review_status by the agent review workflow.
     is_verified = models.BooleanField(default=False, db_index=True)
     verified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -416,6 +448,7 @@ class LeadActivityType(models.TextChoices):
     NOTE = "note", _("Note")
     STATUS_CHANGED = "status_changed", _("Status changed")
     DOCUMENT_UPLOADED = "document_uploaded", _("Document uploaded")
+    DOCUMENT_REVIEWED = "document_reviewed", _("Document reviewed")
     PROGRAM_ADDED = "program_added", _("Program added")
     PROGRAM_SUGGESTED = "program_suggested", _("Program suggested")
     PROGRAM_RESPONSE = "program_response", _("Program response")

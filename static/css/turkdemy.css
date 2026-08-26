@@ -3774,3 +3774,26 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .interest-intake{display:flex;gap:8px;align-items:center;margin-top:10px;color:#536174;font-size:.78rem}
 .interest-intake span{font-weight:800;text-transform:uppercase;letter-spacing:.04em}
 .interest-intake strong{color:#173452}
+
+
+/* Agent document review workflow */
+.agent-document-list{display:grid;gap:10px}
+.agent-document-card{padding:14px;border:1px solid var(--border);border-radius:12px;background:#fff}
+.agent-document-summary{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.agent-document-summary span:first-child{display:flex;min-width:0;flex-direction:column;gap:3px}
+.agent-document-summary small{color:var(--muted)}
+.agent-document-actions{display:flex;align-items:flex-start;gap:8px;margin-top:12px;flex-wrap:wrap}
+.document-review-panel,.attachment-promote{flex:1;min-width:220px}
+.document-review-panel summary,.attachment-promote summary{cursor:pointer;color:#0b3a67;font-size:.78rem;font-weight:800}
+.compact-review-form{display:grid;gap:9px;margin-top:10px;padding:12px;border:1px solid #dce5ec;border-radius:10px;background:#f8fafb}
+.compact-review-form label{display:grid;gap:4px;color:#536174;font-size:.72rem;font-weight:800}
+.compact-review-form input,.compact-review-form select,.compact-review-form textarea{box-sizing:border-box;width:100%;padding:8px 9px;border:1px solid var(--border);border-radius:8px;background:#fff;font:inherit}
+.document-review-meta{display:block;margin-top:10px;color:var(--muted)}
+.agent-chat-attachment{display:flex;align-items:flex-start;gap:8px;margin-top:7px;flex-wrap:wrap}
+.status-pill.success{background:#e6f6ed;color:#17613d}
+.status-pill.danger{background:#f8e8e8;color:#8a3030}
+@media(max-width:700px){
+  .agent-document-summary{display:block}
+  .agent-document-summary .status-pill{display:inline-flex;margin-top:8px}
+  .document-review-panel,.attachment-promote{min-width:100%}
+}

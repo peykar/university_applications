@@ -3,9 +3,11 @@ from __future__ import annotations
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.core.files.base import ContentFile
 from django.db.models import Count, Max, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from apps.applications.models import Application, ApplicationStatus
@@ -15,6 +17,7 @@ from apps.leads.models import (
     LeadActivity,
     LeadActivityType,
     LeadDocument,
+    LeadDocumentReviewStatus,
     LeadMessage,
     LeadMessageAttachment,
     LeadMessageRead,
@@ -24,6 +27,7 @@ from apps.leads.models import (
 )
 from apps.leads.services.messaging import ensure_conversation
 
+from .forms import DocumentReviewForm, PromoteChatAttachmentForm
 from .models import Agent
 
 
@@ -174,7 +178,9 @@ def applicant_detail(request, lead_id):
             list_url_name="agent-applicant-list",
         )
     conversation = ensure_conversation(lead)
-    lead_messages = conversation.messages.select_related("sender").prefetch_related("attachments")
+    lead_messages = conversation.messages.select_related("sender").prefetch_related(
+        "attachments__promoted_document"
+    )
 
     unread = lead_messages.filter(sender_type=LeadMessageSenderType.CUSTOMER).exclude(
         read_receipts__user=request.user
@@ -194,7 +200,12 @@ def applicant_detail(request, lead_id):
             "lead_messages": lead_messages,
             "conversation": conversation,
             "message_form": LeadMessageForm(),
-            "documents": lead.documents.order_by("-created_at"),
+            "document_review_form": DocumentReviewForm(),
+            "promote_attachment_form": PromoteChatAttachmentForm(),
+            "documents": lead.documents.select_related(
+                "reviewed_by",
+                "source_message_attachment",
+            ).order_by("-created_at"),
             "interests": lead.program_interests.select_related(
                 "program", "program__university", "program_offering"
             ).order_by("-created_at"),
@@ -267,6 +278,112 @@ def applicant_message(request, lead_id):
             created_by=request.user,
             updated_by=request.user,
         )
+    return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+
+@login_required
+@require_POST
+def applicant_document_review(request, lead_id, document_id):
+    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    document = get_object_or_404(LeadDocument, pk=document_id, lead=lead)
+    form = DocumentReviewForm(request.POST)
+
+    if not form.is_valid():
+        messages.error(request, "Choose a valid document review decision.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    review_status = form.cleaned_data["review_status"]
+    document.review_status = review_status
+    document.review_note = form.cleaned_data["review_note"]
+    document.reviewed_by = request.user
+    document.reviewed_at = timezone.now()
+    document.is_verified = review_status == LeadDocumentReviewStatus.APPROVED
+    document.updated_by = request.user
+    document.save(
+        update_fields=(
+            "review_status",
+            "review_note",
+            "reviewed_by",
+            "reviewed_at",
+            "is_verified",
+            "updated_by",
+            "updated_at",
+        )
+    )
+
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=LeadActivityType.DOCUMENT_REVIEWED,
+        description=(
+            f"Document reviewed: {document.name or document.get_document_type_display()} "
+            f"→ {document.get_review_status_display()}."
+        ),
+        is_customer_visible=True,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    messages.success(request, "Document review updated.")
+    return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+
+@login_required
+@require_POST
+def applicant_attachment_to_document(request, lead_id, attachment_id):
+    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    attachment = get_object_or_404(
+        LeadMessageAttachment.objects.select_related(
+            "message",
+            "message__conversation",
+        ),
+        pk=attachment_id,
+        message__conversation__lead=lead,
+        message__sender_type=LeadMessageSenderType.CUSTOMER,
+    )
+
+    if hasattr(attachment, "promoted_document"):
+        messages.info(request, "This attachment is already in Documents.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    form = PromoteChatAttachmentForm(request.POST)
+    if not form.is_valid():
+        messages.error(request, "Choose a document type before adding the attachment.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    attachment.file.open("rb")
+    try:
+        content = ContentFile(attachment.file.read())
+    finally:
+        attachment.file.close()
+
+    document = LeadDocument(
+        lead=lead,
+        document_type=form.cleaned_data["document_type"],
+        name=form.cleaned_data["name"] or attachment.original_name,
+        description=form.cleaned_data["description"],
+        review_status=LeadDocumentReviewStatus.PENDING,
+        source_message_attachment=attachment,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    document.file.save(
+        attachment.original_name or "attachment",
+        content,
+        save=False,
+    )
+    document.save()
+
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=LeadActivityType.DOCUMENT_UPLOADED,
+        description=(
+            f"Chat attachment added to Documents: "
+            f"{document.name or document.get_document_type_display()}."
+        ),
+        is_customer_visible=True,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    messages.success(request, "Attachment added to Documents and marked for review.")
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 

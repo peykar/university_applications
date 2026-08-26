@@ -765,3 +765,12 @@
 - Lead-to-Student conversion no longer auto-creates formal Applications from
   the collaborative program list.
 - Existing `system` source rows are migrated to `agent`.
+
+### Agent document review and chat promotion
+- Added pending/approved/rejected review states for applicant documents.
+- Added reviewer, review timestamp and review note.
+- Added Open + Review controls to Agent Workspace.
+- Added "Add to documents" for customer chat attachments.
+- Chat files are copied to LeadDocument storage and linked back to their source attachment.
+- Prevented duplicate attachment promotion.
+- Updated the Agent Workspace Programs panel to user-added / agent-suggested provenance.

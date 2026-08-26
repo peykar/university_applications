@@ -20,6 +20,16 @@ urlpatterns = [
         views.applicant_message,
         name="agent-applicant-message",
     ),
+    path(
+        "agent/applicants/<uuid:lead_id>/documents/<uuid:document_id>/review/",
+        views.applicant_document_review,
+        name="agent-applicant-document-review",
+    ),
+    path(
+        "agent/applicants/<uuid:lead_id>/attachments/<uuid:attachment_id>/document/",
+        views.applicant_attachment_to_document,
+        name="agent-applicant-attachment-to-document",
+    ),
     path("agent/messages/", views.message_inbox, name="agent-message-inbox"),
     path("agent/applications/", views.application_list, name="agent-application-list"),
     path(
