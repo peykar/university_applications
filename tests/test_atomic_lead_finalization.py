@@ -12,7 +12,7 @@ class AtomicLeadFinalizationTests(SimpleTestCase):
 
     def test_agent_finalize_is_one_business_operation(self):
         self.assertIn(
-            "student = finalize_lead(lead, performed_by=request.user)",
+            "student = finalize_lead(",
             self.views,
         )
         self.assertNotIn(

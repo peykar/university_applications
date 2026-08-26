@@ -664,7 +664,11 @@ def applicant_finalize(request, lead_id):
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     try:
-        student = finalize_lead(lead, performed_by=request.user)
+        student = finalize_lead(
+            lead,
+            performed_by=request.user,
+            selected_interest_ids=request.POST.getlist("program_interests"),
+        )
     except ValidationError as exc:
         if hasattr(exc, "message_dict"):
             detail = " ".join(

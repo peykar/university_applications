@@ -289,11 +289,42 @@ document.addEventListener("DOMContentLoaded", () => {
     <div><span>{% trans "Email" %}</span><strong>{{ lead.email|default:"—" }}</strong></div>
     <div><span>{% trans "Responsible agent" %}</span><strong>{{ lead.assigned_to.get_full_name|default:lead.assigned_to.username }}</strong></div>
    </div>
+   <div class="finalize-programs">
+    <div class="finalize-programs-head">
+     <strong>{% trans "Draft applications" %}</strong>
+     <span>{% trans "Choose any discussed programs to carry into the Student stage. Selecting none is allowed." %}</span>
+    </div>
+    <div class="finalize-program-list">
+     {% for interest in interests %}
+      <label class="finalize-program-option{% if not interest.program_offering %} disabled{% endif %}">
+       <input
+        type="checkbox"
+        name="program_interests"
+        value="{{ interest.pk }}"
+        form="finalize-applicant-form"
+        {% if not interest.program_offering %}disabled{% endif %}
+       >
+       <span>
+        <strong>{{ interest.program.name_en }}</strong>
+        <small>{{ interest.program.university.name_en }}</small>
+        {% if interest.program_offering %}
+         <small>{{ interest.program_offering }}</small>
+        {% else %}
+         <small class="finalize-program-missing">{% trans "Choose an intake before this can become a draft application." %}</small>
+        {% endif %}
+       </span>
+      </label>
+     {% empty %}
+      <p class="empty-state">{% trans "No discussed programs yet." %}</p>
+     {% endfor %}
+    </div>
+   </div>
+
    {% if not lead.first_name or not lead.last_name or not lead.nationality or not lead.gender %}
     <p class="finalize-warning">{% trans "Some required information is missing. Finalization will stop and tell you what must be completed." %}</p>
    {% endif %}
    <p class="modal-help">{% trans "Finalizing creates the Student record, copies verified documents, and changes this lead to Finalized. Optional information can still be completed on the student later." %}</p>
-   <form method="post" action="{% url 'agent-applicant-finalize' lead.pk %}" class="agent-modal-actions">
+   <form id="finalize-applicant-form" method="post" action="{% url 'agent-applicant-finalize' lead.pk %}" class="agent-modal-actions">
     {% csrf_token %}
     <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
     <button class="button" type="submit">{% trans "Finalize and create student" %}</button>

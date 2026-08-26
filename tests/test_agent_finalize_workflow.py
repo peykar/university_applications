@@ -15,8 +15,11 @@ class AgentFinalizeWorkflowTests(SimpleTestCase):
 
     def test_finalize_endpoint_runs_atomic_finalization(self):
         self.assertIn("def applicant_finalize", self.views)
+        self.assertIn("student = finalize_lead(", self.views)
+        self.assertIn("lead,", self.views)
+        self.assertIn("performed_by=request.user,", self.views)
         self.assertIn(
-            "student = finalize_lead(lead, performed_by=request.user)",
+            'selected_interest_ids=request.POST.getlist("program_interests"),',
             self.views,
         )
         self.assertNotIn(

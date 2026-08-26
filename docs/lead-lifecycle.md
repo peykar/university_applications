@@ -228,3 +228,23 @@ created, and the agent receives the validation error on the Applicant page.
 
 Program interests, messages, and Lead activity history remain attached to the
 Lead; program interests do not automatically become Applications.
+
+
+### Draft applications selected during finalization
+
+The Finalize Applicant modal now shows every discussed `LeadProgramInterest`.
+The responsible agent may select zero or more interests to carry forward.
+
+Selected interests with a concrete `ProgramOffering` are converted, inside the
+same finalization transaction, into `Application(status=DRAFT)` records for the
+new Student. Application tuition and deposit are initialized from the selected
+offering, and `LeadProgramInterest.converted_application` preserves provenance.
+
+Interests without a concrete offering remain visible but disabled in the
+finalization picker; an intake/offering must be chosen before such an interest
+can become an Application. Unselected interests remain untouched on the
+finalized Lead as historical discussion context.
+
+Because draft-application creation is part of the same atomic finalization
+transaction, any failure rolls back Student creation, document copying,
+Applications, and the Lead lifecycle transition together.
