@@ -148,7 +148,9 @@ document.addEventListener("DOMContentLoaded", () => {
    </div>
    <div class="agent-document-actions">
     <a class="text-action" href="{{ document.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
-    <button type="button" class="text-action button-reset modal-trigger" data-modal-target="document-review-{{ document.pk }}">{% trans "Review" %}</button>
+    {% if document.review_status != "approved" %}
+      <button type="button" class="text-action button-reset modal-trigger" data-modal-target="document-review-{{ document.pk }}">{% trans "Review" %}</button>
+    {% endif %}
    </div>
    {% if document.reviewed_by %}
     <small class="document-review-meta">{% trans "Last reviewed by" %} {{ document.reviewed_by.get_full_name|default:document.reviewed_by.username }} · {{ document.reviewed_at|date:"M j, Y H:i" }}</small>

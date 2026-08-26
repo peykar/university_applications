@@ -40,3 +40,9 @@ class AgentDocumentReviewWorkflowStructureTests(SimpleTestCase):
         self.assertIn('data-modal-target="promote-attachment-', self.template)
         self.assertIn("Conversation attachment", self.template)
         self.assertNotIn('<details class="attachment-promote">', self.template)
+
+    def test_approved_document_does_not_show_review_action(self):
+        self.assertIn(
+            '{% if document.review_status != "approved" %}',
+            self.template,
+        )

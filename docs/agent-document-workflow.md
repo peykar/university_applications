@@ -78,3 +78,8 @@ The customer only provides:
 There is no customer-facing `name` field. `LeadDocument.name` remains an
 internal display/storage label and is automatically populated from the uploaded
 filename when needed.
+
+
+Approved documents keep only the **Open** action in the Agent Workspace.
+The **Review** action is shown only while a document still needs a decision or
+a replacement workflow is active.
