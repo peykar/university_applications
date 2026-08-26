@@ -323,3 +323,17 @@ The Programs card polish now targets the actual compact `agent-list-row`
 markup used by the applicant detail template. Each row receives the
 `program-interest-row` hook and each source pill receives a source-specific
 class such as `program-source-agent` or `program-source-user`.
+
+### Agent secondary action affordance
+
+Secondary workspace actions such as Edit applicant, Reassign, Upload document,
+Activity, Edit internal notes, and Assign to me use a consistent compact
+outlined-control treatment. They remain visually secondary to lifecycle
+primary actions, but now have an explicit border, background, hover/focus
+state, and pointer cursor so they are immediately recognizable as interactive.
+
+### Secondary action regression test
+
+The agent edit/upload workflow regression test now expects the shared
+`agent-action-control` class added to section actions. The interaction remains
+the same; the additional class provides the clearer button affordance.

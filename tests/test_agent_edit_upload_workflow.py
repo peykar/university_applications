@@ -41,7 +41,7 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
 
     def test_section_actions_are_compact_and_applicant_update_is_auditable(self):
         self.assertIn(
-            'class="section-action button-reset modal-trigger"',
+            'class="section-action agent-action-control button-reset modal-trigger"',
             self.template,
         )
         self.assertIn("Last updated by", self.template)
