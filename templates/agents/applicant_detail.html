@@ -32,45 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
-<dialog id="suggest-program-modal" class="agent-modal compact-program-modal">
- <div class="agent-modal-card">
-  <div class="agent-modal-head compact-modal-head">
-   <div>
-    <span class="eyebrow">{% trans "PROGRAMS" %}</span>
-    <h2>{% trans "Suggest a program" %}</h2>
-    <p>{% trans "Search a program, optionally choose an intake, and add a short note." %}</p>
-   </div>
-   <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
-  </div>
-  <form method="post" action="{% url 'agent-applicant-program-suggest' lead.pk %}">
-   {% csrf_token %}
-   <div class="agent-form-grid compact-program-form">
-    <label class="agent-form-field agent-form-field-wide compact-field">
-     <span class="compact-field-label">{{ program_suggestion_form.program.label }}</span>
-     <div class="searchable-program-field" data-search-url="{% url 'agent-program-search' %}">
-      {{ program_suggestion_form.program }}
-     </div>
-    </label>
-    <label class="agent-form-field agent-form-field-wide compact-field">
-     <span class="compact-field-label">{{ program_suggestion_form.program_offering.label }}</span>
-     <div class="searchable-offering-field" data-search-url="{% url 'agent-program-offering-search' %}">
-      {{ program_suggestion_form.program_offering }}
-     </div>
-     <small>{% trans "Optional. Select an intake now if known; it is required before creating a draft application." %}</small>
-    </label>
-    <label class="agent-form-field agent-form-field-wide compact-field compact-note-field">
-     <span class="compact-field-label">{{ program_suggestion_form.suggestion_reason.label }}</span>
-     {{ program_suggestion_form.suggestion_reason }}
-     <small>{% trans "Add a short reason only if it helps the applicant understand the suggestion." %}</small>
-    </label>
-   </div>
-   <div class="agent-modal-actions compact-modal-actions">
-    <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
-    <button type="submit" class="button">{% trans "Suggest program" %}</button>
-   </div>
-  </form>
- </div>
-</dialog>
+
 
 {% endblock %}
 {% block agent_content %}
@@ -607,14 +569,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-<section class="agent-panel"><div class="agent-panel-head"><div class="section-heading-actions"><h2>{% trans "Programs" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<button type="button" class="section-action button-reset modal-trigger" data-modal-target="suggest-program-modal">{% trans "Suggest program" %}</button>{% endif %}</div></div>
+<section class="agent-panel"><div class="agent-panel-head"><div class="section-heading-actions"><h2>{% trans "Programs" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<a class="section-action" href="{% url 'agent-applicant-program-suggest' lead.pk %}">{% trans "Suggest program" %}</a>{% endif %}</div></div>
 <div class="agent-list">{% for interest in interests %}<div class="agent-list-row"><span><a class="agent-program-link" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener"><strong>{{ interest.program.name_en }}</strong></a><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill">{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</span></div>{% empty %}<p class="empty-state">{% trans "No programs." %}</p>{% endfor %}</div>
 </section>
 </aside>
 </div>
 
 {% endblock %}
-{% block extra_scripts %}
-{{ block.super }}
-<script src="{% static 'js/searchable_program_suggestion.js' %}"></script>
-{% endblock %}
+

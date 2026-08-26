@@ -292,3 +292,19 @@ Workspace instead of a large generic form.
 The program suggestion reason is presented as **Suggestion note (optional)**.
 It uses a shorter two-row textarea with lighter helper text so it does not
 visually outweigh the Program and Program offering selectors.
+
+
+### Program suggestion page
+
+Program suggestion is no longer handled in a modal. **Suggest program** opens
+a dedicated Agent Workspace page with the searchable Program selector,
+dependent Offering selector, optional note, applicant context, and explicit
+Cancel/Submit actions. This gives the workflow more space without making the
+controls oversized or visually competing with the applicant detail page.
+
+### Program suggestion test cleanup
+
+Legacy tests for the removed Suggest Program modal were deleted. Searchable
+program-selection tests now target `program_suggest.html`, and the workflow
+test verifies that the applicant page links to the dedicated suggestion page
+instead of expecting a modal trigger.

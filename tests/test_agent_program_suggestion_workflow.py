@@ -15,7 +15,8 @@ class AgentProgramSuggestionWorkflowTests(SimpleTestCase):
         )
 
     def test_applicant_page_has_suggest_program_action(self):
-        self.assertIn('data-modal-target="suggest-program-modal"', self.template)
+        self.assertIn("agent-applicant-program-suggest", self.template)
+        self.assertNotIn('data-modal-target="suggest-program-modal"', self.template)
         self.assertIn('{% trans "Suggest program" %}', self.template)
 
     def test_agent_suggestion_creates_agent_interest(self):

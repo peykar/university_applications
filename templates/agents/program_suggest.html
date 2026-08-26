@@ -1,0 +1,118 @@
+{% extends "agents/base.html" %}
+{% load i18n static %}
+
+{% block agent_title %}{% trans "Suggest program" %} · {{ lead }}{% endblock %}
+
+{% block agent_content %}
+<div class="program-suggest-page">
+ <div class="program-suggest-header">
+  <div>
+   <span class="eyebrow">{% trans "PROGRAMS" %}</span>
+   <h1>{% trans "Suggest a program" %}</h1>
+   <p>
+    {% blocktrans with applicant=lead %}
+     Add a program for {{ applicant }} to consider. You can optionally choose a specific intake now.
+    {% endblocktrans %}
+   </p>
+  </div>
+  <a class="button button-secondary" href="{% url 'agent-applicant-detail' lead.pk %}">
+   {% trans "Back to applicant" %}
+  </a>
+ </div>
+
+ <div class="program-suggest-layout">
+  <section class="program-suggest-card">
+   <form method="post" novalidate>
+    {% csrf_token %}
+
+    <div class="program-suggest-fields">
+     <div class="program-suggest-field">
+      <label for="{{ form.program.id_for_label }}">{{ form.program.label }}</label>
+      <div
+       class="searchable-program-field"
+       data-search-url="{% url 'agent-program-search' %}"
+      >
+       {{ form.program }}
+      </div>
+      {% for error in form.program.errors %}
+       <p class="field-error">{{ error }}</p>
+      {% endfor %}
+     </div>
+
+     <div class="program-suggest-field">
+      <div class="field-label-row">
+       <label for="{{ form.program_offering.id_for_label }}">{{ form.program_offering.label }}</label>
+       <span>{% trans "Optional" %}</span>
+      </div>
+      <div
+       class="searchable-offering-field"
+       data-search-url="{% url 'agent-program-offering-search' %}"
+      >
+       {{ form.program_offering }}
+      </div>
+      <p class="field-help">
+       {% trans "Choose an intake now if known. A specific intake is required before this can become a draft application." %}
+      </p>
+      {% for error in form.program_offering.errors %}
+       <p class="field-error">{{ error }}</p>
+      {% endfor %}
+     </div>
+
+     <div class="program-suggest-field">
+      <div class="field-label-row">
+       <label for="{{ form.suggestion_reason.id_for_label }}">{{ form.suggestion_reason.label }}</label>
+      </div>
+      {{ form.suggestion_reason }}
+      <p class="field-help">
+       {% trans "A short note can help the applicant understand why this program may be a good fit." %}
+      </p>
+      {% for error in form.suggestion_reason.errors %}
+       <p class="field-error">{{ error }}</p>
+      {% endfor %}
+     </div>
+    </div>
+
+    {% if form.non_field_errors %}
+     <div class="form-error-summary">
+      {{ form.non_field_errors }}
+     </div>
+    {% endif %}
+
+    <div class="program-suggest-actions">
+     <a class="button button-secondary" href="{% url 'agent-applicant-detail' lead.pk %}">
+      {% trans "Cancel" %}
+     </a>
+     <button class="button" type="submit">{% trans "Suggest program" %}</button>
+    </div>
+   </form>
+  </section>
+
+  <aside class="program-suggest-aside">
+   <div class="program-suggest-context">
+    <span class="eyebrow">{% trans "APPLICANT" %}</span>
+    <strong>{{ lead }}</strong>
+    <small>{{ lead.email|default:lead.user.email }}</small>
+    <div class="context-row">
+     <span>{% trans "Status" %}</span>
+     <strong>{{ lead.get_status_display }}</strong>
+    </div>
+    <div class="context-row">
+     <span>{% trans "Responsible" %}</span>
+     <strong>
+      {% if lead.assigned_to %}
+       {{ lead.assigned_to.get_full_name|default:lead.assigned_to.username }}
+      {% else %}
+       {% trans "Unassigned" %}
+      {% endif %}
+     </strong>
+    </div>
+   </div>
+  </aside>
+ </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script src="{% static 'js/searchable_program_suggestion.js' %}"></script>
+{% endblock %}

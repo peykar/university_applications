@@ -10,9 +10,7 @@ class AgentProgramSuggestionSearchableTests(SimpleTestCase):
         self.forms = (root / "apps/agents/forms.py").read_text(encoding="utf-8")
         self.views = (root / "apps/agents/views.py").read_text(encoding="utf-8")
         self.urls = (root / "apps/agents/urls.py").read_text(encoding="utf-8")
-        self.template = (root / "templates/agents/applicant_detail.html").read_text(
-            encoding="utf-8"
-        )
+        self.template = (root / "templates/agents/program_suggest.html").read_text(encoding="utf-8")
         self.js = (root / "static/js/searchable_program_suggestion.js").read_text(encoding="utf-8")
 
     def test_ajax_search_routes_exist(self):
