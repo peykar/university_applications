@@ -3651,3 +3651,9 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   .error-actions{display:grid;grid-template-columns:1fr}
   .error-actions .button{width:100%;justify-content:center}
 }
+
+.program-card-link{display:flex;color:inherit;text-decoration:none;cursor:pointer}
+.program-card-link:hover,.program-card-link:focus-visible{color:inherit;text-decoration:none}
+.program-card-link:focus-visible{outline:3px solid rgba(11,58,103,.22);outline-offset:3px}
+.program-card-link h2{color:#102d4d}
+.program-card-link:hover h2{color:#0b3a67}

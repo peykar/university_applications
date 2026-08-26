@@ -695,3 +695,8 @@
 - API, health and non-HTML 404 responses remain untouched.
 - Real non-404 developer exceptions remain visible in development.
 - Preserved specialized Agent Workspace 404 actions and privacy-safe wording.
+
+### Fully clickable program cards
+- Made the entire shared program discovery card clickable, matching university cards.
+- Removed nested title/CTA anchors while preserving their visual affordances.
+- Added keyboard focus styling and regression tests.
