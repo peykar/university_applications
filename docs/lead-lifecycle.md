@@ -248,3 +248,18 @@ finalized Lead as historical discussion context.
 Because draft-application creation is part of the same atomic finalization
 transaction, any failure rolls back Student creation, document copying,
 Applications, and the Lead lifecycle transition together.
+
+
+### Agent program suggestions
+
+Active Lead pages expose **Suggest program** in the Programs card. An agent user
+can select an active Program, optionally choose a concrete ProgramOffering/intake,
+and add a suggestion reason. The action creates `LeadProgramInterest` with
+`source=AGENT` and `suggested_by` set to the acting user.
+
+The suggestion creates a customer-visible `PROGRAM_SUGGESTED` activity and a
+system conversation message, so the applicant is informed. The resulting
+interest appears alongside user-added interests and is eligible for
+cherry-picking during finalization. An offering remains optional while the
+program is only being discussed, but finalization requires a concrete offering
+before that interest can become a Draft Application.

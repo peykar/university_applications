@@ -8,7 +8,9 @@ from apps.leads.models import (
     Lead,
     LeadDocument,
     LeadDocumentReviewStatus,
+    LeadProgramInterest,
 )
+from apps.universities.models import Program, ProgramOffering
 
 
 class DocumentReviewForm(forms.Form):
@@ -90,3 +92,50 @@ class AgentLeadDocumentUploadForm(forms.ModelForm):
         widgets: ClassVar[dict[str, forms.Widget]] = {
             "description": forms.Textarea(attrs={"rows": 2})
         }
+
+
+class AgentProgramSuggestionForm(forms.ModelForm):
+    """Create an agent-suggested program interest for a Lead."""
+
+    class Meta:
+        model = LeadProgramInterest
+        fields = ("program", "program_offering", "suggestion_reason")
+        widgets: ClassVar[dict[str, forms.Widget]] = {
+            "suggestion_reason": forms.Textarea(attrs={"rows": 3}),
+        }
+        labels: ClassVar[dict[str, object]] = {
+            "suggestion_reason": _("Why are you suggesting this program?"),
+        }
+
+    def __init__(self, *args, lead=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.lead = lead
+        program_field = self.fields["program"]
+        offering_field = self.fields["program_offering"]
+        if not isinstance(program_field, forms.ModelChoiceField):
+            raise TypeError("program must be a ModelChoiceField")
+        if not isinstance(offering_field, forms.ModelChoiceField):
+            raise TypeError("program_offering must be a ModelChoiceField")
+
+        program_field.queryset = (
+            Program.objects.filter(is_active=True)
+            .select_related("university")
+            .order_by("university__name_en", "name_en")
+        )
+        offering_field.required = False
+        offering_field.queryset = (
+            ProgramOffering.objects.filter(is_active=True)
+            .select_related("program", "academic_year", "semester")
+            .order_by("program__name_en", "-academic_year__name_en")
+        )
+
+    def clean(self):
+        cleaned = super().clean() or {}
+        program = cleaned.get("program")
+        offering = cleaned.get("program_offering")
+        if program is not None and offering is not None and offering.program_id != program.pk:
+            self.add_error(
+                "program_offering",
+                _("The selected intake must belong to the selected program."),
+            )
+        return cleaned

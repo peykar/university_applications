@@ -31,6 +31,42 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+
+<dialog id="suggest-program-modal" class="agent-modal">
+ <div class="agent-modal-card">
+  <div class="agent-modal-head">
+   <div>
+    <span class="eyebrow">{% trans "PROGRAMS" %}</span>
+    <h2>{% trans "Suggest a program" %}</h2>
+    <p>{% trans "Add a program to the applicant's discussed programs. A specific intake is optional until finalization." %}</p>
+   </div>
+   <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+  </div>
+  <form method="post" action="{% url 'agent-applicant-program-suggest' lead.pk %}">
+   {% csrf_token %}
+   <div class="agent-form-grid">
+    <label class="agent-form-field agent-form-field-wide">
+     <span>{{ program_suggestion_form.program.label }}</span>
+     {{ program_suggestion_form.program }}
+    </label>
+    <label class="agent-form-field agent-form-field-wide">
+     <span>{{ program_suggestion_form.program_offering.label }}</span>
+     {{ program_suggestion_form.program_offering }}
+     <small>{% trans "Optional. Select an intake now if known; it is required before creating a draft application." %}</small>
+    </label>
+    <label class="agent-form-field agent-form-field-wide">
+     <span>{{ program_suggestion_form.suggestion_reason.label }}</span>
+     {{ program_suggestion_form.suggestion_reason }}
+    </label>
+   </div>
+   <div class="agent-modal-actions">
+    <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+    <button type="submit" class="button">{% trans "Suggest program" %}</button>
+   </div>
+  </form>
+ </div>
+</dialog>
+
 {% endblock %}
 {% block agent_content %}
 <div class="agent-detail-grid">
@@ -566,7 +602,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-<section class="agent-panel"><div class="agent-panel-head"><h2>{% trans "Programs" %}</h2></div>
+<section class="agent-panel"><div class="agent-panel-head"><div class="section-heading-actions"><h2>{% trans "Programs" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<button type="button" class="section-action button-reset modal-trigger" data-modal-target="suggest-program-modal">{% trans "Suggest program" %}</button>{% endif %}</div></div>
 <div class="agent-list">{% for interest in interests %}<div class="agent-list-row"><span><a class="agent-program-link" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener"><strong>{{ interest.program.name_en }}</strong></a><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill">{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</span></div>{% empty %}<p class="empty-state">{% trans "No programs." %}</p>{% endfor %}</div>
 </section>
 </aside>

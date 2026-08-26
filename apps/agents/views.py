@@ -26,6 +26,7 @@ from apps.leads.models import (
     LeadMessageRead,
     LeadMessageSenderType,
     LeadProgramInterest,
+    LeadProgramInterestSource,
     LeadStatus,
 )
 from apps.leads.services.conversion import finalize_lead
@@ -34,6 +35,7 @@ from apps.leads.services.messaging import ensure_conversation, send_system_messa
 from .forms import (
     AgentLeadDocumentUploadForm,
     AgentLeadEditForm,
+    AgentProgramSuggestionForm,
     DocumentReviewForm,
     PromoteChatAttachmentForm,
 )
@@ -249,6 +251,7 @@ def applicant_detail(request, lead_id):
             "lead_edit_form": AgentLeadEditForm(instance=lead),
             "document_upload_form": AgentLeadDocumentUploadForm(),
             "document_review_form": DocumentReviewForm(),
+            "program_suggestion_form": AgentProgramSuggestionForm(lead=lead),
             "promote_attachment_form": PromoteChatAttachmentForm(),
             "documents": lead.documents.select_related(
                 "reviewed_by",
@@ -642,6 +645,63 @@ def applicant_assign(request, lead_id):
         request,
         f"{_user_display_name(target_user)} is now responsible for this applicant.",
     )
+    return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+
+@login_required
+@require_POST
+def applicant_program_suggest(request, lead_id):
+    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+
+    if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
+        messages.error(
+            request,
+            "Programs can only be suggested for an active applicant.",
+        )
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    form = AgentProgramSuggestionForm(request.POST, lead=lead)
+    if not form.is_valid():
+        detail = " ".join(
+            str(message) for field_messages in form.errors.values() for message in field_messages
+        )
+        messages.error(request, f"Program could not be suggested. {detail}")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    interest = form.save(commit=False)
+    interest.lead = lead
+    interest.source = LeadProgramInterestSource.AGENT
+    interest.suggested_by = request.user
+    interest.created_by = request.user
+    interest.updated_by = request.user
+    try:
+        interest.full_clean()
+        interest.save()
+    except ValidationError as exc:
+        detail = " ".join(str(message) for message in exc.messages)
+        messages.error(request, f"Program could not be suggested. {detail}")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=LeadActivityType.PROGRAM_SUGGESTED,
+        description=f"{interest.program} was suggested by an agent user.",
+        metadata={
+            "program_id": str(interest.program_id),
+            "program_offering_id": (
+                str(interest.program_offering_id) if interest.program_offering_id else None
+            ),
+        },
+        is_customer_visible=True,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    send_system_message(
+        lead,
+        f"We suggested {interest.program} for you to consider.",
+        performed_by=request.user,
+    )
+    messages.success(request, f"{interest.program} suggested to the applicant.")
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 
