@@ -3861,3 +3861,33 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   .lead-document-actions{justify-content:flex-start}
   .document-replace-form{display:grid}
 }
+
+
+/* Customer document upload modal */
+.customer-document-upload-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:12px;padding:14px 15px;border:1px solid #dbe5ec;border-radius:12px;background:#f9fbfc}
+.customer-document-upload-row>div{display:grid;gap:3px}
+.customer-document-upload-row strong{font-size:.88rem;color:#19324a}
+.customer-document-upload-row span{font-size:.75rem;color:var(--muted)}
+.customer-document-modal{width:min(92vw,560px);max-height:88vh;padding:0;border:0;border-radius:18px;background:transparent;box-shadow:0 28px 80px rgba(10,35,57,.25)}
+.customer-document-modal::backdrop{background:rgba(8,28,44,.52);backdrop-filter:blur(2px)}
+.customer-document-modal-card{box-sizing:border-box;max-height:88vh;overflow:auto;padding:24px;background:#fff;border:1px solid #dce5ec;border-radius:18px}
+.customer-document-modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding-bottom:17px;border-bottom:1px solid #e5ebef}
+.customer-document-modal-head h2{margin:4px 0 3px;font-size:1.35rem}
+.customer-document-modal-head p{margin:0;color:var(--muted)}
+.customer-document-modal-head .modal-close{width:34px;height:34px;border-radius:50%;font-size:1.6rem;line-height:1;cursor:pointer;color:#536174}
+.customer-document-modal-form{display:grid;gap:15px;margin-top:18px}
+.customer-document-modal-form>label{display:grid;gap:6px;font-size:.76rem;font-weight:800;color:#34485b}
+.customer-document-modal-form label small{font-weight:500;color:var(--muted)}
+.customer-document-modal-form select,
+.customer-document-modal-form input[type=file],
+.customer-document-modal-form textarea{box-sizing:border-box;width:100%;padding:10px 11px;border:1px solid #cfdbe4;border-radius:9px;background:#fff;font:inherit;color:#172536}
+.customer-document-modal-form textarea{min-height:88px;max-height:160px;resize:vertical}
+.customer-document-modal-actions{display:flex;justify-content:flex-end;gap:9px}
+@media(max-width:700px){
+ .customer-document-upload-row{align-items:stretch;flex-direction:column}
+ .customer-document-upload-row .button{width:100%;justify-content:center}
+ .customer-document-modal{width:calc(100vw - 24px)}
+ .customer-document-modal-card{padding:18px}
+ .customer-document-modal-actions{display:grid;grid-template-columns:1fr 1fr}
+ .customer-document-modal-actions .button{width:100%}
+}

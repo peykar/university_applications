@@ -1,6 +1,38 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{{ lead }} — TurkDemy{% endblock %}
+{% block title %}{{ lead }} — TurkDemy
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const closeDialog = (dialog) => {
+    if (dialog && dialog.open) {
+      dialog.close();
+    }
+  };
+
+  document.querySelectorAll(".modal-trigger").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const dialog = document.getElementById(trigger.dataset.modalTarget);
+      if (dialog) {
+        dialog.showModal();
+      }
+    });
+  });
+
+  document.querySelectorAll(".customer-document-modal").forEach((dialog) => {
+    dialog.querySelectorAll(".modal-close").forEach((button) => {
+      button.addEventListener("click", () => closeDialog(dialog));
+    });
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) {
+        closeDialog(dialog);
+      }
+    });
+  });
+});
+</script>
+
+{% endblock %}
 {% block content %}
 <div class="customer-applicant-page">
 <section class="applicant-hero">
@@ -117,14 +149,56 @@
         {% endfor %}
       </div>
 
-      <details class="lead-upload-panel">
-        <summary>{% trans "Upload document" %}</summary>
-        <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-upload' lead.id %}" class="compact-form document-upload-form">
-          {% csrf_token %}
-          {{ document_form.as_p }}
-          <button class="button" type="submit">{% trans "Upload" %}</button>
-        </form>
-      </details>
+      <div class="customer-document-upload-row">
+        <div>
+          <strong>{% trans "Add another document" %}</strong>
+          <span>{% trans "Upload a file and choose what type of document it is." %}</span>
+        </div>
+        <button type="button" class="button button-secondary modal-trigger" data-modal-target="customer-document-upload">
+          {% trans "Upload document" %}
+        </button>
+      </div>
+
+      <dialog class="customer-document-modal" id="customer-document-upload" aria-labelledby="customer-upload-title">
+        <div class="customer-document-modal-card">
+          <div class="customer-document-modal-head">
+            <div>
+              <span class="eyebrow">{% trans "Documents" %}</span>
+              <h2 id="customer-upload-title">{% trans "Upload document" %}</h2>
+              <p>{% trans "Choose the document type and file. Description is optional." %}</p>
+            </div>
+            <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+          </div>
+
+          <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-upload' lead.id %}" class="customer-document-modal-form">
+            {% csrf_token %}
+
+            <label>
+              <span>{% trans "Document type" %}</span>
+              {{ document_form.document_type }}
+            </label>
+
+            <label>
+              <span>{% trans "File" %}</span>
+              {{ document_form.file }}
+            </label>
+
+            <label>
+              <span>{% trans "Description" %} <small>{% trans "(optional)" %}</small></span>
+              {{ document_form.description }}
+            </label>
+
+            <p class="modal-help">
+              {% trans "The filename is kept automatically, so you do not need to enter a separate document name." %}
+            </p>
+
+            <div class="customer-document-modal-actions">
+              <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+              <button class="button" type="submit">{% trans "Upload document" %}</button>
+            </div>
+          </form>
+        </div>
+      </dialog>
     </section>
 
     <section class="lead-panel">

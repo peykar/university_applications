@@ -216,7 +216,7 @@ class LeadPreferenceForm(forms.ModelForm):
 class LeadDocumentForm(forms.ModelForm):
     class Meta:
         model = LeadDocument
-        fields = ("document_type", "name", "file", "description")
+        fields = ("document_type", "file", "description")
 
 
 class LeadDocumentReplacementForm(forms.Form):

@@ -62,3 +62,19 @@ as a `LeadDocumentVersion`, replaces the current file on the same
 `LeadDocument`, resets review state to **Needs review**, clears the current
 review metadata, and sends a system message that the replacement is pending
 review. This preserves both the logical document identity and internal history.
+
+
+## Customer document upload UI
+
+The applicant Documents page uses a modal upload flow rather than an expanded
+inline form.
+
+The customer only provides:
+
+- document type
+- file
+- optional description
+
+There is no customer-facing `name` field. `LeadDocument.name` remains an
+internal display/storage label and is automatically populated from the uploaded
+filename when needed.

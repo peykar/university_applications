@@ -782,3 +782,9 @@
 - Added archived document versions before replacement.
 - Replacement updates the existing document and resets it to pending review.
 - Replacement requests and replacement uploads generate conversation messages.
+
+### Customer document upload modal
+- Replaced the large inline customer upload form with a compact modal.
+- Removed the customer-facing document name input.
+- Document name is derived automatically from the uploaded filename.
+- Reduced Description to a compact optional textarea.

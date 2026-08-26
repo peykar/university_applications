@@ -13,12 +13,13 @@ class ApplicantDetailDesignTests(SimpleTestCase):
         self.assertIn('class="customer-applicant-page"', self.template)
         self.assertIn(".customer-applicant-page .applicant-workspace", self.css)
 
-    def test_document_upload_uses_styled_form(self):
-        self.assertIn("document-upload-form", self.template)
-        self.assertIn(
-            ".customer-applicant-page .document-upload-form",
-            self.css,
-        )
+    def test_document_upload_uses_styled_modal(self):
+        self.assertIn("customer-document-upload-row", self.template)
+        self.assertIn('data-modal-target="customer-document-upload"', self.template)
+        self.assertIn('id="customer-document-upload"', self.template)
+        self.assertIn("customer-document-modal-form", self.template)
+        self.assertIn(".customer-document-modal", self.css)
+        self.assertNotIn('<details class="lead-upload-panel">', self.template)
 
     def test_chat_composer_has_responsive_file_control(self):
         self.assertIn('class="chat-file-control"', self.template)
