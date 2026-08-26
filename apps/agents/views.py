@@ -60,7 +60,7 @@ def _render_agent_not_found(
     list_url_name: str,
 ):
     """Render a privacy-safe 404 without revealing cross-agent resource existence."""
-    return render(
+    response = render(
         request,
         "errors/404.html",
         {
@@ -75,6 +75,8 @@ def _render_agent_not_found(
         },
         status=404,
     )
+    response["X-TurkDemy-Error-Page"] = "1"
+    return response
 
 
 @login_required

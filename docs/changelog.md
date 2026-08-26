@@ -688,3 +688,10 @@
   unavailable scoped resources, even during development.
 - Error wording does not reveal whether a resource belongs to another agent.
 - Added a global production `handler404` and regression tests.
+
+### Consistent branded 404s in development
+- Added HTML-only `BrandedNotFoundMiddleware`.
+- Normal site 404s now use TurkDemy's branded page even with `DEBUG=True`.
+- API, health and non-HTML 404 responses remain untouched.
+- Real non-404 developer exceptions remain visible in development.
+- Preserved specialized Agent Workspace 404 actions and privacy-safe wording.

@@ -1,3 +1,5 @@
+from html import unescape
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -33,10 +35,9 @@ class FancyAgentNotFoundTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertTemplateUsed(response, "errors/404.html")
-        self.assertContains(
-            response,
+        self.assertIn(
             "isn't available in your agent workspace",
-            status_code=404,
+            unescape(response.content.decode()),
         )
 
     def test_other_agents_applicant_does_not_leak_existence(self):
