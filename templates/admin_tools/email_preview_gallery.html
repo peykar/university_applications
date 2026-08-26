@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}Email Preview Gallery — TurkDemy{% endblock %}
+{% block content %}
+<section class="email-preview-page">
+  <div class="email-preview-heading">
+    <div>
+      <p class="eyebrow">SUPERUSER TOOL</p>
+      <h1>Email Preview Gallery</h1>
+      <p>Canonical preview registry for every outgoing TurkDemy email in every supported language.</p>
+    </div>
+    <div class="email-preview-stats">
+      <span><strong>{{ email_count }}</strong> email types</span>
+      <span><strong>{{ preview_count }}</strong> language previews</span>
+    </div>
+  </div>
+
+  {% for category, specs in categories.items %}
+    <section class="email-preview-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">{{ category }}</p><h2>{{ category }} emails</h2></div>
+      </div>
+      <div class="email-preview-table-wrap">
+        <table class="email-preview-table">
+          <thead>
+            <tr>
+              <th>Email</th>
+              {% for code, name in languages %}<th>{{ name }}</th>{% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for spec in specs %}
+              <tr>
+                <td>
+                  <strong>{{ spec.label }}</strong>
+                  <code>{{ spec.template_prefix }}</code>
+                </td>
+                {% for code, name in languages %}
+                  <td>
+                    <a class="email-preview-language-link" href="{% url 'email-preview-detail' spec.key code %}">
+                      Preview
+                    </a>
+                  </td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  {% endfor %}
+</section>
+{% endblock %}

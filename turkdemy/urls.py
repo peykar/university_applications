@@ -17,6 +17,7 @@ urlpatterns: list[URLPattern | URLResolver] = [
     path("api/v1/", include("apps.api.urls")),
     path("accounts/", include("apps.accounts.urls")),
     path("accounts/", include("allauth.urls")),
+    path("admin-tools/", include("apps.core.urls")),
 ]
 
 urlpatterns += i18n_patterns(

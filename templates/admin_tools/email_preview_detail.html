@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ spec.label }} · {{ language_name }} — Email Preview{% endblock %}
+{% block content %}
+<section class="email-preview-page">
+  <div class="email-preview-detail-head">
+    <div>
+      <a class="auth-back-link email-preview-back" href="{% url 'email-preview-gallery' %}">← All email previews</a>
+      <p class="eyebrow">{{ spec.category }} · {{ language_name }}</p>
+      <h1>{{ spec.label }}</h1>
+      <code>{{ spec.template_prefix }}</code>
+    </div>
+    <form method="post" action="{% url 'email-preview-send' spec.key language %}">
+      {% csrf_token %}
+      <button class="button" type="submit">Send test to myself</button>
+    </form>
+  </div>
+
+  {% if possibly_untranslated %}
+    <div class="email-preview-warning">
+      This preview is identical to English and may be missing translations.
+    </div>
+  {% endif %}
+
+  <div class="email-preview-meta">
+    <div><span>Language</span><strong>{{ language_name }} ({{ language }})</strong></div>
+    <div><span>Subject</span><strong>{{ subject }}</strong></div>
+  </div>
+
+  <section class="email-preview-browser">
+    <div class="email-preview-browser-bar">
+      <span></span><span></span><span></span>
+      <strong>HTML email preview</strong>
+    </div>
+    <iframe
+      title="{{ spec.label }} — {{ language_name }}"
+      srcdoc="{{ html_body|escape }}"
+      loading="lazy"
+    ></iframe>
+  </section>
+
+  <details class="email-preview-plain">
+    <summary>Plain-text fallback</summary>
+    <pre>{{ text_body }}</pre>
+  </details>
+</section>
+{% endblock %}

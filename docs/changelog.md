@@ -723,3 +723,13 @@
 - Added a dedicated sign-in-code email with a prominent code block.
 - Changed login and email-verification codes to five numeric digits.
 - Added regression tests and email documentation.
+
+### Superuser Email Preview Gallery
+- Added `/admin-tools/email-previews/` for superusers only.
+- Registered every django-allauth account email type with safe sample data.
+- Added previews for every configured TurkDemy language.
+- Added HTML/plain-text inspection and "Send test to myself".
+- Added missing-translation warning for previews identical to English.
+- Added a Django system check that fails when allauth introduces an outgoing
+  email that has not been registered in the gallery.
+- Project email sends now require a registered `email_type`.
