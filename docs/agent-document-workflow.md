@@ -83,3 +83,9 @@ filename when needed.
 Approved documents keep only the **Open** action in the Agent Workspace.
 The **Review** action is shown only while a document still needs a decision or
 a replacement workflow is active.
+
+
+The document filename itself is the file link and opens in a new tab. The
+separate **Open** action was removed as redundant. Long filenames remain
+truncated visually and expose the full filename through the link title.
+Approved documents therefore need no action buttons at all.

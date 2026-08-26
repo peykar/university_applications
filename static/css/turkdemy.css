@@ -3916,3 +3916,21 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   .system-event-row{grid-template-columns:auto 1fr}
   .system-event-row time{grid-column:2}
 }
+
+
+/* Agent document filename links */
+.document-file-link{
+  display:block;
+  min-width:0;
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#5f7182;
+  font-size:.76rem;
+  text-decoration:none;
+}
+.document-file-link:hover{
+  color:#123f68;
+  text-decoration:underline;
+}
