@@ -3891,3 +3891,28 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
  .customer-document-modal-actions{display:grid;grid-template-columns:1fr 1fr}
  .customer-document-modal-actions .button{width:100%}
 }
+
+
+/* Agent document sidebar overflow + system event cleanup */
+.agent-panel .agent-document-list,
+.agent-panel .agent-document-card{min-width:0;max-width:100%;overflow:hidden}
+.agent-document-card{box-sizing:border-box;width:100%}
+.agent-document-summary{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}
+.agent-document-summary .document-copy{min-width:0;overflow:hidden}
+.agent-document-summary .document-copy strong,
+.agent-document-summary .document-copy small{display:block;min-width:0;max-width:100%}
+.agent-document-summary .document-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.agent-document-summary .status-pill{justify-self:end;white-space:nowrap}
+.agent-document-actions{display:flex;gap:10px;margin-top:8px}
+.agent-document-actions .text-action{flex:0 0 auto}
+.agent-message.system-event{margin:10px 0;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+.system-event-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px 10px;border:1px solid #dfe7ed;border-radius:10px;background:#f7f9fb;color:#5d6d7e;font-size:.75rem}
+.system-event-icon{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#e3eef5;color:#17466e;font-size:.68rem;font-weight:900}
+.system-event-text{min-width:0;line-height:1.4}
+.system-event-row time{white-space:nowrap;color:#8492a0;font-size:.68rem}
+@media(max-width:700px){
+  .agent-document-summary{grid-template-columns:1fr}
+  .agent-document-summary .status-pill{justify-self:start}
+  .system-event-row{grid-template-columns:auto 1fr}
+  .system-event-row time{grid-column:2}
+}

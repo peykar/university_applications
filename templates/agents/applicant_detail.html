@@ -53,9 +53,18 @@ document.addEventListener("DOMContentLoaded", () => {
  <div class="agent-panel-head"><h2>{% trans "Conversation" %}</h2></div>
  <div class="agent-chat">
  {% for message in lead_messages %}
-  <article class="agent-message {% if message.sender_type == 'customer' %}from-customer{% else %}from-agent{% endif %}">
-   <header><strong>{{ message.get_sender_type_display }}</strong><time>{{ message.created_at|date:"M j, H:i" }}</time></header>
-   {% if message.body %}<p>{{ message.body|linebreaksbr }}</p>{% endif %}
+  <article class="agent-message {% if message.sender_type == 'system' %}system-event{% elif message.sender_type == 'customer' %}from-customer{% else %}from-agent{% endif %}">
+   {% if message.sender_type == "system" %}
+    <div class="system-event-row">
+      <span class="system-event-icon" aria-hidden="true">✓</span>
+      <span class="system-event-text">{{ message.body }}</span>
+      <time>{{ message.created_at|date:"M j, H:i" }}</time>
+    </div>
+   {% else %}
+    <header><strong>{{ message.get_sender_type_display }}</strong><time>{{ message.created_at|date:"M j, H:i" }}</time></header>
+    {% if message.body %}<p>{{ message.body|linebreaksbr }}</p>{% endif %}
+   {% endif %}
+   {% if message.sender_type != "system" %}
    {% for attachment in message.attachments.all %}
     <div class="agent-chat-attachment">
       <span class="attachment-file-name">{{ attachment.original_name|default:"Attachment" }}</span>
@@ -102,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
       </dialog>
     {% endif %}
    {% endfor %}
+   {% endif %}
   </article>
  {% empty %}<p class="empty-state">{% trans "No messages yet." %}</p>{% endfor %}
  </div>
