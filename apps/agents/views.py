@@ -448,19 +448,35 @@ def applicant_document_upload(request, lead_id):
 
     document = form.save(commit=False)
     document.lead = lead
+    document.review_status = LeadDocumentReviewStatus.APPROVED
+    document.reviewed_by = request.user
+    document.reviewed_at = timezone.now()
+    document.is_verified = True
     document.created_by = request.user
     document.updated_by = request.user
     document.save()
 
+    LeadDocumentReviewHistory.objects.create(
+        document=document,
+        review_status=LeadDocumentReviewStatus.APPROVED,
+        review_note="Uploaded directly by agent user.",
+        reviewed_by=request.user,
+        reviewed_at=document.reviewed_at,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+
     LeadActivity.objects.create(
         lead=lead,
         activity_type=LeadActivityType.DOCUMENT_UPLOADED,
-        description=(f"{document.get_document_type_display()} uploaded by agent user."),
+        description=(
+            f"{document.get_document_type_display()} uploaded and approved by agent user."
+        ),
         is_customer_visible=False,
         created_by=request.user,
         updated_by=request.user,
     )
-    messages.success(request, "Document uploaded.")
+    messages.success(request, "Document uploaded and approved.")
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 

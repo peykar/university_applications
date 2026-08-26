@@ -178,3 +178,15 @@ being permanently truncated to the latest 100 records.
 The Activity page also has a dedicated **Notes** filter. It includes both
 legacy/general `NOTE` activities and the dedicated `INTERNAL_NOTES_UPDATED`
 events. **Applicant data** is limited to applicant-field update activities.
+
+
+### Agent-uploaded document review behavior
+
+Documents uploaded directly by an agent user are trusted as an agent-side
+action and do not enter the pending review queue. They are created as
+**Approved**, marked verified, and receive `reviewed_by` / `reviewed_at`
+metadata immediately. A `LeadDocumentReviewHistory` row is also created so the
+approval remains auditable.
+
+Documents uploaded by the applicant, or promoted from a customer chat
+attachment, continue through the normal review workflow.

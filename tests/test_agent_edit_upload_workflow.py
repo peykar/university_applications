@@ -28,7 +28,7 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
 
     def test_uploaded_document_has_agent_audit_activity(self):
         self.assertIn("LeadActivityType.DOCUMENT_UPLOADED", self.views)
-        self.assertIn("uploaded by agent user", self.views)
+        self.assertIn("uploaded and approved by agent user", self.views)
 
     def test_finalized_lead_is_not_edited_as_lead(self):
         self.assertIn("Finalized or closed applicant data cannot be edited here.", self.views)
@@ -64,3 +64,13 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
         self.assertIn("form.initial.get(field_name)", self.views)
         self.assertIn("form.cleaned_data.get(field_name)", self.views)
         self.assertIn("→", self.views)
+
+    def test_agent_uploaded_document_is_auto_approved(self):
+        self.assertIn(
+            "document.review_status = LeadDocumentReviewStatus.APPROVED",
+            self.views,
+        )
+        self.assertIn("document.is_verified = True", self.views)
+        self.assertIn("document.reviewed_by = request.user", self.views)
+        self.assertIn("LeadDocumentReviewHistory.objects.create(", self.views)
+        self.assertIn("Document uploaded and approved.", self.views)
