@@ -348,3 +348,21 @@ The visible `Updated ...` line was replaced with a very small audit chip that
 shows only the timestamp and keeps the full updater/timestamp detail in its
 tooltip. `Suggest program` now uses the same secondary-action control styling
 as the other Agent Workspace actions.
+
+### Applicant last-update display
+
+The Applicant summary no longer displays the lead `updated_at` timestamp.
+Detailed changes remain available in Activity, where update history is more
+useful and has proper context.
+
+### Applicant update timestamp regression cleanup
+
+The legacy edit/upload workflow test no longer expects `Last updated by` in
+the applicant summary. Update history belongs to Activity and is intentionally
+not rendered in the Applicant card.
+
+### Applicant update audit test cleanup
+
+The remaining legacy `lead.updated_by` template assertion was removed from the
+edit/upload workflow test. The Applicant card intentionally has no last-update
+metadata; historical changes are available through Activity.

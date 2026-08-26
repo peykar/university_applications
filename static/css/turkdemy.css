@@ -4756,32 +4756,6 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 
 
 /* Applicant header/facts cleanup */
-.applicant-audit-chip{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  width:auto;
-  padding:2px 6px;
-  border:0;
-  border-radius:6px;
-  background:transparent;
-  color:#93a0aa;
-  font-size:.58rem;
-  font-weight:700;
-  line-height:1;
-  cursor:help;
-}
-.applicant-audit-chip>span{
-  font-size:.68rem;
-  line-height:1;
-}
-.applicant-audit-chip time{
-  font:inherit;
-}
-.applicant-audit-chip:hover{
-  background:#f4f7f8;
-  color:#667985;
-}
 .program-suggest-action.agent-action-control{
   gap:5px;
 }

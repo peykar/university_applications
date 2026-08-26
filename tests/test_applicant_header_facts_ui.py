@@ -23,14 +23,11 @@ class ApplicantHeaderFactsUiTests(SimpleTestCase):
             self.template,
         )
 
-    def test_updated_information_is_compact_audit_chip(self):
-        self.assertIn("applicant-audit-chip", self.template)
-        self.assertIn("aria-label=\"{% trans 'Applicant update information' %}\"", self.template)
-        self.assertNotIn(
-            '{% trans "Updated" %} {{ lead.updated_at|date:"M j, Y H:i" }}',
-            self.template,
-        )
-        self.assertIn(".applicant-audit-chip{", self.css)
+    def test_last_update_is_not_shown_in_applicant_card(self):
+        self.assertNotIn("applicant-audit-chip", self.template)
+        self.assertNotIn("Applicant update information", self.template)
+        self.assertNotIn("lead.updated_at", self.template)
+        self.assertNotIn(".applicant-audit-chip{", self.css)
 
     def test_suggest_program_uses_shared_action_control(self):
         self.assertIn(

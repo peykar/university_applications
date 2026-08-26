@@ -40,16 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <div>
 <section class="agent-panel">
  <div class="agent-panel-head"><div><div class="section-heading-actions"><h2>{% trans "Applicant" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<button type="button" class="section-action agent-action-control button-reset modal-trigger" data-modal-target="edit-applicant-modal">{% trans "Edit applicant" %}</button>{% endif %}</div>
- <div class="section-audit">
-  <span
-   class="section-audit-indicator applicant-audit-chip"
-   title="{% if lead.updated_by %}{% blocktrans with person=lead.updated_by.get_full_name|default:lead.updated_by.username when=lead.updated_at|date:'M j, Y H:i' %}Last updated by {{ person }} · {{ when }}{% endblocktrans %}{% else %}{% blocktrans with when=lead.updated_at|date:'M j, Y H:i' %}Last updated · {{ when }}{% endblocktrans %}{% endif %}"
-   aria-label="{% trans 'Applicant update information' %}"
-  >
-   <span aria-hidden="true">↻</span>
-   <time datetime="{{ lead.updated_at|date:'c' }}">{{ lead.updated_at|date:"M j, H:i" }}</time>
-  </span>
- </div></div><span class="status-pill">{{ lead.get_status_display }}</span></div>
+</div><span class="status-pill">{{ lead.get_status_display }}</span></div>
  <dl class="agent-facts">
   <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:lead.user.email|default:"—" }}</dd></div>
   <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
