@@ -43,3 +43,22 @@ inline forms. This keeps the conversation and narrow Documents sidebar compact.
 - Add to documents opens a dialog for document type, name and description.
 - Promoted attachments show **Added to documents** and can open the related
   document review dialog.
+
+
+## Replacement requests
+
+A document that needs another copy uses **Replacement requested**, not
+"Rejected".
+
+When an agent requests replacement:
+
+- the review decision and note are written to `LeadDocumentReviewHistory`;
+- the applicant sees the replacement reason;
+- a system message is added to the applicant conversation;
+- the applicant gets **Replace document** on that exact document.
+
+When the applicant uploads a replacement, TurkDemy archives the previous file
+as a `LeadDocumentVersion`, replaces the current file on the same
+`LeadDocument`, resets review state to **Needs review**, clears the current
+review metadata, and sends a system message that the replacement is pending
+review. This preserves both the logical document identity and internal history.

@@ -18,6 +18,11 @@ urlpatterns = [
         name="lead-document-upload",
     ),
     path(
+        "applicants/<uuid:lead_id>/documents/<uuid:document_id>/replace/",
+        views.lead_document_replace,
+        name="lead-document-replace",
+    ),
+    path(
         "applicants/<uuid:lead_id>/messages/",
         views.lead_send_message,
         name="lead-send-message",

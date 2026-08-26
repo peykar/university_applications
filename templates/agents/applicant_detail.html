@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
        <span><strong>{% trans "Approve" %}</strong><small>{% trans "The document is acceptable." %}</small></span>
       </label>
       <label class="review-decision">
-       <input type="radio" name="review_status" value="rejected"{% if document.review_status == "rejected" %} checked{% endif %}>
+       <input type="radio" name="review_status" value="replacement_requested"{% if document.review_status == "replacement_requested" %} checked{% endif %}>
        <span><strong>{% trans "Request replacement" %}</strong><small>{% trans "The applicant should provide another version." %}</small></span>
       </label>
       <label class="review-decision">

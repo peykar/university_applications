@@ -219,6 +219,10 @@ class LeadDocumentForm(forms.ModelForm):
         fields = ("document_type", "name", "file", "description")
 
 
+class LeadDocumentReplacementForm(forms.Form):
+    file = forms.FileField(label=_("Replacement file"))
+
+
 class LeadMessageForm(forms.Form):
     body = forms.CharField(
         required=False,

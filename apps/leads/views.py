@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
@@ -11,6 +14,7 @@ from apps.universities.models import Program
 from .forms import (
     ApplyProgramForm,
     LeadDocumentForm,
+    LeadDocumentReplacementForm,
     LeadForm,
     LeadMessageForm,
     LeadPreferenceForm,
@@ -19,6 +23,9 @@ from .models import (
     Lead,
     LeadActivity,
     LeadActivityType,
+    LeadDocument,
+    LeadDocumentReviewStatus,
+    LeadDocumentVersion,
     LeadMessage,
     LeadMessageAttachment,
     LeadMessageRead,
@@ -26,7 +33,7 @@ from .models import (
     LeadProgramInterest,
     LeadProgramInterestSource,
 )
-from .services.messaging import ensure_conversation
+from .services.messaging import ensure_conversation, send_system_message
 
 
 def _customer_lead(user, lead_id):
@@ -202,6 +209,7 @@ def lead_detail(request, lead_id):
             "lead_messages": message_qs,
             "message_form": LeadMessageForm(),
             "document_form": LeadDocumentForm(),
+            "replacement_form": LeadDocumentReplacementForm(),
             "activities": lead.activities.filter(is_customer_visible=True).order_by("-created_at")[
                 :20
             ],
@@ -234,6 +242,88 @@ def lead_document_upload(request, lead_id):
     else:
         messages.error(request, "Could not upload the document.")
 
+    return redirect("lead-detail", lead_id=lead.pk)
+
+
+@login_required
+@require_POST
+def lead_document_replace(request, lead_id, document_id):
+    lead = _customer_lead(request.user, lead_id)
+    document = get_object_or_404(
+        LeadDocument.objects.select_related("reviewed_by"),
+        pk=document_id,
+        lead=lead,
+        review_status=LeadDocumentReviewStatus.REPLACEMENT_REQUESTED,
+    )
+    form = LeadDocumentReplacementForm(request.POST, request.FILES)
+    if not form.is_valid():
+        messages.error(request, "Choose a replacement file.")
+        return redirect("lead-detail", lead_id=lead.pk)
+
+    replacement = form.cleaned_data["file"]
+
+    document.file.open("rb")
+    try:
+        archived_content = ContentFile(document.file.read())
+    finally:
+        document.file.close()
+
+    version = LeadDocumentVersion(
+        document=document,
+        original_name=document.name or Path(document.file.name).name,
+        review_status=document.review_status,
+        review_note=document.review_note,
+        reviewed_by=document.reviewed_by,
+        reviewed_at=document.reviewed_at,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    version.file.save(
+        Path(document.file.name).name,
+        archived_content,
+        save=False,
+    )
+    version.save()
+
+    document.file = replacement
+    document.name = replacement.name
+    document.review_status = LeadDocumentReviewStatus.PENDING
+    document.review_note = ""
+    document.reviewed_by = None
+    document.reviewed_at = None
+    document.is_verified = False
+    document.updated_by = request.user
+    document.save(
+        update_fields=(
+            "file",
+            "name",
+            "review_status",
+            "review_note",
+            "reviewed_by",
+            "reviewed_at",
+            "is_verified",
+            "updated_by",
+            "updated_at",
+        )
+    )
+
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=LeadActivityType.DOCUMENT_UPLOADED,
+        description=f"Replacement uploaded: {document.get_document_type_display()}",
+        is_customer_visible=True,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    send_system_message(
+        lead,
+        (
+            f"A replacement was uploaded for "
+            f"{document.get_document_type_display()}. It is now pending review."
+        ),
+        performed_by=request.user,
+    )
+    messages.success(request, "Replacement uploaded and sent for review.")
     return redirect("lead-detail", lead_id=lead.pk)
 
 

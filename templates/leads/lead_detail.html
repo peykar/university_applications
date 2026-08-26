@@ -77,14 +77,39 @@
       <div class="section-heading"><div><p class="eyebrow">{% trans "Files" %}</p><h2>{% trans "Documents" %}</h2></div></div>
       <div class="lead-document-list">
         {% for document in documents %}
-          <div class="lead-document-row">
-            <div>
+          <div class="lead-document-row lead-document-row-review-{{ document.review_status }}">
+            <div class="lead-document-copy">
               <strong>{{ document.get_document_type_display }}</strong>
               <span>{{ document.name }}</span>
+              {% if document.review_status == "replacement_requested" and document.review_note %}
+                <p class="document-replacement-reason">
+                  <strong>{% trans "Why a replacement is needed:" %}</strong>
+                  {{ document.review_note }}
+                </p>
+              {% endif %}
             </div>
-            <div>
-              {% if document.is_verified %}<span class="badge badge-success">{% trans "Verified" %}</span>{% else %}<span class="badge">{% trans "Pending review" %}</span>{% endif %}
-              <a href="{{ document.file.url }}">{% trans "Open" %}</a>
+            <div class="lead-document-actions">
+              {% if document.review_status == "approved" %}
+                <span class="badge badge-success">{% trans "Approved" %}</span>
+              {% elif document.review_status == "replacement_requested" %}
+                <span class="badge badge-danger">{% trans "Replacement requested" %}</span>
+              {% else %}
+                <span class="badge">{% trans "Pending review" %}</span>
+              {% endif %}
+              <a href="{{ document.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
+              {% if document.review_status == "replacement_requested" %}
+                <details class="document-replace-panel">
+                  <summary>{% trans "Replace document" %}</summary>
+                  <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-replace' lead.id document.id %}" class="document-replace-form">
+                    {% csrf_token %}
+                    <label>
+                      <span>{% trans "Choose replacement file" %}</span>
+                      <input type="file" name="file" required>
+                    </label>
+                    <button class="button small-button" type="submit">{% trans "Upload replacement" %}</button>
+                  </form>
+                </details>
+              {% endif %}
             </div>
           </div>
         {% empty %}

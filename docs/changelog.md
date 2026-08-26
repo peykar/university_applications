@@ -774,3 +774,11 @@
 - Chat files are copied to LeadDocument storage and linked back to their source attachment.
 - Prevented duplicate attachment promotion.
 - Updated the Agent Workspace Programs panel to user-added / agent-suggested provenance.
+
+### Document replacement lifecycle
+- Renamed document "Rejected" to "Replacement requested".
+- Added customer-visible replacement reason and Replace document action.
+- Added review-history audit records.
+- Added archived document versions before replacement.
+- Replacement updates the existing document and resets it to pending review.
+- Replacement requests and replacement uploads generate conversation messages.

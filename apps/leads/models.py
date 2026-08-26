@@ -373,7 +373,7 @@ def lead_document_upload_path(instance, filename):
 class LeadDocumentReviewStatus(models.TextChoices):
     PENDING = "pending", _("Needs review")
     APPROVED = "approved", _("Approved")
-    REJECTED = "rejected", _("Rejected")
+    REPLACEMENT_REQUESTED = "replacement_requested", _("Replacement requested")
 
 
 class LeadDocument(BaseModel):
@@ -391,7 +391,7 @@ class LeadDocument(BaseModel):
     description = models.TextField(blank=True)
 
     review_status = models.CharField(
-        max_length=16,
+        max_length=32,
         choices=LeadDocumentReviewStatus.choices,
         default=LeadDocumentReviewStatus.PENDING,
         db_index=True,
@@ -529,6 +529,71 @@ class LeadMessage(BaseModel):
 
     def __str__(self):
         return f"{self.conversation.lead} - {self.get_sender_type_display()}"
+
+
+def lead_document_version_upload_path(instance, filename):
+    suffix = Path(filename).suffix.lower()[:16]
+    stored_name = f"{uuid4().hex}{suffix}"
+    return (
+        f"leads/{instance.document.lead_id}/documents/history/{instance.document_id}/{stored_name}"
+    )
+
+
+class LeadDocumentVersion(BaseModel):
+    """Archived copy of a LeadDocument before a customer replacement."""
+
+    document = models.ForeignKey(
+        LeadDocument,
+        on_delete=models.CASCADE,
+        related_name="versions",
+    )
+    file = models.FileField(
+        upload_to=lead_document_version_upload_path,
+        max_length=500,
+    )
+    original_name = models.CharField(max_length=255, blank=True)
+    review_status = models.CharField(
+        max_length=32,
+        choices=LeadDocumentReviewStatus.choices,
+    )
+    review_note = models.TextField(blank=True)
+    reviewed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+
+
+class LeadDocumentReviewHistory(BaseModel):
+    """Audit trail for document review decisions."""
+
+    document = models.ForeignKey(
+        LeadDocument,
+        on_delete=models.CASCADE,
+        related_name="review_history",
+    )
+    review_status = models.CharField(
+        max_length=32,
+        choices=LeadDocumentReviewStatus.choices,
+    )
+    review_note = models.TextField(blank=True)
+    reviewed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    reviewed_at = models.DateTimeField()
+
+    class Meta:
+        ordering = ("-reviewed_at", "-created_at")
 
 
 def lead_message_attachment_upload_path(instance, filename):

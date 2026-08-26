@@ -17,6 +17,7 @@ from apps.leads.models import (
     LeadActivity,
     LeadActivityType,
     LeadDocument,
+    LeadDocumentReviewHistory,
     LeadDocumentReviewStatus,
     LeadMessage,
     LeadMessageAttachment,
@@ -25,7 +26,7 @@ from apps.leads.models import (
     LeadProgramInterest,
     LeadStatus,
 )
-from apps.leads.services.messaging import ensure_conversation
+from apps.leads.services.messaging import ensure_conversation, send_system_message
 
 from .forms import DocumentReviewForm, PromoteChatAttachmentForm
 from .models import Agent
@@ -310,6 +311,23 @@ def applicant_document_review(request, lead_id, document_id):
             "updated_at",
         )
     )
+
+    LeadDocumentReviewHistory.objects.create(
+        document=document,
+        review_status=review_status,
+        review_note=document.review_note,
+        reviewed_by=request.user,
+        reviewed_at=document.reviewed_at,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+
+    if review_status == LeadDocumentReviewStatus.REPLACEMENT_REQUESTED:
+        reason = document.review_note.strip()
+        body = f"A replacement has been requested for {document.get_document_type_display()}."
+        if reason:
+            body += f" Reason: {reason}"
+        send_system_message(lead, body, performed_by=request.user)
 
     LeadActivity.objects.create(
         lead=lead,

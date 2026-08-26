@@ -3844,3 +3844,20 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
  .agent-modal-actions{display:grid;grid-template-columns:1fr 1fr}
  .agent-modal-actions .button{width:100%}
 }
+
+
+/* Customer document replacement */
+.badge-danger{background:#f8e8e8;color:#8a3030}
+.lead-document-row-review-replacement_requested{align-items:flex-start;border-color:#efd1d1;background:#fffafa}
+.lead-document-copy{min-width:0}
+.document-replacement-reason{max-width:560px;margin:8px 0 0;padding:9px 11px;border-radius:9px;background:#fff1f1;color:#6f3030;font-size:.78rem;line-height:1.5}
+.document-replacement-reason strong{display:block;margin-bottom:2px}
+.lead-document-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.document-replace-panel{width:100%;margin-top:4px}
+.document-replace-panel summary{cursor:pointer;color:#123f68;font-size:.78rem;font-weight:800}
+.document-replace-form{display:flex;align-items:end;gap:10px;margin-top:8px;padding:10px;border:1px solid #e0e7ed;border-radius:10px;background:#f8fafb}
+.document-replace-form label{display:grid;gap:5px;flex:1;color:#536174;font-size:.72rem;font-weight:800}
+@media(max-width:700px){
+  .lead-document-actions{justify-content:flex-start}
+  .document-replace-form{display:grid}
+}
