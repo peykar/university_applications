@@ -90,3 +90,7 @@ file link and opens in a new tab. The actual filename is hidden from the
 card and exposed through the link `title` tooltip on hover. The separate
 **Open** action remains unnecessary. Approved documents therefore need no
 action buttons at all.
+
+
+The reviewer and review time are exposed as a tooltip on the document status
+badge instead of consuming a separate line in the compact Documents card.

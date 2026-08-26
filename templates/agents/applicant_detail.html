@@ -149,15 +149,17 @@ document.addEventListener("DOMContentLoaded", () => {
       >{{ document.get_document_type_display }}</a>
       {% if document.source_message_attachment %}<small>{% trans "Added from conversation" %}</small>{% endif %}
     </span>
-    <span class="status-pill {% if document.review_status == 'pending' %}warning{% elif document.review_status == 'approved' %}success{% else %}danger{% endif %}">{{ document.get_review_status_display }}</span>
+    <span
+      class="status-pill {% if document.review_status == 'pending' %}warning{% elif document.review_status == 'approved' %}success{% else %}danger{% endif %}"
+      {% if document.reviewed_by and document.reviewed_at %}
+        title="{% trans 'Last reviewed by' %} {{ document.reviewed_by.get_full_name|default:document.reviewed_by.username }} · {{ document.reviewed_at|date:'M j, Y H:i' }}"
+      {% endif %}
+    >{{ document.get_review_status_display }}</span>
    </div>
    {% if document.review_status != "approved" %}
    <div class="agent-document-actions">
     <button type="button" class="text-action button-reset modal-trigger" data-modal-target="document-review-{{ document.pk }}">{% trans "Review" %}</button>
    </div>
-   {% endif %}
-   {% if document.reviewed_by %}
-    <small class="document-review-meta">{% trans "Last reviewed by" %} {{ document.reviewed_by.get_full_name|default:document.reviewed_by.username }} · {{ document.reviewed_at|date:"M j, Y H:i" }}</small>
    {% endif %}
   </article>
 

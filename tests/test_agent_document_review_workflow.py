@@ -52,3 +52,10 @@ class AgentDocumentReviewWorkflowStructureTests(SimpleTestCase):
         self.assertIn('href="{{ document.file.url }}"', self.template)
         self.assertIn('title="{{ document.name }}"', self.template)
         self.assertNotIn('class="document-file-link"', self.template)
+
+    def test_review_metadata_is_status_tooltip(self):
+        self.assertIn(
+            "title=\"{% trans 'Last reviewed by' %}",
+            self.template,
+        )
+        self.assertNotIn('class="document-review-meta"', self.template)
