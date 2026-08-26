@@ -54,3 +54,20 @@ is not performed and the agent receives the validation errors.
 
 Only the currently responsible agent user may finalize. Other users of the Agent
 can still view the lead and can use **Assign to me** first.
+
+
+## Agent-maintained applicant data
+
+Agent users can update active Lead data directly from Agent Workspace when they
+collect information by phone, email, chat, or another offline channel. Lead
+fields remain permissive; the strict minimum is enforced only at finalization.
+An edit creates an internal LeadActivity describing which fields changed.
+
+Agents can also upload documents received outside the portal. The upload asks
+for document type, file, and optional description; the original filename is
+derived from the uploaded file rather than entered separately. The document
+enters the normal Lead document review workflow and an internal
+`DOCUMENT_UPLOADED` activity records that an agent user added it.
+
+After finalization, Lead data is no longer edited and documents are no longer
+uploaded to the Lead; subsequent maintenance belongs on the Student record.

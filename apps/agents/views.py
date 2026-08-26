@@ -29,7 +29,12 @@ from apps.leads.models import (
 from apps.leads.services.conversion import convert_lead_to_student, finalize_lead
 from apps.leads.services.messaging import ensure_conversation, send_system_message
 
-from .forms import DocumentReviewForm, PromoteChatAttachmentForm
+from .forms import (
+    AgentLeadDocumentUploadForm,
+    AgentLeadEditForm,
+    DocumentReviewForm,
+    PromoteChatAttachmentForm,
+)
 from .models import Agent
 
 
@@ -211,6 +216,8 @@ def applicant_detail(request, lead_id):
             "lead_messages": lead_messages,
             "conversation": conversation,
             "message_form": LeadMessageForm(),
+            "lead_edit_form": AgentLeadEditForm(instance=lead),
+            "document_upload_form": AgentLeadDocumentUploadForm(),
             "document_review_form": DocumentReviewForm(),
             "promote_attachment_form": PromoteChatAttachmentForm(),
             "documents": lead.documents.select_related(
@@ -224,6 +231,86 @@ def applicant_detail(request, lead_id):
             "status_choices": LeadStatus.choices,
         },
     )
+
+
+@login_required
+@require_POST
+def applicant_edit(request, lead_id):
+    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
+        messages.error(
+            request,
+            "Finalized or closed applicant data cannot be edited here.",
+        )
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    form = AgentLeadEditForm(request.POST, instance=lead)
+    if not form.is_valid():
+        detail = " ".join(
+            str(message) for field_messages in form.errors.values() for message in field_messages
+        )
+        messages.error(request, f"Applicant data was not updated. {detail}")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    changed_fields = list(form.changed_data)
+    updated_lead = form.save(commit=False)
+    updated_lead.updated_by = request.user
+    updated_lead.save()
+
+    if changed_fields:
+        LeadActivity.objects.create(
+            lead=updated_lead,
+            activity_type=LeadActivityType.NOTE,
+            description=(
+                "Applicant data updated by agent user. Changed fields: "
+                + ", ".join(changed_fields)
+                + "."
+            ),
+            is_customer_visible=False,
+            created_by=request.user,
+            updated_by=request.user,
+        )
+        messages.success(request, "Applicant data updated.")
+    else:
+        messages.info(request, "No applicant data changed.")
+    return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+
+@login_required
+@require_POST
+def applicant_document_upload(request, lead_id):
+    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    if lead.status == LeadStatus.FINALIZED:
+        messages.error(
+            request,
+            "Upload documents to the Student record after finalization.",
+        )
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    form = AgentLeadDocumentUploadForm(request.POST, request.FILES)
+    if not form.is_valid():
+        detail = " ".join(
+            str(message) for field_messages in form.errors.values() for message in field_messages
+        )
+        messages.error(request, f"Document was not uploaded. {detail}")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    document = form.save(commit=False)
+    document.lead = lead
+    document.created_by = request.user
+    document.updated_by = request.user
+    document.save()
+
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=LeadActivityType.DOCUMENT_UPLOADED,
+        description=(f"{document.get_document_type_display()} uploaded by agent user."),
+        is_customer_visible=False,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    messages.success(request, "Document uploaded.")
+    return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 
 @login_required

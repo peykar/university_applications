@@ -4013,3 +4013,15 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .finalize-review strong{font-size:.8rem;color:#25394c;overflow-wrap:anywhere}
 .finalize-warning{padding:9px 10px;border-radius:8px;background:#fff8e8;color:#765d22;font-size:.74rem}
 @media(max-width:700px){.finalize-review{grid-template-columns:1fr}}
+
+
+/* Agent applicant editing and direct document upload */
+.section-heading-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.section-heading-actions h2,.section-heading-actions h3{margin-bottom:0}
+.agent-modal-wide .agent-modal-card{width:min(920px,calc(100vw - 32px))}
+.agent-edit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.agent-edit-grid label{display:grid;gap:5px;font-size:.74rem;font-weight:750}
+.agent-edit-grid input,.agent-edit-grid select,.agent-edit-grid textarea{width:100%;box-sizing:border-box}
+.agent-edit-grid label:has(textarea){grid-column:1/-1}
+.agent-edit-actions{grid-column:1/-1}
+@media(max-width:700px){.agent-edit-grid{grid-template-columns:1fr}.agent-edit-grid label:has(textarea),.agent-edit-actions{grid-column:auto}}

@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <div class="agent-detail-grid">
 <div>
 <section class="agent-panel">
- <div class="agent-panel-head"><div><h2>{% trans "Applicant" %}</h2><p>{{ lead.email|default:lead.user.email }}</p></div><span class="status-pill">{{ lead.get_status_display }}</span></div>
+ <div class="agent-panel-head"><div><div class="section-heading-actions"><h2>{% trans "Applicant" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<button type="button" class="button button-secondary modal-trigger" data-modal-target="edit-applicant-modal">{% trans "Edit applicant" %}</button>{% endif %}</div><p>{{ lead.email|default:lead.user.email }}</p></div><span class="status-pill">{{ lead.get_status_display }}</span></div>
  <dl class="agent-facts">
   <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
   <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
@@ -94,6 +94,28 @@ document.addEventListener("DOMContentLoaded", () => {
    {% endif %}
   {% endif %}
  </div>
+
+ {% if lead.status != "finalized" and lead.status != "closed" %}
+ <dialog class="agent-modal agent-modal-wide" id="edit-applicant-modal" aria-labelledby="edit-applicant-title">
+  <div class="agent-modal-card">
+   <div class="agent-modal-head">
+    <div><span class="eyebrow">{% trans "Applicant data" %}</span><h2 id="edit-applicant-title">{% trans "Edit applicant" %}</h2>
+     <p>{% trans "Update information collected by phone, email, chat, or another channel. Lead fields remain optional until finalization." %}</p></div>
+    <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+   </div>
+   <form method="post" action="{% url 'agent-applicant-edit' lead.pk %}" class="agent-edit-grid">
+    {% csrf_token %}
+    {% for field in lead_edit_form %}
+     <label><span>{{ field.label }}</span>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}</label>
+    {% endfor %}
+    <div class="agent-modal-actions agent-edit-actions">
+     <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+     <button class="button" type="submit">{% trans "Save applicant data" %}</button>
+    </div>
+   </form>
+  </div>
+ </dialog>
+ {% endif %}
 
  {% if lead.status != "finalized" and lead.status != "closed" and agent_users %}
  <dialog class="agent-modal" id="assign-agent-modal" aria-labelledby="assign-agent-title">
@@ -159,6 +181,24 @@ document.addEventListener("DOMContentLoaded", () => {
     {% csrf_token %}
     <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
     <button class="button" type="submit">{% trans "Finalize and create student" %}</button>
+   </form>
+  </div>
+ </dialog>
+ {% endif %}
+
+ {% if lead.status != "finalized" %}
+ <dialog class="agent-modal" id="upload-document-modal" aria-labelledby="upload-document-title">
+  <div class="agent-modal-card">
+   <div class="agent-modal-head">
+    <div><span class="eyebrow">{% trans "Documents" %}</span><h2 id="upload-document-title">{% trans "Upload document" %}</h2>
+     <p>{% trans "Add a document received outside TurkDemy, for example by email or in person." %}</p></div>
+    <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+   </div>
+   <form method="post" enctype="multipart/form-data" action="{% url 'agent-applicant-document-upload' lead.pk %}" class="agent-modal-form">
+    {% csrf_token %}
+    {% for field in document_upload_form %}<label><span>{{ field.label }}</span>{{ field }}</label>{% endfor %}
+    <p class="modal-help">{% trans "The original filename is kept internally. The document type is what agents and applicants use to identify the document." %}</p>
+    <div class="agent-modal-actions"><button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button><button class="button" type="submit">{% trans "Upload document" %}</button></div>
    </form>
   </div>
  </dialog>
@@ -277,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
  </dl>{% else %}<p class="empty-state">{% trans "No study preferences." %}</p>{% endif %}
 </section>
 <section class="agent-panel">
- <div class="agent-panel-head"><h2>{% trans "Documents" %}</h2></div>
+ <div class="agent-panel-head"><div class="section-heading-actions"><h2>{% trans "Documents" %}</h2>{% if lead.status != "finalized" %}<button type="button" class="button button-secondary modal-trigger" data-modal-target="upload-document-modal">{% trans "Upload document" %}</button>{% endif %}</div></div>
  <div class="agent-document-list">
  {% for document in documents %}
   <article class="agent-document-card" id="document-{{ document.pk }}">

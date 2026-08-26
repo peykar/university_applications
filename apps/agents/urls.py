@@ -11,6 +11,16 @@ urlpatterns = [
         name="agent-applicant-detail",
     ),
     path(
+        "agent/applicants/<uuid:lead_id>/edit/",
+        views.applicant_edit,
+        name="agent-applicant-edit",
+    ),
+    path(
+        "agent/applicants/<uuid:lead_id>/documents/upload/",
+        views.applicant_document_upload,
+        name="agent-applicant-document-upload",
+    ),
+    path(
         "agent/applicants/<uuid:lead_id>/status/",
         views.applicant_status,
         name="agent-applicant-status",
