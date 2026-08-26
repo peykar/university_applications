@@ -263,6 +263,32 @@ def applicant_detail(request, lead_id):
 
 
 @login_required
+def applicant_activity(request, lead_id):
+    lead = (
+        _agent_leads(request.user)
+        .select_related("agent", "user", "assigned_to")
+        .filter(pk=lead_id)
+        .first()
+    )
+    if lead is None:
+        return _render_agent_not_found(
+            request,
+            resource_name="applicant",
+            list_url_name="agent-applicant-list",
+        )
+
+    activities = lead.activities.select_related("created_by").order_by("-created_at")[:100]
+    return render(
+        request,
+        "agents/applicant_activity.html",
+        {
+            "lead": lead,
+            "activities": activities,
+        },
+    )
+
+
+@login_required
 @require_POST
 def applicant_internal_notes(request, lead_id):
     lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)

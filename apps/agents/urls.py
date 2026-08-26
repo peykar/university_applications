@@ -21,6 +21,11 @@ urlpatterns = [
         name="agent-applicant-internal-notes",
     ),
     path(
+        "agent/applicants/<uuid:lead_id>/activity/",
+        views.applicant_activity,
+        name="agent-applicant-activity",
+    ),
+    path(
         "agent/applicants/<uuid:lead_id>/documents/upload/",
         views.applicant_document_upload,
         name="agent-applicant-document-upload",

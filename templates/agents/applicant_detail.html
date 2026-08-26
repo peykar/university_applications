@@ -508,15 +508,21 @@ document.addEventListener("DOMContentLoaded", () => {
  </div>
 </section>
 
-<section class="agent-panel" id="internal-notes">
+<section class="agent-panel internal-notes-panel" id="internal-notes">
  <div class="agent-panel-head">
-  <div>
+  <div class="internal-notes-title">
    <h2>{% trans "Internal notes" %}</h2>
-   <p>{% trans "Visible to agent/staff users only — never shown to the applicant." %}</p>
+   <span
+    class="private-badge"
+    title="{% trans 'Visible only to agent/staff users.' %}"
+   >{% trans "Private" %}</span>
   </div>
-  {% if lead.status != "finalized" %}
-   <button type="button" class="section-action button-reset modal-trigger" data-modal-target="internal-notes-modal">{% trans "Edit" %}</button>
-  {% endif %}
+  <div class="internal-notes-actions">
+   <a class="section-action" href="{% url 'agent-applicant-activity' lead.pk %}">{% trans "Activity" %}</a>
+   {% if lead.status != "finalized" %}
+    <button type="button" class="section-action button-reset modal-trigger" data-modal-target="internal-notes-modal">{% trans "Edit" %}</button>
+   {% endif %}
+  </div>
  </div>
  <div class="internal-notes-body">
   {% if lead.notes %}
@@ -527,74 +533,12 @@ document.addEventListener("DOMContentLoaded", () => {
  </div>
 </section>
 
-<section class="agent-panel" id="activity">
- <div class="agent-panel-head">
-  <div>
-   <h2>{% trans "Activity" %}</h2>
-   <p>{% trans "Chronological history of important actions on this applicant." %}</p>
-  </div>
- </div>
- <div class="activity-timeline" data-activity-timeline>
-  {% for activity in activities %}
-   <article class="activity-item{% if forloop.counter > 10 %} activity-extra{% endif %}">
-    <div class="activity-dot" aria-hidden="true"></div>
-    <div class="activity-content">
-     <div class="activity-meta">
-      <div class="activity-title">
-       <strong>{{ activity.get_activity_type_display }}</strong>
-       {% if activity.is_customer_visible %}
-        <span class="activity-visibility">{% trans "Customer visible" %}</span>
-       {% endif %}
-      </div>
-      <span>
-       {% if activity.created_by %}
-        {{ activity.created_by.get_full_name|default:activity.created_by.username }}
-       {% else %}
-        {% trans "System" %}
-       {% endif %}
-       · {{ activity.created_at|date:"M j, Y H:i" }}
-      </span>
-     </div>
-     {% if activity.description %}<p>{{ activity.description }}</p>{% endif %}
-     {% if activity.metadata.changes %}
-      <div class="activity-changes">
-       {% for change in activity.metadata.changes %}
-        <div class="activity-change-row">
-         <strong>{{ change.label }}</strong>
-         <span class="activity-change-old">{{ change.old }}</span>
-         <span class="activity-change-arrow" aria-hidden="true">→</span>
-         <span class="activity-change-new">{{ change.new }}</span>
-        </div>
-       {% endfor %}
-      </div>
-     {% endif %}
-    </div>
-   </article>
-  {% empty %}
-   <p class="empty-state">{% trans "No activity recorded yet." %}</p>
-  {% endfor %}
- </div>
- {% if activities|length > 10 %}
-  <button type="button" class="section-action activity-show-more" data-activity-show-more>
-   {% blocktrans with count=activities|length|add:"-10" %}Show {{ count }} more{% endblocktrans %}
-  </button>
- {% endif %}
-</section>
+
 
 <section class="agent-panel"><div class="agent-panel-head"><h2>{% trans "Programs" %}</h2></div>
 <div class="agent-list">{% for interest in interests %}<div class="agent-list-row"><span><a class="agent-program-link" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener"><strong>{{ interest.program.name_en }}</strong></a><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill">{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</span></div>{% empty %}<p class="empty-state">{% trans "No programs." %}</p>{% endfor %}</div>
 </section>
 </aside>
 </div>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const button = document.querySelector("[data-activity-show-more]");
-  const timeline = document.querySelector("[data-activity-timeline]");
-  if (!button || !timeline) return;
-  button.addEventListener("click", () => {
-    timeline.classList.add("activity-expanded");
-    button.remove();
-  });
-});
-</script>
+
 {% endblock %}

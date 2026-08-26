@@ -4192,3 +4192,40 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   .activity-change-row{grid-template-columns:1fr 16px 1fr}
   .activity-change-row strong{grid-column:1/-1}
 }
+
+
+/* Internal notes prominence + dedicated activity navigation */
+.internal-notes-panel{
+  border-color:#d8e2e9;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfcfd 100%);
+}
+.internal-notes-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.internal-notes-title h2{margin:0}
+.internal-notes-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.private-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#f1f3f5;
+  color:#687684;
+  font-size:.62rem;
+  font-weight:800;
+  cursor:help;
+}
+.internal-notes-body{
+  font-size:.82rem;
+  line-height:1.6;
+  color:#2f4254;
+  background:#fff;
+  border-color:#dce5eb;
+}

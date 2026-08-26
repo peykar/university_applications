@@ -142,3 +142,23 @@ updated**. Audit values are normalized before comparison/storage: model-choice
 PKs are resolved to labels, choice codes to display labels, booleans to Yes/No,
 and dates to ISO text. Fields whose normalized old/new values are equal are not
 recorded, preventing false changes such as a Country UUID → "Netherlands".
+
+
+### Internal notes and activity page
+
+Internal notes are treated as operationally important content on the main
+Applicant page. The long privacy helper sentence was replaced by a compact
+**Private** badge whose tooltip explains that notes are visible only to
+agent/staff users.
+
+The full Lead activity/audit log moved to a dedicated applicant Activity page
+at `/agent/applicants/<lead-id>/activity/`. The main Applicant page links to
+this page from the Internal notes header, keeping the daily workspace focused
+while preserving access to the complete audit trail.
+
+
+### Activity UI regression tests
+
+Activity timeline assertions target the dedicated `applicant_activity.html`
+template. The applicant detail regression tests assert that the timeline is
+absent there and that navigation to the Activity page remains available.

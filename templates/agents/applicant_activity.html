@@ -1,0 +1,67 @@
+{% extends "agents/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Activity" %} · {{ lead }} · TurkDemy{% endblock %}
+
+{% block agent_content %}
+<div class="agent-page-head">
+ <div>
+  <span class="eyebrow">{% trans "Applicant audit log" %}</span>
+  <h1>{{ lead }}</h1>
+  <p>{% trans "History of important actions and data changes for this applicant." %}</p>
+ </div>
+ <a class="button button-secondary" href="{% url 'agent-applicant-detail' lead.pk %}">{% trans "Back to applicant" %}</a>
+</div>
+
+<section class="agent-panel">
+ <div class="agent-panel-head">
+  <div>
+   <h2>{% trans "Activity" %}</h2>
+   <p>{% trans "Newest events first." %}</p>
+  </div>
+ </div>
+
+ <div class="activity-timeline">
+  {% for activity in activities %}
+   <article class="activity-item">
+    <div class="activity-dot" aria-hidden="true"></div>
+    <div class="activity-content">
+     <div class="activity-meta">
+      <div class="activity-title">
+       <strong>{{ activity.get_activity_type_display }}</strong>
+       {% if activity.is_customer_visible %}
+        <span class="activity-visibility">{% trans "Customer visible" %}</span>
+       {% endif %}
+      </div>
+      <span>
+       {% if activity.created_by %}
+        {{ activity.created_by.get_full_name|default:activity.created_by.username }}
+       {% else %}
+        {% trans "System" %}
+       {% endif %}
+       · {{ activity.created_at|date:"M j, Y H:i" }}
+      </span>
+     </div>
+
+     {% if activity.description %}<p>{{ activity.description }}</p>{% endif %}
+
+     {% if activity.metadata.changes %}
+      <div class="activity-changes">
+       {% for change in activity.metadata.changes %}
+        <div class="activity-change-row">
+         <strong>{{ change.label }}</strong>
+         <span class="activity-change-old">{{ change.old }}</span>
+         <span class="activity-change-arrow" aria-hidden="true">→</span>
+         <span class="activity-change-new">{{ change.new }}</span>
+        </div>
+       {% endfor %}
+      </div>
+     {% endif %}
+    </div>
+   </article>
+  {% empty %}
+   <p class="empty-state">{% trans "No activity recorded yet." %}</p>
+  {% endfor %}
+ </div>
+</section>
+{% endblock %}
