@@ -8,6 +8,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from apps.core.audit import get_system_user
+from apps.core.phone import normalize_phone_number
 from apps.students.models import Student, StudentDocument
 
 from ..models import (
@@ -30,6 +31,15 @@ def _validate_for_finalization(lead: Lead) -> None:
         errors["nationality"] = "Nationality must be validated before finalization."
     if not lead.gender:
         errors["gender"] = "Gender must be validated before finalization."
+
+    if lead.cell:
+        try:
+            normalize_phone_number(lead.cell)
+        except ValueError:
+            errors["cell"] = (
+                "Enter a valid international phone number including the "
+                "country code, for example +31612345678."
+            )
 
     if errors:
         raise ValidationError(errors)

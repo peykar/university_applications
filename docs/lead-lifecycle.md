@@ -190,3 +190,15 @@ approval remains auditable.
 
 Documents uploaded by the applicant, or promoted from a customer chat
 attachment, continue through the normal review workflow.
+
+
+### Phone validation during finalization
+
+Lead finalization validates a non-empty cell number before creating the Student.
+The number must be valid in international format (for example,
+`+31612345678`). Invalid or locally formatted numbers are returned to the
+agent as a normal validation error instead of raising a `NumberParseException`
+during `Student.save()`.
+
+The shared `normalize_phone_number()` helper converts `phonenumbers` parsing
+exceptions to `ValueError`, giving callers one stable validation contract.
