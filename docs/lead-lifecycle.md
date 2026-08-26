@@ -78,3 +78,13 @@ section-level secondary actions so Finalize remains the primary lifecycle
 action. The Applicant section also exposes a subtle last-updated indicator;
 hovering it shows who last updated the Lead and when, using the existing
 `updated_by` and `updated_at` audit fields.
+
+
+The Agent Workspace **Edit applicant** modal is grouped into Personal
+information, Contact & residence, Passport, Education & language, Family, and
+Internal notes. Optional fields are explicitly marked, and the Save/Cancel
+footer remains sticky while scrolling.
+
+Lead edit activities preserve old and new values for every changed field in an
+internal `LeadActivity`, so shared agent teams can see exactly what changed
+without exposing those details to the applicant.

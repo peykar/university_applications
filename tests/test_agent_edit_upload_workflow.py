@@ -47,3 +47,20 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
         self.assertIn("Last updated by", self.template)
         self.assertIn("lead.updated_by", self.template)
         self.assertIn("lead.updated_at", self.template)
+
+    def test_edit_modal_is_grouped_and_sticky(self):
+        for heading in (
+            "Personal information",
+            "Contact & residence",
+            "Passport",
+            "Education & language",
+            "Family",
+            "Internal notes",
+        ):
+            self.assertIn(heading, self.template)
+        self.assertIn("sticky-modal-actions", self.template)
+
+    def test_edit_activity_preserves_old_and_new_values(self):
+        self.assertIn("form.initial.get(field_name)", self.views)
+        self.assertIn("form.cleaned_data.get(field_name)", self.views)
+        self.assertIn("→", self.views)

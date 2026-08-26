@@ -4051,3 +4051,34 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   text-decoration:underline dotted;
   text-underline-offset:3px;
 }
+
+
+/* Grouped agent applicant edit modal */
+.agent-modal-wide{width:min(96vw,980px)}
+.agent-modal-wide .agent-modal-card{padding-bottom:0}
+.agent-edit-form{display:grid;gap:18px}
+.agent-edit-section{display:grid;gap:10px;padding-bottom:16px;border-bottom:1px solid #e8edf1}
+.agent-edit-section:last-of-type{border-bottom:0}
+.agent-edit-section-head h3{margin:0 0 3px;font-size:.92rem;color:#24384b}
+.agent-edit-section-head p{margin:0;color:#7b8793;font-size:.72rem;line-height:1.45}
+.agent-edit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.agent-edit-grid label{display:grid;gap:5px;font-size:.74rem;font-weight:750}
+.agent-edit-grid label>span{display:flex;gap:5px;align-items:baseline;flex-wrap:wrap}
+.agent-edit-grid label>span small{font-weight:500;color:#8a96a1}
+.agent-edit-grid input,.agent-edit-grid select,.agent-edit-grid textarea{width:100%;box-sizing:border-box}
+.agent-edit-grid label:has(textarea){grid-column:1/-1}
+.sticky-modal-actions{
+  position:sticky;
+  bottom:0;
+  z-index:3;
+  margin:0 -24px;
+  padding:14px 24px 18px;
+  border-top:1px solid #dfe6eb;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(6px);
+}
+@media(max-width:700px){
+  .agent-edit-grid{grid-template-columns:1fr}
+  .agent-edit-grid label:has(textarea){grid-column:auto}
+  .sticky-modal-actions{margin:0 -18px;padding:12px 18px 16px}
+}

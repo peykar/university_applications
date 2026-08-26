@@ -253,6 +253,13 @@ def applicant_edit(request, lead_id):
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     changed_fields = list(form.changed_data)
+    changes = []
+    for field_name in changed_fields:
+        field = form.fields[field_name]
+        old_value = form.initial.get(field_name)
+        new_value = form.cleaned_data.get(field_name)
+        changes.append(f"{field.label}: {old_value or '—'} → {new_value or '—'}")
+
     updated_lead = form.save(commit=False)
     updated_lead.updated_by = request.user
     updated_lead.save()
@@ -261,11 +268,7 @@ def applicant_edit(request, lead_id):
         LeadActivity.objects.create(
             lead=updated_lead,
             activity_type=LeadActivityType.NOTE,
-            description=(
-                "Applicant data updated by agent user. Changed fields: "
-                + ", ".join(changed_fields)
-                + "."
-            ),
+            description=("Applicant data updated by agent user. " + "; ".join(changes) + "."),
             is_customer_visible=False,
             created_by=request.user,
             updated_by=request.user,
