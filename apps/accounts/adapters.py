@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+from allauth.account.adapter import DefaultAccountAdapter
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.socialaccount.models import SocialLogin
 from django.contrib.auth.models import AbstractBaseUser
+from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse
+
+from apps.core.services.email_branding import render_branded_email_html
 
 from .models import User
 from .social_email import ensure_verified_login_email
@@ -56,3 +60,33 @@ class TurkDemySocialAccountAdapter(DefaultSocialAccountAdapter):
     def _ensure_verified_email(user: AbstractBaseUser, email: str) -> None:
         if isinstance(user, User):
             ensure_verified_login_email(user, email)
+
+
+class TurkDemyAccountAdapter(DefaultAccountAdapter):
+    """Ensure every django-allauth email also has a branded HTML version."""
+
+    def render_mail(self, template_prefix, email, context, headers=None):
+        message = super().render_mail(
+            template_prefix,
+            email,
+            context,
+            headers=headers,
+        )
+
+        if not isinstance(message, EmailMultiAlternatives):
+            return message
+
+        has_html = any(
+            (getattr(alternative, "mimetype", None) or alternative[1]) == "text/html"
+            for alternative in message.alternatives
+        )
+        if not has_html:
+            message.attach_alternative(
+                render_branded_email_html(
+                    subject=str(message.subject),
+                    text_body=str(message.body),
+                ),
+                "text/html",
+            )
+
+        return message

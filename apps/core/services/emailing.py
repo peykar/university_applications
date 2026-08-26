@@ -5,6 +5,8 @@ from collections.abc import Iterable
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
+from .email_branding import render_branded_email_html
+
 
 def send_email(
     *,
@@ -26,7 +28,13 @@ def send_email(
         to=recipients,
     )
 
-    if html_body:
-        message.attach_alternative(html_body, "text/html")
+    message.attach_alternative(
+        html_body
+        or render_branded_email_html(
+            subject=subject,
+            text_body=text_body,
+        ),
+        "text/html",
+    )
 
     return message.send()

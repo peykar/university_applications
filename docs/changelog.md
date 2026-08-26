@@ -715,3 +715,11 @@
 - Made the email sign-in button explicitly use `account_request_login_code`.
 - Made request/confirm forms explicitly post to the login-code endpoints.
 - Added regression tests ensuring login-code and signup routes remain separate.
+
+### Branded outgoing email system
+- Added a shared responsive TurkDemy HTML email template.
+- Added branded HTML fallback for all django-allauth account emails.
+- Updated the project email service to always send branded multipart mail.
+- Added a dedicated sign-in-code email with a prominent code block.
+- Changed login and email-verification codes to five numeric digits.
+- Added regression tests and email documentation.
