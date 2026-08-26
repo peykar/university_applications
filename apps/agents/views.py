@@ -100,9 +100,9 @@ def dashboard(request):
     context = {
         "lead_count": leads.count(),
         "new_lead_count": leads.filter(status=LeadStatus.NEW).count(),
-        "needs_info_count": leads.filter(status=LeadStatus.NEEDS_INFO).count(),
+        "assigned_lead_count": leads.filter(status=LeadStatus.ASSIGNED).count(),
         "recommendation_count": leads.filter(needs_program_recommendation=True)
-        .exclude(status__in=(LeadStatus.CONVERTED, LeadStatus.REJECTED))
+        .exclude(status__in=(LeadStatus.FINALIZED, LeadStatus.CLOSED))
         .count(),
         "unread_message_count": unread_messages.count(),
         "application_count": applications.count(),
@@ -138,7 +138,7 @@ def dashboard(request):
 
 @login_required
 def applicant_list(request):
-    leads = _agent_leads(request.user).select_related("agent", "user")
+    leads = _agent_leads(request.user).select_related("agent", "user", "assigned_to")
     status = (request.GET.get("status") or "").strip()
     query = (request.GET.get("q") or "").strip()
 
@@ -219,30 +219,105 @@ def applicant_detail(request, lead_id):
 @login_required
 @require_POST
 def applicant_status(request, lead_id):
+    """Only closing/reopening is manually controlled; other statuses are derived."""
     lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
-    status = request.POST.get("status")
-    if status not in LeadStatus.values:
-        messages.error(request, "Invalid applicant status.")
-        return redirect("agent-applicant-detail", lead_id=lead.pk)
+    action = (request.POST.get("action") or "").strip()
 
-    old_status = lead.status
-    lead.status = status
-    lead.updated_by = request.user
-    lead.save(update_fields=("status", "updated_by", "updated_at"))
-
-    if old_status != status:
+    if action == "close":
+        if lead.status == LeadStatus.FINALIZED:
+            messages.error(request, "A finalized applicant cannot be closed.")
+            return redirect("agent-applicant-detail", lead_id=lead.pk)
+        reason = (request.POST.get("close_reason") or "").strip()
+        lead.status = LeadStatus.CLOSED
+        lead.closed_at = timezone.now()
+        lead.closed_by = request.user
+        lead.close_reason = reason
+        lead.updated_by = request.user
+        lead.save(
+            update_fields=(
+                "status",
+                "closed_at",
+                "closed_by",
+                "close_reason",
+                "updated_by",
+                "updated_at",
+            )
+        )
         LeadActivity.objects.create(
             lead=lead,
-            activity_type=LeadActivityType.STATUS_CHANGED,
-            description=(
-                f"Agent changed status from {LeadStatus(old_status).label} "
-                f"to {LeadStatus(status).label}."
-            ),
-            is_customer_visible=True,
+            activity_type=LeadActivityType.CLOSED,
+            description=f"Lead closed.{f' Reason: {reason}' if reason else ''}",
+            is_customer_visible=False,
             created_by=request.user,
             updated_by=request.user,
         )
-    messages.success(request, "Applicant status updated.")
+        messages.success(request, "Applicant closed.")
+    elif action == "reopen" and lead.status == LeadStatus.CLOSED:
+        lead.status = LeadStatus.ASSIGNED if lead.assigned_to_id else LeadStatus.NEW
+        lead.closed_at = None
+        lead.closed_by = None
+        lead.close_reason = ""
+        lead.updated_by = request.user
+        # Lead.save derives NEW/ASSIGNED from assigned_to.
+        lead.save(
+            update_fields=(
+                "status",
+                "closed_at",
+                "closed_by",
+                "close_reason",
+                "updated_by",
+                "updated_at",
+            )
+        )
+        LeadActivity.objects.create(
+            lead=lead,
+            activity_type=LeadActivityType.REOPENED,
+            description="Lead reopened.",
+            is_customer_visible=False,
+            created_by=request.user,
+            updated_by=request.user,
+        )
+        messages.success(request, "Applicant reopened.")
+    else:
+        messages.error(request, "Invalid applicant status action.")
+
+    return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+
+@login_required
+@require_POST
+def applicant_assign_to_me(request, lead_id):
+    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
+        messages.error(request, "This applicant can no longer be assigned.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    previous = lead.assigned_to
+    if previous == request.user:
+        messages.info(request, "You are already responsible for this applicant.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    lead.assigned_to = request.user
+    lead.updated_by = request.user
+    lead.save(update_fields=("assigned_to", "updated_by", "updated_at"))
+
+    activity_type = LeadActivityType.REASSIGNED if previous else LeadActivityType.ASSIGNED
+    if previous:
+        description = (
+            f"Reassigned from {previous.get_full_name() or previous.get_username()} "
+            f"to {request.user.get_full_name() or request.user.get_username()}."
+        )
+    else:
+        description = f"Assigned to {request.user.get_full_name() or request.user.get_username()}."
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=activity_type,
+        description=description,
+        is_customer_visible=False,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    messages.success(request, "You are now responsible for this applicant.")
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 

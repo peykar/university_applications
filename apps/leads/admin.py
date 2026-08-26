@@ -130,6 +130,9 @@ class LeadAdmin(AuditAdminMixin, admin.ModelAdmin):
         "validated_at",
         "converted_student",
         "converted_at",
+        "status",
+        "closed_at",
+        "closed_by",
         "conversation_link",
     )
     inlines = (
@@ -151,7 +154,6 @@ class LeadAdmin(AuditAdminMixin, admin.ModelAdmin):
                     "user",
                     "agent",
                     "assigned_to",
-                    "status",
                     "source",
                     "needs_program_recommendation",
                     "conversation_link",
@@ -215,6 +217,10 @@ class LeadAdmin(AuditAdminMixin, admin.ModelAdmin):
                     "validated_at",
                     "converted_student",
                     "converted_at",
+                    "status",
+                    "closed_at",
+                    "closed_by",
+                    "close_reason",
                 )
             },
         ),
@@ -250,7 +256,7 @@ class LeadAdmin(AuditAdminMixin, admin.ModelAdmin):
             obj.pk,
         )
 
-    @admin.action(description="Finalize / validate selected leads")
+    @admin.action(description="Validate selected leads")
     def finalize_selected(self, request, queryset):
         success = 0
         for lead in queryset:
@@ -266,11 +272,11 @@ class LeadAdmin(AuditAdminMixin, admin.ModelAdmin):
         if success:
             self.message_user(
                 request,
-                f"{success} lead(s) finalized.",
+                f"{success} lead(s) validated.",
                 level=messages.SUCCESS,
             )
 
-    @admin.action(description="Convert finalized leads to students")
+    @admin.action(description="Convert validated leads to students")
     def convert_selected(self, request, queryset):
         success = 0
         for lead in queryset:

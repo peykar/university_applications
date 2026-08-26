@@ -42,11 +42,33 @@ document.addEventListener("DOMContentLoaded", () => {
   <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
   <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }} {{ lead.city_of_residence }}</dd></div>
   <div><dt>{% trans "Agent" %}</dt><dd>{{ lead.agent|default:"—" }}</dd></div>
+  <div><dt>{% trans "Responsible" %}</dt><dd>{% if lead.assigned_to == request.user %}{% trans "You" %}{% elif lead.assigned_to %}{{ lead.assigned_to.get_full_name|default:lead.assigned_to.username }}{% else %}{% trans "Unassigned" %}{% endif %}</dd></div>
  </dl>
- <form class="agent-inline-form" method="post" action="{% url 'agent-applicant-status' lead.pk %}">{% csrf_token %}
-  <label>{% trans "Workflow status" %}<select name="status">{% for value,label in status_choices %}<option value="{{ value }}"{% if lead.status == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
-  <button class="button" type="submit">{% trans "Update status" %}</button>
- </form>
+ <div class="agent-workflow-actions">
+  {% if lead.status != "finalized" and lead.status != "closed" and lead.assigned_to != request.user %}
+   <form method="post" action="{% url 'agent-applicant-assign-to-me' lead.pk %}">{% csrf_token %}
+    <button class="button" type="submit">{% if lead.assigned_to %}{% trans "Assign to me" %}{% else %}{% trans "Assign to me" %}{% endif %}</button>
+   </form>
+  {% endif %}
+  {% if lead.status == "closed" %}
+   <form method="post" action="{% url 'agent-applicant-status' lead.pk %}">{% csrf_token %}
+    <input type="hidden" name="action" value="reopen">
+    <button class="button button-secondary" type="submit">{% trans "Reopen" %}</button>
+   </form>
+   {% if lead.close_reason %}<p class="workflow-close-reason"><strong>{% trans "Close reason:" %}</strong> {{ lead.close_reason }}</p>{% endif %}
+  {% elif lead.status != "finalized" %}
+   <details class="agent-close-lead">
+    <summary>{% trans "Close applicant" %}</summary>
+    <form method="post" action="{% url 'agent-applicant-status' lead.pk %}">{% csrf_token %}
+     <input type="hidden" name="action" value="close">
+     <label>{% trans "Reason" %} <span class="muted">{% trans "(optional)" %}</span>
+      <textarea name="close_reason" rows="2"></textarea>
+     </label>
+     <button class="button button-secondary" type="submit">{% trans "Close applicant" %}</button>
+    </form>
+   </details>
+  {% endif %}
+ </div>
 </section>
 
 <section class="agent-panel" id="messages">

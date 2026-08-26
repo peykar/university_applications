@@ -3946,3 +3946,13 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   color:#123f68;
   text-decoration:underline;
 }
+
+/* Lead responsibility and lifecycle */
+.agent-workflow-actions{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-top:14px}
+.agent-workflow-actions form{margin:0}
+.agent-close-lead{font-size:.78rem}
+.agent-close-lead summary{cursor:pointer;font-weight:800;color:#5b6978;padding:9px 0}
+.agent-close-lead form{display:grid;gap:8px;min-width:min(360px,80vw);padding:10px;border:1px solid #dfe7ed;border-radius:10px;background:#f8fafb}
+.agent-close-lead label{display:grid;gap:5px;font-weight:700}
+.agent-close-lead textarea{width:100%;box-sizing:border-box;resize:vertical}
+.workflow-close-reason{width:100%;margin:4px 0 0;color:#667586;font-size:.76rem}

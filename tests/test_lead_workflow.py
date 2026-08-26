@@ -222,7 +222,8 @@ class LeadWorkflowTests(TestCase):
 
         finalize_lead(lead, performed_by=self.staff)
         lead.refresh_from_db()
-        self.assertEqual(lead.status, LeadStatus.FINALIZED)
+        self.assertIsNotNone(lead.validated_at)
+        self.assertNotEqual(lead.status, LeadStatus.FINALIZED)
 
         student = convert_lead_to_student(lead, performed_by=self.staff)
         self.assertIsInstance(student, Student)
@@ -230,8 +231,18 @@ class LeadWorkflowTests(TestCase):
         self.assertEqual(student.applications.count(), 0)
 
         lead.refresh_from_db()
-        self.assertEqual(lead.status, LeadStatus.CONVERTED)
+        self.assertEqual(lead.status, LeadStatus.FINALIZED)
         self.assertEqual(lead.converted_student, student)
+
+    def test_conversion_is_idempotent_after_student_exists(self):
+        lead = self.make_lead()
+        finalize_lead(lead, performed_by=self.staff)
+        first_student = convert_lead_to_student(lead, performed_by=self.staff)
+        lead.refresh_from_db()
+
+        second_student = convert_lead_to_student(lead, performed_by=self.staff)
+
+        self.assertEqual(second_student.pk, first_student.pk)
 
     def test_conversion_requires_finalization(self):
         lead = self.make_lead()

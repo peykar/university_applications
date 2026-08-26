@@ -788,3 +788,12 @@
 - Removed the customer-facing document name input.
 - Document name is derived automatically from the uploaded filename.
 - Reduced Description to a compact optional textarea.
+
+### Simplified lead lifecycle
+- Lead statuses are now New, Assigned, Finalized, and Closed.
+- Assignment to an agent user automatically drives New/Assigned status.
+- All users of the assigned Agent retain visibility; `assigned_to` is responsibility only.
+- Added Assign to me/reassignment in Agent Workspace.
+- Added close/reopen workflow with close audit metadata.
+- Finalized now specifically means converted to Student; validation is no longer a status.
+- Agent list/detail show the responsible agent user.

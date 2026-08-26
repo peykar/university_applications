@@ -27,12 +27,9 @@ from apps.universities.models import (
 
 class LeadStatus(models.TextChoices):
     NEW = "new", _("New")
-    IN_REVIEW = "in_review", _("In review")
-    NEEDS_INFO = "needs_info", _("Needs information")
-    RECOMMENDATIONS_SENT = "recommendations_sent", _("Recommendations sent")
+    ASSIGNED = "assigned", _("Assigned")
     FINALIZED = "finalized", _("Finalized")
-    CONVERTED = "converted", _("Converted")
-    REJECTED = "rejected", _("Rejected")
+    CLOSED = "closed", _("Closed")
 
 
 class LeadSource(models.TextChoices):
@@ -180,6 +177,16 @@ class Lead(BaseModel):
     )
     converted_at = models.DateTimeField(null=True, blank=True)
 
+    closed_at = models.DateTimeField(null=True, blank=True)
+    closed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
+    close_reason = models.TextField(blank=True)
+
     class Meta:
         ordering = ("-created_at",)
         indexes = (
@@ -187,6 +194,14 @@ class Lead(BaseModel):
             models.Index(fields=("assigned_to", "status")),
             models.Index(fields=("needs_program_recommendation", "status")),
         )
+
+    def save(self, *args, **kwargs):
+        if self.status not in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
+            self.status = LeadStatus.ASSIGNED if self.assigned_to_id else LeadStatus.NEW
+            update_fields = kwargs.get("update_fields")
+            if update_fields is not None:
+                kwargs["update_fields"] = tuple(set(update_fields) | {"status"})
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}".strip()
@@ -447,6 +462,11 @@ class LeadActivityType(models.TextChoices):
     CREATED = "created", _("Created")
     NOTE = "note", _("Note")
     STATUS_CHANGED = "status_changed", _("Status changed")
+    ASSIGNED = "assigned", _("Assigned")
+    REASSIGNED = "reassigned", _("Reassigned")
+    CLOSED = "closed", _("Closed")
+    REOPENED = "reopened", _("Reopened")
+    VALIDATED = "validated", _("Validated")
     DOCUMENT_UPLOADED = "document_uploaded", _("Document uploaded")
     DOCUMENT_REVIEWED = "document_reviewed", _("Document reviewed")
     PROGRAM_ADDED = "program_added", _("Program added")
@@ -454,7 +474,6 @@ class LeadActivityType(models.TextChoices):
     PROGRAM_RESPONSE = "program_response", _("Program response")
     RECOMMENDATIONS_GENERATED = "recommendations_generated", _("Recommendations generated")
     FINALIZED = "finalized", _("Finalized")
-    CONVERTED = "converted", _("Converted")
 
 
 class LeadActivity(BaseModel):

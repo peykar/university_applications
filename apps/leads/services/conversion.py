@@ -40,13 +40,11 @@ def finalize_lead(lead: Lead, *, performed_by=None) -> Lead:
     actor = performed_by or get_system_user()
     _validate_for_finalization(lead)
 
-    lead.status = LeadStatus.FINALIZED
     lead.validated_by = actor
     lead.validated_at = timezone.now()
     lead.updated_by = actor
     lead.save(
         update_fields=(
-            "status",
             "validated_by",
             "validated_at",
             "updated_by",
@@ -56,8 +54,8 @@ def finalize_lead(lead: Lead, *, performed_by=None) -> Lead:
 
     LeadActivity.objects.create(
         lead=lead,
-        activity_type=LeadActivityType.FINALIZED,
-        description="Applicant data validated and finalized.",
+        activity_type=LeadActivityType.VALIDATED,
+        description="Applicant data validated and ready for conversion.",
         is_customer_visible=True,
         created_by=actor,
         updated_by=actor,
@@ -65,7 +63,7 @@ def finalize_lead(lead: Lead, *, performed_by=None) -> Lead:
 
     send_system_message(
         lead,
-        "Your applicant profile has been finalized and is ready for conversion.",
+        "Your applicant profile has been validated and is ready for conversion.",
         performed_by=actor,
     )
     return lead
@@ -137,8 +135,15 @@ def convert_lead_to_student(
     """
     actor = performed_by or get_system_user()
 
-    if lead.status not in {LeadStatus.FINALIZED, LeadStatus.CONVERTED}:
-        raise ValidationError("Lead must be finalized before it can be converted to a student.")
+    if lead.status == LeadStatus.CLOSED:
+        raise ValidationError("A closed lead cannot be converted to a student.")
+    if lead.converted_student_id:
+        student = lead.converted_student
+        if student is None:
+            raise ValidationError("Converted student record could not be loaded.")
+        return student
+    if not lead.validated_at:
+        raise ValidationError("Lead must be validated before it can be converted to a student.")
 
     _validate_for_finalization(lead)
 
@@ -182,7 +187,7 @@ def convert_lead_to_student(
         lead.converted_student = student
 
     _copy_verified_documents(lead, student, actor=actor)
-    lead.status = LeadStatus.CONVERTED
+    lead.status = LeadStatus.FINALIZED
     lead.converted_at = lead.converted_at or timezone.now()
     lead.updated_by = actor
     lead.save(
@@ -197,8 +202,8 @@ def convert_lead_to_student(
 
     LeadActivity.objects.create(
         lead=lead,
-        activity_type=LeadActivityType.CONVERTED,
-        description=f"Converted to Student {student.pk}.",
+        activity_type=LeadActivityType.FINALIZED,
+        description=f"Finalized and converted to Student {student.pk}.",
         is_customer_visible=True,
         created_by=actor,
         updated_by=actor,
@@ -206,7 +211,7 @@ def convert_lead_to_student(
 
     send_system_message(
         lead,
-        "Your finalized applicant profile has been converted to a student record.",
+        "Your applicant profile has been finalized and converted to a student record.",
         performed_by=actor,
     )
 
