@@ -43,3 +43,10 @@ class AgentActivityPageTests(SimpleTestCase):
         self.assertIn("filter_map = {", self.views)
         self.assertIn("Paginator(activities, 25)", self.views)
         self.assertIn("activity_type__in=filter_map[activity_filter]", self.views)
+
+    def test_activity_page_has_notes_filter(self):
+        self.assertIn('href="?type=notes"', self.activity)
+        self.assertIn('{% trans "Notes" %}', self.activity)
+        self.assertIn('"notes": (', self.views)
+        self.assertIn("LeadActivityType.NOTE", self.views)
+        self.assertIn("LeadActivityType.INTERNAL_NOTES_UPDATED", self.views)

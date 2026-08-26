@@ -173,3 +173,8 @@ denser for audit-log use.
 Activity can be filtered by All, Applicant data, Documents, Assignment &
 status, and Programs. Results are paginated at 25 events per page instead of
 being permanently truncated to the latest 100 records.
+
+
+The Activity page also has a dedicated **Notes** filter. It includes both
+legacy/general `NOTE` activities and the dedicated `INTERNAL_NOTES_UPDATED`
+events. **Applicant data** is limited to applicant-field update activities.

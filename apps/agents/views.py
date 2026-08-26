@@ -282,8 +282,9 @@ def applicant_activity(request, lead_id):
     page_number = request.GET.get("page") or "1"
 
     filter_map = {
-        "applicant": (
-            LeadActivityType.APPLICANT_UPDATED,
+        "applicant": (LeadActivityType.APPLICANT_UPDATED,),
+        "notes": (
+            LeadActivityType.NOTE,
             LeadActivityType.INTERNAL_NOTES_UPDATED,
         ),
         "documents": (
