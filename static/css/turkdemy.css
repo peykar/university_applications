@@ -3978,6 +3978,29 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .responsibility-action:hover{text-decoration:underline;color:#123f68}
 .agent-lifecycle-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid #edf1f4}
 .agent-lifecycle-actions form{margin:0}
-.lifecycle-close-action{color:#7b5b5b;font-size:.72rem;font-weight:800;cursor:pointer}
-.lifecycle-close-action:hover{text-decoration:underline;color:#673f3f}
+.lifecycle-close-action{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:30px;
+  padding:5px 10px;
+  border:1px solid #d8caca;
+  border-radius:8px;
+  background:#fff;
+  color:#765252;
+  font-size:.72rem;
+  font-weight:800;
+  line-height:1.2;
+  cursor:pointer;
+}
+.lifecycle-close-action:hover{
+  border-color:#c8adad;
+  background:#fbf7f7;
+  color:#633f3f;
+  text-decoration:none;
+}
+.lifecycle-close-action:focus-visible{
+  outline:2px solid currentColor;
+  outline-offset:2px;
+}
 @media(max-width:700px){.agent-lifecycle-actions{justify-content:flex-start}}

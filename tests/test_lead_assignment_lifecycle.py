@@ -68,3 +68,11 @@ class LeadAssignmentLifecycleStructureTests(SimpleTestCase):
         self.assertIn('class="responsibility-action', self.detail)
         self.assertIn('class="agent-lifecycle-actions"', self.detail)
         self.assertIn("lifecycle-close-action", self.detail)
+
+    def test_close_applicant_has_subtle_button_treatment(self):
+        css = (Path(settings.BASE_DIR) / "static" / "css" / "turkdemy.css").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(".lifecycle-close-action{", css)
+        self.assertIn("border:1px solid", css)
+        self.assertIn("border-radius:8px", css)

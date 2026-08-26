@@ -35,3 +35,5 @@ Agent Workspace shows the responsible user's real display name, adding
 Assignment and reassignment are recorded in `LeadActivity`.
 
 Responsibility actions are grouped directly under **Responsible agent**. Closing is separated as a lifecycle action at the bottom of the Applicant card.
+
+**Close applicant** uses a compact outlined destructive-secondary button so it remains discoverable without competing with primary responsibility actions.
