@@ -2,6 +2,7 @@
 {% load i18n %}
 {% block title %}{{ lead }} — TurkDemy{% endblock %}
 {% block content %}
+<div class="customer-applicant-page">
 <section class="applicant-hero">
   <div class="applicant-title">
     <div class="applicant-avatar applicant-avatar-large">{{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}</div>
@@ -93,7 +94,7 @@
 
       <details class="lead-upload-panel">
         <summary>{% trans "Upload document" %}</summary>
-        <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-upload' lead.id %}" class="compact-form">
+        <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-upload' lead.id %}" class="compact-form document-upload-form">
           {% csrf_token %}
           {{ document_form.as_p }}
           <button class="button" type="submit">{% trans "Upload" %}</button>
@@ -130,7 +131,7 @@
             {% csrf_token %}
             {{ message_form.body }}
             <div class="chat-compose-actions">
-              {{ message_form.attachment }}
+              <div class="chat-file-control">{{ message_form.attachment }}</div>
               <button class="button" type="submit">{% trans "Send" %}</button>
             </div>
           </form>
@@ -173,5 +174,6 @@
       </section>
     {% endif %}
   </aside>
+</div>
 </div>
 {% endblock %}

@@ -3443,3 +3443,152 @@ html[dir="rtl"] .program-card-cta span[aria-hidden="true"]{
 }
 
 .table-status-form{display:flex;align-items:center;gap:6px}.table-status-form select{min-height:34px;border:1px solid #ced9e5;border-radius:8px;background:#fff;padding:5px 7px}.table-status-form button{border:0;border-radius:8px;background:#0b3a67;color:#fff;padding:8px 10px;font-weight:800;cursor:pointer}
+
+
+/* Customer applicant workspace refresh */
+.customer-applicant-page{max-width:1180px;margin:0 auto}
+.customer-applicant-page .applicant-hero{
+  margin-bottom:24px;padding:30px 32px;border-radius:22px;
+  border:1px solid #dbe4eb;background:linear-gradient(135deg,#f7fafc 0%,#fff 58%,#fff4f4 100%);
+  box-shadow:0 14px 40px rgba(19,42,67,.045)
+}
+.customer-applicant-page .applicant-avatar-large{
+  width:58px;height:58px;display:grid;place-items:center;border-radius:18px;
+  background:#0b3a67;color:#fff;font-size:1rem;font-weight:900;letter-spacing:.04em
+}
+.customer-applicant-page .applicant-title h1{font-size:clamp(2rem,3.4vw,2.65rem)}
+.customer-applicant-page .applicant-hero-actions .button{min-height:43px;display:inline-flex;align-items:center}
+.customer-applicant-page .applicant-workspace{
+  grid-template-columns:minmax(0,1fr) 300px;gap:24px
+}
+.customer-applicant-page .lead-panel{
+  margin-bottom:24px;padding:26px;border-radius:20px;border-color:#dbe4eb;
+  box-shadow:0 10px 32px rgba(19,42,67,.035)
+}
+.customer-applicant-page .lead-panel .section-heading{margin-bottom:18px}
+.customer-applicant-page .lead-panel h2{font-size:1.45rem;letter-spacing:-.015em}
+.customer-applicant-page .section-link{font-weight:800}
+.customer-applicant-page .lead-interest-card{
+  padding:18px 19px;border-radius:14px;background:#fff
+}
+.customer-applicant-page .lead-interest-card:hover{
+  border-color:#b9cad8;box-shadow:0 7px 20px rgba(19,42,67,.045)
+}
+.customer-applicant-page .lead-interest-card h3 a{color:#102d4d}
+.customer-applicant-page .interest-actions{align-self:center}
+.customer-applicant-page .lead-document-list{gap:10px}
+.customer-applicant-page .lead-document-row{
+  min-height:62px;padding:13px 15px;border-radius:12px;background:#fbfcfd
+}
+.customer-applicant-page .lead-upload-panel{
+  margin-top:18px;padding:0;border:1px solid #dbe4eb;border-radius:14px;background:#fbfcfd;overflow:hidden
+}
+.customer-applicant-page .lead-upload-panel summary{
+  position:relative;padding:15px 18px;list-style:none;color:#153858
+}
+.customer-applicant-page .lead-upload-panel summary::-webkit-details-marker{display:none}
+.customer-applicant-page .lead-upload-panel summary::after{
+  content:"+";position:absolute;inset-inline-end:18px;top:11px;font-size:1.35rem;font-weight:500
+}
+.customer-applicant-page .lead-upload-panel[open] summary::after{content:"−"}
+.customer-applicant-page .document-upload-form{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;margin:0;padding:18px;
+  border-top:1px solid #e1e8ee;background:#fff
+}
+.customer-applicant-page .document-upload-form p{margin:0;min-width:0}
+.customer-applicant-page .document-upload-form p:last-of-type{grid-column:1/-1}
+.customer-applicant-page .document-upload-form label{
+  display:block;margin-bottom:6px;color:#536174;font-size:.75rem;font-weight:800
+}
+.customer-applicant-page .document-upload-form input,
+.customer-applicant-page .document-upload-form select,
+.customer-applicant-page .document-upload-form textarea{
+  box-sizing:border-box;width:100%;max-width:100%;padding:10px 11px;border:1px solid #ced9e2;
+  border-radius:10px;background:#fff;font:inherit
+}
+.customer-applicant-page .document-upload-form textarea{min-height:96px;resize:vertical}
+.customer-applicant-page .document-upload-form input[type=file]{padding:8px;background:#f8fafb}
+.customer-applicant-page .document-upload-form .button{justify-self:start}
+.customer-applicant-page .lead-chat{border-radius:16px;border-color:#d7e1e9;background:#fff}
+.customer-applicant-page .lead-chat-messages{
+  min-height:300px;max-height:560px;padding:22px;background:#f4f7f9
+}
+.customer-applicant-page .chat-message{
+  max-width:72%;padding:12px 14px;border-radius:15px;box-shadow:0 2px 5px rgba(20,40,60,.025)
+}
+.customer-applicant-page .chat-message-own{
+  border-color:#c7dbe9;background:#e7f1f8;border-end-end-radius:5px
+}
+.customer-applicant-page .chat-message:not(.chat-message-own){border-end-start-radius:5px}
+.customer-applicant-page .chat-message-meta strong{color:#193653}
+.customer-applicant-page .chat-message-body{line-height:1.55}
+.customer-applicant-page .chat-attachment{
+  width:fit-content;padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.7)
+}
+.customer-applicant-page .chat-compose{padding:16px;border-top:1px solid #e0e7ed}
+.customer-applicant-page .chat-compose textarea{
+  min-height:92px;padding:13px;border-radius:12px;border-color:#ced9e2
+}
+.customer-applicant-page .chat-compose textarea:focus,
+.customer-applicant-page .document-upload-form input:focus,
+.customer-applicant-page .document-upload-form select:focus,
+.customer-applicant-page .document-upload-form textarea:focus{
+  outline:3px solid rgba(11,58,103,.1);border-color:#4c779d
+}
+.customer-applicant-page .chat-compose-actions{margin-top:10px}
+.customer-applicant-page .chat-file-control{min-width:0;max-width:75%}
+.customer-applicant-page .chat-file-control input[type=file]{
+  max-width:100%;padding:8px;border:1px solid #d7e1e9;border-radius:10px;background:#f8fafb
+}
+.customer-applicant-page .applicant-sidebar{top:96px;gap:16px}
+.customer-applicant-page .sidebar-card{
+  padding:20px;border-radius:16px;border-color:#dbe4eb;box-shadow:0 8px 24px rgba(19,42,67,.03)
+}
+.customer-applicant-page .sidebar-facts{gap:13px}
+.customer-applicant-page .sidebar-facts div+div{padding-top:10px;border-top:1px solid #edf1f4}
+.customer-applicant-page .sidebar-facts dd{overflow-wrap:anywhere}
+.customer-applicant-page .sidebar-card>a{display:inline-block;margin-top:6px;font-weight:800}
+html[dir=rtl] .customer-applicant-page .chat-message-own{margin-inline-start:auto}
+html[dir=rtl] .customer-applicant-page .chat-message-meta{direction:rtl}
+html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
+@media(max-width:1000px){
+  .customer-applicant-page .applicant-workspace{grid-template-columns:1fr}
+  .customer-applicant-page .applicant-sidebar{
+    position:static;grid-template-columns:repeat(2,minmax(0,1fr));grid-row:1
+  }
+}
+@media(max-width:700px){
+  .customer-applicant-page{margin-inline:-2px}
+  .customer-applicant-page .applicant-hero{
+    padding:20px 17px;border-radius:16px;align-items:flex-start
+  }
+  .customer-applicant-page .applicant-title{align-items:flex-start;gap:12px}
+  .customer-applicant-page .applicant-avatar-large{width:48px;height:48px;border-radius:14px;flex:0 0 48px}
+  .customer-applicant-page .applicant-title h1{font-size:1.75rem;margin-top:.15rem}
+  .customer-applicant-page .applicant-hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .customer-applicant-page .applicant-hero-actions .button{justify-content:center;text-align:center}
+  .customer-applicant-page .applicant-sidebar{grid-template-columns:1fr}
+  .customer-applicant-page .lead-panel{padding:18px 15px;border-radius:16px;margin-bottom:16px}
+  .customer-applicant-page .lead-panel .section-heading{align-items:flex-start;gap:10px}
+  .customer-applicant-page .lead-panel h2{font-size:1.25rem}
+  .customer-applicant-page .lead-interest-card{padding:15px}
+  .customer-applicant-page .interest-actions .button{flex:1;text-align:center}
+  .customer-applicant-page .document-upload-form{grid-template-columns:1fr;padding:15px}
+  .customer-applicant-page .document-upload-form p:last-of-type{grid-column:auto}
+  .customer-applicant-page .document-upload-form .button{width:100%;justify-content:center}
+  .customer-applicant-page .lead-chat-messages{min-height:260px;max-height:480px;padding:13px}
+  .customer-applicant-page .chat-message{max-width:88%;padding:10px 11px}
+  .customer-applicant-page .chat-message-meta{gap:8px;flex-wrap:wrap}
+  .customer-applicant-page .chat-compose{padding:12px}
+  .customer-applicant-page .chat-compose-actions{align-items:stretch}
+  .customer-applicant-page .chat-file-control{max-width:100%;width:100%}
+  .customer-applicant-page .chat-file-control input[type=file]{width:100%}
+  .customer-applicant-page .chat-compose-actions .button{width:100%}
+}
+@media(max-width:430px){
+  .customer-applicant-page .applicant-hero-actions{grid-template-columns:1fr}
+  .customer-applicant-page .lead-panel .section-heading{display:block}
+  .customer-applicant-page .section-link{display:inline-block;margin-top:8px}
+  .customer-applicant-page .lead-document-row>div:last-child{width:100%;justify-content:space-between}
+  .customer-applicant-page .chat-message{max-width:94%}
+}
