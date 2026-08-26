@@ -15,3 +15,21 @@ collect and validate missing data later. The selected program is preserved in
 
 Customers who already manage one or more applicants still see the applicant
 picker so they can choose which existing person the program belongs to.
+
+
+## Applying when applicants already exist
+
+The program application page asks the customer-facing question **Who are you
+applying for?** rather than exposing the internal `Lead` model.
+
+Existing people are shown as selectable cards. The applicant matching the
+account email is labelled **Myself**. If there is no matching self applicant,
+**Myself** can create one directly. **Someone new** expands an inline,
+lightweight applicant form; all identity/contact fields in that panel are
+optional.
+
+The second step is labelled **When would you like to start?** rather than
+`Offering`. The customer can choose a concrete intake or leave **Any intake /
+decide later**.
+
+Submitting a new person creates the Lead and program interest atomically.

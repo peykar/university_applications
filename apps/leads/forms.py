@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import ClassVar, cast
 
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from apps.geography.models import City
 from apps.universities.models import (
@@ -238,19 +239,127 @@ class LeadMessageForm(forms.Form):
 
 
 class ApplyProgramForm(forms.Form):
-    lead = forms.ModelChoiceField(queryset=Lead.objects.none())
+    applicant = forms.ChoiceField(
+        choices=(),
+        widget=forms.RadioSelect,
+        label=_("I am applying for"),
+    )
     offering = forms.ModelChoiceField(
         queryset=ProgramOffering.objects.none(),
         required=False,
-        empty_label="Any intake / decide later",
+        empty_label=_("Any intake / decide later"),
+        label=_("When would you like to start?"),
+    )
+    new_first_name = forms.CharField(
+        required=False,
+        label=_("First name"),
+    )
+    new_last_name = forms.CharField(
+        required=False,
+        label=_("Last name"),
+    )
+    new_email = forms.EmailField(
+        required=False,
+        label=_("Email"),
+    )
+    new_cell = forms.CharField(
+        required=False,
+        label=_("Phone"),
     )
 
     def __init__(self, *args, user, program, **kwargs):
         super().__init__(*args, **kwargs)
-        lead_field = cast(forms.ModelChoiceField, self.fields["lead"])
+        self.user = user
+        self.program = program
+
+        leads = list(Lead.objects.filter(user=user).order_by("-updated_at"))
+        user_email = (user.email or "").strip().casefold()
+        self_lead = next(
+            (
+                lead
+                for lead in leads
+                if user_email and (lead.email or "").strip().casefold() == user_email
+            ),
+            None,
+        )
+
+        choices: list[tuple[str, str]] = []
+        self.applicant_options: list[dict[str, object]] = []
+
+        if self_lead is None:
+            choices.append(("self_new", str(_("Myself"))))
+            self.applicant_options.append(
+                {
+                    "value": "self_new",
+                    "title": str(_("Myself")),
+                    "subtitle": str(_("Use the details we already know about your account.")),
+                    "is_self": True,
+                    "is_new": True,
+                }
+            )
+
+        for lead in leads:
+            is_self = self_lead is not None and lead.pk == self_lead.pk
+            title = str(_("Myself")) if is_self else str(lead) or str(_("Applicant"))
+            subtitle = (
+                str(lead)
+                if is_self and str(lead)
+                else (lead.email or str(_("Applicant managed by you")))
+            )
+            value = f"lead:{lead.pk}"
+            choices.append((value, title))
+            self.applicant_options.append(
+                {
+                    "value": value,
+                    "title": title,
+                    "subtitle": subtitle,
+                    "is_self": is_self,
+                    "is_new": False,
+                }
+            )
+
+        choices.append(("new", str(_("Someone new"))))
+        self.applicant_options.append(
+            {
+                "value": "new",
+                "title": str(_("Someone new")),
+                "subtitle": str(_("Create an applicant for another person.")),
+                "is_self": False,
+                "is_new": True,
+            }
+        )
+
+        applicant_field = cast(forms.ChoiceField, self.fields["applicant"])
+        applicant_field.choices = choices
+
+        if not self.is_bound:
+            applicant_field.initial = choices[0][0]
+            self.fields["new_first_name"].initial = user.first_name or ""
+            self.fields["new_last_name"].initial = user.last_name or ""
+            self.fields["new_email"].initial = user.email or ""
+            self.fields["new_cell"].initial = getattr(user, "cell", "") or ""
+
         offering_field = cast(forms.ModelChoiceField, self.fields["offering"])
-        lead_field.queryset = Lead.objects.filter(user=user).order_by("-updated_at")
         offering_field.queryset = ProgramOffering.objects.filter(
             program=program,
             is_active=True,
         ).select_related("academic_year", "semester")
+
+    def clean(self):
+        cleaned = super().clean() or {}
+        applicant = cleaned.get("applicant")
+
+        if isinstance(applicant, str) and applicant.startswith("lead:"):
+            lead_id = applicant.removeprefix("lead:")
+            lead = Lead.objects.filter(
+                pk=lead_id,
+                user=self.user,
+            ).first()
+            if lead is None:
+                self.add_error("applicant", _("Choose a valid applicant."))
+            else:
+                cleaned["selected_lead"] = lead
+        elif applicant not in {"self_new", "new"}:
+            self.add_error("applicant", _("Choose who is applying."))
+
+        return cleaned

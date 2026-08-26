@@ -181,7 +181,7 @@ class LeadWorkflowTests(TestCase):
         self.client.force_login(self.user)
         response = self.client.post(
             reverse("apply-program", kwargs={"slug": self.program.slug_en}),
-            {"lead": str(lead.pk), "offering": str(self.offering.pk)},
+            {"applicant": f"lead:{lead.pk}", "offering": str(self.offering.pk)},
         )
         self.assertEqual(response.status_code, 302)
         interest = LeadProgramInterest.objects.get()

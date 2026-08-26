@@ -1,13 +1,10 @@
 from __future__ import annotations
 
-from urllib.parse import urlencode
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
@@ -329,27 +326,58 @@ def lead_interest_response(request, lead_id, interest_id):
 @login_required
 def apply_program(request, slug):
     program = get_object_or_404(
-        Program.objects.select_related("university"),
+        Program.objects.select_related(
+            "university",
+            "program_language",
+        ),
         slug_en=slug,
         is_active=True,
         university__is_active=True,
     )
 
-    # Do not interrupt the application journey with an empty applicant picker.
-    # A first-time customer goes straight to the lightweight applicant form.
-    if not Lead.objects.filter(user=request.user).exists():
-        query = urlencode({"next_program": program.slug_en})
-        return redirect(f"{reverse('lead-create')}?{query}")
+    form = ApplyProgramForm(
+        request.POST or None,
+        user=request.user,
+        program=program,
+    )
 
-    if request.method == "POST":
-        form = ApplyProgramForm(
-            request.POST,
-            user=request.user,
-            program=program,
-        )
-        if form.is_valid():
-            lead = form.cleaned_data["lead"]
-            offering = form.cleaned_data["offering"]
+    if request.method == "POST" and form.is_valid():
+        applicant_choice = form.cleaned_data["applicant"]
+        offering = form.cleaned_data["offering"]
+
+        with transaction.atomic():
+            lead = form.cleaned_data.get("selected_lead")
+            if lead is None:
+                is_self = applicant_choice == "self_new"
+                lead = Lead.objects.create(
+                    user=request.user,
+                    first_name=(
+                        form.cleaned_data.get("new_first_name", "")
+                        if applicant_choice in {"self_new", "new"}
+                        else ""
+                    ),
+                    last_name=(
+                        form.cleaned_data.get("new_last_name", "")
+                        if applicant_choice in {"self_new", "new"}
+                        else ""
+                    ),
+                    email=(
+                        form.cleaned_data.get("new_email", "")
+                        if applicant_choice in {"self_new", "new"}
+                        else ""
+                    ),
+                    cell=(
+                        form.cleaned_data.get("new_cell", "")
+                        if applicant_choice in {"self_new", "new"}
+                        else ""
+                    ),
+                    source="website",
+                    created_by=request.user,
+                    updated_by=request.user,
+                )
+                if is_self and not lead.email:
+                    lead.email = request.user.email or ""
+                    lead.save(update_fields=("email", "updated_at"))
 
             interest, created = LeadProgramInterest.objects.get_or_create(
                 lead=lead,
@@ -385,10 +413,8 @@ def apply_program(request, slug):
                 updated_by=request.user,
             )
 
-            messages.success(request, "Program added to the applicant.")
-            return redirect("lead-detail", lead_id=lead.pk)
-    else:
-        form = ApplyProgramForm(user=request.user, program=program)
+        messages.success(request, "Program added to the applicant.")
+        return redirect("lead-detail", lead_id=lead.pk)
 
     return render(
         request,
@@ -396,5 +422,6 @@ def apply_program(request, slug):
         {
             "program": program,
             "form": form,
+            "applicant_options": form.applicant_options,
         },
     )

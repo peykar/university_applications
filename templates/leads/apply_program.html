@@ -2,27 +2,148 @@
 {% load i18n %}
 {% block title %}{% trans "Apply" %} — {{ program.name_en }}{% endblock %}
 {% block content %}
-<div class="apply-program-layout">
-  <section>
+<section class="program-apply-page">
+  <header class="program-apply-hero">
     <p class="eyebrow">{% trans "Apply / express interest" %}</p>
     <h1>{{ program.name_en }}</h1>
-    <p class="lead">{{ program.university.name_en }} · {{ program.get_degree_display }} · {{ program.program_language.name_en }}</p>
-  </section>
+    <p class="lead">
+      {{ program.university.name_en }} ·
+      {{ program.get_degree_display }} ·
+      {{ program.program_language.name_en }}
+    </p>
+  </header>
 
-  {% if form.fields.lead.queryset.exists %}
-    <form method="post" class="form-card">
-      {% csrf_token %}
-      <h2>{% trans "Choose an applicant" %}</h2>
-      <p class="muted">{% trans "The applicant can be you or any person you manage through your account." %}</p>
-      {{ form.as_p }}
-      <button class="button" type="submit">{% trans "Add program" %}</button>
-    </form>
-  {% else %}
-    <div class="empty-state">
-      <h2>{% trans "Create an applicant first" %}</h2>
-      <p>{% trans "You need an applicant profile before you can add a program." %}</p>
-      <a class="button" href="{% url 'lead-create' %}?next_program={{ program.slug_en }}">{% trans "Create applicant" %}</a>
+  <form method="post" class="program-apply-card" data-apply-form>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="form-error-summary">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <section class="program-apply-step">
+      <div class="program-apply-step-heading">
+        <span class="program-apply-step-number">1</span>
+        <div>
+          <h2>{% trans "Who are you applying for?" %}</h2>
+          <p>{% trans "Choose an existing applicant, yourself, or create someone new." %}</p>
+        </div>
+      </div>
+
+      {% if form.applicant.errors %}
+        <div class="field-errors">{{ form.applicant.errors }}</div>
+      {% endif %}
+
+      <div class="apply-applicant-options">
+        {% for option in applicant_options %}
+          <label class="apply-applicant-option">
+            <input
+              type="radio"
+              name="applicant"
+              value="{{ option.value }}"
+              {% if form.is_bound %}
+                {% if form.data.applicant == option.value %}checked{% endif %}
+              {% elif forloop.first %}checked{% endif %}
+              data-applicant-choice
+              data-is-new="{% if option.is_new %}1{% else %}0{% endif %}"
+              data-is-self="{% if option.is_self %}1{% else %}0{% endif %}"
+            >
+            <span class="apply-applicant-radio" aria-hidden="true"></span>
+            <span class="apply-applicant-copy">
+              <strong>{{ option.title }}</strong>
+              {% if option.subtitle %}<small>{{ option.subtitle }}</small>{% endif %}
+            </span>
+          </label>
+        {% endfor %}
+      </div>
+
+      <div class="apply-new-applicant" data-new-applicant hidden>
+        <div class="apply-new-applicant-heading">
+          <h3>{% trans "Tell us what you know" %}</h3>
+          <p>{% trans "All of these fields are optional. You can continue now, and our admissions team can collect anything missing later." %}</p>
+        </div>
+        <div class="apply-new-applicant-grid">
+          <div>
+            {{ form.new_first_name.label_tag }}
+            {{ form.new_first_name }}
+            {{ form.new_first_name.errors }}
+          </div>
+          <div>
+            {{ form.new_last_name.label_tag }}
+            {{ form.new_last_name }}
+            {{ form.new_last_name.errors }}
+          </div>
+          <div>
+            {{ form.new_email.label_tag }}
+            {{ form.new_email }}
+            {{ form.new_email.errors }}
+          </div>
+          <div>
+            {{ form.new_cell.label_tag }}
+            {{ form.new_cell }}
+            {{ form.new_cell.errors }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="program-apply-step">
+      <div class="program-apply-step-heading">
+        <span class="program-apply-step-number">2</span>
+        <div>
+          <h2>{% trans "When would you like to start?" %}</h2>
+          <p>{% trans "If you're not sure yet, leave it as any intake and your admissions advisor can help later." %}</p>
+        </div>
+      </div>
+      <div class="apply-intake-field">
+        {{ form.offering }}
+        {{ form.offering.errors }}
+      </div>
+    </section>
+
+    <div class="program-apply-actions">
+      <a class="button button-secondary" href="{% url 'program-detail' program.slug_en %}">
+        {% trans "Back to program" %}
+      </a>
+      <button class="button" type="submit">
+        {% trans "Continue application" %}
+      </button>
     </div>
-  {% endif %}
-</div>
+  </form>
+</section>
+
+<script>
+(() => {
+  const form = document.querySelector("[data-apply-form]");
+  if (!form) return;
+
+  const choices = [...form.querySelectorAll("[data-applicant-choice]")];
+  const panel = form.querySelector("[data-new-applicant]");
+  const fields = {
+    firstName: form.querySelector('[name="new_first_name"]'),
+    lastName: form.querySelector('[name="new_last_name"]'),
+    email: form.querySelector('[name="new_email"]'),
+    cell: form.querySelector('[name="new_cell"]'),
+  };
+  const selfValues = Object.fromEntries(
+    Object.entries(fields).map(([key, field]) => [key, field?.value || ""])
+  );
+
+  const update = () => {
+    const selected = choices.find((choice) => choice.checked);
+    if (!selected || !panel) return;
+
+    const isNew = selected.dataset.isNew === "1";
+    const isSelf = selected.dataset.isSelf === "1";
+    panel.hidden = !isNew;
+
+    if (!isNew) return;
+    Object.entries(fields).forEach(([key, field]) => {
+      if (!field) return;
+      field.value = isSelf ? selfValues[key] : "";
+    });
+  };
+
+  choices.forEach((choice) => choice.addEventListener("change", update));
+  update();
+})();
+</script>
 {% endblock %}
