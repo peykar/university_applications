@@ -366,3 +366,12 @@ not rendered in the Applicant card.
 The remaining legacy `lead.updated_by` template assertion was removed from the
 edit/upload workflow test. The Applicant card intentionally has no last-update
 metadata; historical changes are available through Activity.
+
+### Finalization program selection
+
+Discussed/suggested programs are always selectable during Lead → Student
+finalization. Selecting a program exposes its intake choice in the same
+finalization review. The selected active offering is saved back to the lead
+program interest and used to create the Draft Application. A selected program
+without a valid intake blocks finalization with a validation message; selecting
+no programs remains valid.

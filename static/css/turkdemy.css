@@ -4769,3 +4769,9 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   font-size:.72rem;
   line-height:1;
 }
+
+.finalize-program-choice{display:flex;align-items:flex-start;gap:9px;cursor:pointer}
+.finalize-program-choice input{margin-top:3px}
+.finalize-offering-choice{display:grid;grid-template-columns:42px 1fr;align-items:center;gap:8px;margin:8px 0 0 24px}
+.finalize-offering-choice>span{font-size:.62rem;font-weight:800;color:#71808b}
+.finalize-offering-choice select{min-height:30px;padding:4px 7px;border:1px solid #d7e0e6;border-radius:7px;background:#fff;font-size:.66rem}

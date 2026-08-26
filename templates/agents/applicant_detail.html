@@ -289,28 +289,39 @@ document.addEventListener("DOMContentLoaded", () => {
    <div class="finalize-programs">
     <div class="finalize-programs-head">
      <strong>{% trans "Draft applications" %}</strong>
-     <span>{% trans "Choose any discussed programs to carry into the Student stage. Selecting none is allowed." %}</span>
+     <span>{% trans "Select the programs to create as draft applications and choose an intake for each. Selecting none is allowed." %}</span>
     </div>
     <div class="finalize-program-list">
      {% for interest in interests %}
-      <label class="finalize-program-option{% if not interest.program_offering %} disabled{% endif %}">
-       <input
-        type="checkbox"
-        name="program_interests"
-        value="{{ interest.pk }}"
-        form="finalize-applicant-form"
-        {% if not interest.program_offering %}disabled{% endif %}
-       >
-       <span>
-        <strong>{{ interest.program.name_en }}</strong>
-        <small>{{ interest.program.university.name_en }}</small>
-        {% if interest.program_offering %}
-         <small>{{ interest.program_offering }}</small>
-        {% else %}
-         <small class="finalize-program-missing">{% trans "Choose an intake before this can become a draft application." %}</small>
-        {% endif %}
-       </span>
-      </label>
+      <div class="finalize-program-option">
+       <label class="finalize-program-choice">
+        <input
+         type="checkbox"
+         name="program_interests"
+         value="{{ interest.pk }}"
+         form="finalize-applicant-form"
+        >
+        <span>
+         <strong>{{ interest.program.name_en }}</strong>
+         <small>{{ interest.program.university.name_en }}</small>
+        </span>
+       </label>
+       <label class="finalize-offering-choice">
+        <span>{% trans "Intake" %}</span>
+        <select
+         name="program_offering_{{ interest.pk }}"
+         form="finalize-applicant-form"
+        >
+         <option value="">{% trans "Choose intake" %}</option>
+         {% for offering in interest.available_offerings %}
+          <option value="{{ offering.pk }}"{% if interest.program_offering_id == offering.pk %} selected{% endif %}>{{ offering }}</option>
+         {% endfor %}
+        </select>
+       </label>
+       {% if not interest.available_offerings %}
+        <small class="finalize-program-missing">{% trans "No active intake is available for this program." %}</small>
+       {% endif %}
+      </div>
      {% empty %}
       <p class="empty-state">{% trans "No discussed programs yet." %}</p>
      {% endfor %}

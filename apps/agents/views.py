@@ -241,6 +241,21 @@ def applicant_detail(request, lead_id):
         else []
     )
 
+    interests = list(
+        lead.program_interests.select_related(
+            "program",
+            "program__university",
+            "program_offering",
+        ).order_by("-created_at")
+    )
+    for interest in interests:
+        interest.available_offerings = list(
+            interest.program.offerings.filter(is_active=True).select_related(
+                "academic_year",
+                "semester",
+            )
+        )
+
     return render(
         request,
         "agents/applicant_detail.html",
@@ -258,9 +273,7 @@ def applicant_detail(request, lead_id):
                 "reviewed_by",
                 "source_message_attachment",
             ).order_by("-created_at"),
-            "interests": lead.program_interests.select_related(
-                "program", "program__university", "program_offering"
-            ).order_by("-created_at"),
+            "interests": interests,
             "activities": lead.activities.select_related("created_by").order_by("-created_at")[:50],
             "status_choices": LeadStatus.choices,
         },
@@ -797,6 +810,10 @@ def applicant_finalize(request, lead_id):
             lead,
             performed_by=request.user,
             selected_interest_ids=request.POST.getlist("program_interests"),
+            selected_offering_ids={
+                interest_id: request.POST.get(f"program_offering_{interest_id}", "")
+                for interest_id in request.POST.getlist("program_interests")
+            },
         )
     except ValidationError as exc:
         if hasattr(exc, "message_dict"):

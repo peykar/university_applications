@@ -11,6 +11,7 @@ from apps.applications.models import Application, ApplicationStatus
 from apps.core.audit import get_system_user
 from apps.core.phone import normalize_phone_number
 from apps.students.models import Student, StudentDocument
+from apps.universities.models import ProgramOffering
 
 from ..models import (
     Lead,
@@ -100,6 +101,7 @@ def _create_selected_draft_applications(
     student: Student,
     *,
     selected_interest_ids: list[str] | tuple[str, ...],
+    selected_offering_ids: dict[str, str] | None,
     actor,
 ) -> list[Application]:
     """Create Draft Applications from explicitly selected Lead interests."""
@@ -117,18 +119,30 @@ def _create_selected_draft_applications(
     if len(interests) != len(set(selected_interest_ids)):
         raise ValidationError("One or more selected programs do not belong to this applicant.")
 
+    selected_offering_ids = selected_offering_ids or {}
     applications: list[Application] = []
     for interest in interests:
         offering = interest.program_offering
+        selected_offering_id = selected_offering_ids.get(str(interest.pk), "")
+        if selected_offering_id:
+            try:
+                offering = ProgramOffering.objects.get(
+                    pk=selected_offering_id,
+                    program=interest.program,
+                    is_active=True,
+                )
+            except (ProgramOffering.DoesNotExist, ValueError):
+                raise ValidationError(
+                    {"programs": f"Choose a valid intake for {interest.program}."}
+                ) from None
+
         if offering is None:
-            raise ValidationError(
-                {
-                    "programs": (
-                        f"{interest.program} cannot be carried forward until "
-                        "a specific intake/offering is selected."
-                    )
-                }
-            )
+            raise ValidationError({"programs": f"Choose an intake for {interest.program}."})
+
+        if interest.program_offering_id != offering.pk:
+            interest.program_offering = offering
+            interest.updated_by = actor
+            interest.save(update_fields=("program_offering", "updated_by", "updated_at"))
 
         if interest.converted_application_id:
             converted = interest.converted_application
@@ -167,6 +181,7 @@ def finalize_lead(
     *,
     performed_by=None,
     selected_interest_ids: list[str] | tuple[str, ...] | None = None,
+    selected_offering_ids: dict[str, str] | None = None,
 ) -> Student:
     """
     Atomically finalize a Lead and create its canonical Student record.
@@ -235,6 +250,7 @@ def finalize_lead(
         lead,
         student,
         selected_interest_ids=selected_interest_ids,
+        selected_offering_ids=selected_offering_ids,
         actor=actor,
     )
 
