@@ -62,3 +62,9 @@ class LeadAssignmentLifecycleStructureTests(SimpleTestCase):
     def test_close_applicant_uses_modal_action(self):
         self.assertIn('data-modal-target="close-applicant-modal"', self.detail)
         self.assertIn('id="close-applicant-modal"', self.detail)
+
+    def test_responsibility_actions_are_grouped_with_responsible_agent(self):
+        self.assertIn('class="responsibility-actions"', self.detail)
+        self.assertIn('class="responsibility-action', self.detail)
+        self.assertIn('class="agent-lifecycle-actions"', self.detail)
+        self.assertIn("lifecycle-close-action", self.detail)

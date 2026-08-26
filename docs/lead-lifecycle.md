@@ -33,3 +33,5 @@ Agent Workspace shows the responsible user's real display name, adding
 - **Reassign** — move responsibility to another active user of the same Agent.
 
 Assignment and reassignment are recorded in `LeadActivity`.
+
+Responsibility actions are grouped directly under **Responsible agent**. Closing is separated as a lifecycle action at the bottom of the Applicant card.

@@ -3970,3 +3970,14 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   .agent-workflow-actions>button{width:100%}
   .agent-workflow-actions>form .button{width:100%}
 }
+
+/* Applicant responsibility hierarchy */
+.responsibility-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:5px}
+.responsibility-actions form{margin:0}
+.responsibility-action{appearance:none;border:0;padding:0;background:transparent;color:#315d7d;font:inherit;font-size:.72rem;font-weight:800;line-height:1.35;cursor:pointer}
+.responsibility-action:hover{text-decoration:underline;color:#123f68}
+.agent-lifecycle-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid #edf1f4}
+.agent-lifecycle-actions form{margin:0}
+.lifecycle-close-action{color:#7b5b5b;font-size:.72rem;font-weight:800;cursor:pointer}
+.lifecycle-close-action:hover{text-decoration:underline;color:#673f3f}
+@media(max-width:700px){.agent-lifecycle-actions{justify-content:flex-start}}

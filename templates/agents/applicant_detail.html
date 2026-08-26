@@ -50,30 +50,22 @@ document.addEventListener("DOMContentLoaded", () => {
     {% else %}
       <span class="muted">{% trans "Unassigned" %}</span>
     {% endif %}
+    {% if lead.status != "finalized" and lead.status != "closed" %}
+     <div class="responsibility-actions">
+      {% if lead.assigned_to != request.user %}
+       <form method="post" action="{% url 'agent-applicant-assign-to-me' lead.pk %}">{% csrf_token %}
+        <button class="responsibility-action" type="submit">{% trans "Assign to me" %}</button>
+       </form>
+      {% endif %}
+      {% if agent_users %}
+       <button type="button" class="responsibility-action button-reset modal-trigger" data-modal-target="assign-agent-modal">{% if lead.assigned_to %}{% trans "Reassign" %}{% else %}{% trans "Assign agent" %}{% endif %}</button>
+      {% endif %}
+     </div>
+    {% endif %}
    </dd>
   </div>
  </dl>
-
- <div class="agent-workflow-actions">
-  {% if lead.status != "finalized" and lead.status != "closed" %}
-   {% if lead.assigned_to != request.user %}
-    <form method="post" action="{% url 'agent-applicant-assign-to-me' lead.pk %}">
-     {% csrf_token %}
-     <button class="button" type="submit">{% trans "Assign to me" %}</button>
-    </form>
-   {% endif %}
-
-   {% if agent_users %}
-    <button
-      type="button"
-      class="button button-secondary modal-trigger"
-      data-modal-target="assign-agent-modal"
-    >
-      {% if lead.assigned_to %}{% trans "Reassign" %}{% else %}{% trans "Assign agent" %}{% endif %}
-    </button>
-   {% endif %}
-  {% endif %}
-
+ <div class="agent-lifecycle-actions">
   {% if lead.status == "closed" %}
    <form method="post" action="{% url 'agent-applicant-status' lead.pk %}">
     {% csrf_token %}
@@ -86,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
   {% elif lead.status != "finalized" %}
    <button
      type="button"
-     class="button button-secondary workflow-close-button modal-trigger"
+     class="lifecycle-close-action button-reset modal-trigger"
      data-modal-target="close-applicant-modal"
    >{% trans "Close applicant" %}</button>
   {% endif %}
