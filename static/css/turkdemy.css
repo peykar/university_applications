@@ -4301,3 +4301,60 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .finalize-program-option small{font-size:.67rem;color:#7d8994}
 .finalize-program-option.disabled{background:#f7f8f9;cursor:not-allowed;opacity:.72}
 .finalize-program-missing{color:#8a632c!important;font-weight:700}
+
+
+/* Searchable dependent single-selects for program suggestions */
+.single-picker{position:relative}
+.single-picker-native{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+.single-picker-search{
+  width:100%;
+  min-height:40px;
+  padding:8px 10px;
+  border:1px solid #d9e1e7;
+  border-radius:8px;
+  background:#fff;
+  color:#30465a;
+  font:inherit;
+}
+.single-picker-search:disabled{
+  background:#f3f5f7;
+  color:#8b96a0;
+  cursor:not-allowed;
+}
+.single-picker-options{
+  display:none;
+  position:absolute;
+  z-index:50;
+  top:calc(100% + 4px);
+  left:0;
+  right:0;
+  max-height:260px;
+  overflow:auto;
+  padding:5px;
+  border:1px solid #dbe3e8;
+  border-radius:9px;
+  background:#fff;
+  box-shadow:0 12px 30px rgba(28,46,61,.14);
+}
+.single-picker-options.is-open{display:grid;gap:3px}
+.single-picker-option{
+  width:100%;
+  padding:8px 9px;
+  border:0;
+  border-radius:7px;
+  background:transparent;
+  color:#334b5f;
+  text-align:left;
+  cursor:pointer;
+  font:inherit;
+  font-size:.74rem;
+}
+.single-picker-option:hover,
+.single-picker-option:focus{background:#edf3f7;outline:none}
+.single-picker-empty{padding:9px;color:#89949e;font-size:.72rem}

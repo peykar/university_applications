@@ -263,3 +263,16 @@ interest appears alongside user-added interests and is eligible for
 cherry-picking during finalization. An offering remains optional while the
 program is only being discussed, but finalization requires a concrete offering
 before that interest can become a Draft Application.
+
+
+### Searchable program suggestion selector
+
+The Agent Suggest Program modal uses lightweight AJAX-backed searchable
+single-selects. The applicant page no longer renders every Program and
+ProgramOffering into the HTML.
+
+Program search matches active programs by program or university name and
+returns up to 20 results. The offering field is disabled until a Program is
+selected, then loads only active offerings for that Program. Bound POST forms
+restore active querysets so Django still validates submitted model IDs
+server-side.

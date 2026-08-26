@@ -117,17 +117,31 @@ class AgentProgramSuggestionForm(forms.ModelForm):
         if not isinstance(offering_field, forms.ModelChoiceField):
             raise TypeError("program_offering must be a ModelChoiceField")
 
-        program_field.queryset = (
-            Program.objects.filter(is_active=True)
-            .select_related("university")
-            .order_by("university__name_en", "name_en")
+        program_field.widget.attrs.update(
+            {
+                "class": "searchable-single",
+                "data-placeholder": "Search program or university",
+            }
         )
         offering_field.required = False
-        offering_field.queryset = (
-            ProgramOffering.objects.filter(is_active=True)
-            .select_related("program", "academic_year", "semester")
-            .order_by("program__name_en", "-academic_year__name_en")
+        offering_field.widget.attrs.update(
+            {
+                "class": "searchable-single dependent-offering",
+                "data-placeholder": "Select program first",
+                "disabled": True,
+            }
         )
+
+        if self.is_bound:
+            program_field.queryset = Program.objects.filter(is_active=True).select_related(
+                "university"
+            )
+            offering_field.queryset = ProgramOffering.objects.filter(is_active=True).select_related(
+                "program", "academic_year", "semester"
+            )
+        else:
+            program_field.queryset = Program.objects.none()
+            offering_field.queryset = ProgramOffering.objects.none()
 
     def clean(self):
         cleaned = super().clean() or {}

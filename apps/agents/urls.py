@@ -6,6 +6,16 @@ urlpatterns = [
     path("agent/", views.dashboard, name="agent-dashboard"),
     path("agent/applicants/", views.applicant_list, name="agent-applicant-list"),
     path(
+        "agent/program-search/",
+        views.agent_program_search,
+        name="agent-program-search",
+    ),
+    path(
+        "agent/program-offering-search/",
+        views.agent_program_offering_search,
+        name="agent-program-offering-search",
+    ),
+    path(
         "agent/applicants/<uuid:lead_id>/",
         views.applicant_detail,
         name="agent-applicant-detail",

@@ -1,4 +1,4 @@
-{% extends "agents/base.html" %}{% load i18n %}
+{% extends "agents/base.html" %}{% load i18n static %}
 {% block agent_title %}{{ lead }}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -47,11 +47,15 @@ document.addEventListener("DOMContentLoaded", () => {
    <div class="agent-form-grid">
     <label class="agent-form-field agent-form-field-wide">
      <span>{{ program_suggestion_form.program.label }}</span>
-     {{ program_suggestion_form.program }}
+     <div class="searchable-program-field" data-search-url="{% url 'agent-program-search' %}">
+      {{ program_suggestion_form.program }}
+     </div>
     </label>
     <label class="agent-form-field agent-form-field-wide">
      <span>{{ program_suggestion_form.program_offering.label }}</span>
-     {{ program_suggestion_form.program_offering }}
+     <div class="searchable-offering-field" data-search-url="{% url 'agent-program-offering-search' %}">
+      {{ program_suggestion_form.program_offering }}
+     </div>
      <small>{% trans "Optional. Select an intake now if known; it is required before creating a draft application." %}</small>
     </label>
     <label class="agent-form-field agent-form-field-wide">
@@ -608,4 +612,8 @@ document.addEventListener("DOMContentLoaded", () => {
 </aside>
 </div>
 
+{% endblock %}
+{% block extra_scripts %}
+{{ block.super }}
+<script src="{% static 'js/searchable_program_suggestion.js' %}"></script>
 {% endblock %}

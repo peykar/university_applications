@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
 from django.db.models import Count, Max, Q
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -31,6 +32,7 @@ from apps.leads.models import (
 )
 from apps.leads.services.conversion import finalize_lead
 from apps.leads.services.messaging import ensure_conversation, send_system_message
+from apps.universities.models import Program, ProgramOffering
 
 from .forms import (
     AgentLeadDocumentUploadForm,
@@ -646,6 +648,57 @@ def applicant_assign(request, lead_id):
         f"{_user_display_name(target_user)} is now responsible for this applicant.",
     )
     return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+
+@login_required
+def agent_program_search(request):
+    _require_agent(request.user)
+    query = (request.GET.get("q") or "").strip()
+    programs = Program.objects.filter(is_active=True).select_related("university")
+    if query:
+        programs = programs.filter(
+            Q(name_en__icontains=query)
+            | Q(name_tr__icontains=query)
+            | Q(university__name_en__icontains=query)
+            | Q(university__name_tr__icontains=query)
+        )
+    programs = programs.order_by("university__name_en", "name_en")[:20]
+    return JsonResponse(
+        {
+            "results": [
+                {
+                    "id": str(program.pk),
+                    "label": f"{program.name_en} — {program.university.name_en}",
+                }
+                for program in programs
+            ]
+        }
+    )
+
+
+@login_required
+def agent_program_offering_search(request):
+    _require_agent(request.user)
+    program_id = (request.GET.get("program_id") or "").strip()
+    if not program_id:
+        return JsonResponse({"results": []})
+
+    offerings = (
+        ProgramOffering.objects.filter(is_active=True, program_id=program_id)
+        .select_related("program", "academic_year", "semester")
+        .order_by("-academic_year__name_en", "semester__name_en")[:30]
+    )
+    return JsonResponse(
+        {
+            "results": [
+                {
+                    "id": str(offering.pk),
+                    "label": str(offering),
+                }
+                for offering in offerings
+            ]
+        }
+    )
 
 
 @login_required
