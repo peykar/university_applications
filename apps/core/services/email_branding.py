@@ -4,6 +4,17 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils import translation
 
+EMAIL_BRAND_NAMES = {
+    "fa": "ترک‌دمی",
+    "ar": "ترك ديمي",
+}
+
+
+def localized_email_brand_name(language: str | None = None) -> str:
+    active_language = language or translation.get_language() or "en"
+    language_code = active_language.split("-")[0].lower()
+    return EMAIL_BRAND_NAMES.get(language_code, "TurkDemy")
+
 
 def branded_email_context(
     *,
@@ -16,6 +27,7 @@ def branded_email_context(
     return {
         "email_subject": subject,
         "text_body": text_body,
+        "brand_name": localized_email_brand_name(language),
         "email_language": language,
         "email_direction": direction,
         "site_url": site_url,

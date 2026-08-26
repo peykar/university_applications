@@ -739,3 +739,11 @@
 - Added validation for non-empty subject, plain-text and HTML email bodies.
 - Added explicit preview rendering errors instead of blank frames.
 - Added regression coverage for every registered email type in every supported language.
+
+### Localized email brand display name
+- Added a translatable `TurkDemy` brand display name for outgoing email.
+- Persian email now uses `ترک‌دمی`; Arabic uses `ترك ديمي`.
+- English and Turkish keep `TurkDemy`.
+- Shared branded emails and allauth-generated account emails now use the localized display name.
+- Domains remain canonical and untranslated.
+- Added regression tests and documentation.

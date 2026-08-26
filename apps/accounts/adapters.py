@@ -7,7 +7,10 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse
 
-from apps.core.services.email_branding import render_branded_email_html
+from apps.core.services.email_branding import (
+    localized_email_brand_name,
+    render_branded_email_html,
+)
 
 from .models import User
 from .social_email import ensure_verified_login_email
@@ -76,10 +79,19 @@ class TurkDemyAccountAdapter(DefaultAccountAdapter):
         if not isinstance(message, EmailMultiAlternatives):
             return message
 
-        has_html = any(
-            (getattr(alternative, "mimetype", None) or alternative[1]) == "text/html"
-            for alternative in message.alternatives
-        )
+        brand_name = localized_email_brand_name()
+        message.body = str(message.body).replace("TurkDemy", brand_name)
+
+        localized_alternatives = []
+        for alternative in message.alternatives:
+            mimetype = getattr(alternative, "mimetype", None) or alternative[1]
+            content = getattr(alternative, "content", None) or alternative[0]
+            if mimetype == "text/html":
+                content = str(content).replace("TurkDemy", brand_name)
+            localized_alternatives.append((content, mimetype))
+        message.alternatives = localized_alternatives
+
+        has_html = any(mimetype == "text/html" for _content, mimetype in message.alternatives)
         if not has_html:
             message.attach_alternative(
                 render_branded_email_html(

@@ -30,3 +30,27 @@ Login and email-verification codes use five numeric digits:
 This is configured independently through
 `ACCOUNT_LOGIN_BY_CODE_FORMAT` and
 `ACCOUNT_EMAIL_VERIFICATION_BY_CODE_FORMAT`.
+
+## Localized brand display name
+
+The canonical product brand remains `TurkDemy`, but email copy can display a
+localized/transliterated brand name through the translation key `TurkDemy`.
+
+Current display values:
+
+- English: `TurkDemy`
+- Turkish: `TurkDemy`
+- Persian: `ترک‌دمی`
+- Arabic: `ترك ديمي`
+
+Domains such as `turkdemy.com` are never translated.
+
+The shared email context exposes `brand_name`, and the account adapter also
+localizes hard-coded `TurkDemy` occurrences in allauth-generated account email
+bodies/HTML so previews and actual outgoing account email remain consistent.
+
+The email brand display mapping is resolved directly from the active language
+code (`fa`, `ar`, etc.) rather than depending on compiled gettext catalogs.
+This keeps brand transliteration available immediately in all environments,
+including tests and preview tooling. Normal email sentences continue to use
+Django translations.

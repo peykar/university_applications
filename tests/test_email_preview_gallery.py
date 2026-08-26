@@ -84,7 +84,8 @@ class EmailPreviewGalleryTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("text/html", response["Content-Type"])
         self.assertGreater(len(response.content), 100)
-        self.assertIn(b"TurkDemy", response.content)
+        self.assertIn("ترک‌دمی", response.content.decode())
+        self.assertNotIn("TurkDemy", response.content.decode())
 
         self.client.force_login(self.normal_user)
         response = self.client.get(
@@ -102,3 +103,20 @@ class EmailPreviewGalleryTests(TestCase):
     def test_registry_has_unique_template_prefixes(self):
         prefixes = [spec.template_prefix for spec in EMAIL_PREVIEW_REGISTRY.values()]
         self.assertEqual(len(prefixes), len(set(prefixes)))
+
+    def test_persian_and_arabic_previews_localize_brand_name(self):
+        self.client.force_login(self.superuser)
+
+        for language in ("fa", "ar"):
+            response = self.client.get(
+                reverse(
+                    "email-preview-html",
+                    args=["password_reset_key", language],
+                )
+            )
+            self.assertEqual(response.status_code, 200)
+            html = response.content.decode()
+            if language == "fa":
+                self.assertIn("ترک‌دمی", html)
+            else:
+                self.assertIn("ترك ديمي", html)
