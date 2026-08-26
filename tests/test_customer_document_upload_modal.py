@@ -33,3 +33,15 @@ class CustomerDocumentUploadModalTests(SimpleTestCase):
             "The filename is kept automatically",
             self.template,
         )
+
+    def test_modal_trigger_script_is_rendered_in_content(self):
+        title_block = self.template.split("{% block title %}", 1)[1].split(
+            "{% endblock %}",
+            1,
+        )[0]
+        self.assertNotIn("modal-trigger", title_block)
+        self.assertIn(
+            "document.getElementById(trigger.dataset.modalTarget)",
+            self.template,
+        )
+        self.assertIn("dialog.showModal()", self.template)

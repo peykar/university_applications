@@ -34,3 +34,14 @@ class ApplicantDetailDesignTests(SimpleTestCase):
             ".customer-applicant-page .applicant-sidebar{grid-template-columns:1fr}",
             self.css,
         )
+
+    def test_document_modal_script_is_not_in_title_block(self):
+        title_block = self.template.split("{% block title %}", 1)[1].split(
+            "{% endblock %}",
+            1,
+        )[0]
+        self.assertNotIn("<script>", title_block)
+        self.assertIn(
+            'document.querySelectorAll(".customer-document-modal")',
+            self.template,
+        )

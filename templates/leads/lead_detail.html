@@ -1,37 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block title %}{{ lead }} — TurkDemy
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const closeDialog = (dialog) => {
-    if (dialog && dialog.open) {
-      dialog.close();
-    }
-  };
-
-  document.querySelectorAll(".modal-trigger").forEach((trigger) => {
-    trigger.addEventListener("click", () => {
-      const dialog = document.getElementById(trigger.dataset.modalTarget);
-      if (dialog) {
-        dialog.showModal();
-      }
-    });
-  });
-
-  document.querySelectorAll(".customer-document-modal").forEach((dialog) => {
-    dialog.querySelectorAll(".modal-close").forEach((button) => {
-      button.addEventListener("click", () => closeDialog(dialog));
-    });
-
-    dialog.addEventListener("click", (event) => {
-      if (event.target === dialog) {
-        closeDialog(dialog);
-      }
-    });
-  });
-});
-</script>
-
 {% endblock %}
 {% block content %}
 <div class="customer-applicant-page">
@@ -275,4 +244,34 @@ document.addEventListener("DOMContentLoaded", () => {
   </aside>
 </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const closeDialog = (dialog) => {
+    if (dialog && dialog.open) {
+      dialog.close();
+    }
+  };
+
+  document.querySelectorAll(".modal-trigger").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const dialog = document.getElementById(trigger.dataset.modalTarget);
+      if (dialog) {
+        dialog.showModal();
+      }
+    });
+  });
+
+  document.querySelectorAll(".customer-document-modal").forEach((dialog) => {
+    dialog.querySelectorAll(".modal-close").forEach((button) => {
+      button.addEventListener("click", () => closeDialog(dialog));
+    });
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) {
+        closeDialog(dialog);
+      }
+    });
+  });
+});
+</script>
 {% endblock %}
