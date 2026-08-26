@@ -337,3 +337,14 @@ state, and pointer cursor so they are immediately recognizable as interactive.
 The agent edit/upload workflow regression test now expects the shared
 `agent-action-control` class added to section actions. The interaction remains
 the same; the additional class provides the clearer button affordance.
+
+### Applicant header and facts cleanup
+
+The Applicant card no longer treats email as a subtitle beneath the applicant
+name. Email is shown as a normal fact alongside phone, nationality, residence,
+and agent information.
+
+The visible `Updated ...` line was replaced with a very small audit chip that
+shows only the timestamp and keeps the full updater/timestamp detail in its
+tooltip. `Suggest program` now uses the same secondary-action control styling
+as the other Agent Workspace actions.
