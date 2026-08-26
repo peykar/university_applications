@@ -461,6 +461,8 @@ class LeadDocument(BaseModel):
 class LeadActivityType(models.TextChoices):
     CREATED = "created", _("Created")
     NOTE = "note", _("Note")
+    APPLICANT_UPDATED = "applicant_updated", _("Applicant data updated")
+    INTERNAL_NOTES_UPDATED = "internal_notes_updated", _("Internal notes updated")
     STATUS_CHANGED = "status_changed", _("Status changed")
     ASSIGNED = "assigned", _("Assigned")
     REASSIGNED = "reassigned", _("Reassigned")

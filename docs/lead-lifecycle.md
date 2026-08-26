@@ -132,3 +132,13 @@ historical compatibility migration. Fresh schema correctness is exercised by
 Django's test database creation and the application test suite. Existing
 deployed databases should run the migration generated for their own migration
 history before deploying a model schema change.
+
+
+### Human-readable audit changes
+
+Agent applicant edits now use the dedicated **Applicant data updated** activity
+type rather than generic **Note**. Internal-note edits use **Internal notes
+updated**. Audit values are normalized before comparison/storage: model-choice
+PKs are resolved to labels, choice codes to display labels, booleans to Yes/No,
+and dates to ISO text. Fields whose normalized old/new values are equal are not
+recorded, preventing false changes such as a Country UUID → "Netherlands".

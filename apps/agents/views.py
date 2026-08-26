@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from django import forms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
@@ -49,6 +50,34 @@ def _require_agent(user) -> list:
     if not agent_ids:
         raise PermissionDenied("An active agent membership is required.")
     return agent_ids
+
+
+def _audit_form_value(field, value):
+    """Normalize form values for human-readable audit history."""
+    if value in (None, ""):
+        return "—"
+    if isinstance(field, forms.ModelChoiceField):
+        if hasattr(value, "_meta"):
+            return str(value)
+
+        queryset = field.queryset
+        if queryset is None:
+            return str(value)
+
+        try:
+            return str(queryset.get(pk=value))
+        except (queryset.model.DoesNotExist, ValueError, TypeError):
+            return str(value)
+    if getattr(field, "choices", None):
+        value_text = str(value)
+        for choice_value, label in field.choices:
+            if str(choice_value) == value_text:
+                return str(label)
+    if isinstance(field, forms.BooleanField):
+        return "Yes" if bool(value) else "No"
+    if hasattr(value, "isoformat") and not isinstance(value, str):
+        return value.isoformat()
+    return str(value)
 
 
 def _agent_leads(user):
@@ -256,7 +285,7 @@ def applicant_internal_notes(request, lead_id):
 
     LeadActivity.objects.create(
         lead=lead,
-        activity_type=LeadActivityType.NOTE,
+        activity_type=LeadActivityType.INTERNAL_NOTES_UPDATED,
         description="Internal notes updated.",
         metadata={
             "changes": [
@@ -295,23 +324,31 @@ def applicant_edit(request, lead_id):
         messages.error(request, f"Applicant data was not updated. {detail}")
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
-    changed_fields = list(form.changed_data)
     changes = []
-    for field_name in changed_fields:
+    for field_name in form.changed_data:
         field = form.fields[field_name]
-        old_value = form.initial.get(field_name)
-        new_value = form.cleaned_data.get(field_name)
-        changes.append(f"{field.label}: {old_value or '—'} → {new_value or '—'}")
+        old_value = _audit_form_value(field, form.initial.get(field_name))
+        new_value = _audit_form_value(field, form.cleaned_data.get(field_name))
+        if old_value == new_value:
+            continue
+        changes.append(
+            {
+                "field": field_name,
+                "label": str(field.label),
+                "old": old_value,
+                "new": new_value,
+            }
+        )
 
     updated_lead = form.save(commit=False)
     updated_lead.updated_by = request.user
     updated_lead.save()
 
-    if changed_fields:
+    if changes:
         LeadActivity.objects.create(
             lead=updated_lead,
-            activity_type=LeadActivityType.NOTE,
-            description="Applicant data updated.",
+            activity_type=LeadActivityType.APPLICANT_UPDATED,
+            description="",
             metadata={"changes": changes},
             is_customer_visible=False,
             created_by=request.user,
