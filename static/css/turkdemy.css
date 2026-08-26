@@ -3657,3 +3657,8 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .program-card-link:focus-visible{outline:3px solid rgba(11,58,103,.22);outline-offset:3px}
 .program-card-link h2{color:#102d4d}
 .program-card-link:hover h2{color:#0b3a67}
+
+.related-program-card-link{display:block;color:inherit;text-decoration:none;cursor:pointer}
+.related-program-card-link:hover,.related-program-card-link:focus-visible{color:inherit;text-decoration:none}
+.related-program-card-link:focus-visible{outline:3px solid rgba(11,58,103,.22);outline-offset:3px}
+.related-program-card-link:hover h3{color:#0b3a67}

@@ -700,3 +700,8 @@
 - Made the entire shared program discovery card clickable, matching university cards.
 - Removed nested title/CTA anchors while preserving their visual affordances.
 - Added keyboard focus styling and regression tests.
+
+### Fully clickable similar-program cards
+- Made every card in the program-detail "Similar programs" section clickable.
+- Removed nested title and action anchors while preserving their visual affordances.
+- Added keyboard focus styling and regression tests.
