@@ -4,6 +4,6 @@
 {% block content %}
 <section class="auth-shell"><div class="auth-card">
   <div class="auth-heading"><p class="eyebrow">{% trans "Email sign in" %}</p><h1>{% trans "Enter your sign-in code" %}</h1>{% if email %}<p>{% blocktrans %}We sent a code to <bdi dir="ltr">{{ email }}</bdi>.{% endblocktrans %}</p>{% endif %}</div>
-  <form method="post" class="auth-form auth-code-form">{% csrf_token %}{{ form.as_p }}{{ redirect_field }}<button class="button auth-email-button" type="submit">{% trans "Verify and sign in" %}</button></form>
+  <form method="post" action="{% url 'account_confirm_login_code' %}" class="auth-form auth-code-form">{% csrf_token %}{{ form.as_p }}{{ redirect_field }}<button class="button auth-email-button" type="submit">{% trans "Verify and sign in" %}</button></form>
 </div></section>
 {% endblock %}

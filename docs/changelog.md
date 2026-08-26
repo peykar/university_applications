@@ -710,3 +710,8 @@
 - Rebuilt add/edit applicant as grouped responsive sections.
 - Moved Save/Cancel actions to a stable footer after all fields.
 - Added compact multi-column desktop layout and single-column mobile behavior.
+
+### Explicit consumer email login-code routing
+- Made the email sign-in button explicitly use `account_request_login_code`.
+- Made request/confirm forms explicitly post to the login-code endpoints.
+- Added regression tests ensuring login-code and signup routes remain separate.

@@ -242,3 +242,14 @@ Shared CSS uses RTL-aware layout rules so the visual design remains consistent.
 
 Mixed-direction values such as email addresses and Telegram usernames are
 wrapped with `bdi dir="ltr"` so they remain readable inside RTL pages.
+
+## Email code login routing
+
+Consumer email sign-in uses django-allauth's login-by-code endpoints:
+
+- `/accounts/login/code/` (`account_request_login_code`) requests a login code.
+- `/accounts/login/code/confirm/` (`account_confirm_login_code`) verifies it.
+- `/accounts/signup/` is only for creating a new account.
+
+The TurkDemy templates use the named login-code URLs explicitly so an existing
+user attempting to sign in cannot accidentally submit through the signup flow.

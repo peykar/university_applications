@@ -24,7 +24,7 @@
       {% endif %}
     </div>
     {% if google_login_enabled or telegram_login_enabled %}<div class="auth-divider"><span>{% trans "or" %}</span></div>{% endif %}
-    <a class="button auth-email-button" href="{{ request_login_code_url }}">{% trans "Continue with email code" %}</a>
+    <a class="button auth-email-button" href="{% url 'account_request_login_code' %}">{% trans "Continue with email code" %}</a>
     <p class="auth-new-user">{% trans "New to TurkDemy?" %} <a href="{{ signup_url }}">{% trans "Create an account with email" %}</a></p>
   </div>
 </section>
