@@ -293,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
     <div class="finalize-program-list">
      {% for interest in interests %}
-      <div class="finalize-program-option">
+      <div class="finalize-program-option finalize-program-row">
        <label class="finalize-program-choice">
         <input
          type="checkbox"
@@ -301,14 +301,15 @@ document.addEventListener("DOMContentLoaded", () => {
          value="{{ interest.pk }}"
          form="finalize-applicant-form"
         >
-        <span>
+        <span class="finalize-program-identity">
          <strong>{{ interest.program.name_en }}</strong>
          <small>{{ interest.program.university.name_en }}</small>
         </span>
        </label>
-       <label class="finalize-offering-choice">
-        <span>{% trans "Intake" %}</span>
+       <div class="finalize-program-intake">
+        <label for="program-offering-{{ interest.pk }}">{% trans "Intake" %}</label>
         <select
+         id="program-offering-{{ interest.pk }}"
          name="program_offering_{{ interest.pk }}"
          form="finalize-applicant-form"
         >
@@ -317,9 +318,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <option value="{{ offering.pk }}"{% if interest.program_offering_id == offering.pk %} selected{% endif %}>{{ offering }}</option>
          {% endfor %}
         </select>
-       </label>
+       </div>
        {% if not interest.available_offerings %}
-        <small class="finalize-program-missing">{% trans "No active intake is available for this program." %}</small>
+        <small class="finalize-program-missing finalize-program-row-message">{% trans "No active intake is available for this program." %}</small>
        {% endif %}
       </div>
      {% empty %}

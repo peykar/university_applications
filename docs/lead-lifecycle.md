@@ -375,3 +375,11 @@ finalization review. The selected active offering is saved back to the lead
 program interest and used to create the Draft Application. A selected program
 without a valid intake blocks finalization with a validation message; selecting
 no programs remains valid.
+
+### Compact finalization program rows
+
+The Lead → Student finalization review presents each candidate program as one
+compact row: checkbox, program/university identity, and intake selector. A
+selected row receives a subtle visual state. On narrow screens the intake
+stacks beneath the program while remaining indented and visually associated
+with it.
