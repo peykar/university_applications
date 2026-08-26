@@ -390,3 +390,17 @@ The Finalize Applicant dialog has a dedicated wider layout (up to 880px).
 Candidate-program rows, checkboxes, program labels, intake selectors, and
 footer actions are correspondingly larger for readability while retaining the
 compact row structure. The dialog remains responsive on narrow screens.
+
+### Finalization dialog readability adjustment
+
+The Finalize Applicant dialog is now slightly larger on desktop (up to 980px).
+The review facts, candidate-program text, checkboxes, intake controls, helper
+text, and footer actions are also scaled up rather than only increasing the
+outer dialog width.
+
+### Finalization dialog type scale
+
+The Finalize Applicant dialog uses a larger readable type scale throughout,
+not just a larger container. Program names are 1rem, university names and
+helper copy are increased, review values and labels are larger, and intake
+selectors and footer actions use larger text and control heights.

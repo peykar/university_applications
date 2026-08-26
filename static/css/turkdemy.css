@@ -4961,3 +4961,128 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
     margin-left:28px;
   }
 }
+
+
+/* Finalize Applicant: slightly larger desktop presentation */
+.finalize-applicant-modal{
+  width:min(980px,calc(100vw - 48px));
+  max-width:980px;
+}
+.finalize-applicant-modal .agent-modal-card{
+  padding:26px 28px 24px;
+}
+.finalize-applicant-modal .agent-modal-head h2{
+  font-size:1.38rem;
+}
+.finalize-applicant-modal .agent-modal-head p{
+  font-size:.84rem;
+}
+.finalize-applicant-modal .finalize-review{
+  gap:10px;
+}
+.finalize-applicant-modal .finalize-review>div{
+  padding:10px 12px;
+}
+.finalize-applicant-modal .finalize-review span{
+  font-size:.66rem;
+}
+.finalize-applicant-modal .finalize-review strong{
+  font-size:.78rem;
+}
+.finalize-applicant-modal .finalize-programs-head strong{
+  font-size:.82rem;
+}
+.finalize-applicant-modal .finalize-programs-head span{
+  font-size:.72rem;
+  line-height:1.45;
+}
+.finalize-applicant-modal .finalize-program-row{
+  grid-template-columns:minmax(0,1fr) minmax(280px,360px);
+  padding:15px 16px;
+}
+.finalize-applicant-modal .finalize-program-choice input{
+  width:18px;
+  height:18px;
+}
+.finalize-applicant-modal .finalize-program-identity strong{
+  font-size:.86rem;
+}
+.finalize-applicant-modal .finalize-program-identity small{
+  font-size:.73rem;
+}
+.finalize-applicant-modal .finalize-program-intake label{
+  font-size:.71rem;
+}
+.finalize-applicant-modal .finalize-program-intake select{
+  min-height:40px;
+  font-size:.76rem;
+}
+.finalize-applicant-modal .modal-help,
+.finalize-applicant-modal .finalize-warning{
+  font-size:.72rem;
+  line-height:1.5;
+}
+.finalize-applicant-modal .agent-modal-actions .button{
+  min-height:40px;
+  padding:8px 16px;
+  font-size:.76rem;
+}
+@media(max-width:760px){
+  .finalize-applicant-modal{
+    width:calc(100vw - 16px);
+  }
+  .finalize-applicant-modal .agent-modal-card{
+    padding:18px;
+  }
+}
+
+
+/* Finalize Applicant: readable type scale */
+.finalize-applicant-modal .agent-modal-head h2{
+  font-size:1.5rem;
+}
+.finalize-applicant-modal .agent-modal-head p{
+  font-size:.95rem;
+  line-height:1.55;
+}
+.finalize-applicant-modal .finalize-review span{
+  font-size:.78rem;
+}
+.finalize-applicant-modal .finalize-review strong{
+  font-size:.92rem;
+}
+.finalize-applicant-modal .finalize-programs-head strong{
+  font-size:.96rem;
+}
+.finalize-applicant-modal .finalize-programs-head span{
+  font-size:.84rem;
+  line-height:1.5;
+}
+.finalize-applicant-modal .finalize-program-identity strong{
+  font-size:1rem;
+  line-height:1.35;
+}
+.finalize-applicant-modal .finalize-program-identity small{
+  font-size:.84rem;
+  line-height:1.4;
+}
+.finalize-applicant-modal .finalize-program-intake label{
+  font-size:.82rem;
+}
+.finalize-applicant-modal .finalize-program-intake select{
+  min-height:42px;
+  font-size:.88rem;
+}
+.finalize-applicant-modal .finalize-program-row-message{
+  font-size:.78rem;
+}
+.finalize-applicant-modal .modal-help,
+.finalize-applicant-modal .finalize-warning{
+  font-size:.84rem;
+  line-height:1.55;
+}
+.finalize-applicant-modal .agent-modal-actions .button{
+  min-height:42px;
+  padding:9px 17px;
+  font-size:.86rem;
+}

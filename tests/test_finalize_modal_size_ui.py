@@ -17,12 +17,13 @@ class FinalizeModalSizeUiTests(SimpleTestCase):
             'class="agent-modal finalize-applicant-modal"',
             self.template,
         )
-        self.assertIn("max-width:880px", self.css)
+        self.assertIn("max-width:980px", self.css)
 
     def test_finalize_controls_are_more_readable(self):
-        self.assertIn("minmax(250px,320px)", self.css)
+        self.assertIn("minmax(280px,360px)", self.css)
         self.assertIn("min-height:36px", self.css)
-        self.assertIn("font-size:.79rem", self.css)
+        self.assertIn("font-size:1rem", self.css)
+        self.assertIn("min-height:42px", self.css)
 
     def test_finalize_modal_remains_responsive(self):
         self.assertIn("@media(max-width:760px)", self.css)
