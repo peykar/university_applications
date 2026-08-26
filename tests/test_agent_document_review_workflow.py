@@ -47,14 +47,8 @@ class AgentDocumentReviewWorkflowStructureTests(SimpleTestCase):
             self.template,
         )
 
-    def test_document_filename_is_the_open_link(self):
-        self.assertIn('class="document-file-link"', self.template)
+    def test_document_type_is_the_open_link(self):
+        self.assertIn('class="document-type-link"', self.template)
         self.assertIn('href="{{ document.file.url }}"', self.template)
-        document_actions = self.template.split(
-            'class="agent-document-actions"',
-            1,
-        )[1]
-        self.assertNotIn(
-            'href="{{ document.file.url }}"',
-            document_actions.split("</div>", 1)[0],
-        )
+        self.assertIn('title="{{ document.name }}"', self.template)
+        self.assertNotIn('class="document-file-link"', self.template)

@@ -140,14 +140,13 @@ document.addEventListener("DOMContentLoaded", () => {
   <article class="agent-document-card" id="document-{{ document.pk }}">
    <div class="agent-document-summary">
     <span class="document-copy">
-      <strong>{{ document.get_document_type_display }}</strong>
       <a
-        class="document-file-link"
+        class="document-type-link"
         href="{{ document.file.url }}"
         target="_blank"
         rel="noopener"
         title="{{ document.name }}"
-      >{{ document.name }}</a>
+      >{{ document.get_document_type_display }}</a>
       {% if document.source_message_attachment %}<small>{% trans "Added from conversation" %}</small>{% endif %}
     </span>
     <span class="status-pill {% if document.review_status == 'pending' %}warning{% elif document.review_status == 'approved' %}success{% else %}danger{% endif %}">{{ document.get_review_status_display }}</span>

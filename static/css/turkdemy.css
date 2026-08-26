@@ -3919,18 +3919,19 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 
 
 /* Agent document filename links */
-.document-file-link{
-  display:block;
+.document-type-link{
+  display:inline-block;
   min-width:0;
   max-width:100%;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-  color:#5f7182;
-  font-size:.76rem;
+  color:#19324a;
+  font-size:.88rem;
+  font-weight:800;
   text-decoration:none;
 }
-.document-file-link:hover{
+.document-type-link:hover{
   color:#123f68;
   text-decoration:underline;
 }
