@@ -44,3 +44,22 @@ recommendations.
 On the applicant page the section is labelled **Applications & program
 interests**. Applied programs show the selected intake, or **Any intake /
 decide later** when no specific offering was chosen.
+
+
+## Simplified applicant program list
+
+Applicant programs are now deliberately modeled as a simple association list.
+There are only two origins:
+
+- **User-added** — selected by the customer/applicant.
+- **Agent-suggested** — recommended by an advisor.
+
+There is no interested/shortlisted/applied/qualified/suggested status workflow
+on the applicant-program association, and there are no system-generated
+suggestions.
+
+The program list is collaborative context for the applicant and advisor. It is
+not itself the formal university application workflow. Converting a Lead into a
+Student therefore does not automatically create `Application` records from
+these associations. Formal applications are created separately after the agent
+and applicant decide which programs to proceed with.

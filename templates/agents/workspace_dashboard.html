@@ -37,14 +37,14 @@
 </div>
 
 <section class="agent-panel">
-  <div class="agent-panel-head"><h2>{% trans "Recent program requests" %}</h2><a href="{% url 'agent-application-list' %}">{% trans "View all" %}</a></div>
+  <div class="agent-panel-head"><h2>{% trans "Recent user-added programs" %}</h2><a href="{% url 'agent-application-list' %}">{% trans "View all" %}</a></div>
   <div class="agent-list">
   {% for interest in recent_program_requests %}
     <a class="agent-list-row" href="{% url 'agent-applicant-detail' interest.lead.pk %}">
       <span><strong>{{ interest.lead }} · {{ interest.program.name_en }}</strong><small>{{ interest.program.university.name_en }}</small></span>
-      <span class="status-pill">{{ interest.get_status_display }}</span>
+      <span class="status-pill">{% trans "User-added" %}</span>
     </a>
-  {% empty %}<p class="empty-state">{% trans "No customer program requests yet." %}</p>{% endfor %}
+  {% empty %}<p class="empty-state">{% trans "No user-added programs yet." %}</p>{% endfor %}
   </div>
 </section>
 

@@ -754,3 +754,14 @@
 - Applicant detail distinguishes applications, interests and recommendations.
 - Applied programs show their intake or "Any intake / decide later".
 - Success messaging now says "Application started for <program>".
+
+### Simplified applicant program associations
+- Reduced program provenance to `user` and `agent` only.
+- Removed system-generated program suggestions.
+- Removed the interest-status lifecycle (interested/shortlisted/applied/etc.).
+- Applicant UI now shows a simple Programs list with "Added by you" or
+  "Suggested by your advisor".
+- Agent UI no longer exposes program-request status controls.
+- Lead-to-Student conversion no longer auto-creates formal Applications from
+  the collaborative program list.
+- Existing `system` source rows are migrated to `agent`.

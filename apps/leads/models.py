@@ -288,19 +288,8 @@ class LeadPreference(BaseModel):
 
 
 class LeadProgramInterestSource(models.TextChoices):
-    USER = "user", _("User")
-    AGENT = "agent", _("Agent / Staff")
-    SYSTEM = "system", _("System")
-
-
-class LeadProgramInterestStatus(models.TextChoices):
-    SUGGESTED = "suggested", _("Recommended")
-    INTERESTED = "interested", _("Interested")
-    APPLIED = "applied", _("Applied")
-    SHORTLISTED = "shortlisted", _("Shortlisted")
-    DECLINED = "declined", _("Declined")
-    QUALIFIED = "qualified", _("Qualified")
-    CONVERTED = "converted", _("Converted")
+    USER = "user", _("User-added")
+    AGENT = "agent", _("Agent-suggested")
 
 
 class LeadProgramInterest(BaseModel):
@@ -331,12 +320,6 @@ class LeadProgramInterest(BaseModel):
         choices=LeadProgramInterestSource.choices,
         default=LeadProgramInterestSource.USER,
     )
-    status = models.CharField(
-        max_length=24,
-        choices=LeadProgramInterestStatus.choices,
-        default=LeadProgramInterestStatus.INTERESTED,
-        db_index=True,
-    )
 
     suggested_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -346,7 +329,6 @@ class LeadProgramInterest(BaseModel):
         related_name="+",
     )
     suggestion_reason = models.TextField(blank=True)
-    user_responded_at = models.DateTimeField(null=True, blank=True)
     notes = models.TextField(blank=True)
 
     converted_application = models.OneToOneField(

@@ -3,9 +3,7 @@ from __future__ import annotations
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from apps.universities.models import Program
@@ -27,7 +25,6 @@ from .models import (
     LeadMessageSenderType,
     LeadProgramInterest,
     LeadProgramInterestSource,
-    LeadProgramInterestStatus,
 )
 from .services.messaging import ensure_conversation
 
@@ -83,7 +80,6 @@ def lead_create(request):
                             program_offering=None,
                             defaults={
                                 "source": LeadProgramInterestSource.USER,
-                                "status": LeadProgramInterestStatus.APPLIED,
                                 "created_by": request.user,
                                 "updated_by": request.user,
                             },
@@ -280,50 +276,6 @@ def lead_send_message(request, lead_id):
 
 
 @login_required
-@require_POST
-def lead_interest_response(request, lead_id, interest_id):
-    lead = _customer_lead(request.user, lead_id)
-    interest = get_object_or_404(
-        LeadProgramInterest,
-        pk=interest_id,
-        lead=lead,
-    )
-
-    response = request.POST.get("response")
-    if response == "interested":
-        interest.status = LeadProgramInterestStatus.INTERESTED
-    elif response == "declined":
-        interest.status = LeadProgramInterestStatus.DECLINED
-    elif response == "shortlisted":
-        interest.status = LeadProgramInterestStatus.SHORTLISTED
-    else:
-        raise Http404
-
-    interest.user_responded_at = timezone.now()
-    interest.updated_by = request.user
-    interest.save(
-        update_fields=(
-            "status",
-            "user_responded_at",
-            "updated_by",
-            "updated_at",
-        )
-    )
-
-    LeadActivity.objects.create(
-        lead=lead,
-        activity_type=LeadActivityType.PROGRAM_RESPONSE,
-        description=(
-            f"Program response: {interest.program.name_en} → {interest.get_status_display()}."
-        ),
-        is_customer_visible=True,
-        created_by=request.user,
-        updated_by=request.user,
-    )
-    return redirect("lead-detail", lead_id=lead.pk)
-
-
-@login_required
 def apply_program(request, slug):
     program = get_object_or_404(
         Program.objects.select_related(
@@ -379,30 +331,16 @@ def apply_program(request, slug):
                     lead.email = request.user.email or ""
                     lead.save(update_fields=("email", "updated_at"))
 
-            interest, created = LeadProgramInterest.objects.get_or_create(
+            LeadProgramInterest.objects.get_or_create(
                 lead=lead,
                 program=program,
                 program_offering=offering,
                 defaults={
                     "source": LeadProgramInterestSource.USER,
-                    "status": LeadProgramInterestStatus.INTERESTED,
                     "created_by": request.user,
                     "updated_by": request.user,
                 },
             )
-
-            if not created and interest.status != LeadProgramInterestStatus.APPLIED:
-                interest.status = LeadProgramInterestStatus.APPLIED
-                interest.source = LeadProgramInterestSource.USER
-                interest.updated_by = request.user
-                interest.save(
-                    update_fields=(
-                        "status",
-                        "source",
-                        "updated_by",
-                        "updated_at",
-                    )
-                )
 
             LeadActivity.objects.create(
                 lead=lead,
@@ -413,7 +351,7 @@ def apply_program(request, slug):
                 updated_by=request.user,
             )
 
-        messages.success(request, f"Application started for {program.name_en}.")
+        messages.success(request, f"{program.name_en} added to the applicant programs.")
         return redirect("lead-detail", lead_id=lead.pk)
 
     return render(

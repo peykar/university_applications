@@ -7,7 +7,6 @@ from django.core.files.base import ContentFile
 from django.db import transaction
 from django.utils import timezone
 
-from apps.applications.models import Application, ApplicationStatus
 from apps.core.audit import get_system_user
 from apps.students.models import Student, StudentDocument
 
@@ -15,7 +14,6 @@ from ..models import (
     Lead,
     LeadActivity,
     LeadActivityType,
-    LeadProgramInterestStatus,
     LeadStatus,
 )
 from .messaging import send_system_message
@@ -122,78 +120,6 @@ def _copy_verified_documents(
     return copied
 
 
-def _create_applications(
-    lead: Lead,
-    student: Student,
-    *,
-    actor,
-) -> list[Application]:
-    applications = []
-
-    qualified = lead.program_interests.filter(
-        status=LeadProgramInterestStatus.QUALIFIED,
-    ).select_related(
-        "program",
-        "program_offering",
-    )
-
-    missing_offering = [
-        interest.program.name_en for interest in qualified if interest.program_offering_id is None
-    ]
-    if missing_offering:
-        raise ValidationError(
-            {
-                "program_interests": (
-                    "Qualified program interests need a specific offering before "
-                    "conversion: " + ", ".join(missing_offering)
-                )
-            }
-        )
-
-    for interest in qualified:
-        if interest.converted_application_id:
-            converted_application = interest.converted_application
-            if converted_application is not None:
-                applications.append(converted_application)
-                continue
-
-        offering = interest.program_offering
-        if offering is None:
-            raise ValidationError("Qualified program interest has no program offering.")
-        tuition = (
-            offering.tuition_discounted
-            if offering.tuition_discounted is not None
-            else offering.tuition
-        )
-
-        application = Application.objects.create(
-            student=student,
-            agent=lead.agent,
-            program_offering=offering,
-            status=ApplicationStatus.DRAFT,
-            tuition=tuition,
-            deposit=offering.deposit,
-            notes=interest.notes,
-            created_by=actor,
-            updated_by=actor,
-        )
-
-        interest.converted_application = application
-        interest.status = LeadProgramInterestStatus.CONVERTED
-        interest.updated_by = actor
-        interest.save(
-            update_fields=(
-                "converted_application",
-                "status",
-                "updated_by",
-                "updated_at",
-            )
-        )
-        applications.append(application)
-
-    return applications
-
-
 @transaction.atomic
 def convert_lead_to_student(
     lead: Lead,
@@ -203,8 +129,11 @@ def convert_lead_to_student(
     """
     Convert a finalized Lead into the canonical Student record.
 
-    Safe to call again: an already converted student is reused and any newly
-    qualified program interests can still be converted into applications.
+    Safe to call again: an already converted student is reused.
+
+    Applicant program associations are intentionally not converted into formal
+    university applications. Agents create formal Application records only
+    after discussing the program list with the applicant.
     """
     actor = performed_by or get_system_user()
 
@@ -253,8 +182,6 @@ def convert_lead_to_student(
         lead.converted_student = student
 
     _copy_verified_documents(lead, student, actor=actor)
-    applications = _create_applications(lead, student, actor=actor)
-
     lead.status = LeadStatus.CONVERTED
     lead.converted_at = lead.converted_at or timezone.now()
     lead.updated_by = actor
@@ -271,9 +198,7 @@ def convert_lead_to_student(
     LeadActivity.objects.create(
         lead=lead,
         activity_type=LeadActivityType.CONVERTED,
-        description=(
-            f"Converted to Student {student.pk}; {len(applications)} application(s) created/linked."
-        ),
+        description=f"Converted to Student {student.pk}.",
         is_customer_visible=True,
         created_by=actor,
         updated_by=actor,

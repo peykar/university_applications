@@ -17,7 +17,6 @@ from .models import (
     LeadProgramInterestSource,
 )
 from .services.conversion import convert_lead_to_student, finalize_lead
-from .services.recommendations import recommend_programs_for_lead
 
 
 class LeadPreferenceInline(admin.StackedInline):
@@ -44,7 +43,6 @@ class LeadProgramInterestInline(admin.TabularInline):
         "program",
         "program_offering",
         "source",
-        "status",
         "suggested_by",
         "suggestion_reason",
         "converted_application",
@@ -93,7 +91,6 @@ class LeadAdmin(AuditAdminMixin, admin.ModelAdmin):
     list_display = (
         "full_name",
         "user",
-        "status",
         "needs_program_recommendation",
         "assigned_to",
         "agent",
@@ -142,7 +139,6 @@ class LeadAdmin(AuditAdminMixin, admin.ModelAdmin):
         LeadActivityInline,
     )
     actions = (
-        "generate_recommendations",
         "finalize_selected",
         "convert_selected",
     )
@@ -254,23 +250,6 @@ class LeadAdmin(AuditAdminMixin, admin.ModelAdmin):
             obj.pk,
         )
 
-    @admin.action(description="Generate system program recommendations")
-    def generate_recommendations(self, request, queryset):
-        total = 0
-        for lead in queryset:
-            total += len(
-                recommend_programs_for_lead(
-                    lead,
-                    limit=10,
-                    performed_by=request.user,
-                )
-            )
-        self.message_user(
-            request,
-            f"{total} recommendation(s) generated.",
-            level=messages.SUCCESS,
-        )
-
     @admin.action(description="Finalize / validate selected leads")
     def finalize_selected(self, request, queryset):
         success = 0
@@ -319,11 +298,10 @@ class LeadProgramInterestAdmin(AuditAdminMixin, admin.ModelAdmin):
         "program",
         "program_offering",
         "source",
-        "status",
         "suggested_by",
         "created_at",
     )
-    list_filter = ("source", "status", "created_at")
+    list_filter = ("source", "created_at")
     search_fields = (
         "lead__first_name",
         "lead__last_name",

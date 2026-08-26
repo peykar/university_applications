@@ -22,10 +22,5 @@ urlpatterns = [
         views.lead_send_message,
         name="lead-send-message",
     ),
-    path(
-        "applicants/<uuid:lead_id>/programs/<uuid:interest_id>/respond/",
-        views.lead_interest_response,
-        name="lead-interest-response",
-    ),
     path("programs/<slug:slug>/apply/", views.apply_program, name="apply-program"),
 ]

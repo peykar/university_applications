@@ -2,22 +2,16 @@
 {% block agent_title %}{% trans "Applications" %}{% endblock %}
 {% block agent_content %}
 <section class="agent-panel">
-<div class="agent-panel-head"><div><h2>{% trans "Program requests" %}</h2><p>{% trans "Programs customers selected from the catalogue. These are pre-application requests until converted to a formal application." %}</p></div></div>
+<div class="agent-panel-head"><div><h2>{% trans "Applicant programs" %}</h2><p>{% trans "Programs associated with applicants. User-added programs and advisor suggestions are shown separately from formal applications." %}</p></div></div>
 <div class="agent-table-wrap"><table class="agent-table"><thead><tr><th>{% trans "Applicant" %}</th><th>{% trans "Program" %}</th><th>{% trans "University" %}</th><th>{% trans "Intake" %}</th><th>{% trans "Status" %}</th></tr></thead><tbody>
 {% for interest in program_requests %}
 <tr>
 <td><a href="{% url 'agent-applicant-detail' interest.lead.pk %}">{{ interest.lead }}</a></td>
 <td>{{ interest.program.name_en }}</td><td>{{ interest.program.university.name_en }}</td>
 <td>{{ interest.program_offering|default:"—" }}</td>
-<td><form class="table-status-form" method="post" action="{% url 'agent-program-request-status' interest.pk %}">{% csrf_token %}
-<select name="status" aria-label="{% trans 'Program request status' %}">
-<option value="interested"{% if interest.status == "interested" %} selected{% endif %}>{% trans "Interested" %}</option>
-<option value="shortlisted"{% if interest.status == "shortlisted" %} selected{% endif %}>{% trans "Shortlisted" %}</option>
-<option value="qualified"{% if interest.status == "qualified" %} selected{% endif %}>{% trans "Qualified" %}</option>
-<option value="declined"{% if interest.status == "declined" %} selected{% endif %}>{% trans "Declined" %}</option>
-</select><button type="submit">{% trans "Save" %}</button></form></td>
+<td>{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</td>
 </tr>
-{% empty %}<tr><td colspan="5">{% trans "No customer program requests yet." %}</td></tr>{% endfor %}
+{% empty %}<tr><td colspan="5">{% trans "No applicant programs yet." %}</td></tr>{% endfor %}
 </tbody></table></div></section>
 
 <section class="agent-panel">

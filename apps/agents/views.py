@@ -20,7 +20,6 @@ from apps.leads.models import (
     LeadMessageRead,
     LeadMessageSenderType,
     LeadProgramInterest,
-    LeadProgramInterestStatus,
     LeadStatus,
 )
 from apps.leads.services.messaging import ensure_conversation
@@ -91,11 +90,6 @@ def dashboard(request):
     program_requests = LeadProgramInterest.objects.filter(
         lead__in=leads,
         source="user",
-    ).exclude(
-        status__in=(
-            LeadProgramInterestStatus.DECLINED,
-            LeadProgramInterestStatus.CONVERTED,
-        )
     )
 
     context = {
@@ -330,32 +324,6 @@ def application_list(request):
             "selected_status": status,
         },
     )
-
-
-@login_required
-@require_POST
-def program_request_status(request, interest_id):
-    interest = get_object_or_404(
-        LeadProgramInterest.objects.filter(lead__in=_agent_leads(request.user)),
-        pk=interest_id,
-        source="user",
-    )
-    status = request.POST.get("status")
-    allowed = {
-        LeadProgramInterestStatus.INTERESTED,
-        LeadProgramInterestStatus.SHORTLISTED,
-        LeadProgramInterestStatus.QUALIFIED,
-        LeadProgramInterestStatus.DECLINED,
-    }
-    if status not in allowed:
-        messages.error(request, "Invalid program request status.")
-        return redirect("agent-application-list")
-
-    interest.status = status
-    interest.updated_by = request.user
-    interest.save(update_fields=("status", "updated_by", "updated_at"))
-    messages.success(request, "Program request status updated.")
-    return redirect("agent-application-list")
 
 
 @login_required

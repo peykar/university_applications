@@ -23,11 +23,6 @@ urlpatterns = [
     path("agent/messages/", views.message_inbox, name="agent-message-inbox"),
     path("agent/applications/", views.application_list, name="agent-application-list"),
     path(
-        "agent/applications/program-requests/<uuid:interest_id>/status/",
-        views.program_request_status,
-        name="agent-program-request-status",
-    ),
-    path(
         "agent/applications/<uuid:application_id>/",
         views.application_detail,
         name="agent-application-detail",

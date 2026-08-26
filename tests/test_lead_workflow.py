@@ -12,7 +12,6 @@ from apps.leads.models import (
     LeadMessageSenderType,
     LeadProgramInterest,
     LeadProgramInterestSource,
-    LeadProgramInterestStatus,
     LeadStatus,
 )
 from apps.leads.services.conversion import convert_lead_to_student, finalize_lead
@@ -186,7 +185,6 @@ class LeadWorkflowTests(TestCase):
         self.assertEqual(response.status_code, 302)
         interest = LeadProgramInterest.objects.get()
         self.assertEqual(interest.source, LeadProgramInterestSource.USER)
-        self.assertEqual(interest.status, LeadProgramInterestStatus.INTERESTED)
 
     def test_customer_cannot_open_other_users_lead(self):
         other = User.objects.create_user(
@@ -217,7 +215,6 @@ class LeadWorkflowTests(TestCase):
             program=self.program,
             program_offering=self.offering,
             source=LeadProgramInterestSource.AGENT,
-            status=LeadProgramInterestStatus.QUALIFIED,
             suggested_by=self.staff,
             created_by=self.staff,
             updated_by=self.staff,
@@ -230,7 +227,7 @@ class LeadWorkflowTests(TestCase):
         student = convert_lead_to_student(lead, performed_by=self.staff)
         self.assertIsInstance(student, Student)
         self.assertEqual(student.user, self.user)
-        self.assertEqual(student.applications.count(), 1)
+        self.assertEqual(student.applications.count(), 0)
 
         lead.refresh_from_db()
         self.assertEqual(lead.status, LeadStatus.CONVERTED)
