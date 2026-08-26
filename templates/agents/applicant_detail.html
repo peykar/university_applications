@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 {% endblock %}
 {% block agent_content %}
-<div class="agent-detail-grid">
+<div class="agent-detail-grid applicant-workspace-detail">
 <div>
 <section class="agent-panel">
  <div class="agent-panel-head"><div><div class="section-heading-actions"><h2>{% trans "Applicant" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<button type="button" class="section-action agent-action-control button-reset modal-trigger" data-modal-target="edit-applicant-modal">{% trans "Edit applicant" %}</button>{% endif %}</div>

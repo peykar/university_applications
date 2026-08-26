@@ -5086,3 +5086,191 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   padding:9px 17px;
   font-size:.86rem;
 }
+
+
+/* Holistic Agent applicant-detail visual system */
+.applicant-workspace-detail{
+  grid-template-columns:minmax(0,1.55fr) minmax(320px,.85fr);
+  gap:24px;
+  align-items:start;
+}
+.applicant-workspace-detail .agent-panel{
+  margin-bottom:24px;
+  padding:24px;
+  border-color:#dce5eb;
+  border-radius:15px;
+  box-shadow:0 7px 24px rgba(27,49,66,.045);
+}
+.applicant-workspace-detail .agent-panel-head{
+  align-items:center;
+  gap:16px;
+  margin-bottom:18px;
+}
+.applicant-workspace-detail .agent-panel-head h2{
+  color:#263f52;
+  font-size:1.22rem;
+  line-height:1.25;
+}
+.applicant-workspace-detail .agent-panel-head p{
+  color:#778590;
+  font-size:.82rem;
+  line-height:1.45;
+}
+.applicant-workspace-detail .agent-facts{
+  gap:12px;
+}
+.applicant-workspace-detail .agent-facts>div{
+  min-height:74px;
+  padding:13px 14px;
+  border:1px solid #e7ecef;
+  border-radius:10px;
+  background:#f8fafb;
+}
+.applicant-workspace-detail .agent-facts dt{
+  color:#7b8994;
+  font-size:.71rem;
+  letter-spacing:.035em;
+}
+.applicant-workspace-detail .agent-facts dd{
+  margin-top:7px;
+  color:#344c5f;
+  font-size:.88rem;
+  line-height:1.4;
+}
+.applicant-workspace-detail .status-pill{
+  padding:5px 10px;
+  font-size:.7rem!important;
+}
+.applicant-workspace-detail .agent-action-control,
+.applicant-workspace-detail .program-suggest-action{
+  min-height:32px;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:.7rem;
+}
+.applicant-workspace-detail .responsibility-actions{
+  margin-top:8px;
+  gap:7px;
+}
+.applicant-workspace-detail .agent-lifecycle-actions{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid #e9eef1;
+}
+.applicant-workspace-detail .agent-lifecycle-actions .button,
+.applicant-workspace-detail .agent-lifecycle-actions .lifecycle-close-action{
+  min-height:36px;
+  padding:7px 13px;
+  border-radius:8px;
+  font-size:.72rem;
+}
+.applicant-workspace-detail .internal-notes-panel{
+  background:#fffdf8;
+  border-color:#ebe4d5;
+}
+.applicant-workspace-detail .internal-notes-body{
+  color:#4c5963;
+  font-size:.84rem;
+  line-height:1.6;
+}
+.applicant-workspace-detail .private-badge{
+  font-size:.62rem;
+}
+.applicant-workspace-detail .agent-document-card{
+  padding:11px 0;
+}
+.applicant-workspace-detail .document-type-link{
+  font-size:.84rem;
+}
+.applicant-workspace-detail .program-interest-row{
+  padding:13px 2px;
+}
+.applicant-workspace-detail .agent-program-link strong{
+  color:#304b60;
+  font-size:.86rem;
+  line-height:1.35;
+}
+.applicant-workspace-detail .program-interest-row small{
+  margin-top:2px;
+  font-size:.72rem;
+}
+.applicant-workspace-detail .program-source{
+  min-height:22px;
+  padding:3px 8px;
+  font-size:.62rem;
+}
+
+/* Conversation: show the complete thread, never an inner scroll area */
+.applicant-workspace-detail .agent-chat{
+  max-height:none;
+  overflow:visible;
+  padding:2px 0;
+  gap:12px;
+}
+.applicant-workspace-detail .agent-message{
+  max-width:82%;
+  padding:12px 15px;
+  border-radius:12px;
+  font-size:.86rem;
+  line-height:1.5;
+}
+.applicant-workspace-detail .agent-message header{
+  font-size:.69rem;
+}
+.applicant-workspace-detail .agent-message p{
+  margin:6px 0 0;
+}
+.applicant-workspace-detail .agent-message.system-event{
+  max-width:100%;
+  padding:7px 10px;
+  border-radius:8px;
+}
+.applicant-workspace-detail .system-event-row{
+  gap:8px;
+  font-size:.7rem;
+}
+.applicant-workspace-detail .agent-reply{
+  gap:9px;
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid #e9eef1;
+}
+.applicant-workspace-detail .agent-reply textarea{
+  min-height:92px;
+  padding:11px 12px;
+  border-radius:9px;
+  font-size:.84rem;
+  line-height:1.5;
+}
+.applicant-workspace-detail .agent-reply .button{
+  min-height:36px;
+  padding:7px 14px;
+  font-size:.74rem;
+}
+
+@media(max-width:1000px){
+  .applicant-workspace-detail{
+    grid-template-columns:minmax(0,1.4fr) minmax(290px,.8fr);
+    gap:18px;
+  }
+}
+@media(max-width:900px){
+  .applicant-workspace-detail{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:600px){
+  .applicant-workspace-detail .agent-panel{
+    padding:17px;
+    margin-bottom:16px;
+  }
+  .applicant-workspace-detail .agent-panel-head h2{
+    font-size:1.08rem;
+  }
+  .applicant-workspace-detail .agent-facts>div{
+    min-height:0;
+  }
+  .applicant-workspace-detail .agent-message{
+    max-width:94%;
+  }
+}

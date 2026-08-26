@@ -404,3 +404,14 @@ The Finalize Applicant dialog uses a larger readable type scale throughout,
 not just a larger container. Program names are 1rem, university names and
 helper copy are increased, review values and labels are larger, and intake
 selectors and footer actions use larger text and control heights.
+
+### Agent applicant page visual cleanup
+
+The agent-facing applicant detail page uses a scoped visual system through
+`applicant-workspace-detail`. Cards, typography, fact blocks, secondary
+actions, lifecycle controls, documents, internal notes, programs, and
+conversation elements now share a consistent spacing and type scale.
+
+The Conversation thread deliberately has no inner `max-height` and no
+scrollbar. Every loaded message is rendered in the normal page flow; the
+browser page itself handles scrolling.
