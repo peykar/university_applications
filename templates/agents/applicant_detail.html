@@ -1,5 +1,37 @@
 {% extends "agents/base.html" %}{% load i18n %}
-{% block agent_title %}{{ lead }}{% endblock %}
+{% block agent_title %}{{ lead }}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const closeModal = (dialog) => {
+    if (dialog && dialog.open) {
+      dialog.close();
+    }
+  };
+
+  document.querySelectorAll(".modal-trigger").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const dialog = document.getElementById(trigger.dataset.modalTarget);
+      if (dialog) {
+        dialog.showModal();
+      }
+    });
+  });
+
+  document.querySelectorAll(".agent-modal").forEach((dialog) => {
+    dialog.querySelectorAll(".modal-close").forEach((button) => {
+      button.addEventListener("click", () => closeModal(dialog));
+    });
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) {
+        closeModal(dialog);
+      }
+    });
+  });
+});
+</script>
+
+{% endblock %}
 {% block agent_content %}
 <div class="agent-detail-grid">
 <div>
@@ -26,30 +58,49 @@
    {% if message.body %}<p>{{ message.body|linebreaksbr }}</p>{% endif %}
    {% for attachment in message.attachments.all %}
     <div class="agent-chat-attachment">
-      <a href="{{ attachment.file.url }}" target="_blank" rel="noopener">{{ attachment.original_name|default:"Attachment" }}</a>
-      {% if message.sender_type == "customer" %}
-        {% if attachment.promoted_document %}
-          <span class="status-pill success">{% trans "Added to documents" %}</span>
-        {% else %}
-          <details class="attachment-promote">
-            <summary>{% trans "Add to documents" %}</summary>
-            <form method="post" action="{% url 'agent-applicant-attachment-to-document' lead.pk attachment.pk %}" class="compact-review-form">
-              {% csrf_token %}
-              <label>{% trans "Document type" %}
-                <select name="document_type" required>
-                  {% for value,label in promote_attachment_form.fields.document_type.choices %}
-                    <option value="{{ value }}">{{ label }}</option>
-                  {% endfor %}
-                </select>
-              </label>
-              <label>{% trans "Name" %}<input type="text" name="name" value="{{ attachment.original_name }}"></label>
-              <label>{% trans "Description" %}<textarea name="description" rows="2"></textarea></label>
-              <button class="button small-button" type="submit">{% trans "Add to documents" %}</button>
-            </form>
-          </details>
+      <span class="attachment-file-name">{{ attachment.original_name|default:"Attachment" }}</span>
+      <div class="attachment-actions">
+        <a class="text-action" href="{{ attachment.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
+        {% if message.sender_type == "customer" %}
+          {% if attachment.promoted_document %}
+            <button type="button" class="status-pill success modal-trigger" data-modal-target="document-review-{{ attachment.promoted_document.pk }}">✓ {% trans "Added to documents" %}</button>
+          {% else %}
+            <button type="button" class="text-action button-reset modal-trigger" data-modal-target="promote-attachment-{{ attachment.pk }}">{% trans "Add to documents" %}</button>
+          {% endif %}
         {% endif %}
-      {% endif %}
+      </div>
     </div>
+    {% if message.sender_type == "customer" and not attachment.promoted_document %}
+      <dialog class="agent-modal" id="promote-attachment-{{ attachment.pk }}" aria-labelledby="promote-title-{{ attachment.pk }}">
+        <div class="agent-modal-card">
+          <div class="agent-modal-head">
+            <div>
+              <span class="eyebrow">{% trans "Conversation attachment" %}</span>
+              <h2 id="promote-title-{{ attachment.pk }}">{% trans "Add to documents" %}</h2>
+              <p>{{ attachment.original_name|default:"Attachment" }}</p>
+            </div>
+            <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+          </div>
+          <form method="post" action="{% url 'agent-applicant-attachment-to-document' lead.pk attachment.pk %}" class="agent-modal-form">
+            {% csrf_token %}
+            <label>{% trans "Document type" %}
+              <select name="document_type" required>
+                {% for value,label in promote_attachment_form.fields.document_type.choices %}
+                  <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </label>
+            <label>{% trans "Name" %}<input type="text" name="name" value="{{ attachment.original_name }}"></label>
+            <label>{% trans "Description" %}<textarea name="description" rows="3" placeholder="{% trans 'Optional note about this document' %}"></textarea></label>
+            <p class="modal-help">{% trans "The attachment will be copied into the applicant's Documents and marked as Needs review." %}</p>
+            <div class="agent-modal-actions">
+              <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+              <button class="button" type="submit">{% trans "Add to documents" %}</button>
+            </div>
+          </form>
+        </div>
+      </dialog>
+    {% endif %}
    {% endfor %}
   </article>
  {% empty %}<p class="empty-state">{% trans "No messages yet." %}</p>{% endfor %}
@@ -76,39 +127,64 @@
  <div class="agent-panel-head"><h2>{% trans "Documents" %}</h2></div>
  <div class="agent-document-list">
  {% for document in documents %}
-  <article class="agent-document-card">
+  <article class="agent-document-card" id="document-{{ document.pk }}">
    <div class="agent-document-summary">
-    <span>
+    <span class="document-copy">
       <strong>{{ document.get_document_type_display }}</strong>
       <small>{{ document.name }}</small>
       {% if document.source_message_attachment %}<small>{% trans "Added from conversation" %}</small>{% endif %}
     </span>
-    <span class="status-pill {% if document.review_status == 'pending' %}warning{% elif document.review_status == 'approved' %}success{% else %}danger{% endif %}">
-      {{ document.get_review_status_display }}
-    </span>
+    <span class="status-pill {% if document.review_status == 'pending' %}warning{% elif document.review_status == 'approved' %}success{% else %}danger{% endif %}">{{ document.get_review_status_display }}</span>
    </div>
    <div class="agent-document-actions">
-    <a class="button button-secondary small-button" href="{{ document.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
-    <details class="document-review-panel">
-     <summary>{% trans "Review" %}</summary>
-     <form method="post" action="{% url 'agent-applicant-document-review' lead.pk document.pk %}" class="compact-review-form">
-      {% csrf_token %}
-      <label>{% trans "Decision" %}
-       <select name="review_status">
-        <option value="pending"{% if document.review_status == "pending" %} selected{% endif %}>{% trans "Needs review" %}</option>
-        <option value="approved"{% if document.review_status == "approved" %} selected{% endif %}>{% trans "Approve" %}</option>
-        <option value="rejected"{% if document.review_status == "rejected" %} selected{% endif %}>{% trans "Reject / request replacement" %}</option>
-       </select>
-      </label>
-      <label>{% trans "Review note" %}<textarea name="review_note" rows="3">{{ document.review_note }}</textarea></label>
-      <button class="button small-button" type="submit">{% trans "Save review" %}</button>
-     </form>
-    </details>
+    <a class="text-action" href="{{ document.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
+    <button type="button" class="text-action button-reset modal-trigger" data-modal-target="document-review-{{ document.pk }}">{% trans "Review" %}</button>
    </div>
    {% if document.reviewed_by %}
     <small class="document-review-meta">{% trans "Last reviewed by" %} {{ document.reviewed_by.get_full_name|default:document.reviewed_by.username }} · {{ document.reviewed_at|date:"M j, Y H:i" }}</small>
    {% endif %}
   </article>
+
+  <dialog class="agent-modal" id="document-review-{{ document.pk }}" aria-labelledby="review-title-{{ document.pk }}">
+   <div class="agent-modal-card">
+    <div class="agent-modal-head">
+     <div>
+      <span class="eyebrow">{% trans "Document review" %}</span>
+      <h2 id="review-title-{{ document.pk }}">{{ document.get_document_type_display }}</h2>
+      <p>{{ document.name }}</p>
+     </div>
+     <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+    </div>
+    <div class="document-modal-meta">
+      <span><strong>{% trans "Current status" %}</strong>{{ document.get_review_status_display }}</span>
+      {% if document.source_message_attachment %}<span><strong>{% trans "Source" %}</strong>{% trans "Conversation attachment" %}</span>{% endif %}
+    </div>
+    <a class="document-open-callout" href="{{ document.file.url }}" target="_blank" rel="noopener">{% trans "Open document in a new tab" %} ↗</a>
+    <form method="post" action="{% url 'agent-applicant-document-review' lead.pk document.pk %}" class="agent-modal-form">
+     {% csrf_token %}
+     <fieldset class="review-decision-group">
+      <legend>{% trans "Decision" %}</legend>
+      <label class="review-decision">
+       <input type="radio" name="review_status" value="approved"{% if document.review_status == "approved" %} checked{% endif %}>
+       <span><strong>{% trans "Approve" %}</strong><small>{% trans "The document is acceptable." %}</small></span>
+      </label>
+      <label class="review-decision">
+       <input type="radio" name="review_status" value="rejected"{% if document.review_status == "rejected" %} checked{% endif %}>
+       <span><strong>{% trans "Request replacement" %}</strong><small>{% trans "The applicant should provide another version." %}</small></span>
+      </label>
+      <label class="review-decision">
+       <input type="radio" name="review_status" value="pending"{% if document.review_status == "pending" %} checked{% endif %}>
+       <span><strong>{% trans "Keep pending" %}</strong><small>{% trans "Leave the document waiting for review." %}</small></span>
+      </label>
+     </fieldset>
+     <label>{% trans "Review note" %}<textarea name="review_note" rows="4" placeholder="{% trans 'Optional internal review note' %}">{{ document.review_note }}</textarea></label>
+     <div class="agent-modal-actions">
+      <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+      <button class="button" type="submit">{% trans "Save review" %}</button>
+     </div>
+    </form>
+   </div>
+  </dialog>
  {% empty %}
   <p class="empty-state">{% trans "No documents." %}</p>
  {% endfor %}

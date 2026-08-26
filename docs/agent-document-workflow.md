@@ -29,3 +29,17 @@ promotion and preserves provenance. The chat attachment then shows
 
 Promoted documents start in `pending` and follow the same review workflow as
 files uploaded through the applicant Documents section.
+
+
+## Agent Workspace UI
+
+Document review and chat-attachment promotion use modal dialogs rather than
+inline forms. This keeps the conversation and narrow Documents sidebar compact.
+
+- Documents expose compact **Open** and **Review** actions.
+- Review opens a dialog with document context, an Open-document action,
+  Approve / Request replacement / Keep pending decisions, and an optional note.
+- Chat attachments expose compact **Open** and **Add to documents** actions.
+- Add to documents opens a dialog for document type, name and description.
+- Promoted attachments show **Added to documents** and can open the related
+  document review dialog.

@@ -27,9 +27,16 @@ class AgentDocumentReviewWorkflowStructureTests(SimpleTestCase):
     def test_agent_can_open_and_review_document(self):
         self.assertIn("applicant_document_review", self.views)
         self.assertIn("Save review", self.template)
-        self.assertIn("Reject / request replacement", self.template)
+        self.assertIn("Request replacement", self.template)
+        self.assertIn('class="agent-modal"', self.template)
+        self.assertIn('data-modal-target="document-review-', self.template)
 
     def test_agent_program_panel_no_longer_reads_removed_interest_status(self):
         self.assertNotIn("interest.get_status_display", self.template)
         self.assertIn("Agent-suggested", self.template)
         self.assertIn("User-added", self.template)
+
+    def test_chat_promotion_uses_modal_instead_of_inline_form(self):
+        self.assertIn('data-modal-target="promote-attachment-', self.template)
+        self.assertIn("Conversation attachment", self.template)
+        self.assertNotIn('<details class="attachment-promote">', self.template)
