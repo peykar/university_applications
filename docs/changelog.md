@@ -681,3 +681,10 @@
   already set.
 - Added a cleanup migration for the superseded database settings model.
 - Updated tests and Agent Workspace documentation.
+
+### Branded privacy-safe 404 pages
+- Added a polished TurkDemy 404 page.
+- Agent applicant/application detail views now render it directly for
+  unavailable scoped resources, even during development.
+- Error wording does not reveal whether a resource belongs to another agent.
+- Added a global production `handler404` and regression tests.

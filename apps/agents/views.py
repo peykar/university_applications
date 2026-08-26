@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count, Max, Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from apps.applications.models import Application, ApplicationStatus
@@ -50,6 +51,30 @@ def _agent_applications(user):
     return Application.objects.filter(
         Q(agent_id__in=agent_ids) | Q(agent__isnull=True, student__agent_id__in=agent_ids)
     ).distinct()
+
+
+def _render_agent_not_found(
+    request,
+    *,
+    resource_name: str,
+    list_url_name: str,
+):
+    """Render a privacy-safe 404 without revealing cross-agent resource existence."""
+    return render(
+        request,
+        "errors/404.html",
+        {
+            "error_message": (
+                f"We couldn't find this {resource_name}, or it isn't available "
+                "in your agent workspace."
+            ),
+            "primary_url": reverse(list_url_name),
+            "primary_label": f"Back to {resource_name}s",
+            "secondary_url": reverse("agent-dashboard"),
+            "secondary_label": "Agent workspace",
+        },
+        status=404,
+    )
 
 
 @login_required
@@ -140,12 +165,18 @@ def applicant_list(request):
 
 @login_required
 def applicant_detail(request, lead_id):
-    lead = get_object_or_404(
-        _agent_leads(request.user).select_related(
-            "agent", "user", "converted_student", "assigned_to"
-        ),
-        pk=lead_id,
+    lead = (
+        _agent_leads(request.user)
+        .select_related("agent", "user", "converted_student", "assigned_to")
+        .filter(pk=lead_id)
+        .first()
     )
+    if lead is None:
+        return _render_agent_not_found(
+            request,
+            resource_name="applicant",
+            list_url_name="agent-applicant-list",
+        )
     conversation = ensure_conversation(lead)
     lead_messages = conversation.messages.select_related("sender").prefetch_related("attachments")
 
@@ -327,7 +358,7 @@ def program_request_status(request, interest_id):
 
 @login_required
 def application_detail(request, application_id):
-    application = get_object_or_404(
+    application = (
         _agent_applications(request.user)
         .select_related(
             "student",
@@ -335,9 +366,16 @@ def application_detail(request, application_id):
             "program_offering__program",
             "program_offering__program__university",
         )
-        .prefetch_related("documents__student_document"),
-        pk=application_id,
+        .prefetch_related("documents__student_document")
+        .filter(pk=application_id)
+        .first()
     )
+    if application is None:
+        return _render_agent_not_found(
+            request,
+            resource_name="application",
+            list_url_name="agent-application-list",
+        )
     return render(
         request,
         "agents/application_detail.html",

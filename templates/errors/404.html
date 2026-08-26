@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Page not found" %} — TurkDemy{% endblock %}
+{% block content %}
+<section class="error-page error-page-404">
+  <div class="error-card">
+    <div class="error-code" aria-hidden="true">404</div>
+    <p class="eyebrow">{% trans "Not found" %}</p>
+    <h1>{% trans "We couldn't find that page." %}</h1>
+    <p class="error-copy">
+      {% if error_message %}
+        {{ error_message }}
+      {% else %}
+        {% trans "The page may have moved, the link may be outdated, or you may not have access to this item." %}
+      {% endif %}
+    </p>
+
+    <div class="error-actions">
+      {% if primary_url %}
+        <a class="button" href="{{ primary_url }}">{{ primary_label }}</a>
+      {% else %}
+        <a class="button" href="{% url 'home' %}">{% trans "Go to homepage" %}</a>
+      {% endif %}
+
+      {% if secondary_url %}
+        <a class="button button-secondary" href="{{ secondary_url }}">
+          {{ secondary_label }}
+        </a>
+      {% elif request.user.is_authenticated %}
+        <a class="button button-secondary" href="{% url 'dashboard' %}">
+          {% trans "Open dashboard" %}
+        </a>
+      {% endif %}
+    </div>
+
+    <p class="error-hint">
+      {% trans "If you followed a link from TurkDemy and think this is a mistake, return to the previous list and try again." %}
+    </p>
+  </div>
+</section>
+{% endblock %}

@@ -8,6 +8,8 @@ admin.site.site_header = "TurkDemy Administration"
 admin.site.site_title = "TurkDemy Admin"
 admin.site.index_title = "Operations"
 
+handler404 = "apps.core.views.page_not_found"
+
 
 urlpatterns: list[URLPattern | URLResolver] = [
     path("i18n/", include("django.conf.urls.i18n")),
