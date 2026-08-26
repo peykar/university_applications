@@ -4873,3 +4873,91 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
     margin-left:24px;
   }
 }
+
+
+/* Larger, more readable Finalize Applicant dialog */
+.finalize-applicant-modal{
+  width:min(880px,calc(100vw - 40px));
+  max-width:880px;
+}
+.finalize-applicant-modal .agent-modal-card{
+  padding:22px 24px 20px;
+  border-radius:15px;
+}
+.finalize-applicant-modal .agent-modal-head{
+  margin-bottom:16px;
+}
+.finalize-applicant-modal .agent-modal-head h2{
+  font-size:1.25rem;
+  line-height:1.25;
+}
+.finalize-applicant-modal .agent-modal-head p{
+  max-width:680px;
+  font-size:.78rem;
+  line-height:1.5;
+}
+.finalize-applicant-modal .finalize-program-row{
+  grid-template-columns:minmax(0,1fr) minmax(250px,320px);
+  gap:10px 22px;
+  padding:13px 14px;
+  border-radius:10px;
+}
+.finalize-applicant-modal .finalize-program-row+.finalize-program-row{
+  margin-top:9px;
+}
+.finalize-applicant-modal .finalize-program-choice{
+  grid-template-columns:18px minmax(0,1fr);
+  gap:10px;
+}
+.finalize-applicant-modal .finalize-program-choice input{
+  width:16px;
+  height:16px;
+}
+.finalize-applicant-modal .finalize-program-identity strong{
+  font-size:.79rem;
+  line-height:1.3;
+}
+.finalize-applicant-modal .finalize-program-identity small{
+  margin-top:2px;
+  font-size:.68rem;
+}
+.finalize-applicant-modal .finalize-program-intake{
+  grid-template-columns:42px minmax(0,1fr);
+  gap:9px;
+}
+.finalize-applicant-modal .finalize-program-intake label{
+  font-size:.66rem;
+}
+.finalize-applicant-modal .finalize-program-intake select{
+  min-height:36px;
+  padding:6px 28px 6px 9px;
+  border-radius:8px;
+  font-size:.71rem;
+}
+.finalize-applicant-modal .finalize-program-row-message{
+  font-size:.64rem;
+}
+.finalize-applicant-modal .agent-modal-actions{
+  margin-top:18px;
+  padding-top:14px;
+}
+.finalize-applicant-modal .agent-modal-actions .button{
+  min-height:36px;
+  padding:7px 14px;
+  font-size:.72rem;
+}
+@media(max-width:760px){
+  .finalize-applicant-modal{
+    width:calc(100vw - 20px);
+  }
+  .finalize-applicant-modal .agent-modal-card{
+    padding:16px;
+  }
+  .finalize-applicant-modal .finalize-program-row{
+    grid-template-columns:1fr;
+    gap:9px;
+  }
+  .finalize-applicant-modal .finalize-program-intake{
+    margin-left:28px;
+  }
+}

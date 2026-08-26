@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
  {% endif %}
 
  {% if lead.status != "finalized" and lead.status != "closed" and lead.assigned_to == request.user %}
- <dialog class="agent-modal" id="finalize-applicant-modal" aria-labelledby="finalize-applicant-title">
+ <dialog class="agent-modal finalize-applicant-modal" id="finalize-applicant-modal" aria-labelledby="finalize-applicant-title">
   <div class="agent-modal-card">
    <div class="agent-modal-head">
     <div>

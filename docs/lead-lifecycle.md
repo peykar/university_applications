@@ -383,3 +383,10 @@ compact row: checkbox, program/university identity, and intake selector. A
 selected row receives a subtle visual state. On narrow screens the intake
 stacks beneath the program while remaining indented and visually associated
 with it.
+
+### Finalization dialog sizing
+
+The Finalize Applicant dialog has a dedicated wider layout (up to 880px).
+Candidate-program rows, checkboxes, program labels, intake selectors, and
+footer actions are correspondingly larger for readability while retaining the
+compact row structure. The dialog remains responsive on narrow screens.
