@@ -23,7 +23,11 @@ class EmailCodeLoginRoutingTests(SimpleTestCase):
         )
 
         self.assertIn(
-            "href=\"{% url 'account_request_login_code' %}\"",
+            "{% url 'account_request_login_code' %}",
+            source,
+        )
+        self.assertIn(
+            "?next={{ request.GET.next|urlencode }}",
             source,
         )
         self.assertNotIn(

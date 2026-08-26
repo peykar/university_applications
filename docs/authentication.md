@@ -253,3 +253,11 @@ Consumer email sign-in uses django-allauth's login-by-code endpoints:
 
 The TurkDemy templates use the named login-code URLs explicitly so an existing
 user attempting to sign in cannot accidentally submit through the signup flow.
+
+## Return to the requested page after authentication
+
+Protected actions use Django's standard `next` query parameter. The authentication
+chooser must preserve that value when the user continues with email-code, Google,
+or Telegram authentication. django-allauth then returns the authenticated user
+to the originally requested protected URL. `LOGIN_REDIRECT_URL` is only the
+fallback when no `next` destination exists.

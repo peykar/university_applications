@@ -5,6 +5,6 @@
 <section class="auth-shell"><div class="auth-card">
   <div class="auth-heading"><p class="eyebrow">{% trans "Email sign in" %}</p><h1>{% trans "Get a sign-in code" %}</h1><p>{% trans "Enter your TurkDemy email address and we will send you a one-time code." %}</p></div>
   <form method="post" action="{% url 'account_request_login_code' %}" class="auth-form">{% csrf_token %}{{ form.as_p }}{{ redirect_field }}<button class="button auth-email-button" type="submit">{% trans "Send sign-in code" %}</button></form>
-  <a class="auth-back-link" href="{% url 'account_login' %}">← {% trans "Other sign-in methods" %}</a>
+  <a class="auth-back-link" href="{% url 'account_login' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">← {% trans "Other sign-in methods" %}</a>
 </div></section>
 {% endblock %}
