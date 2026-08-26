@@ -276,3 +276,12 @@ returns up to 20 results. The offering field is disabled until a Program is
 selected, then loads only active offerings for that Program. Bound POST forms
 restore active querysets so Django still validates submitted model IDs
 server-side.
+
+
+### Compact program suggestion modal
+
+The Agent Suggest Program modal uses a compact 560px layout with smaller
+headings, fields, buttons, and autocomplete rows. The searchable Program and
+dependent Offering selectors remain unchanged functionally, but the visual
+density is reduced so the modal feels consistent with the rest of the Agent
+Workspace instead of a large generic form.

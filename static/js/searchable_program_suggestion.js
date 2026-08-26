@@ -17,12 +17,12 @@
 
     const search = document.createElement("input");
     search.type = "search";
-    search.className = "single-picker-search";
+    search.className = "single-picker-search compact-search-input";
     search.autocomplete = "off";
     search.placeholder = select.dataset.placeholder || "Search";
 
     const panel = document.createElement("div");
-    panel.className = "single-picker-options";
+    panel.className = "single-picker-options compact-picker-options";
 
     select.classList.add("single-picker-native");
     select.insertAdjacentElement("afterend", wrapper);
@@ -43,7 +43,7 @@
       if (!results.length) {
         const empty = document.createElement("div");
         empty.className = "single-picker-empty";
-        empty.textContent = "No matching options";
+        empty.textContent = "No matches";
         panel.append(empty);
         return;
       }

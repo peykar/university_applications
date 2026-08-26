@@ -32,38 +32,38 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
-<dialog id="suggest-program-modal" class="agent-modal">
+<dialog id="suggest-program-modal" class="agent-modal compact-program-modal">
  <div class="agent-modal-card">
-  <div class="agent-modal-head">
+  <div class="agent-modal-head compact-modal-head">
    <div>
     <span class="eyebrow">{% trans "PROGRAMS" %}</span>
     <h2>{% trans "Suggest a program" %}</h2>
-    <p>{% trans "Add a program to the applicant's discussed programs. A specific intake is optional until finalization." %}</p>
+    <p>{% trans "Search a program, optionally choose an intake, and add a short note." %}</p>
    </div>
    <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
   </div>
   <form method="post" action="{% url 'agent-applicant-program-suggest' lead.pk %}">
    {% csrf_token %}
-   <div class="agent-form-grid">
-    <label class="agent-form-field agent-form-field-wide">
-     <span>{{ program_suggestion_form.program.label }}</span>
+   <div class="agent-form-grid compact-program-form">
+    <label class="agent-form-field agent-form-field-wide compact-field">
+     <span class="compact-field-label">{{ program_suggestion_form.program.label }}</span>
      <div class="searchable-program-field" data-search-url="{% url 'agent-program-search' %}">
       {{ program_suggestion_form.program }}
      </div>
     </label>
-    <label class="agent-form-field agent-form-field-wide">
-     <span>{{ program_suggestion_form.program_offering.label }}</span>
+    <label class="agent-form-field agent-form-field-wide compact-field">
+     <span class="compact-field-label">{{ program_suggestion_form.program_offering.label }}</span>
      <div class="searchable-offering-field" data-search-url="{% url 'agent-program-offering-search' %}">
       {{ program_suggestion_form.program_offering }}
      </div>
      <small>{% trans "Optional. Select an intake now if known; it is required before creating a draft application." %}</small>
     </label>
-    <label class="agent-form-field agent-form-field-wide">
-     <span>{{ program_suggestion_form.suggestion_reason.label }}</span>
+    <label class="agent-form-field agent-form-field-wide compact-field">
+     <span class="compact-field-label">{{ program_suggestion_form.suggestion_reason.label }}</span>
      {{ program_suggestion_form.suggestion_reason }}
     </label>
    </div>
-   <div class="agent-modal-actions">
+   <div class="agent-modal-actions compact-modal-actions">
     <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
     <button type="submit" class="button">{% trans "Suggest program" %}</button>
    </div>

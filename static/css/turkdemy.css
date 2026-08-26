@@ -4358,3 +4358,121 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .single-picker-option:hover,
 .single-picker-option:focus{background:#edf3f7;outline:none}
 .single-picker-empty{padding:9px;color:#89949e;font-size:.72rem}
+
+
+/* Compact, polished Suggest Program modal */
+.compact-program-modal{
+  width:min(560px,calc(100vw - 32px));
+  max-width:560px;
+}
+.compact-program-modal .agent-modal-card{
+  padding:16px 18px 14px;
+  border-radius:14px;
+}
+.compact-modal-head{
+  align-items:flex-start;
+  margin-bottom:10px;
+}
+.compact-modal-head h2{
+  margin:2px 0 3px;
+  font-size:1.05rem;
+  line-height:1.2;
+}
+.compact-modal-head p{
+  margin:0;
+  max-width:440px;
+  font-size:.68rem;
+  line-height:1.4;
+  color:#7a8793;
+}
+.compact-program-form{
+  gap:10px;
+}
+.compact-field{
+  gap:4px;
+}
+.compact-field-label{
+  font-size:.66rem;
+  font-weight:800;
+  color:#526577;
+  letter-spacing:.01em;
+}
+.compact-program-modal textarea{
+  min-height:72px;
+  max-height:120px;
+  resize:vertical;
+  padding:8px 10px;
+  border-radius:8px;
+  font-size:.74rem;
+}
+.compact-search-input{
+  min-height:36px;
+  height:36px;
+  padding:6px 32px 6px 9px;
+  border-radius:8px;
+  font-size:.73rem;
+  line-height:1;
+  box-shadow:none;
+  transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;
+}
+.compact-search-input:focus{
+  border-color:#aabcc9;
+  box-shadow:0 0 0 3px rgba(72,106,130,.08);
+  outline:none;
+}
+.single-picker{
+  position:relative;
+}
+.single-picker::after{
+  content:"⌄";
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-52%);
+  color:#84919c;
+  font-size:.8rem;
+  pointer-events:none;
+}
+.compact-picker-options{
+  top:calc(100% + 5px);
+  max-height:210px;
+  padding:4px;
+  border-radius:10px;
+}
+.compact-picker-options .single-picker-option{
+  padding:7px 8px;
+  border-radius:7px;
+  font-size:.69rem;
+  line-height:1.25;
+}
+.compact-picker-options .single-picker-empty{
+  padding:8px;
+  font-size:.68rem;
+}
+.compact-modal-actions{
+  margin-top:12px;
+  padding-top:10px;
+  gap:8px;
+}
+.compact-modal-actions .button{
+  min-height:34px;
+  padding:6px 12px;
+  font-size:.7rem;
+  border-radius:8px;
+}
+.compact-program-modal .modal-close{
+  width:28px;
+  height:28px;
+  min-height:28px;
+  padding:0;
+  font-size:1rem;
+  line-height:1;
+}
+@media(max-width:640px){
+  .compact-program-modal{
+    width:calc(100vw - 20px);
+  }
+  .compact-program-modal .agent-modal-card{
+    padding:14px;
+  }
+}
