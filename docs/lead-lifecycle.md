@@ -162,3 +162,14 @@ while preserving access to the complete audit trail.
 Activity timeline assertions target the dedicated `applicant_activity.html`
 template. The applicant detail regression tests assert that the timeline is
 absent there and that navigation to the Activity page remains available.
+
+
+### Activity page context, filters, and pagination
+
+The dedicated Activity page keeps applicant context visible at the top: name,
+status, responsible agent user, and Agent organization. Timeline spacing is
+denser for audit-log use.
+
+Activity can be filtered by All, Applicant data, Documents, Assignment &
+status, and Programs. Results are paginated at 25 events per page instead of
+being permanently truncated to the latest 100 records.

@@ -19,7 +19,7 @@ class AgentActivityPageTests(SimpleTestCase):
     def test_activity_has_dedicated_route_and_page(self):
         self.assertIn("def applicant_activity", self.views)
         self.assertIn('name="agent-applicant-activity"', self.urls)
-        self.assertIn("Applicant audit log", self.activity)
+        self.assertIn("Applicant activity", self.activity)
 
     def test_activity_removed_from_main_applicant_page(self):
         self.assertNotIn('id="activity"', self.detail)
@@ -32,3 +32,14 @@ class AgentActivityPageTests(SimpleTestCase):
             "Visible to agent/staff users only — never shown to the applicant.",
             self.detail,
         )
+
+    def test_activity_page_has_context_filters_and_pagination(self):
+        self.assertIn("Responsible:", self.activity)
+        self.assertIn("Assignment & status", self.activity)
+        self.assertIn("activity_filter", self.activity)
+        self.assertIn("activity_page.paginator", self.activity)
+
+    def test_activity_view_uses_filtered_pagination(self):
+        self.assertIn("filter_map = {", self.views)
+        self.assertIn("Paginator(activities, 25)", self.views)
+        self.assertIn("activity_type__in=filter_map[activity_filter]", self.views)

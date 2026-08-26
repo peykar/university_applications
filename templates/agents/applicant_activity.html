@@ -4,24 +4,48 @@
 {% block title %}{% trans "Activity" %} · {{ lead }} · TurkDemy{% endblock %}
 
 {% block agent_content %}
-<div class="agent-page-head">
- <div>
-  <span class="eyebrow">{% trans "Applicant audit log" %}</span>
-  <h1>{{ lead }}</h1>
-  <p>{% trans "History of important actions and data changes for this applicant." %}</p>
+<div class="activity-page-head">
+ <div class="activity-page-context">
+  <div>
+   <span class="eyebrow">{% trans "Applicant activity" %}</span>
+   <h1>{{ lead }}</h1>
+   <div class="activity-context-meta">
+    <span class="status-pill">{{ lead.get_status_display }}</span>
+    <span>
+     <strong>{% trans "Responsible:" %}</strong>
+     {% if lead.assigned_to %}
+      {{ lead.assigned_to.get_full_name|default:lead.assigned_to.username }}
+      {% if lead.assigned_to == request.user %} ({% trans "You" %}){% endif %}
+     {% else %}
+      {% trans "Unassigned" %}
+     {% endif %}
+    </span>
+    {% if lead.agent %}
+     <span><strong>{% trans "Agent:" %}</strong> {{ lead.agent }}</span>
+    {% endif %}
+   </div>
+  </div>
+  <a class="button button-secondary" href="{% url 'agent-applicant-detail' lead.pk %}">
+   {% trans "Back to applicant" %}
+  </a>
  </div>
- <a class="button button-secondary" href="{% url 'agent-applicant-detail' lead.pk %}">{% trans "Back to applicant" %}</a>
 </div>
 
-<section class="agent-panel">
- <div class="agent-panel-head">
-  <div>
-   <h2>{% trans "Activity" %}</h2>
-   <p>{% trans "Newest events first." %}</p>
+<section class="agent-panel activity-panel">
+ <div class="activity-toolbar">
+  <div class="activity-filters" role="navigation" aria-label="{% trans 'Activity filters' %}">
+   <a class="activity-filter{% if activity_filter == 'all' %} active{% endif %}" href="?type=all">{% trans "All" %}</a>
+   <a class="activity-filter{% if activity_filter == 'applicant' %} active{% endif %}" href="?type=applicant">{% trans "Applicant data" %}</a>
+   <a class="activity-filter{% if activity_filter == 'documents' %} active{% endif %}" href="?type=documents">{% trans "Documents" %}</a>
+   <a class="activity-filter{% if activity_filter == 'assignment' %} active{% endif %}" href="?type=assignment">{% trans "Assignment & status" %}</a>
+   <a class="activity-filter{% if activity_filter == 'programs' %} active{% endif %}" href="?type=programs">{% trans "Programs" %}</a>
   </div>
+  <span class="activity-count">
+   {% blocktrans with count=activity_page.paginator.count %}{{ count }} events{% endblocktrans %}
+  </span>
  </div>
 
- <div class="activity-timeline">
+ <div class="activity-timeline compact">
   {% for activity in activities %}
    <article class="activity-item">
     <div class="activity-dot" aria-hidden="true"></div>
@@ -43,7 +67,9 @@
       </span>
      </div>
 
-     {% if activity.description %}<p>{{ activity.description }}</p>{% endif %}
+     {% if activity.description %}
+      <p>{{ activity.description }}</p>
+     {% endif %}
 
      {% if activity.metadata.changes %}
       <div class="activity-changes">
@@ -60,8 +86,24 @@
     </div>
    </article>
   {% empty %}
-   <p class="empty-state">{% trans "No activity recorded yet." %}</p>
+   <p class="empty-state">{% trans "No activity matches this filter." %}</p>
   {% endfor %}
  </div>
+
+ {% if activity_page.paginator.num_pages > 1 %}
+ <nav class="activity-pagination" aria-label="{% trans 'Activity pagination' %}">
+  {% if activity_page.has_previous %}
+   <a class="button button-secondary" href="?type={{ activity_filter }}&page={{ activity_page.previous_page_number }}">{% trans "Previous" %}</a>
+  {% endif %}
+
+  <span>
+   {% blocktrans with current=activity_page.number total=activity_page.paginator.num_pages %}Page {{ current }} of {{ total }}{% endblocktrans %}
+  </span>
+
+  {% if activity_page.has_next %}
+   <a class="button button-secondary" href="?type={{ activity_filter }}&page={{ activity_page.next_page_number }}">{% trans "Next" %}</a>
+  {% endif %}
+ </nav>
+ {% endif %}
 </section>
 {% endblock %}

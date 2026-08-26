@@ -4229,3 +4229,51 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   background:#fff;
   border-color:#dce5eb;
 }
+
+
+/* Dedicated applicant activity page */
+.activity-page-head{margin-bottom:14px}
+.activity-page-context{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.activity-page-context h1{margin:3px 0 7px}
+.activity-context-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:#697887;font-size:.74rem}
+.activity-context-meta strong{color:#405466}
+.activity-panel{padding-top:14px}
+.activity-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.activity-filters{display:flex;gap:7px;flex-wrap:wrap}
+.activity-filter{
+  display:inline-flex;
+  align-items:center;
+  min-height:29px;
+  padding:4px 9px;
+  border:1px solid #dfe6eb;
+  border-radius:999px;
+  background:#fff;
+  color:#5a6c7c;
+  font-size:.69rem;
+  font-weight:800;
+  text-decoration:none;
+}
+.activity-filter:hover{border-color:#bdcad4;color:#2e536f}
+.activity-filter.active{background:#edf3f7;border-color:#bfcfda;color:#284e6a}
+.activity-count{color:#8a96a1;font-size:.68rem;font-weight:700}
+.activity-timeline.compact .activity-item{padding-bottom:12px}
+.activity-timeline.compact .activity-item:not(:last-child)::before{bottom:-1px}
+.activity-timeline.compact .activity-content p{margin:3px 0 5px}
+.activity-timeline.compact .activity-changes{margin-top:6px}
+.activity-pagination{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid #e7ecef;
+  color:#7c8995;
+  font-size:.72rem;
+}
+@media(max-width:700px){
+  .activity-page-context{flex-direction:column}
+  .activity-page-context>.button{width:100%}
+  .activity-toolbar{align-items:flex-start}
+  .activity-pagination{justify-content:space-between}
+}

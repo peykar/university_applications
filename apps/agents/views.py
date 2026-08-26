@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.files.base import ContentFile
+from django.core.paginator import Paginator
 from django.db.models import Count, Max, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -277,13 +278,52 @@ def applicant_activity(request, lead_id):
             list_url_name="agent-applicant-list",
         )
 
-    activities = lead.activities.select_related("created_by").order_by("-created_at")[:100]
+    activity_filter = (request.GET.get("type") or "all").strip()
+    page_number = request.GET.get("page") or "1"
+
+    filter_map = {
+        "applicant": (
+            LeadActivityType.APPLICANT_UPDATED,
+            LeadActivityType.INTERNAL_NOTES_UPDATED,
+        ),
+        "documents": (
+            LeadActivityType.DOCUMENT_UPLOADED,
+            LeadActivityType.DOCUMENT_REVIEWED,
+        ),
+        "assignment": (
+            LeadActivityType.ASSIGNED,
+            LeadActivityType.REASSIGNED,
+            LeadActivityType.STATUS_CHANGED,
+            LeadActivityType.CLOSED,
+            LeadActivityType.REOPENED,
+            LeadActivityType.FINALIZED,
+            LeadActivityType.VALIDATED,
+        ),
+        "programs": (
+            LeadActivityType.PROGRAM_ADDED,
+            LeadActivityType.PROGRAM_SUGGESTED,
+            LeadActivityType.PROGRAM_RESPONSE,
+            LeadActivityType.RECOMMENDATIONS_GENERATED,
+        ),
+    }
+
+    activities = lead.activities.select_related("created_by").order_by("-created_at")
+    if activity_filter in filter_map:
+        activities = activities.filter(activity_type__in=filter_map[activity_filter])
+    else:
+        activity_filter = "all"
+
+    paginator = Paginator(activities, 25)
+    activity_page = paginator.get_page(page_number)
+
     return render(
         request,
         "agents/applicant_activity.html",
         {
             "lead": lead,
-            "activities": activities,
+            "activities": activity_page.object_list,
+            "activity_page": activity_page,
+            "activity_filter": activity_filter,
         },
     )
 
