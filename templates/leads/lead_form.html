@@ -6,13 +6,27 @@
   <header class="applicant-form-header">
     <p class="eyebrow">{% trans "Applicant profile" %}</p>
     <h1>{{ title }}</h1>
-    <p class="muted">{% trans "This information is provisional until TurkDemy staff validate and finalize it." %}</p>
+    {% if next_program %}
+      <p class="muted">{% trans "Start with whatever information you have. Most fields are optional; our admissions team can collect the rest later." %}</p>
+    {% else %}
+      <p class="muted">{% trans "This information is provisional until TurkDemy staff validate and finalize it." %}</p>
+    {% endif %}
   </header>
 
   <form method="post" class="form-card applicant-form-card lead-profile-form">
     {% csrf_token %}
     {% if next_program %}<input type="hidden" name="next_program" value="{{ next_program }}">{% endif %}
     {% if form.non_field_errors %}<div class="form-error-summary applicant-form-section">{{ form.non_field_errors }}</div>{% endif %}
+
+    {% if next_program %}
+    <section class="applicant-form-section applicant-for-section">
+      <div class="applicant-form-section-heading">
+        <h2>{% trans "Who are you applying for?" %}</h2>
+        <p>{% trans "Choose yourself to use the details we already know about your account, or someone else to enter their details." %}</p>
+      </div>
+      <div class="applicant-for-options">{{ form.applicant_for }}</div>
+    </section>
+    {% endif %}
 
     <section class="applicant-form-section">
       <div class="applicant-form-section-heading"><h2>{% trans "Personal information" %}</h2><p>{% trans "Basic identity and contact details." %}</p></div>
@@ -62,7 +76,7 @@
 
     <div class="form-actions applicant-form-actions">
       <a class="button button-secondary" href="{% url 'lead-list' %}">{% trans "Cancel" %}</a>
-      <button class="button" type="submit">{% trans "Save applicant" %}</button>
+      <button class="button" type="submit">{% if next_program %}{% trans "Continue application" %}{% else %}{% trans "Save applicant" %}{% endif %}</button>
     </div>
   </form>
 </section>

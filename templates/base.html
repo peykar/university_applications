@@ -232,5 +232,24 @@
       });
     })();
   </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const choices = document.querySelectorAll('input[name="applicant_for"]');
+  if (!choices.length) return;
+  const names = ["first_name", "middle_name", "last_name", "email", "cell"];
+  const fields = Object.fromEntries(names.map((name) => [
+    name, document.querySelector(`[name="${name}"]`)
+  ]));
+  const selfValues = Object.fromEntries(
+    names.map((name) => [name, fields[name]?.value || ""])
+  );
+  choices.forEach((choice) => choice.addEventListener("change", () => {
+    names.forEach((name) => {
+      if (!fields[name]) return;
+      fields[name].value = choice.value === "self" ? selfValues[name] : "";
+    });
+  }));
+});
+</script>
 </body>
 </html>

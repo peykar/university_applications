@@ -93,9 +93,9 @@ class Lead(BaseModel):
         ),
     )
 
-    first_name = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=150, blank=True)
     middle_name = models.CharField(max_length=150, blank=True)
-    last_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150, blank=True)
 
     country_of_birth = models.ForeignKey(
         Country,

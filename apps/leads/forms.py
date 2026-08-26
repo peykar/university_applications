@@ -31,6 +31,14 @@ def _unique_ids_by_label(rows):
 
 
 class LeadForm(forms.ModelForm):
+    applicant_for = forms.ChoiceField(
+        choices=(("self", "Myself"), ("other", "Someone else")),
+        initial="self",
+        required=False,
+        widget=forms.RadioSelect,
+        label="Who are you applying for?",
+    )
+
     class Meta:
         model = Lead
         fields = (
@@ -64,6 +72,14 @@ class LeadForm(forms.ModelForm):
             "address": forms.Textarea(attrs={"rows": 3}),
             "educational_background": forms.Textarea(attrs={"rows": 4}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Lead intake is intentionally permissive. Staff can collect and
+        # validate missing information after the applicant expresses interest.
+        for field_name, field in self.fields.items():
+            if field_name != "applicant_for":
+                field.required = False
 
 
 class LeadPreferenceForm(forms.ModelForm):

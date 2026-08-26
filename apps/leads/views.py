@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+from urllib.parse import urlencode
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
@@ -93,6 +96,9 @@ def lead_create(request):
     else:
         form = LeadForm(
             initial={
+                "applicant_for": "self",
+                "first_name": request.user.first_name or "",
+                "last_name": request.user.last_name or "",
                 "email": request.user.email or "",
                 "cell": request.user.cell or "",
             }
@@ -328,6 +334,12 @@ def apply_program(request, slug):
         is_active=True,
         university__is_active=True,
     )
+
+    # Do not interrupt the application journey with an empty applicant picker.
+    # A first-time customer goes straight to the lightweight applicant form.
+    if not Lead.objects.filter(user=request.user).exists():
+        query = urlencode({"next_program": program.slug_en})
+        return redirect(f"{reverse('lead-create')}?{query}")
 
     if request.method == "POST":
         form = ApplyProgramForm(
