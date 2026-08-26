@@ -4004,3 +4004,12 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   outline-offset:2px;
 }
 @media(max-width:700px){.agent-lifecycle-actions{justify-content:flex-start}}
+
+
+/* Finalize applicant */
+.finalize-review{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+.finalize-review>div{display:grid;gap:3px;padding:9px 10px;border:1px solid #e3e9ee;border-radius:9px;background:#fafbfc}
+.finalize-review span{font-size:.68rem;color:#778594;font-weight:700}
+.finalize-review strong{font-size:.8rem;color:#25394c;overflow-wrap:anywhere}
+.finalize-warning{padding:9px 10px;border-radius:8px;background:#fff8e8;color:#765d22;font-size:.74rem}
+@media(max-width:700px){.finalize-review{grid-template-columns:1fr}}

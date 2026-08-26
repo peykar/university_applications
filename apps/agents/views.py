@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.files.base import ContentFile
 from django.db.models import Count, Max, Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -26,6 +26,7 @@ from apps.leads.models import (
     LeadProgramInterest,
     LeadStatus,
 )
+from apps.leads.services.conversion import convert_lead_to_student, finalize_lead
 from apps.leads.services.messaging import ensure_conversation, send_system_message
 
 from .forms import DocumentReviewForm, PromoteChatAttachmentForm
@@ -386,6 +387,49 @@ def applicant_assign(request, lead_id):
     messages.success(
         request,
         f"{_user_display_name(target_user)} is now responsible for this applicant.",
+    )
+    return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+
+@login_required
+@require_POST
+def applicant_finalize(request, lead_id):
+    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+
+    if lead.status == LeadStatus.CLOSED:
+        messages.error(request, "Reopen this applicant before finalizing it.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+    if lead.status == LeadStatus.FINALIZED:
+        messages.info(request, "This applicant is already finalized.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+    if lead.assigned_to_id != request.user.pk:
+        messages.error(
+            request,
+            "Assign this applicant to yourself before finalizing it.",
+        )
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    try:
+        finalize_lead(lead, performed_by=request.user)
+        student = convert_lead_to_student(lead, performed_by=request.user)
+    except ValidationError as exc:
+        if hasattr(exc, "message_dict"):
+            detail = " ".join(
+                message
+                for field_messages in exc.message_dict.values()
+                for message in field_messages
+            )
+        else:
+            detail = " ".join(exc.messages)
+        messages.error(
+            request,
+            f"Applicant cannot be finalized yet. {detail}",
+        )
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    messages.success(
+        request,
+        f"Applicant finalized and converted to student {student}.",
     )
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
