@@ -4637,3 +4637,75 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   .program-suggest-aside{position:static;order:-1}
   .program-suggest-header>.button{width:100%}
 }
+
+
+/* Applicant Programs card polish */
+.program-suggest-action{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  min-height:28px;
+  padding:4px 9px;
+  border:1px solid #d7e0e6;
+  border-radius:7px;
+  background:#fff;
+  color:#486275;
+  font-size:.66rem;
+  font-weight:800;
+  line-height:1;
+  text-decoration:none;
+  transition:background .15s ease,border-color .15s ease,box-shadow .15s ease;
+}
+.program-suggest-action>span{
+  display:grid;
+  place-items:center;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:#edf3f6;
+  font-size:.72rem;
+  line-height:1;
+}
+.program-suggest-action:hover{
+  background:#f7fafb;
+  border-color:#c7d4dc;
+  box-shadow:0 2px 7px rgba(38,61,78,.06);
+}
+.program-interest-row{
+  padding:10px 0;
+}
+.program-interest-row+.program-interest-row{
+  border-top:1px solid #edf1f3;
+}
+.program-interest-row h3,
+.program-interest-row strong{
+  line-height:1.25;
+}
+.program-interest-row p,
+.program-interest-row small{
+  line-height:1.35;
+}
+.program-source{
+  display:inline-flex;
+  align-items:center;
+  min-height:20px;
+  padding:2px 7px;
+  border:1px solid #dde5e9;
+  border-radius:999px;
+  background:#f7f9fa;
+  color:#687985;
+  font-size:.58rem;
+  font-weight:800;
+  line-height:1;
+  white-space:nowrap;
+}
+.program-source-agent{
+  border-color:#d5e1e8;
+  background:#edf4f7;
+  color:#46677a;
+}
+.program-source-user{
+  border-color:#e2dfd3;
+  background:#f8f6ef;
+  color:#756b4d;
+}

@@ -569,8 +569,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-<section class="agent-panel"><div class="agent-panel-head"><div class="section-heading-actions"><h2>{% trans "Programs" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<a class="section-action" href="{% url 'agent-applicant-program-suggest' lead.pk %}">{% trans "Suggest program" %}</a>{% endif %}</div></div>
-<div class="agent-list">{% for interest in interests %}<div class="agent-list-row"><span><a class="agent-program-link" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener"><strong>{{ interest.program.name_en }}</strong></a><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill">{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</span></div>{% empty %}<p class="empty-state">{% trans "No programs." %}</p>{% endfor %}</div>
+<section class="agent-panel"><div class="agent-panel-head"><div class="section-heading-actions"><h2>{% trans "Programs" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<a class="section-action program-suggest-action" href="{% url 'agent-applicant-program-suggest' lead.pk %}"><span aria-hidden="true">+</span>{% trans "Suggest program" %}</a>{% endif %}</div></div>
+<div class="agent-list program-interest-list">{% for interest in interests %}<div class="agent-list-row program-interest-row"><span><a class="agent-program-link" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener"><strong>{{ interest.program.name_en }}</strong></a><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill program-source program-source-{{ interest.source }}">{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</span></div>{% empty %}<p class="empty-state">{% trans "No programs." %}</p>{% endfor %}</div>
 </section>
 </aside>
 </div>

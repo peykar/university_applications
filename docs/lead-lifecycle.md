@@ -308,3 +308,18 @@ Legacy tests for the removed Suggest Program modal were deleted. Searchable
 program-selection tests now target `program_suggest.html`, and the workflow
 test verifies that the applicant page links to the dedicated suggestion page
 instead of expecting a modal trigger.
+
+
+### Applicant Programs card UI
+
+The Agent applicant Programs card uses tighter rows, visually distinct source
+badges for agent-suggested versus user-added interests, and a compact
+`+ Suggest program` action. This is presentation-only and does not change the
+program-interest or finalization workflow.
+
+### Programs card markup correction
+
+The Programs card polish now targets the actual compact `agent-list-row`
+markup used by the applicant detail template. Each row receives the
+`program-interest-row` hook and each source pill receives a source-specific
+class such as `program-source-agent` or `program-source-user`.
