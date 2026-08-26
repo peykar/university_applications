@@ -88,3 +88,16 @@ footer remains sticky while scrolling.
 Lead edit activities preserve old and new values for every changed field in an
 internal `LeadActivity`, so shared agent teams can see exactly what changed
 without exposing those details to the applicant.
+
+
+## Internal notes and activity history
+
+Agent Workspace shows the current `Lead.notes` in a dedicated **Internal notes**
+panel marked as agent/staff-only. Agents can update notes from a small modal,
+which creates an internal `LeadActivity` containing the previous and new note
+content.
+
+The **Activity** panel renders the latest LeadActivity records as a timeline.
+Each entry shows the activity type, actor, timestamp, description, and whether
+the event is internal or customer-visible. The timeline is newest-first and
+loads actor information with `select_related("created_by")`.

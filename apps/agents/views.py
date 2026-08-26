@@ -227,10 +227,45 @@ def applicant_detail(request, lead_id):
             "interests": lead.program_interests.select_related(
                 "program", "program__university", "program_offering"
             ).order_by("-created_at"),
-            "activities": lead.activities.order_by("-created_at")[:30],
+            "activities": lead.activities.select_related("created_by").order_by("-created_at")[:50],
             "status_choices": LeadStatus.choices,
         },
     )
+
+
+@login_required
+@require_POST
+def applicant_internal_notes(request, lead_id):
+    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    if lead.status == LeadStatus.FINALIZED:
+        messages.error(
+            request,
+            "Internal Lead notes are read-only after finalization.",
+        )
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    new_notes = request.POST.get("notes", "")
+    old_notes = lead.notes
+    if new_notes == old_notes:
+        messages.info(request, "Internal notes were not changed.")
+        return redirect("agent-applicant-detail", lead_id=lead.pk)
+
+    lead.notes = new_notes
+    lead.updated_by = request.user
+    lead.save(update_fields=("notes", "updated_by", "updated_at"))
+
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=LeadActivityType.NOTE,
+        description=(
+            f"Internal notes updated. Previous: {old_notes or '—'} → New: {new_notes or '—'}"
+        ),
+        is_customer_visible=False,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    messages.success(request, "Internal notes updated.")
+    return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 
 @login_required

@@ -207,6 +207,32 @@ document.addEventListener("DOMContentLoaded", () => {
  </dialog>
  {% endif %}
 
+ {% if lead.status != "finalized" %}
+ <dialog class="agent-modal" id="internal-notes-modal" aria-labelledby="internal-notes-title">
+  <div class="agent-modal-card">
+   <div class="agent-modal-head">
+    <div>
+     <span class="eyebrow">{% trans "Internal" %}</span>
+     <h2 id="internal-notes-title">{% trans "Edit internal notes" %}</h2>
+     <p>{% trans "These notes are visible only to agent/staff users." %}</p>
+    </div>
+    <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+   </div>
+   <form method="post" action="{% url 'agent-applicant-internal-notes' lead.pk %}" class="agent-modal-form">
+    {% csrf_token %}
+    <label>
+     <span>{% trans "Internal notes" %}</span>
+     <textarea name="notes" rows="8" placeholder="{% trans 'Add internal context, follow-up reminders, or information collected outside the portal.' %}">{{ lead.notes }}</textarea>
+    </label>
+    <div class="agent-modal-actions">
+     <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+     <button class="button" type="submit">{% trans "Save notes" %}</button>
+    </div>
+   </form>
+  </div>
+ </dialog>
+ {% endif %}
+
  {% if lead.status != "finalized" and lead.status != "closed" and agent_users %}
  <dialog class="agent-modal" id="assign-agent-modal" aria-labelledby="assign-agent-title">
   <div class="agent-modal-card">
@@ -481,6 +507,63 @@ document.addEventListener("DOMContentLoaded", () => {
  {% endfor %}
  </div>
 </section>
+
+<section class="agent-panel" id="internal-notes">
+ <div class="agent-panel-head">
+  <div>
+   <h2>{% trans "Internal notes" %}</h2>
+   <p>{% trans "Visible to agent/staff users only — never shown to the applicant." %}</p>
+  </div>
+  {% if lead.status != "finalized" %}
+   <button type="button" class="section-action button-reset modal-trigger" data-modal-target="internal-notes-modal">{% trans "Edit" %}</button>
+  {% endif %}
+ </div>
+ <div class="internal-notes-body">
+  {% if lead.notes %}
+   {{ lead.notes|linebreaksbr }}
+  {% else %}
+   <p class="empty-state">{% trans "No internal notes yet." %}</p>
+  {% endif %}
+ </div>
+</section>
+
+<section class="agent-panel" id="activity">
+ <div class="agent-panel-head">
+  <div>
+   <h2>{% trans "Activity" %}</h2>
+   <p>{% trans "Chronological history of important actions on this applicant." %}</p>
+  </div>
+ </div>
+ <div class="activity-timeline">
+  {% for activity in activities %}
+   <article class="activity-item">
+    <div class="activity-dot" aria-hidden="true"></div>
+    <div class="activity-content">
+     <div class="activity-meta">
+      <strong>{{ activity.get_activity_type_display }}</strong>
+      <span>
+       {% if activity.created_by %}
+        {{ activity.created_by.get_full_name|default:activity.created_by.username }}
+       {% else %}
+        {% trans "System" %}
+       {% endif %}
+       · {{ activity.created_at|date:"M j, Y H:i" }}
+      </span>
+     </div>
+     <p>{{ activity.description }}</p>
+     {% if activity.is_customer_visible %}
+      <span class="activity-visibility">{% trans "Customer-visible event" %}</span>
+     {% else %}
+      <span class="activity-visibility internal">{% trans "Internal" %}</span>
+     {% endif %}
+    </div>
+   </article>
+  {% empty %}
+   <p class="empty-state">{% trans "No activity recorded yet." %}</p>
+  {% endfor %}
+ </div>
+</section>
+
 <section class="agent-panel"><div class="agent-panel-head"><h2>{% trans "Programs" %}</h2></div>
 <div class="agent-list">{% for interest in interests %}<div class="agent-list-row"><span><a class="agent-program-link" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener"><strong>{{ interest.program.name_en }}</strong></a><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill">{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</span></div>{% empty %}<p class="empty-state">{% trans "No programs." %}</p>{% endfor %}</div>
 </section>
