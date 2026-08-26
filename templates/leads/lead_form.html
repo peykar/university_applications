@@ -2,19 +2,67 @@
 {% load i18n %}
 {% block title %}{{ title }} — TurkDemy{% endblock %}
 {% block content %}
-<section class="lead-form-layout applicant-form-page">
-  <div>
+<section class="applicant-form-page">
+  <header class="applicant-form-header">
     <p class="eyebrow">{% trans "Applicant profile" %}</p>
     <h1>{{ title }}</h1>
     <p class="muted">{% trans "This information is provisional until TurkDemy staff validate and finalize it." %}</p>
-  </div>
+  </header>
+
   <form method="post" class="form-card applicant-form-card lead-profile-form">
     {% csrf_token %}
     {% if next_program %}<input type="hidden" name="next_program" value="{{ next_program }}">{% endif %}
-    {{ form.as_p }}
+    {% if form.non_field_errors %}<div class="form-error-summary applicant-form-section">{{ form.non_field_errors }}</div>{% endif %}
+
+    <section class="applicant-form-section">
+      <div class="applicant-form-section-heading"><h2>{% trans "Personal information" %}</h2><p>{% trans "Basic identity and contact details." %}</p></div>
+      <div class="applicant-form-grid applicant-form-grid-3">
+        <div class="applicant-form-field">{{ form.first_name.label_tag }}{{ form.first_name }}{{ form.first_name.errors }}</div>
+        <div class="applicant-form-field">{{ form.middle_name.label_tag }}{{ form.middle_name }}{{ form.middle_name.errors }}</div>
+        <div class="applicant-form-field">{{ form.last_name.label_tag }}{{ form.last_name }}{{ form.last_name.errors }}</div>
+        <div class="applicant-form-field">{{ form.email.label_tag }}{{ form.email }}{{ form.email.errors }}</div>
+        <div class="applicant-form-field">{{ form.cell.label_tag }}{{ form.cell }}{{ form.cell.errors }}</div>
+        <div class="applicant-form-field">{{ form.birthdate.label_tag }}{{ form.birthdate }}{{ form.birthdate.errors }}</div>
+        <div class="applicant-form-field">{{ form.gender.label_tag }}{{ form.gender }}{{ form.gender.errors }}</div>
+        <div class="applicant-form-field">{{ form.nationality.label_tag }}{{ form.nationality }}{{ form.nationality.errors }}</div>
+        <div class="applicant-form-field">{{ form.country_of_birth.label_tag }}{{ form.country_of_birth }}{{ form.country_of_birth.errors }}</div>
+      </div>
+    </section>
+
+    <section class="applicant-form-section">
+      <div class="applicant-form-section-heading"><h2>{% trans "Residence" %}</h2><p>{% trans "Where the applicant currently lives." %}</p></div>
+      <div class="applicant-form-grid">
+        <div class="applicant-form-field">{{ form.country_of_residence.label_tag }}{{ form.country_of_residence }}{{ form.country_of_residence.errors }}</div>
+        <div class="applicant-form-field">{{ form.city_of_residence.label_tag }}{{ form.city_of_residence }}{{ form.city_of_residence.errors }}</div>
+        <div class="applicant-form-field applicant-form-field-wide">{{ form.address.label_tag }}{{ form.address }}{{ form.address.errors }}</div>
+      </div>
+    </section>
+
+    <section class="applicant-form-section">
+      <div class="applicant-form-section-heading"><h2>{% trans "Passport" %}</h2><p>{% trans "Travel document details, if available." %}</p></div>
+      <div class="applicant-form-grid">
+        <div class="applicant-form-field">{{ form.passport_no.label_tag }}{{ form.passport_no }}{{ form.passport_no.errors }}</div>
+        <div class="applicant-form-field">{{ form.passport_issuing_authority.label_tag }}{{ form.passport_issuing_authority }}{{ form.passport_issuing_authority.errors }}</div>
+        <div class="applicant-form-field">{{ form.passport_date_of_issue.label_tag }}{{ form.passport_date_of_issue }}{{ form.passport_date_of_issue.errors }}</div>
+        <div class="applicant-form-field">{{ form.passport_date_of_expiry.label_tag }}{{ form.passport_date_of_expiry }}{{ form.passport_date_of_expiry.errors }}</div>
+      </div>
+    </section>
+
+    <section class="applicant-form-section">
+      <div class="applicant-form-section-heading"><h2>{% trans "Education & language" %}</h2><p>{% trans "Academic background and English proficiency." %}</p></div>
+      <div class="applicant-form-grid">
+        <div class="applicant-form-field">{{ form.english_test_type.label_tag }}{{ form.english_test_type }}{{ form.english_test_type.errors }}</div>
+        <div class="applicant-form-field">{{ form.english_language_test_score.label_tag }}{{ form.english_language_test_score }}{{ form.english_language_test_score.errors }}</div>
+        <div class="applicant-form-field">{{ form.high_school_gpa.label_tag }}{{ form.high_school_gpa }}{{ form.high_school_gpa.errors }}</div>
+        <div class="applicant-form-field">{{ form.high_school_gpa_scale.label_tag }}{{ form.high_school_gpa_scale }}{{ form.high_school_gpa_scale.errors }}</div>
+        <div class="applicant-form-field applicant-form-field-wide">{{ form.educational_background.label_tag }}{{ form.educational_background }}{{ form.educational_background.errors }}</div>
+        <div class="applicant-form-field applicant-form-field-wide applicant-recommendation-field">{{ form.needs_program_recommendation }} {{ form.needs_program_recommendation.label_tag }}{{ form.needs_program_recommendation.errors }}{% if form.needs_program_recommendation.help_text %}<p class="helptext">{{ form.needs_program_recommendation.help_text }}</p>{% endif %}</div>
+      </div>
+    </section>
+
     <div class="form-actions applicant-form-actions">
+      <a class="button button-secondary" href="{% url 'lead-list' %}">{% trans "Cancel" %}</a>
       <button class="button" type="submit">{% trans "Save applicant" %}</button>
-      <a href="{% url 'lead-list' %}">{% trans "Cancel" %}</a>
     </div>
   </form>
 </section>

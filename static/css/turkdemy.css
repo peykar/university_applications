@@ -3662,3 +3662,19 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .related-program-card-link:hover,.related-program-card-link:focus-visible{color:inherit;text-decoration:none}
 .related-program-card-link:focus-visible{outline:3px solid rgba(11,58,103,.22);outline-offset:3px}
 .related-program-card-link:hover h3{color:#0b3a67}
+
+/* Add/edit applicant: structured desktop form */
+.applicant-form-page{max-width:980px!important}
+.applicant-form-page .applicant-form-header{max-width:720px}
+.applicant-form-page .applicant-form-card{width:100%;box-shadow:0 14px 38px rgba(18,36,61,.07)}
+.applicant-form-page .lead-profile-form input:not([type="checkbox"]),
+.applicant-form-page .lead-profile-form select,
+.applicant-form-page .lead-profile-form textarea{min-height:44px}
+.applicant-form-page .lead-profile-form textarea{resize:vertical}
+.applicant-recommendation-field{display:grid;grid-template-columns:auto 1fr;align-items:start;column-gap:9px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:#fbfcfd}
+.applicant-recommendation-field>input{margin-top:2px}
+.applicant-recommendation-field>label{margin:0!important;color:#243a56!important;font-size:.8rem!important}
+.applicant-recommendation-field .helptext{grid-column:2;margin:3px 0 0;color:var(--muted);font-size:.74rem}
+.applicant-form-page .applicant-form-actions{position:static!important;border-radius:0 0 14px 14px}
+.applicant-form-page .button-secondary{background:#fff;color:#17385f;border:1px solid #17385f;text-decoration:none}
+@media(min-width:761px){.applicant-form-page .applicant-form-actions{padding:18px 24px}.applicant-form-page .applicant-form-section{padding:26px 28px}}
