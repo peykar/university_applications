@@ -4476,3 +4476,20 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
     padding:14px;
   }
 }
+
+
+/* Lighter optional suggestion note */
+.compact-note-field{gap:3px}
+.compact-note-field small{
+  font-size:.62rem;
+  line-height:1.35;
+  color:#929da6;
+}
+.compact-program-modal textarea.compact-note-input{
+  min-height:52px;
+  height:52px;
+  max-height:110px;
+  padding:7px 9px;
+  font-size:.72rem;
+  line-height:1.35;
+}

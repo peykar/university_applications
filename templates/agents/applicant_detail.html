@@ -58,9 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
      </div>
      <small>{% trans "Optional. Select an intake now if known; it is required before creating a draft application." %}</small>
     </label>
-    <label class="agent-form-field agent-form-field-wide compact-field">
+    <label class="agent-form-field agent-form-field-wide compact-field compact-note-field">
      <span class="compact-field-label">{{ program_suggestion_form.suggestion_reason.label }}</span>
      {{ program_suggestion_form.suggestion_reason }}
+     <small>{% trans "Add a short reason only if it helps the applicant understand the suggestion." %}</small>
     </label>
    </div>
    <div class="agent-modal-actions compact-modal-actions">

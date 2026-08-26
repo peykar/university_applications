@@ -285,3 +285,10 @@ headings, fields, buttons, and autocomplete rows. The searchable Program and
 dependent Offering selectors remain unchanged functionally, but the visual
 density is reduced so the modal feels consistent with the rest of the Agent
 Workspace instead of a large generic form.
+
+
+### Suggestion note UI
+
+The program suggestion reason is presented as **Suggestion note (optional)**.
+It uses a shorter two-row textarea with lighter helper text so it does not
+visually outweigh the Program and Program offering selectors.

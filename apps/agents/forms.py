@@ -101,10 +101,10 @@ class AgentProgramSuggestionForm(forms.ModelForm):
         model = LeadProgramInterest
         fields = ("program", "program_offering", "suggestion_reason")
         widgets: ClassVar[dict[str, forms.Widget]] = {
-            "suggestion_reason": forms.Textarea(attrs={"rows": 3}),
+            "suggestion_reason": forms.Textarea(attrs={"rows": 2, "class": "compact-note-input"}),
         }
         labels: ClassVar[dict[str, object]] = {
-            "suggestion_reason": _("Why are you suggesting this program?"),
+            "suggestion_reason": _("Suggestion note (optional)"),
         }
 
     def __init__(self, *args, lead=None, **kwargs):
