@@ -3721,3 +3721,7 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   .email-preview-meta{grid-template-columns:1fr}
   .email-preview-browser iframe{height:620px}
 }
+
+.email-preview-error{padding:18px;border:1px solid #efc7c7;border-radius:12px;background:#fff1f1;color:#842929}
+.email-preview-error strong,.email-preview-error code{display:block}
+.email-preview-error code{margin-top:8px;white-space:pre-wrap;overflow-wrap:anywhere}

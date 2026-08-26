@@ -47,6 +47,11 @@ urlpatterns = [
         name="email-preview-gallery",
     ),
     path(
+        "email-previews/<str:email_type>/<str:language>/html/",
+        views.email_preview_html,
+        name="email-preview-html",
+    ),
+    path(
         "email-previews/<str:email_type>/<str:language>/",
         views.email_preview_detail,
         name="email-preview-detail",

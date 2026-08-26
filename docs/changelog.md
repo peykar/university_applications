@@ -733,3 +733,9 @@
 - Added a Django system check that fails when allauth introduces an outgoing
   email that has not been registered in the gallery.
 - Project email sends now require a registered `email_type`.
+
+### Reliable email preview bodies
+- Replaced `iframe srcdoc` with a dedicated superuser-only HTML preview endpoint.
+- Added validation for non-empty subject, plain-text and HTML email bodies.
+- Added explicit preview rendering errors instead of blank frames.
+- Added regression coverage for every registered email type in every supported language.

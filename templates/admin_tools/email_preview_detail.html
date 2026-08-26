@@ -26,21 +26,29 @@
     <div><span>Subject</span><strong>{{ subject }}</strong></div>
   </div>
 
-  <section class="email-preview-browser">
-    <div class="email-preview-browser-bar">
-      <span></span><span></span><span></span>
-      <strong>HTML email preview</strong>
+  {% if preview_error %}
+    <div class="email-preview-error">
+      <strong>Email preview could not be rendered.</strong>
+      <code>{{ preview_error }}</code>
     </div>
-    <iframe
-      title="{{ spec.label }} — {{ language_name }}"
-      srcdoc="{{ html_body|escape }}"
-      loading="lazy"
-    ></iframe>
-  </section>
+  {% else %}
+    <section class="email-preview-browser">
+      <div class="email-preview-browser-bar">
+        <span></span><span></span><span></span>
+        <strong>HTML email preview</strong>
+      </div>
+      <iframe
+        title="{{ spec.label }} — {{ language_name }}"
+        src="{% url 'email-preview-html' spec.key language %}"
+        loading="lazy"
+        sandbox="allow-same-origin"
+      ></iframe>
+    </section>
 
-  <details class="email-preview-plain">
-    <summary>Plain-text fallback</summary>
-    <pre>{{ text_body }}</pre>
-  </details>
+    <details class="email-preview-plain">
+      <summary>Plain-text fallback</summary>
+      <pre>{{ text_body }}</pre>
+    </details>
+  {% endif %}
 </section>
 {% endblock %}

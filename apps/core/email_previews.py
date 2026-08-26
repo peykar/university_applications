@@ -165,11 +165,29 @@ def render_email_preview(
             html_body = getattr(alternative, "content", None) or alternative[0]
             break
 
+    subject = str(message.subject).strip()
+    text_body = str(message.body).strip()
+    html_body = str(html_body).strip()
+
+    missing_parts = [
+        name
+        for name, value in (
+            ("subject", subject),
+            ("plain-text body", text_body),
+            ("HTML body", html_body),
+        )
+        if not value
+    ]
+    if missing_parts:
+        raise ValueError(
+            f"Email preview {email_type!r} ({language}) is missing: " + ", ".join(missing_parts)
+        )
+
     return {
         "spec": spec,
         "language": language,
-        "subject": str(message.subject),
-        "text_body": str(message.body),
-        "html_body": str(html_body),
+        "subject": subject,
+        "text_body": text_body,
+        "html_body": html_body,
         "message": message,
     }

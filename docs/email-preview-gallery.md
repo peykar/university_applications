@@ -31,3 +31,22 @@ unregistered type raises `ValueError`.
 
 This makes the preview gallery part of the email feature contract rather than
 optional documentation.
+
+## Preview rendering
+
+HTML previews are served by a dedicated superuser-only endpoint and displayed in
+an isolated iframe. The gallery does not inject full email documents through
+`srcdoc`, avoiding browser parsing/escaping problems with large HTML emails.
+
+The preview renderer validates that every email has a non-empty subject,
+plain-text body and HTML body. Regression tests render every registered email
+for every language in `settings.LANGUAGES`. If rendering fails, the preview
+page shows an explicit error instead of an empty preview frame.
+
+### Request-context regression coverage
+
+The exhaustive preview test renders each registered email through the
+superuser-only HTML preview endpoint rather than calling the allauth adapter
+directly. django-allauth email rendering relies on its active request context
+for site/domain formatting, so endpoint-level testing mirrors production
+behavior and catches both rendering and routing failures.
