@@ -22,3 +22,13 @@ Status: BASELINED
 Consult the ADRs under `docs/architecture/decisions/` when this capability
 touches Lead→Student conversion, generic messaging, active Agent context,
 program-interest/Application boundaries, or document layers.
+
+
+## Dedicated Agent edit page
+
+Agent Applicant editing uses the dedicated
+`/agent/applicants/<lead_id>/edit/` GET/POST page. The page reuses
+`AgentLeadEditForm`, resolves the Lead through the active-Agent scope, keeps
+invalid form errors in-page, and records successful changes through the shared
+Applicant activity service. It is intentionally not a modal because the form is
+a long structured workflow.

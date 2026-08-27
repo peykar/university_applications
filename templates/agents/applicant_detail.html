@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <div class="agent-detail-grid agent-applicant-overview">
 <div>
 <section class="agent-panel">
- <div class="agent-panel-head"><div><div class="section-heading-actions"><h2>{% trans "Applicant" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<button type="button" class="section-action button-reset modal-trigger" data-modal-target="edit-applicant-modal">{% trans "Edit applicant" %}</button>{% endif %}</div>
+ <div class="agent-panel-head"><div><div class="section-heading-actions"><h2>{% trans "Applicant" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<a class="section-action" href="{% url 'agent-applicant-edit' lead.pk %}">{% trans "Edit applicant" %}</a>{% endif %}</div>
  <div class="section-audit">
   <span
    class="section-audit-indicator"
@@ -106,107 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
  </div>
 
  {% if lead.status != "finalized" and lead.status != "closed" %}
- <dialog class="agent-modal agent-modal-wide" id="edit-applicant-modal" aria-labelledby="edit-applicant-title">
-  <div class="agent-modal-card">
-   <div class="agent-modal-head">
-    <div><span class="eyebrow">{% trans "Applicant data" %}</span><h2 id="edit-applicant-title">{% trans "Edit applicant" %}</h2>
-     <p>{% trans "Update information collected by phone, email, chat, or another channel. Lead fields remain optional until finalization." %}</p></div>
-    <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
-   </div>
-   <form method="post" action="{% url 'agent-applicant-edit' lead.pk %}" class="agent-edit-form">
-    {% csrf_token %}
-
-    <section class="agent-edit-section">
-     <div class="agent-edit-section-head">
-      <h3>{% trans "Personal information" %}</h3>
-      <p>{% trans "Basic identity details for the applicant." %}</p>
-     </div>
-     <div class="agent-edit-grid">
-      {% for field in lead_edit_form %}
-       {% if field.name == "first_name" or field.name == "middle_name" or field.name == "last_name" or field.name == "birthdate" or field.name == "gender" or field.name == "nationality" or field.name == "country_of_birth" %}
-        <label><span>{{ field.label }} <small>{% trans "(optional until finalization)" %}</small></span>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}</label>
-       {% endif %}
-      {% endfor %}
-     </div>
-    </section>
-
-    <section class="agent-edit-section">
-     <div class="agent-edit-section-head">
-      <h3>{% trans "Contact & residence" %}</h3>
-      <p>{% trans "How to reach the applicant and where they currently live." %}</p>
-     </div>
-     <div class="agent-edit-grid">
-      {% for field in lead_edit_form %}
-       {% if field.name == "email" or field.name == "cell" or field.name == "country_of_residence" or field.name == "city_of_residence" or field.name == "address" %}
-        <label><span>{{ field.label }} <small>{% trans "(optional)" %}</small></span>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}</label>
-       {% endif %}
-      {% endfor %}
-     </div>
-    </section>
-
-    <section class="agent-edit-section">
-     <div class="agent-edit-section-head">
-      <h3>{% trans "Passport" %}</h3>
-      <p>{% trans "Passport details collected during the application process." %}</p>
-     </div>
-     <div class="agent-edit-grid">
-      {% for field in lead_edit_form %}
-       {% if field.name == "passport_no" or field.name == "passport_issuing_authority" or field.name == "passport_date_of_issue" or field.name == "passport_date_of_expiry" %}
-        <label><span>{{ field.label }} <small>{% trans "(optional)" %}</small></span>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}</label>
-       {% endif %}
-      {% endfor %}
-     </div>
-    </section>
-
-    <section class="agent-edit-section">
-     <div class="agent-edit-section-head">
-      <h3>{% trans "Education & language" %}</h3>
-      <p>{% trans "Academic background and English-language information." %}</p>
-     </div>
-     <div class="agent-edit-grid">
-      {% for field in lead_edit_form %}
-       {% if field.name == "english_test_type" or field.name == "english_language_test_score" or field.name == "high_school_gpa" or field.name == "high_school_gpa_scale" or field.name == "educational_background" %}
-        <label><span>{{ field.label }} <small>{% trans "(optional)" %}</small></span>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}</label>
-       {% endif %}
-      {% endfor %}
-     </div>
-    </section>
-
-    <section class="agent-edit-section">
-     <div class="agent-edit-section-head">
-      <h3>{% trans "Family" %}</h3>
-      <p>{% trans "Family information when it is needed for an application." %}</p>
-     </div>
-     <div class="agent-edit-grid">
-      {% for field in lead_edit_form %}
-       {% if field.name == "father_name" or field.name == "mother_name" %}
-        <label><span>{{ field.label }} <small>{% trans "(optional)" %}</small></span>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}</label>
-       {% endif %}
-      {% endfor %}
-     </div>
-    </section>
-
-    <section class="agent-edit-section">
-     <div class="agent-edit-section-head">
-      <h3>{% trans "Internal notes" %}</h3>
-      <p>{% trans "Visible to agent/staff users only, not to the applicant." %}</p>
-     </div>
-     <div class="agent-edit-grid">
-      {% for field in lead_edit_form %}
-       {% if field.name == "notes" %}
-        <label><span>{{ field.label }} <small>{% trans "(internal)" %}</small></span>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}</label>
-       {% endif %}
-      {% endfor %}
-     </div>
-    </section>
-
-    <div class="agent-modal-actions agent-edit-actions sticky-modal-actions">
-     <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
-     <button class="button" type="submit">{% trans "Save applicant data" %}</button>
-    </div>
-   </form>
-  </div>
- </dialog>
+ 
  {% endif %}
 
  {% if lead.status != "finalized" %}

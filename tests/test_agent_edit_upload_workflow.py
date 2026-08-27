@@ -13,12 +13,19 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
         self.template = (root / "templates" / "agents" / "applicant_detail.html").read_text(
             encoding="utf-8"
         )
+        self.edit_template = (root / "templates" / "agents" / "applicant_edit.html").read_text(
+            encoding="utf-8"
+        )
+        self.edit_field_template = (
+            root / "templates" / "agents" / "includes" / "applicant_edit_field.html"
+        ).read_text(encoding="utf-8")
 
     def test_agent_can_edit_provisional_lead_data(self):
         self.assertIn("class AgentLeadEditForm", self.forms)
         self.assertIn("def applicant_edit", self.views)
         self.assertIn('name="agent-applicant-edit"', self.urls)
         self.assertIn("Edit applicant", self.template)
+        self.assertIn('"agents/applicant_edit.html"', self.views)
 
     def test_agent_can_upload_external_document(self):
         self.assertIn("class AgentLeadDocumentUploadForm", self.forms)
@@ -34,21 +41,21 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
         self.assertIn("Finalized or closed applicant data cannot be edited here.", self.views)
         self.assertIn("Upload documents to the Student record after finalization.", self.views)
 
-    def test_form_errors_are_coerced_to_strings(self):
-        self.assertIn("str(message)", self.views)
-        self.assertIn("for field_messages in form.errors.values()", self.views)
-        self.assertIn("for message in field_messages", self.views)
+    def test_invalid_edit_rerenders_page_with_form_errors(self):
+        self.assertIn('request.POST if request.method == "POST" else None', self.views)
+        self.assertIn('"form": form', self.views)
+        self.assertIn("field.errors", self.edit_field_template)
 
     def test_section_actions_are_compact_and_applicant_update_is_auditable(self):
         self.assertIn(
-            'class="section-action button-reset modal-trigger"',
+            'class="section-action" href="{% url \'agent-applicant-edit\' lead.pk %}"',
             self.template,
         )
         self.assertIn("Last updated by", self.template)
         self.assertIn("lead.updated_by", self.template)
         self.assertIn("lead.updated_at", self.template)
 
-    def test_edit_modal_is_grouped_and_sticky(self):
+    def test_edit_is_full_page_grouped_form(self):
         for heading in (
             "Personal information",
             "Contact & residence",
@@ -57,8 +64,10 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
             "Family",
             "Internal notes",
         ):
-            self.assertIn(heading, self.template)
-        self.assertIn("sticky-modal-actions", self.template)
+            self.assertIn(heading, self.edit_template)
+        self.assertIn("applicant-edit-page", self.edit_template)
+        self.assertIn("applicant-edit-layout", self.edit_template)
+        self.assertNotIn("edit-applicant-modal", self.template)
 
     def test_edit_activity_preserves_old_and_new_values(self):
         activity_service = (Path(settings.BASE_DIR) / "apps/leads/services/activity.py").read_text(

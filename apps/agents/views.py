@@ -585,9 +585,19 @@ def applicant_internal_notes(request, lead_id):
 
 
 @login_required
-@require_POST
 def applicant_edit(request, lead_id):
-    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
+    lead = (
+        _agent_leads(request)
+        .select_related("agent", "user", "converted_student", "assigned_to")
+        .filter(pk=lead_id)
+        .first()
+    )
+    if lead is None:
+        return _render_agent_not_found(
+            request,
+            resource_name="applicant",
+            list_url_name="agent-applicant-list",
+        )
     if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
         messages.error(
             request,
@@ -595,27 +605,35 @@ def applicant_edit(request, lead_id):
         )
         return redirect("agent-applicant-profile", lead_id=lead.pk)
 
-    form = AgentLeadEditForm(request.POST, instance=lead)
-    if not form.is_valid():
-        detail = " ".join(
-            str(message) for field_messages in form.errors.values() for message in field_messages
-        )
-        messages.error(request, f"Applicant data was not updated. {detail}")
+    form = AgentLeadEditForm(
+        request.POST if request.method == "POST" else None,
+        instance=lead,
+    )
+    if request.method == "POST" and form.is_valid():
+        updated_lead = form.save(commit=False)
+        updated_lead.updated_by = request.user
+        updated_lead.save()
+
+        if record_applicant_profile_update(
+            lead=updated_lead,
+            form=form,
+            actor=request.user,
+        ):
+            messages.success(request, "Applicant data updated.")
+        else:
+            messages.info(request, "No applicant data changed.")
         return redirect("agent-applicant-profile", lead_id=lead.pk)
 
-    updated_lead = form.save(commit=False)
-    updated_lead.updated_by = request.user
-    updated_lead.save()
-
-    if record_applicant_profile_update(
-        lead=updated_lead,
-        form=form,
-        actor=request.user,
-    ):
-        messages.success(request, "Applicant data updated.")
-    else:
-        messages.info(request, "No applicant data changed.")
-    return redirect("agent-applicant-profile", lead_id=lead.pk)
+    return render(
+        request,
+        "agents/applicant_edit.html",
+        {
+            "lead": lead,
+            "form": form,
+            "entity_tab": "profile",
+            "agent_context": True,
+        },
+    )
 
 
 @login_required

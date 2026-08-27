@@ -20,12 +20,7 @@
   </dl>
 </section>
 
-<dialog class="agent-modal agent-modal-wide" id="edit-applicant-modal">
-  <div class="agent-modal-card">
-    <div class="agent-modal-head"><div><span class="eyebrow">{% trans "Applicant" %}</span><h2>{% trans "Edit applicant" %}</h2></div><button type="button" class="modal-close button-reset">×</button></div>
-    <form method="post" action="{% url 'agent-applicant-edit' lead.pk %}" class="agent-edit-form">{% csrf_token %}{{ lead_edit_form.as_p }}<div class="agent-modal-actions"><button class="button" type="submit">{% trans "Save changes" %}</button></div></form>
-  </div>
-</dialog>
+
 
 {% elif entity_tab == "programs" %}
 <section class="agent-panel entity-section applicant-programs-section">
