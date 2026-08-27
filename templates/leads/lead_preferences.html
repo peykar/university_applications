@@ -1,8 +1,7 @@
-{% extends "base.html" %}
+{% extends "customer/base.html" %}
 {% load i18n static %}
 {% block title %}{% trans "Study preferences" %} — {{ lead }}{% endblock %}
-{% block content %}
-{% include "includes/customer_workspace_nav.html" %}
+{% block customer_content %}
 <section class="applicant-form-page">
   <header class="applicant-form-header">
     <p class="eyebrow">{% trans "Program matching" %}</p>

@@ -8,9 +8,7 @@ class NavigationArchitectureTests(SimpleTestCase):
     def setUp(self):
         root = Path(settings.BASE_DIR)
         self.base = (root / "templates/base.html").read_text(encoding="utf-8")
-        self.customer_nav = (root / "templates/includes/customer_workspace_nav.html").read_text(
-            encoding="utf-8"
-        )
+        self.customer_nav = (root / "templates/customer/base.html").read_text(encoding="utf-8")
         self.agent_base = (root / "templates/agents/base.html").read_text(encoding="utf-8")
         self.docs = (root / "docs/navigation.md").read_text(encoding="utf-8")
 
@@ -48,3 +46,11 @@ class NavigationArchitectureTests(SimpleTestCase):
         self.assertIn("My TurkDemy workspace", self.docs)
         self.assertIn("Agent workspace", self.docs)
         self.assertIn("Mobile navigation", self.docs)
+
+    def test_customer_workspace_uses_desktop_sidebar(self):
+        self.assertIn('class="workspace-sidebar customer-workspace-sidebar"', self.customer_nav)
+        self.assertIn('class="workspace-main"', self.customer_nav)
+
+    def test_agent_workspace_uses_desktop_sidebar(self):
+        self.assertIn('class="workspace-sidebar agent-workspace-sidebar"', self.agent_base)
+        self.assertNotIn('class="agent-tabs"', self.agent_base)

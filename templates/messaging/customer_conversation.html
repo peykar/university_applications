@@ -1,7 +1,6 @@
-{% extends "base.html" %}{% load i18n %}
+{% extends "customer/base.html" %}{% load i18n %}
 {% block title %}{% trans "Messages" %} — {{ conversation.agent }}{% endblock %}
-{% block content %}
-{% include "includes/customer_workspace_nav.html" %}
+{% block customer_content %}
 <main class="section"><div class="container conversation-page">
  <div class="section-heading"><div><p class="eyebrow">{{ conversation.subject_label }}</p><h1>{% trans "Messages with" %} {{ conversation.agent }}</h1></div><a href="{% url 'customer-message-inbox' %}">{% trans "All messages" %}</a></div>
  <section class="agent-panel" id="messages">

@@ -4498,3 +4498,181 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
     font-size:.78rem;
   }
 }
+
+
+/* True workspace sidebars */
+.workspace-shell{
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr);
+  gap:34px;
+  align-items:start;
+}
+.workspace-sidebar{
+  position:sticky;
+  top:96px;
+  align-self:start;
+  min-height:420px;
+  padding:16px 12px;
+  border:1px solid #dfe6ec;
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(18,36,61,.035);
+}
+.workspace-sidebar-head{
+  display:grid;
+  gap:3px;
+  padding:5px 9px 14px;
+  border-bottom:1px solid #edf1f4;
+}
+.workspace-sidebar-head strong{
+  color:#24384d;
+  font-size:.92rem;
+}
+.workspace-sidebar-eyebrow,
+.workspace-sidebar-section-label{
+  color:#8996a5;
+  font-size:.59rem;
+  font-weight:900;
+  letter-spacing:.1em;
+}
+.workspace-sidebar-nav{
+  display:grid;
+  gap:4px;
+  padding:11px 0;
+}
+.workspace-sidebar-nav>a{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  min-height:40px;
+  padding:8px 10px;
+  border-radius:9px;
+  color:#536579;
+  font-size:.79rem;
+  font-weight:780;
+  text-decoration:none;
+}
+.workspace-sidebar-nav>a:hover{
+  background:#f5f8fa;
+  color:#173b61;
+}
+.workspace-sidebar-nav>a.is-active{
+  background:#edf3f7;
+  color:#0b3a67;
+}
+.workspace-sidebar-nav>a.is-active::before{
+  content:"";
+  position:absolute;
+  inset-inline-start:-12px;
+  top:8px;
+  bottom:8px;
+  width:3px;
+  border-radius:0 3px 3px 0;
+  background:#0b3a67;
+}
+[dir="rtl"] .workspace-sidebar-nav>a.is-active::before{
+  border-radius:3px 0 0 3px;
+}
+.workspace-sidebar-section{
+  display:grid;
+  gap:6px;
+  margin-top:10px;
+  padding:13px 9px 3px;
+  border-top:1px solid #edf1f4;
+}
+.workspace-switch-link{
+  color:#315d7d;
+  font-size:.72rem;
+  font-weight:800;
+  text-decoration:none;
+}
+.workspace-switch-link:hover{
+  text-decoration:underline;
+}
+.workspace-main{
+  min-width:0;
+}
+.workspace-page-head{
+  margin-bottom:20px;
+}
+.workspace-page-head h1{
+  margin:.25rem 0 0;
+}
+
+/* The old horizontal workspace component is mobile-only now. */
+.workspace-mobile-nav{
+  display:none;
+}
+
+/* Agent workspace no longer uses top tabs. */
+.agent-tabs{
+  display:none!important;
+}
+.agent-workspace-head{
+  display:block;
+  margin-bottom:20px;
+}
+
+/* Customer workspace headings have enough breathing room inside the content column. */
+.customer-workspace-shell .section-heading:first-child,
+.customer-workspace-shell .applicant-page-heading{
+  margin-top:0;
+}
+
+@media(max-width:900px){
+  .workspace-shell{
+    grid-template-columns:185px minmax(0,1fr);
+    gap:22px;
+  }
+  .workspace-sidebar{
+    top:88px;
+  }
+}
+
+@media(max-width:760px){
+  .workspace-shell{
+    display:block;
+  }
+  .workspace-sidebar{
+    position:static;
+    min-height:0;
+    margin:-10px 0 24px;
+    padding:0;
+    border:0;
+    border-bottom:1px solid #dfe6ec;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+    overflow-x:auto;
+  }
+  .workspace-sidebar-head,
+  .workspace-sidebar-section{
+    display:none;
+  }
+  .workspace-sidebar-nav{
+    display:flex;
+    min-width:max-content;
+    gap:2px;
+    padding:0;
+  }
+  .workspace-sidebar-nav>a{
+    min-height:46px;
+    padding:8px 11px;
+    border-radius:0;
+    background:transparent!important;
+    font-size:.76rem;
+  }
+  .workspace-sidebar-nav>a.is-active::before{
+    inset-inline:8px;
+    top:auto;
+    bottom:0;
+    width:auto;
+    height:2px;
+    border-radius:2px 2px 0 0;
+  }
+  .agent-workspace-head{
+    margin-top:4px;
+  }
+}

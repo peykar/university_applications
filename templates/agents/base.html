@@ -2,21 +2,49 @@
 {% load i18n %}
 {% block title %}{% trans "Agent workspace" %} — TurkDemy{% endblock %}
 {% block content %}
-<main class="agent-workspace">
-  <div class="container">
-    <div class="agent-workspace-head">
+{% with current_url=request.resolver_match.url_name|default:"" %}
+<div class="workspace-shell agent-workspace-shell">
+  <aside class="workspace-sidebar agent-workspace-sidebar" aria-label="{% trans 'Agent workspace' %}">
+    <div class="workspace-sidebar-head">
+      <span class="workspace-sidebar-eyebrow">{% trans "AGENT WORKSPACE" %}</span>
+      <strong>{% trans "Operations" %}</strong>
+    </div>
+
+    <nav class="workspace-sidebar-nav">
+      <a href="{% url 'agent-dashboard' %}"{% if current_url == "agent-dashboard" %} class="is-active"{% endif %}>
+        <span>{% trans "Overview" %}</span>
+      </a>
+      <a href="{% url 'agent-applicant-list' %}"{% if "agent-applicant" in current_url %} class="is-active"{% endif %}>
+        <span>{% trans "Applicants" %}</span>
+      </a>
+      <a href="{% url 'agent-application-list' %}"{% if "agent-application" in current_url or "agent-student" in current_url %} class="is-active"{% endif %}>
+        <span>{% trans "Applications" %}</span>
+      </a>
+      <a href="{% url 'agent-message-inbox' %}"{% if current_url == "agent-message-inbox" %} class="is-active"{% endif %}>
+        <span>{% trans "Messages" %}</span>
+        {% if agent_unread_message_count %}
+          <b class="unread-badge">{{ agent_unread_message_count }}</b>
+        {% endif %}
+      </a>
+    </nav>
+
+    <div class="workspace-sidebar-section">
+      <span class="workspace-sidebar-section-label">{% trans "WORKSPACES" %}</span>
+      <a class="workspace-switch-link" href="{% url 'dashboard' %}">
+        ← {% trans "My TurkDemy" %}
+      </a>
+    </div>
+  </aside>
+
+  <main class="workspace-main agent-workspace">
+    <div class="workspace-page-head agent-workspace-head">
       <div>
         <div class="eyebrow">{% trans "AGENT WORKSPACE" %}</div>
         <h1>{% block agent_title %}{% trans "Agent workspace" %}{% endblock %}</h1>
       </div>
-      <nav class="agent-tabs" aria-label="{% trans 'Agent workspace' %}">
-        <a href="{% url 'agent-dashboard' %}">{% trans "Overview" %}</a>
-        <a href="{% url 'agent-applicant-list' %}">{% trans "Applicants" %}</a>
-        <a href="{% url 'agent-application-list' %}">{% trans "Applications" %}</a>
-        <a href="{% url 'agent-message-inbox' %}">{% trans "Messages" %}{% if agent_unread_message_count %} <b class="unread-badge">{{ agent_unread_message_count }}</b>{% endif %}</a>
-      </nav>
     </div>
     {% block agent_content %}{% endblock %}
-  </div>
-</main>
+  </main>
+</div>
+{% endwith %}
 {% endblock %}

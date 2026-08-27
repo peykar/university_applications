@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+{% with current_url=request.resolver_match.url_name|default:"" %}
+<div class="workspace-shell customer-workspace-shell">
+  <aside class="workspace-sidebar customer-workspace-sidebar" aria-label="{% trans 'My TurkDemy' %}">
+    <div class="workspace-sidebar-head">
+      <span class="workspace-sidebar-eyebrow">{% trans "MY TURKDEMY" %}</span>
+      <strong>{% trans "Student workspace" %}</strong>
+    </div>
+
+    <nav class="workspace-sidebar-nav">
+      <a href="{% url 'dashboard' %}"{% if current_url == "dashboard" %} class="is-active"{% endif %}>
+        <span>{% trans "Overview" %}</span>
+      </a>
+      <a href="{% url 'lead-list' %}"{% if "lead-" in current_url %} class="is-active"{% endif %}>
+        <span>{% trans "Applicants" %}</span>
+      </a>
+      <a href="{% url 'customer-message-inbox' %}"{% if "customer-message" in current_url %} class="is-active"{% endif %}>
+        <span>{% trans "Messages" %}</span>
+        {% if customer_unread_message_count %}
+          <b class="unread-badge">{{ customer_unread_message_count }}</b>
+        {% endif %}
+      </a>
+    </nav>
+
+    {% if request.user.is_superuser or request.user.agents.exists %}
+      <div class="workspace-sidebar-section">
+        <span class="workspace-sidebar-section-label">{% trans "WORKSPACES" %}</span>
+        <a class="workspace-switch-link" href="{% url 'agent-dashboard' %}">
+          {% trans "Agent workspace" %} →
+        </a>
+      </div>
+    {% endif %}
+  </aside>
+
+  <section class="workspace-main">
+    {% block customer_content %}{% endblock %}
+  </section>
+</div>
+{% endwith %}
+{% endblock %}

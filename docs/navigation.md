@@ -39,8 +39,9 @@ Its navigation is:
 2. **Applicants**
 3. **Messages** with unread badge
 
-The same navigation appears both in the global My TurkDemy dropdown and as a
-persistent workspace navigation row on customer/private pages.
+The same navigation appears in the global My TurkDemy dropdown and as a
+persistent **left sidebar on desktop** throughout customer/private pages. On
+small screens the sidebar collapses into a compact horizontal workspace bar.
 
 The URL may continue to be `/dashboard/`; the UI label is **Overview** because
 it describes the page's purpose more clearly.
@@ -70,7 +71,7 @@ messages. Context determines which messages are being displayed.
 Users who belong to an Agent organization (or superusers) can switch to the
 Agent workspace.
 
-The Agent workspace navigation order is:
+The Agent workspace uses a persistent **left sidebar on desktop**. Its navigation order is:
 
 1. Overview
 2. Applicants
@@ -120,3 +121,25 @@ When adding a new feature, first decide its scope:
 Avoid duplicate labels at the same navigation level. Unread badges belong to
 the corresponding Messages entry. A workspace switch must always be visually
 distinct from navigation within the current workspace.
+
+
+## 8. Desktop sidebar behavior
+
+Workspace navigation is intentionally rendered as a real sidebar on desktop.
+
+### My TurkDemy
+
+The customer sidebar appears on Overview, Applicants, applicant detail/edit/
+preferences pages, and the customer messaging inbox/conversation pages.
+
+### Agent workspace
+
+The Agent sidebar appears on every Agent workspace page and replaces the older
+top-tab navigation.
+
+At viewport widths up to 760px the sidebar becomes a horizontal, scrollable
+workspace navigation bar so content width remains usable on phones.
+
+The global header remains independent from these sidebars. It provides public
+discovery, a My TurkDemy entry point, language, account actions, and workspace
+switching; it does not duplicate all sidebar entries.
