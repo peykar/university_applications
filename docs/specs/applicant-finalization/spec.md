@@ -20,8 +20,10 @@ MUST leave the Lead active with correction errors.
 FIN-004 — Successful finalization MUST create/reuse Student, copy approved Lead
 documents, link Lead to Student, record conversion time, and set Lead finalized.
 
-FIN-005 — Successful finalization MUST record validation/finalization audit
-events and established system communication.
+FIN-005 — Successful finalization MUST record the finalization audit event,
+persist validation metadata (`validated_by`/`validated_at`), and send the
+established system communication. A separate intermediate VALIDATED activity is
+not required.
 
 FIN-006 — Finalization MUST be safe against duplicate conversion of the same Lead.
 

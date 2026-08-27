@@ -9,6 +9,10 @@ from apps.agents.models import Agent
 from apps.geography.models import City, Country, Province
 from apps.leads.models import (
     Lead,
+    LeadActivity,
+    LeadActivityType,
+    LeadDocument,
+    LeadDocumentReviewStatus,
     LeadProgramInterest,
     LeadProgramInterestSource,
     LeadStatus,
@@ -235,6 +239,98 @@ class LeadWorkflowTests(TestCase):
         self.assertIsNotNone(lead.validated_at)
         self.assertEqual(lead.status, LeadStatus.FINALIZED)
         self.assertEqual(lead.converted_student, student)
+
+    def test_finalized_customer_cannot_edit_historical_lead(self):
+        lead = self.make_lead()
+        finalize_lead(lead, performed_by=self.staff)
+        lead.refresh_from_db()
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("lead-edit", kwargs={"lead_id": lead.pk}),
+            {"first_name": "Changed"},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse("lead-profile", kwargs={"lead_id": lead.pk}),
+        )
+        lead.refresh_from_db()
+        self.assertEqual(lead.first_name, "Sara")
+
+    def test_finalized_customer_cannot_upload_historical_lead_document(self):
+        lead = self.make_lead()
+        finalize_lead(lead, performed_by=self.staff)
+        lead.refresh_from_db()
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse("lead-document-upload", kwargs={"lead_id": lead.pk}),
+            {},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse("lead-documents", kwargs={"lead_id": lead.pk}),
+        )
+        self.assertEqual(lead.documents.count(), 0)
+
+    def test_finalized_customer_cannot_replace_historical_lead_document(self):
+        lead = self.make_lead()
+        document = LeadDocument.objects.create(
+            lead=lead,
+            document_type="passport",
+            file="leads/test-passport.pdf",
+            review_status=LeadDocumentReviewStatus.REPLACEMENT_REQUESTED,
+            created_by=self.user,
+            updated_by=self.user,
+        )
+        finalize_lead(lead, performed_by=self.staff)
+        lead.refresh_from_db()
+        self.client.force_login(self.user)
+
+        response = self.client.post(
+            reverse(
+                "lead-document-replace",
+                kwargs={"lead_id": lead.pk, "document_id": document.pk},
+            ),
+            {},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse("lead-documents", kwargs={"lead_id": lead.pk}),
+        )
+        document.refresh_from_db()
+        self.assertEqual(
+            document.review_status,
+            LeadDocumentReviewStatus.REPLACEMENT_REQUESTED,
+        )
+
+    def test_finalization_records_single_finalized_activity_and_validation_metadata(self):
+        lead = self.make_lead()
+
+        finalize_lead(lead, performed_by=self.staff)
+
+        lead.refresh_from_db()
+        self.assertEqual(lead.validated_by, self.staff)
+        self.assertIsNotNone(lead.validated_at)
+        self.assertEqual(
+            LeadActivity.objects.filter(
+                lead=lead,
+                activity_type=LeadActivityType.FINALIZED,
+            ).count(),
+            1,
+        )
+        self.assertFalse(
+            LeadActivity.objects.filter(
+                lead=lead,
+                activity_type=LeadActivityType.VALIDATED,
+            ).exists()
+        )
 
     def test_finalization_is_idempotent_after_student_exists(self):
         lead = self.make_lead()

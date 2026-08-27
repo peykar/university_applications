@@ -28,7 +28,9 @@
         {% if agent_context %}
           <a class="button button-secondary" href="{% url 'agent-applicant-edit' lead.pk %}">{% trans "Edit applicant" %}</a>
         {% else %}
-          <a class="button button-secondary" href="{% url 'lead-edit' lead.pk %}">{% trans "Edit profile" %}</a>
+          {% if lead.status != "finalized" %}
+            <a class="button button-secondary" href="{% url 'lead-edit' lead.pk %}">{% trans "Edit profile" %}</a>
+          {% endif %}
         {% endif %}
       {% endif %}
     </div>

@@ -80,7 +80,7 @@
                 <span class="badge">{% trans "Pending review" %}</span>
               {% endif %}
               <a href="{{ document.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
-              {% if document.review_status == "replacement_requested" %}
+              {% if document.review_status == "replacement_requested" and lead.status != "finalized" %}
                 <details class="document-replace-panel">
                   <summary>{% trans "Replace document" %}</summary>
                   <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-replace' lead.id document.id %}" class="document-replace-form">
@@ -100,6 +100,7 @@
         {% endfor %}
       </div>
 
+      {% if lead.status != "finalized" %}
       <div class="customer-document-upload-row">
         <div>
           <strong>{% trans "Add another document" %}</strong>
@@ -150,6 +151,14 @@
           </form>
         </div>
       </dialog>
+      {% else %}
+      <div class="customer-document-upload-row customer-document-upload-locked">
+        <div>
+          <strong>{% trans "Applicant documents are read-only" %}</strong>
+          <span>{% trans "After finalization, document changes belong to the student record." %}</span>
+        </div>
+      </div>
+      {% endif %}
     </section>
 
     <section class="lead-panel">

@@ -15,3 +15,5 @@ verified.
 | Requirement | Implementation | Tests | Status |
 |---|---|---|---|
 | APL-003/004/005 | `apps/agents/views.py::applicant_edit`, `templates/agents/applicant_edit.html` | `tests/test_agent_edit_upload_workflow.py` | Covered |
+
+| APL-005 | `apps/leads/views.py::lead_edit`, customer applicant header | `tests/test_lead_workflow.py::LeadWorkflowTests::test_finalized_customer_cannot_edit_historical_lead`, `tests/test_finalized_customer_lead_mutations.py` | Covered |

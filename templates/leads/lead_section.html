@@ -56,11 +56,22 @@
         </div>
       {% empty %}<div class="empty-state">{% trans "No documents uploaded yet." %}</div>{% endfor %}
     </div>
+    {% if lead.status != "finalized" %}
     <div class="customer-document-upload-row">
       <div><strong>{% trans "Add another document" %}</strong><span>{% trans "Upload a file for this applicant." %}</span></div>
       <button type="button" class="button button-secondary modal-trigger" data-modal-target="customer-document-upload">{% trans "Upload document" %}</button>
     </div>
+    {% else %}
+    <div class="customer-document-upload-row customer-document-upload-locked">
+      <div>
+        <strong>{% trans "Applicant documents are read-only" %}</strong>
+        <span>{% trans "After finalization, document changes belong to the student record." %}</span>
+      </div>
+    </div>
+    {% endif %}
   </section>
+
+  {% if lead.status != "finalized" %}
   <dialog class="customer-document-modal" id="customer-document-upload">
     <div class="customer-document-modal-card">
       <div class="customer-document-modal-head"><div><span class="eyebrow">{% trans "Documents" %}</span><h2>{% trans "Upload document" %}</h2></div><button type="button" class="modal-close button-reset">×</button></div>
@@ -70,6 +81,7 @@
       </form>
     </div>
   </dialog>
+  {% endif %}
 
 {% elif entity_tab == "applications" %}
   <section class="lead-panel entity-section">

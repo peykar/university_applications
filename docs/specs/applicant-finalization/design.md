@@ -22,3 +22,12 @@ Status: BASELINED
 Consult the ADRs under `docs/architecture/decisions/` when this capability
 touches Lead→Student conversion, generic messaging, active Agent context,
 program-interest/Application boundaries, or document layers.
+
+
+## Audit semantics
+
+Validation occurs inside the atomic finalization operation. Successful
+finalization persists `validated_by` and `validated_at`, then records the
+`FINALIZED` LeadActivity and established system message. A separate intermediate
+`VALIDATED` activity/message is intentionally not emitted because there is no
+standalone validated workflow phase.

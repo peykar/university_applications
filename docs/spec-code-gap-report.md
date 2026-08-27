@@ -106,3 +106,18 @@ dependency or CI tool merely for documentation validation.
 Before adding another large feature, perform G-001 as a behavior-preserving
 refactor using `PRG-002` through `PRG-007` as acceptance requirements. Then use
 the resulting service pattern for subsequent cross-model workflows.
+
+
+## 2026-08-28 alignment follow-up
+
+The following baseline issues were resolved after the initial report:
+
+- Customer Lead profile editing is now blocked after finalization (`APL-005`,
+  `BR-FIN-004`).
+- Customer Lead document upload/replacement is now blocked after finalization
+  (`DOC-001`, `STU-003`, `BR-FIN-004`), with mutation controls hidden in the UI.
+- `FIN-005` was clarified to match the already-established atomic one-step
+  finalization design: validation metadata is persisted and one `FINALIZED`
+  activity is emitted. There is intentionally no intermediate `VALIDATED`
+  activity/message.
+- The Applicant edit i18n template crash is recorded as a separate fixed BUG.

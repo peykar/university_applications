@@ -10,3 +10,5 @@ This baseline intentionally starts at capability level. When a requirement is
 changed or newly implemented, replace the family row with requirement-level
 code paths and named tests. Do not claim exact traceability that has not been
 verified.
+
+| FIN-005 | `apps/leads/services/conversion.py::finalize_lead` | `tests/test_lead_workflow.py::LeadWorkflowTests::test_finalization_records_single_finalized_activity_and_validation_metadata`, `tests/test_atomic_lead_finalization.py` | Covered |

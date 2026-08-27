@@ -30,6 +30,7 @@ from .models import (
     LeadDocumentVersion,
     LeadProgramInterest,
     LeadProgramInterestSource,
+    LeadStatus,
 )
 from .services.activity import record_applicant_profile_update
 from .services.messaging import ensure_conversation, send_system_message
@@ -161,6 +162,12 @@ def lead_create(request):
 @login_required
 def lead_edit(request, lead_id):
     lead = _customer_lead(request.user, lead_id)
+    if lead.status == LeadStatus.FINALIZED:
+        messages.error(
+            request,
+            "Finalized applicant data can no longer be edited here.",
+        )
+        return redirect("lead-profile", lead_id=lead.pk)
 
     if request.method == "POST":
         form = LeadForm(request.POST, instance=lead)
@@ -287,6 +294,13 @@ def lead_messages(request, lead_id):
 @require_POST
 def lead_document_upload(request, lead_id):
     lead = _customer_lead(request.user, lead_id)
+    if lead.status == LeadStatus.FINALIZED:
+        messages.error(
+            request,
+            "Upload documents to the student record after finalization.",
+        )
+        return redirect("lead-documents", lead_id=lead.pk)
+
     form = LeadDocumentForm(request.POST, request.FILES)
 
     if form.is_valid():
@@ -315,6 +329,13 @@ def lead_document_upload(request, lead_id):
 @require_POST
 def lead_document_replace(request, lead_id, document_id):
     lead = _customer_lead(request.user, lead_id)
+    if lead.status == LeadStatus.FINALIZED:
+        messages.error(
+            request,
+            "Replace documents on the student record after finalization.",
+        )
+        return redirect("lead-documents", lead_id=lead.pk)
+
     document = get_object_or_404(
         LeadDocument.objects.select_related("reviewed_by"),
         pk=document_id,
