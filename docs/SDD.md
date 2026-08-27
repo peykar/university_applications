@@ -57,3 +57,24 @@ Never silently rewrite the spec to justify current code.
 
 A behavioral change is done when requirements, design, implementation, tests,
 traceability and documentation agree and `make check` passes.
+
+
+## When a bug/change/feature arrives
+
+Start with `docs/changes/README.md`, not with code.
+
+```text
+Does approved/baselined spec already define desired behavior?
+├── yes, code violates it -> BUG
+├── yes, desired behavior is different -> CHANGE
+└── no
+    ├── behavior is clear -> FEATURE
+    └── behavior is unclear -> DISCOVERY
+```
+
+Pure visual/copy work can be UI. Behavior-preserving implementation work is a
+REFACTOR. If code and spec disagree and the desired behavior is unclear, create
+a CONFLICT record and stop dependent implementation.
+
+For substantial work, copy the matching template from
+`docs/changes/_templates/`.

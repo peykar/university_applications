@@ -7,6 +7,7 @@ TurkDemy now uses repository-backed spec-driven development.
 Start here:
 
 - [`SDD.md`](SDD.md) — development workflow.
+- [`changes/README.md`](changes/README.md) — bug/change/feature triage and records.
 - [`specs/README.md`](specs/README.md) — capability specifications and requirement IDs.
 - [`product/terminology.md`](product/terminology.md) — canonical domain vocabulary.
 - [`product/business-rules.md`](product/business-rules.md) — cross-capability invariants.

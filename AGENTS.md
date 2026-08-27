@@ -18,6 +18,31 @@ Before changing behavior:
 
 Also read any ADR referenced by the design.
 
+## Change-request triage
+
+Before editing code for a reported issue/request, classify it using
+`docs/changes/README.md`:
+
+- `BUG` — code violates an existing approved/baselined requirement;
+- `CHANGE` — desired behavior changes an existing requirement;
+- `FEATURE` — new behavior/capability;
+- `UI` — non-behavioral visual/copy refinement;
+- `REFACTOR` — implementation/design change, behavior unchanged;
+- `DISCOVERY` — idea needs product decisions before specification;
+- `CONFLICT` — code/spec disagree and intended behavior is unresolved.
+
+For non-trivial work, create the corresponding record under `docs/changes/`.
+
+A confirmed BUG does not require changing the product spec. Add a regression
+test, fix code to the existing requirement, verify, and update traceability.
+
+A CHANGE or FEATURE must not enter implementation until its behavioral spec is
+approved. DISCOVERY and CONFLICT items must not enter dependent implementation
+while relevant decisions remain OPEN.
+
+Do not classify an information-architecture, permission, entity-scope, or
+workflow change as a cosmetic UI change.
+
 ## SDD workflow
 
 Every behavioral change follows:

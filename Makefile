@@ -109,3 +109,15 @@ spec-status:
 	@printf "TurkDemy specification files:\n"
 	@find docs/specs -mindepth 2 -maxdepth 2 -name spec.md -not -path "*/_template/*" \
 		-print | sort
+
+
+change-status:
+	@printf "Open TurkDemy change records:\n"
+	@find docs/changes -mindepth 2 -maxdepth 2 -type f -name "*.md" \
+		-not -path "*/_templates/*" -print | sort
+
+change-help:
+	@printf "%s\n" \
+		"Classify first: BUG | CHANGE | FEATURE | UI | REFACTOR | DISCOVERY | CONFLICT" \
+		"Templates: docs/changes/_templates/" \
+		"Process: docs/changes/README.md"
