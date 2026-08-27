@@ -1,6 +1,8 @@
 {% extends "agents/base.html" %}{% load i18n %}
 {% block agent_title %}{% trans "Application" %} · {{ application.student }}{% endblock %}
+{% block agent_page_header %}{% endblock %}
 {% block agent_content %}
+{% include "includes/application_entity_header.html" %}
 <div class="agent-detail-grid">
 <section class="agent-panel">
  <div class="agent-panel-head"><div><h2>{{ application.program_offering.program.name_en }}</h2><p>{{ application.program_offering.program.university.name_en }}</p></div><span class="status-pill">{{ application.get_status_display }}</span></div>

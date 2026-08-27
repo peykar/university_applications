@@ -1,0 +1,111 @@
+{% extends "agents/base.html" %}
+{% load i18n %}
+{% block agent_title %}{{ lead }}{% endblock %}
+{% block agent_page_header %}{% endblock %}
+{% block agent_content %}
+{% include "includes/applicant_entity_header.html" %}
+
+{% if entity_tab == "profile" %}
+<section class="agent-panel entity-section">
+  <div class="agent-panel-head"><h2>{% trans "Applicant profile" %}</h2></div>
+  <dl class="entity-facts-grid">
+    <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:"—" }}</dd></div>
+    <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
+    <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
+    <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }}{% if lead.city_of_residence %}, {{ lead.city_of_residence }}{% endif %}</dd></div>
+    <div><dt>{% trans "Birthdate" %}</dt><dd>{{ lead.birthdate|default:"—" }}</dd></div>
+    <div><dt>{% trans "Passport number" %}</dt><dd>{{ lead.passport_no|default:"—" }}</dd></div>
+    <div><dt>{% trans "Responsible agent" %}</dt><dd>{{ lead.assigned_to|default:"—" }}</dd></div>
+    <div><dt>{% trans "Educational background" %}</dt><dd>{{ lead.educational_background|default:"—"|linebreaksbr }}</dd></div>
+  </dl>
+</section>
+
+<dialog class="agent-modal agent-modal-wide" id="edit-applicant-modal">
+  <div class="agent-modal-card">
+    <div class="agent-modal-head"><div><span class="eyebrow">{% trans "Applicant" %}</span><h2>{% trans "Edit applicant" %}</h2></div><button type="button" class="modal-close button-reset">×</button></div>
+    <form method="post" action="{% url 'agent-applicant-edit' lead.pk %}" class="agent-edit-form">{% csrf_token %}{{ lead_edit_form.as_p }}<div class="agent-modal-actions"><button class="button" type="submit">{% trans "Save changes" %}</button></div></form>
+  </div>
+</dialog>
+
+{% elif entity_tab == "programs" %}
+<section class="agent-panel entity-section">
+  <div class="agent-panel-head"><h2>{% trans "Programs" %}</h2></div>
+  <div class="entity-list">
+    {% for interest in interests %}
+      <a class="entity-list-row" href="{% url 'program-detail' interest.program.slug_en %}">
+        <span><strong>{{ interest.program.name_en }}</strong><small>{{ interest.program.university.name_en }} · {{ interest.get_source_display }}</small></span>
+        {% if interest.program_offering %}<small>{{ interest.program_offering }}</small>{% endif %}
+      </a>
+    {% empty %}<div class="empty-state">{% trans "No programs associated with this applicant." %}</div>{% endfor %}
+  </div>
+</section>
+
+{% elif entity_tab == "documents" %}
+<section class="agent-panel entity-section">
+  <div class="agent-panel-head"><h2>{% trans "Applicant documents" %}</h2><button type="button" class="button agent-panel-action modal-trigger" data-modal-target="agent-document-upload-modal">+ {% trans "Upload document" %}</button></div>
+  <div class="entity-list">
+    {% for document in documents %}
+      <div class="entity-list-row">
+        <span><strong>{{ document.get_document_type_display }}</strong><small>{{ document.name }}</small></span>
+        <span class="entity-list-actions"><span class="status-pill">{{ document.get_review_status_display }}</span><a href="{{ document.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a></span>
+      </div>
+    {% empty %}<div class="empty-state">{% trans "No documents yet." %}</div>{% endfor %}
+  </div>
+</section>
+<dialog class="agent-modal" id="agent-document-upload-modal">
+  <div class="agent-modal-card">
+    <div class="agent-modal-head"><div><h2>{% trans "Upload document" %}</h2></div><button type="button" class="modal-close button-reset">×</button></div>
+    <form method="post" enctype="multipart/form-data" action="{% url 'agent-applicant-document-upload' lead.pk %}" class="agent-modal-form">{% csrf_token %}{{ document_upload_form.as_p }}<div class="agent-modal-actions"><button class="button" type="submit">{% trans "Upload" %}</button></div></form>
+  </div>
+</dialog>
+
+{% elif entity_tab == "applications" %}
+<section class="agent-panel entity-section">
+  <div class="agent-panel-head"><h2>{% trans "Applications" %}</h2></div>
+  <div class="entity-list">
+    {% for application in applications %}
+      <a class="entity-list-row" href="{% url 'agent-application-detail' application.pk %}">
+        <span><strong>{{ application.program_offering.program.name_en }}</strong><small>{{ application.program_offering.program.university.name_en }}</small></span>
+        <span class="status-pill">{{ application.get_status_display }}</span>
+      </a>
+    {% empty %}
+      <div class="empty-state">{% if lead.converted_student %}{% trans "No formal applications yet." %}{% else %}{% trans "Finalize this applicant before creating formal applications." %}{% endif %}</div>
+    {% endfor %}
+  </div>
+</section>
+
+{% elif entity_tab == "messages" %}
+<section class="agent-panel entity-section">
+  <div class="agent-panel-head"><h2>{% trans "Messages about this applicant" %}</h2></div>
+  <div class="lead-chat">
+    <div class="lead-chat-messages">
+      {% for message in lead_messages %}
+        <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
+          <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|date:"Y-m-d H:i" }}</time></div>
+          {% if message.body %}<div class="chat-message-body">{{ message.body|linebreaksbr }}</div>{% endif %}
+          {% for attachment in message.attachments.all %}<a class="chat-attachment" href="{{ attachment.file.url }}">📎 {{ attachment.original_name }}</a>{% endfor %}
+        </article>
+      {% empty %}<div class="empty-chat">{% trans "No messages yet." %}</div>{% endfor %}
+    </div>
+    {% if not conversation.is_closed %}
+      <form method="post" enctype="multipart/form-data" action="{% url 'agent-applicant-message' lead.pk %}" class="chat-compose">
+        {% csrf_token %}{{ message_form.body }}
+        <div class="chat-compose-actions"><div class="chat-file-control">{{ message_form.attachment }}</div><button class="button" type="submit">{% trans "Send reply" %}</button></div>
+      </form>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".modal-trigger").forEach((trigger) => trigger.addEventListener("click", () => {
+    const target = document.getElementById(trigger.dataset.modalTarget);
+    if (target) target.showModal();
+  }));
+  document.querySelectorAll(".agent-modal").forEach((dialog) => {
+    dialog.querySelectorAll(".modal-close").forEach((button) => button.addEventListener("click", () => dialog.close()));
+  });
+});
+</script>
+{% endblock %}

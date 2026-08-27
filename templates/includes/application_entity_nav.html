@@ -1,0 +1,16 @@
+{% load i18n %}
+<nav class="entity-nav application-entity-nav" aria-label="{% trans 'Application navigation' %}">
+  {% if agent_context %}
+    <a href="{% url 'agent-application-detail' application.pk %}"{% if entity_tab == "overview" %} class="is-active"{% endif %}>{% trans "Overview" %}</a>
+    <a href="{% url 'agent-application-requirements' application.pk %}"{% if entity_tab == "requirements" %} class="is-active"{% endif %}>{% trans "Requirements" %}</a>
+    <a href="{% url 'agent-application-documents' application.pk %}"{% if entity_tab == "documents" %} class="is-active"{% endif %}>{% trans "Documents" %}</a>
+    <a href="{% url 'agent-application-activity' application.pk %}"{% if entity_tab == "activity" %} class="is-active"{% endif %}>{% trans "Activity" %}</a>
+    <a href="{% url 'agent-application-messages' application.pk %}"{% if entity_tab == "messages" %} class="is-active"{% endif %}>{% trans "Messages" %}</a>
+  {% else %}
+    <a href="{% url 'customer-application-detail' application.pk %}"{% if entity_tab == "overview" %} class="is-active"{% endif %}>{% trans "Overview" %}</a>
+    <a href="{% url 'customer-application-requirements' application.pk %}"{% if entity_tab == "requirements" %} class="is-active"{% endif %}>{% trans "Requirements" %}</a>
+    <a href="{% url 'customer-application-documents' application.pk %}"{% if entity_tab == "documents" %} class="is-active"{% endif %}>{% trans "Documents" %}</a>
+    <a href="{% url 'customer-application-activity' application.pk %}"{% if entity_tab == "activity" %} class="is-active"{% endif %}>{% trans "Activity" %}</a>
+    <a href="{% url 'customer-application-messages' application.pk %}"{% if entity_tab == "messages" %} class="is-active"{% endif %}>{% trans "Messages" %}</a>
+  {% endif %}
+</nav>

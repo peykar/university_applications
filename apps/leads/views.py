@@ -48,6 +48,50 @@ def _customer_lead(user, lead_id):
     )
 
 
+def _lead_entity_context(*, request, lead, mark_read=False):
+    conversation = ensure_conversation(lead)
+    message_qs = conversation.messages.select_related("sender").prefetch_related("attachments")
+    if mark_read:
+        mark_conversation_read(
+            conversation=conversation,
+            user=request.user,
+            participant_role=ConversationParticipantRole.CUSTOMER,
+        )
+
+    interests = lead.program_interests.select_related(
+        "program",
+        "program__university",
+        "program__program_language",
+        "program_offering",
+        "program_offering__academic_year",
+        "program_offering__semester",
+    ).order_by("-created_at")
+
+    student = lead.converted_student
+    applications = (
+        student.applications.select_related(
+            "program_offering__program",
+            "program_offering__program__university",
+        ).order_by("-updated_at")
+        if student is not None
+        else []
+    )
+
+    return {
+        "lead": lead,
+        "interests": interests,
+        "documents": lead.documents.order_by("-created_at"),
+        "conversation": conversation,
+        "lead_messages": message_qs,
+        "message_form": MessageForm(),
+        "document_form": LeadDocumentForm(),
+        "replacement_form": LeadDocumentReplacementForm(),
+        "activities": lead.activities.filter(is_customer_visible=True).order_by("-created_at")[:20],
+        "applications": applications,
+        "agent_context": False,
+    }
+
+
 @login_required
 def lead_list(request):
     leads = (
@@ -133,14 +177,20 @@ def lead_edit(request, lead_id):
                 messages.success(request, "Applicant profile updated.")
             else:
                 messages.info(request, "No applicant profile data changed.")
-            return redirect("lead-detail", lead_id=updated_lead.pk)
+            return redirect("lead-profile", lead_id=updated_lead.pk)
     else:
         form = LeadForm(instance=lead)
 
     return render(
         request,
         "leads/lead_form.html",
-        {"form": form, "lead": lead, "title": "Edit applicant"},
+        {
+            "form": form,
+            "lead": lead,
+            "title": "Edit applicant",
+            "entity_tab": "profile",
+            "agent_context": False,
+        },
     )
 
 
@@ -169,55 +219,68 @@ def lead_preferences(request, lead_id):
                 )
             )
             messages.success(request, "Study preferences updated.")
-            return redirect("lead-detail", lead_id=lead.pk)
+            return redirect("lead-programs", lead_id=lead.pk)
     else:
         form = LeadPreferenceForm(instance=preferences)
 
     return render(
         request,
         "leads/lead_preferences.html",
-        {"lead": lead, "form": form},
+        {
+            "lead": lead,
+            "form": form,
+            "entity_tab": "programs",
+            "agent_context": False,
+        },
     )
 
 
 @login_required
 def lead_detail(request, lead_id):
     lead = _customer_lead(request.user, lead_id)
-    conversation = ensure_conversation(lead)
+    context = _lead_entity_context(request=request, lead=lead, mark_read=True)
+    context["entity_tab"] = "overview"
+    return render(request, "leads/lead_detail.html", context)
 
-    message_qs = conversation.messages.select_related("sender").prefetch_related("attachments")
-    mark_conversation_read(
-        conversation=conversation,
-        user=request.user,
-        participant_role=ConversationParticipantRole.CUSTOMER,
-    )
 
-    interests = lead.program_interests.select_related(
-        "program",
-        "program__university",
-        "program__program_language",
-        "program_offering",
-        "program_offering__academic_year",
-        "program_offering__semester",
-    ).order_by("-created_at")
+@login_required
+def lead_profile(request, lead_id):
+    lead = _customer_lead(request.user, lead_id)
+    context = _lead_entity_context(request=request, lead=lead)
+    context["entity_tab"] = "profile"
+    return render(request, "leads/lead_section.html", context)
 
-    return render(
-        request,
-        "leads/lead_detail.html",
-        {
-            "lead": lead,
-            "interests": interests,
-            "documents": lead.documents.order_by("-created_at"),
-            "conversation": conversation,
-            "lead_messages": message_qs,
-            "message_form": MessageForm(),
-            "document_form": LeadDocumentForm(),
-            "replacement_form": LeadDocumentReplacementForm(),
-            "activities": lead.activities.filter(is_customer_visible=True).order_by("-created_at")[
-                :20
-            ],
-        },
-    )
+
+@login_required
+def lead_programs(request, lead_id):
+    lead = _customer_lead(request.user, lead_id)
+    context = _lead_entity_context(request=request, lead=lead)
+    context["entity_tab"] = "programs"
+    return render(request, "leads/lead_section.html", context)
+
+
+@login_required
+def lead_documents(request, lead_id):
+    lead = _customer_lead(request.user, lead_id)
+    context = _lead_entity_context(request=request, lead=lead)
+    context["entity_tab"] = "documents"
+    return render(request, "leads/lead_section.html", context)
+
+
+@login_required
+def lead_applications(request, lead_id):
+    lead = _customer_lead(request.user, lead_id)
+    context = _lead_entity_context(request=request, lead=lead)
+    context["entity_tab"] = "applications"
+    return render(request, "leads/lead_section.html", context)
+
+
+@login_required
+def lead_messages(request, lead_id):
+    lead = _customer_lead(request.user, lead_id)
+    context = _lead_entity_context(request=request, lead=lead, mark_read=True)
+    context["entity_tab"] = "messages"
+    return render(request, "leads/lead_section.html", context)
 
 
 @login_required
@@ -245,7 +308,7 @@ def lead_document_upload(request, lead_id):
     else:
         messages.error(request, "Could not upload the document.")
 
-    return redirect("lead-detail", lead_id=lead.pk)
+    return redirect("lead-documents", lead_id=lead.pk)
 
 
 @login_required
@@ -261,7 +324,7 @@ def lead_document_replace(request, lead_id, document_id):
     form = LeadDocumentReplacementForm(request.POST, request.FILES)
     if not form.is_valid():
         messages.error(request, "Choose a replacement file.")
-        return redirect("lead-detail", lead_id=lead.pk)
+        return redirect("lead-documents", lead_id=lead.pk)
 
     replacement = form.cleaned_data["file"]
 
@@ -327,7 +390,7 @@ def lead_document_replace(request, lead_id, document_id):
         performed_by=request.user,
     )
     messages.success(request, "Replacement uploaded and sent for review.")
-    return redirect("lead-detail", lead_id=lead.pk)
+    return redirect("lead-documents", lead_id=lead.pk)
 
 
 @login_required
@@ -338,7 +401,7 @@ def lead_send_message(request, lead_id):
 
     if conversation.is_closed:
         messages.error(request, "This conversation is closed.")
-        return redirect("lead-detail", lead_id=lead.pk)
+        return redirect("lead-messages", lead_id=lead.pk)
 
     form = MessageForm(request.POST, request.FILES)
     if form.is_valid():
@@ -352,7 +415,7 @@ def lead_send_message(request, lead_id):
     else:
         messages.error(request, "Write a message or attach a file.")
 
-    return redirect("lead-detail", lead_id=lead.pk)
+    return redirect("lead-messages", lead_id=lead.pk)
 
 
 @login_required

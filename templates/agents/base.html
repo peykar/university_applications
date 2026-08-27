@@ -37,12 +37,14 @@
   </aside>
 
   <main class="workspace-main agent-workspace">
-    <div class="workspace-page-head agent-workspace-head">
-      <div>
-        <div class="eyebrow">{% trans "AGENT WORKSPACE" %}</div>
-        <h1>{% block agent_title %}{% trans "Agent workspace" %}{% endblock %}</h1>
+    {% block agent_page_header %}
+      <div class="workspace-page-head agent-workspace-head">
+        <div>
+          <div class="eyebrow">{% trans "AGENT WORKSPACE" %}</div>
+          <h1>{% block agent_title %}{% trans "Agent workspace" %}{% endblock %}</h1>
+        </div>
       </div>
-    </div>
+    {% endblock %}
     {% block agent_content %}{% endblock %}
   </main>
 </div>

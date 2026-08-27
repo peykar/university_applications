@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
@@ -196,6 +198,66 @@ def applicant_list(request):
     )
 
 
+def _agent_applicant_context(*, request, lead, mark_read=False):
+    conversation = ensure_conversation(lead)
+    lead_messages = conversation.messages.select_related("sender").prefetch_related(
+        "attachments__promoted_document"
+    )
+    if mark_read:
+        mark_conversation_read(
+            conversation=conversation,
+            user=request.user,
+            participant_role=ConversationParticipantRole.AGENT,
+        )
+
+    agent_users = (
+        lead.agent.users.filter(is_active=True).order_by(
+            "first_name", "last_name", "email", "username"
+        )
+        if lead.agent_id
+        else []
+    )
+    interests = lead.program_interests.select_related(
+        "program",
+        "program__university",
+        "program_offering",
+    ).order_by("-created_at")
+    student = lead.converted_student
+    applications = (
+        student.applications.select_related(
+            "program_offering__program",
+            "program_offering__program__university",
+        ).order_by("-updated_at")
+        if student is not None
+        else []
+    )
+    return {
+        "lead": lead,
+        "agent_users": agent_users,
+        "lead_messages": lead_messages,
+        "conversation": conversation,
+        "message_form": MessageForm(),
+        "lead_edit_form": AgentLeadEditForm(instance=lead),
+        "document_upload_form": AgentLeadDocumentUploadForm(),
+        "document_review_form": DocumentReviewForm(),
+        "promote_attachment_form": PromoteChatAttachmentForm(),
+        "documents": lead.documents.select_related(
+            "reviewed_by",
+            "source_message_attachment",
+        ).order_by("-created_at"),
+        "interests": interests,
+        "applications": applications,
+        "activities": lead.activities.select_related("created_by").order_by("-created_at")[:50],
+        "status_choices": LeadStatus.choices,
+        "agent_context": True,
+        "applicant_unread_count": unread_count_for_conversation(
+            conversation=conversation,
+            user=request.user,
+            participant_role=ConversationParticipantRole.AGENT,
+        ),
+    }
+
+
 @login_required
 def applicant_detail(request, lead_id):
     lead = (
@@ -210,49 +272,34 @@ def applicant_detail(request, lead_id):
             resource_name="applicant",
             list_url_name="agent-applicant-list",
         )
-    conversation = ensure_conversation(lead)
-    lead_messages = conversation.messages.select_related("sender").prefetch_related(
-        "attachments__promoted_document"
-    )
+    context = _agent_applicant_context(request=request, lead=lead, mark_read=True)
+    context["entity_tab"] = "overview"
+    return render(request, "agents/applicant_detail.html", context)
 
-    mark_conversation_read(
-        conversation=conversation,
-        user=request.user,
-        participant_role=ConversationParticipantRole.AGENT,
-    )
 
-    agent_users = (
-        lead.agent.users.filter(is_active=True).order_by(
-            "first_name", "last_name", "email", "username"
+@login_required
+def applicant_section(request, lead_id, section):
+    if section not in {"profile", "programs", "documents", "applications", "messages"}:
+        raise PermissionDenied("Unknown applicant section.")
+    lead = (
+        _agent_leads(request.user)
+        .select_related("agent", "user", "converted_student", "assigned_to")
+        .filter(pk=lead_id)
+        .first()
+    )
+    if lead is None:
+        return _render_agent_not_found(
+            request,
+            resource_name="applicant",
+            list_url_name="agent-applicant-list",
         )
-        if lead.agent_id
-        else []
+    context = _agent_applicant_context(
+        request=request,
+        lead=lead,
+        mark_read=section == "messages",
     )
-
-    return render(
-        request,
-        "agents/applicant_detail.html",
-        {
-            "lead": lead,
-            "agent_users": agent_users,
-            "lead_messages": lead_messages,
-            "conversation": conversation,
-            "message_form": MessageForm(),
-            "lead_edit_form": AgentLeadEditForm(instance=lead),
-            "document_upload_form": AgentLeadDocumentUploadForm(),
-            "document_review_form": DocumentReviewForm(),
-            "promote_attachment_form": PromoteChatAttachmentForm(),
-            "documents": lead.documents.select_related(
-                "reviewed_by",
-                "source_message_attachment",
-            ).order_by("-created_at"),
-            "interests": lead.program_interests.select_related(
-                "program", "program__university", "program_offering"
-            ).order_by("-created_at"),
-            "activities": lead.activities.select_related("created_by").order_by("-created_at")[:50],
-            "status_choices": LeadStatus.choices,
-        },
-    )
+    context["entity_tab"] = section
+    return render(request, "agents/applicant_section.html", context)
 
 
 @login_required
@@ -373,7 +420,7 @@ def applicant_edit(request, lead_id):
             request,
             "Finalized or closed applicant data cannot be edited here.",
         )
-        return redirect("agent-applicant-detail", lead_id=lead.pk)
+        return redirect("agent-applicant-profile", lead_id=lead.pk)
 
     form = AgentLeadEditForm(request.POST, instance=lead)
     if not form.is_valid():
@@ -381,7 +428,7 @@ def applicant_edit(request, lead_id):
             str(message) for field_messages in form.errors.values() for message in field_messages
         )
         messages.error(request, f"Applicant data was not updated. {detail}")
-        return redirect("agent-applicant-detail", lead_id=lead.pk)
+        return redirect("agent-applicant-profile", lead_id=lead.pk)
 
     updated_lead = form.save(commit=False)
     updated_lead.updated_by = request.user
@@ -395,7 +442,7 @@ def applicant_edit(request, lead_id):
         messages.success(request, "Applicant data updated.")
     else:
         messages.info(request, "No applicant data changed.")
-    return redirect("agent-applicant-detail", lead_id=lead.pk)
+    return redirect("agent-applicant-profile", lead_id=lead.pk)
 
 
 @login_required
@@ -407,7 +454,7 @@ def applicant_document_upload(request, lead_id):
             request,
             "Upload documents to the Student record after finalization.",
         )
-        return redirect("agent-applicant-detail", lead_id=lead.pk)
+        return redirect("agent-applicant-documents", lead_id=lead.pk)
 
     form = AgentLeadDocumentUploadForm(request.POST, request.FILES)
     if not form.is_valid():
@@ -415,7 +462,7 @@ def applicant_document_upload(request, lead_id):
             str(message) for field_messages in form.errors.values() for message in field_messages
         )
         messages.error(request, f"Document was not uploaded. {detail}")
-        return redirect("agent-applicant-detail", lead_id=lead.pk)
+        return redirect("agent-applicant-documents", lead_id=lead.pk)
 
     document = form.save(commit=False)
     document.lead = lead
@@ -448,7 +495,7 @@ def applicant_document_upload(request, lead_id):
         updated_by=request.user,
     )
     messages.success(request, "Document uploaded and approved.")
-    return redirect("agent-applicant-detail", lead_id=lead.pk)
+    return redirect("agent-applicant-documents", lead_id=lead.pk)
 
 
 @login_required
@@ -665,12 +712,12 @@ def applicant_message(request, lead_id):
     conversation = ensure_conversation(lead)
     if conversation.is_closed:
         messages.error(request, "This conversation is closed.")
-        return redirect("agent-applicant-detail", lead_id=lead.pk)
+        return redirect("agent-applicant-messages", lead_id=lead.pk)
 
     form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
         messages.error(request, "Write a message or attach a file.")
-        return redirect("agent-applicant-detail", lead_id=lead.pk)
+        return redirect("agent-applicant-messages", lead_id=lead.pk)
 
     send_message(
         conversation=conversation,
@@ -679,7 +726,7 @@ def applicant_message(request, lead_id):
         body=form.cleaned_data.get("body", ""),
         attachment=form.cleaned_data.get("attachment"),
     )
-    return redirect("agent-applicant-detail", lead_id=lead.pk)
+    return redirect("agent-applicant-messages", lead_id=lead.pk)
 
 
 @login_required
@@ -1008,7 +1055,7 @@ def application_message(request, application_id):
     form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
         messages.error(request, "Write a message or attach a file.")
-        return redirect("agent-application-detail", application_id=application.pk)
+        return redirect("agent-application-messages", application_id=application.pk)
     send_message(
         conversation=conversation,
         sender=request.user,
@@ -1016,7 +1063,7 @@ def application_message(request, application_id):
         body=form.cleaned_data.get("body", ""),
         attachment=form.cleaned_data.get("attachment"),
     )
-    return redirect("agent-application-detail", application_id=application.pk)
+    return redirect("agent-application-messages", application_id=application.pk)
 
 
 @login_required
@@ -1053,12 +1100,80 @@ def application_list(request):
     )
 
 
+def _agent_application_activity(application):
+    events: list[dict[str, Any]] = [
+        {
+            "when": application.created_at,
+            "title": "Application created",
+            "detail": str(application.get_status_display()),
+        },
+    ]
+    for document in application.documents.select_related("student_document").all():
+        events.append(
+            {
+                "when": document.created_at,
+                "title": "Document added",
+                "detail": str(document.student_document.get_document_type_display()),
+            }
+        )
+    conversation = get_or_create_conversation(subject=application)
+    for message in conversation.messages.order_by("created_at")[:20]:
+        events.append(
+            {
+                "when": message.created_at,
+                "title": "Message",
+                "detail": message.body[:120] if message.body else "Attachment",
+            }
+        )
+    if application.updated_at != application.created_at:
+        events.append(
+            {
+                "when": application.updated_at,
+                "title": "Application updated",
+                "detail": str(application.get_status_display()),
+            }
+        )
+    return sorted(events, key=lambda event: event["when"], reverse=True)
+
+
+def _agent_application_context(*, request, application, tab, mark_read=False):
+    conversation = get_or_create_conversation(subject=application)
+    if mark_read:
+        mark_conversation_read(
+            conversation=conversation,
+            user=request.user,
+            participant_role=ConversationParticipantRole.AGENT,
+        )
+    return {
+        "application": application,
+        "source_lead": getattr(application.student, "source_lead", None),
+        "status_choices": ApplicationStatus.choices,
+        "existing_document_form": ApplicationExistingDocumentForm(
+            student=application.student,
+            application=application,
+        ),
+        "application_document_upload_form": ApplicationDocumentUploadForm(),
+        "conversation": conversation,
+        "application_messages": conversation.messages.select_related("sender").prefetch_related(
+            "attachments"
+        ),
+        "message_form": MessageForm(),
+        "requirements": application.documents.select_related("student_document").filter(
+            is_required=True
+        ),
+        "activity_events": _agent_application_activity(application),
+        "entity_tab": tab,
+        "agent_context": True,
+    }
+
+
 @login_required
 def application_detail(request, application_id):
     application = (
         _agent_applications(request.user)
         .select_related(
             "student",
+            "student__source_lead",
             "agent",
             "program_offering__program",
             "program_offering__program__university",
@@ -1073,32 +1188,45 @@ def application_detail(request, application_id):
             resource_name="application",
             list_url_name="agent-application-list",
         )
-    application_conversation = get_or_create_conversation(subject=application)
-    application_messages = application_conversation.messages.select_related(
-        "sender"
-    ).prefetch_related("attachments")
-    mark_conversation_read(
-        conversation=application_conversation,
-        user=request.user,
-        participant_role=ConversationParticipantRole.AGENT,
+    context = _agent_application_context(
+        request=request,
+        application=application,
+        tab="overview",
+        mark_read=True,
     )
+    return render(request, "agents/application_detail.html", context)
 
-    return render(
-        request,
-        "agents/application_detail.html",
-        {
-            "application": application,
-            "status_choices": ApplicationStatus.choices,
-            "existing_document_form": ApplicationExistingDocumentForm(
-                student=application.student,
-                application=application,
-            ),
-            "application_document_upload_form": ApplicationDocumentUploadForm(),
-            "conversation": application_conversation,
-            "application_messages": application_messages,
-            "message_form": MessageForm(),
-        },
+
+@login_required
+def application_section(request, application_id, section):
+    if section not in {"requirements", "documents", "activity", "messages"}:
+        raise PermissionDenied("Unknown application section.")
+    application = (
+        _agent_applications(request.user)
+        .select_related(
+            "student",
+            "student__source_lead",
+            "agent",
+            "program_offering__program",
+            "program_offering__program__university",
+        )
+        .prefetch_related("documents__student_document")
+        .filter(pk=application_id)
+        .first()
     )
+    if application is None:
+        return _render_agent_not_found(
+            request,
+            resource_name="application",
+            list_url_name="agent-application-list",
+        )
+    context = _agent_application_context(
+        request=request,
+        application=application,
+        tab=section,
+        mark_read=section == "messages",
+    )
+    return render(request, "agents/application_section.html", context)
 
 
 @login_required
@@ -1115,7 +1243,7 @@ def application_add_existing_document(request, application_id):
     )
     if not form.is_valid():
         messages.error(request, "Choose an available student document.")
-        return redirect("agent-application-detail", application_id=application.pk)
+        return redirect("agent-application-documents", application_id=application.pk)
 
     ApplicationDocument.objects.create(
         application=application,
@@ -1125,7 +1253,7 @@ def application_add_existing_document(request, application_id):
         updated_by=request.user,
     )
     messages.success(request, "Student document added to application.")
-    return redirect("agent-application-detail", application_id=application.pk)
+    return redirect("agent-application-documents", application_id=application.pk)
 
 
 @login_required
@@ -1138,7 +1266,7 @@ def application_upload_document(request, application_id):
     form = ApplicationDocumentUploadForm(request.POST, request.FILES)
     if not form.is_valid():
         messages.error(request, "Could not upload document. Check the supplied fields.")
-        return redirect("agent-application-detail", application_id=application.pk)
+        return redirect("agent-application-documents", application_id=application.pk)
 
     student_document = form.save(commit=False)
     student_document.student = application.student
@@ -1154,7 +1282,7 @@ def application_upload_document(request, application_id):
         updated_by=request.user,
     )
     messages.success(request, "Document uploaded and added to application.")
-    return redirect("agent-application-detail", application_id=application.pk)
+    return redirect("agent-application-documents", application_id=application.pk)
 
 
 @login_required

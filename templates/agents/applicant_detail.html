@@ -32,7 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 {% endblock %}
+{% block agent_page_header %}{% endblock %}
 {% block agent_content %}
+{% include "includes/applicant_entity_header.html" %}
 <div class="agent-detail-grid">
 <div>
 <section class="agent-panel">

@@ -1,0 +1,28 @@
+{% load i18n %}
+<div class="entity-context-head">
+  <nav class="entity-breadcrumbs" aria-label="{% trans 'Breadcrumb' %}">
+    {% if agent_context %}
+      <a href="{% url 'agent-application-list' %}">{% trans "Applications" %}</a>
+    {% else %}
+      {% if source_lead %}
+        <a href="{% url 'lead-applications' source_lead.pk %}">{% trans "Applications" %}</a>
+      {% else %}
+        <a href="{% url 'dashboard' %}">{% trans "My TurkDemy" %}</a>
+      {% endif %}
+    {% endif %}
+    <span aria-hidden="true">/</span>
+    <span>{{ application.program_offering.program.name_en }}</span>
+  </nav>
+  <div class="entity-context-title">
+    <div>
+      <p class="eyebrow">{% trans "Application" %}</p>
+      <h1>{{ application.program_offering.program.name_en }}</h1>
+      <p class="muted">
+        {{ application.program_offering.program.university.name_en }}
+        · {{ application.student }}
+      </p>
+      <span class="status-pill">{{ application.get_status_display }}</span>
+    </div>
+  </div>
+  {% include "includes/application_entity_nav.html" %}
+</div>

@@ -1,0 +1,81 @@
+{% extends "agents/base.html" %}
+{% load i18n %}
+{% block agent_title %}{% trans "Application" %} · {{ application.student }}{% endblock %}
+{% block agent_page_header %}{% endblock %}
+{% block agent_content %}
+{% include "includes/application_entity_header.html" %}
+
+{% if entity_tab == "requirements" %}
+<section class="agent-panel entity-section">
+  <div class="agent-panel-head"><h2>{% trans "Application requirements" %}</h2></div>
+  <div class="entity-list">
+    {% for requirement in requirements %}
+      <div class="entity-list-row">
+        <span><strong>{{ requirement.student_document.get_document_type_display }}</strong><small>{% trans "Required document" %}</small></span>
+        {% if requirement.is_verified %}<span class="status-pill">{% trans "Verified" %}</span>{% else %}<span class="status-pill warning">{% trans "Needs review" %}</span>{% endif %}
+      </div>
+    {% empty %}<div class="empty-state">{% trans "No structured requirements have been added yet." %}</div>{% endfor %}
+  </div>
+</section>
+
+{% elif entity_tab == "documents" %}
+<section class="agent-panel entity-section">
+  <div class="agent-panel-head"><h2>{% trans "Application documents" %}</h2><button type="button" class="button agent-panel-action modal-trigger" data-modal-target="add-document-modal">+ {% trans "Add document" %}</button></div>
+  <div class="entity-list">
+    {% for document in application.documents.all %}
+      <div class="entity-list-row">
+        <span><a href="{{ document.student_document.file.url }}" target="_blank" rel="noopener"><strong>{{ document.student_document.get_document_type_display }}</strong></a><small>{% if document.is_required %}{% trans "Required" %}{% endif %}</small></span>
+        {% if document.is_verified %}<span class="status-pill">{% trans "Verified" %}</span>{% else %}<span class="status-pill warning">{% trans "Needs review" %}</span>{% endif %}
+      </div>
+    {% empty %}<div class="empty-state">{% trans "No application documents." %}</div>{% endfor %}
+  </div>
+</section>
+<dialog class="agent-modal" id="add-document-modal">
+  <div class="agent-modal-card">
+    <div class="agent-modal-head"><div><h2>{% trans "Add existing student document" %}</h2></div><button type="button" class="modal-close button-reset">×</button></div>
+    <form method="post" action="{% url 'agent-application-add-existing-document' application.pk %}" class="agent-modal-form">{% csrf_token %}{{ existing_document_form.as_p }}<div class="agent-modal-actions"><button class="button" type="submit">{% trans "Add document" %}</button></div></form>
+  </div>
+</dialog>
+
+{% elif entity_tab == "activity" %}
+<section class="agent-panel entity-section">
+  <div class="agent-panel-head"><h2>{% trans "Application activity" %}</h2></div>
+  <div class="activity-timeline compact">
+    {% for event in activity_events %}
+      <article class="activity-item"><span class="activity-dot"></span><div class="activity-content"><div class="activity-meta"><strong>{{ event.title }}</strong><span>{{ event.when|date:"Y-m-d H:i" }}</span></div><p>{{ event.detail }}</p></div></article>
+    {% empty %}<div class="empty-state">{% trans "No activity yet." %}</div>{% endfor %}
+  </div>
+</section>
+
+{% elif entity_tab == "messages" %}
+<section class="agent-panel entity-section">
+  <div class="agent-panel-head"><h2>{% trans "Messages about this application" %}</h2></div>
+  <div class="lead-chat">
+    <div class="lead-chat-messages">
+      {% for message in application_messages %}
+        <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
+          <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|date:"Y-m-d H:i" }}</time></div>
+          {% if message.body %}<div class="chat-message-body">{{ message.body|linebreaksbr }}</div>{% endif %}
+          {% for attachment in message.attachments.all %}<a class="chat-attachment" href="{{ attachment.file.url }}">{{ attachment.original_name|default:"Attachment" }}</a>{% endfor %}
+        </article>
+      {% empty %}<div class="empty-chat">{% trans "No messages yet." %}</div>{% endfor %}
+    </div>
+    {% if not conversation.is_closed %}
+      <form method="post" enctype="multipart/form-data" action="{% url 'agent-application-message' application.pk %}" class="chat-compose">
+        {% csrf_token %}{{ message_form.body }}<div class="chat-compose-actions"><div class="chat-file-control">{{ message_form.attachment }}</div><button class="button" type="submit">{% trans "Send" %}</button></div>
+      </form>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".modal-trigger").forEach((trigger) => trigger.addEventListener("click", () => {
+    const target = document.getElementById(trigger.dataset.modalTarget);
+    if (target) target.showModal();
+  }));
+  document.querySelectorAll(".agent-modal").forEach((dialog) => dialog.querySelectorAll(".modal-close").forEach((button) => button.addEventListener("click", () => dialog.close())));
+});
+</script>
+{% endblock %}

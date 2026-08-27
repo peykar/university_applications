@@ -1,0 +1,32 @@
+{% load i18n %}
+<div class="entity-context-head">
+  <nav class="entity-breadcrumbs" aria-label="{% trans 'Breadcrumb' %}">
+    {% if agent_context %}
+      <a href="{% url 'agent-applicant-list' %}">{% trans "Applicants" %}</a>
+    {% else %}
+      <a href="{% url 'lead-list' %}">{% trans "Applicants" %}</a>
+    {% endif %}
+    <span aria-hidden="true">/</span>
+    <span>{{ lead }}</span>
+  </nav>
+  <div class="entity-context-title">
+    <div>
+      <p class="eyebrow">{% trans "Applicant" %}</p>
+      <h1>{{ lead }}</h1>
+      <div class="applicant-status-row">
+        <span class="lead-status lead-status-{{ lead.status }}">{{ lead.get_status_display }}</span>
+        {% if lead.needs_program_recommendation %}
+          <span class="badge">{% trans "Needs program recommendations" %}</span>
+        {% endif %}
+      </div>
+    </div>
+    {% if entity_tab == "profile" %}
+      {% if agent_context %}
+        <button class="button button-secondary modal-trigger" type="button" data-modal-target="edit-applicant-modal">{% trans "Edit applicant" %}</button>
+      {% else %}
+        <a class="button button-secondary" href="{% url 'lead-edit' lead.pk %}">{% trans "Edit profile" %}</a>
+      {% endif %}
+    {% endif %}
+  </div>
+  {% include "includes/applicant_entity_nav.html" %}
+</div>

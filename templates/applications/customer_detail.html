@@ -1,0 +1,94 @@
+{% extends "customer/base.html" %}
+{% load i18n %}
+{% block title %}{{ application.program_offering.program.name_en }} — TurkDemy{% endblock %}
+{% block customer_content %}
+{% include "includes/application_entity_header.html" %}
+
+{% if entity_tab == "overview" %}
+  <section class="lead-panel entity-section">
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Overview" %}</p><h2>{% trans "Application summary" %}</h2></div></div>
+    <dl class="entity-facts-grid">
+      <div><dt>{% trans "Applicant" %}</dt><dd>{{ application.student }}</dd></div>
+      <div><dt>{% trans "University" %}</dt><dd>{{ application.program_offering.program.university.name_en }}</dd></div>
+      <div><dt>{% trans "Program" %}</dt><dd>{{ application.program_offering.program.name_en }}</dd></div>
+      <div><dt>{% trans "Status" %}</dt><dd>{{ application.get_status_display }}</dd></div>
+      <div><dt>{% trans "Tuition" %}</dt><dd>{{ application.tuition }}</dd></div>
+      <div><dt>{% trans "Deposit" %}</dt><dd>{{ application.deposit|default:"—" }}</dd></div>
+      <div><dt>{% trans "Intake" %}</dt><dd>{{ application.program_offering.semester.name_en|default:"—" }} {{ application.program_offering.academic_year.name_en|default:"" }}</dd></div>
+      <div><dt>{% trans "Last updated" %}</dt><dd>{{ application.updated_at|date:"Y-m-d H:i" }}</dd></div>
+    </dl>
+  </section>
+
+{% elif entity_tab == "requirements" %}
+  <section class="lead-panel entity-section">
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Requirements" %}</p><h2>{% trans "Application requirements" %}</h2></div></div>
+    <div class="entity-list">
+      {% for requirement in requirements %}
+        <div class="entity-list-row">
+          <span><strong>{{ requirement.student_document.get_document_type_display }}</strong><small>{% trans "Required document" %}</small></span>
+          {% if requirement.is_verified %}<span class="status-pill">{% trans "Verified" %}</span>{% else %}<span class="status-pill warning">{% trans "Needs review" %}</span>{% endif %}
+        </div>
+      {% empty %}
+        <div class="empty-state">{% trans "No structured requirements have been added to this application yet." %}</div>
+      {% endfor %}
+    </div>
+  </section>
+
+{% elif entity_tab == "documents" %}
+  <section class="lead-panel entity-section">
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Documents" %}</p><h2>{% trans "Application documents" %}</h2></div></div>
+    <div class="entity-list">
+      {% for document in application.documents.all %}
+        <div class="entity-list-row">
+          <span>
+            <strong>{{ document.student_document.get_document_type_display }}</strong>
+            <small>{{ document.student_document.short_description|default:"" }}</small>
+          </span>
+          <span class="entity-list-actions">
+            {% if document.is_verified %}<span class="status-pill">{% trans "Verified" %}</span>{% endif %}
+            <a href="{{ document.student_document.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
+          </span>
+        </div>
+      {% empty %}<div class="empty-state">{% trans "No documents have been attached to this application." %}</div>{% endfor %}
+    </div>
+  </section>
+
+{% elif entity_tab == "activity" %}
+  <section class="lead-panel entity-section">
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Activity" %}</p><h2>{% trans "Application activity" %}</h2></div></div>
+    <div class="activity-timeline compact">
+      {% for event in activity_events %}
+        <article class="activity-item">
+          <span class="activity-dot"></span>
+          <div class="activity-content">
+            <div class="activity-meta"><strong>{{ event.title }}</strong><span>{{ event.when|date:"Y-m-d H:i" }}</span></div>
+            <p>{{ event.detail }}</p>
+          </div>
+        </article>
+      {% empty %}<div class="empty-state">{% trans "No activity yet." %}</div>{% endfor %}
+    </div>
+  </section>
+
+{% elif entity_tab == "messages" %}
+  <section class="lead-panel entity-section">
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Messages" %}</p><h2>{% trans "Messages about this application" %}</h2></div></div>
+    <div class="lead-chat">
+      <div class="lead-chat-messages">
+        {% for message in application_messages %}
+          <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
+            <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|date:"Y-m-d H:i" }}</time></div>
+            {% if message.body %}<div class="chat-message-body">{{ message.body|linebreaksbr }}</div>{% endif %}
+            {% for attachment in message.attachments.all %}<a class="chat-attachment" href="{{ attachment.file.url }}">📎 {{ attachment.original_name }}</a>{% endfor %}
+          </article>
+        {% empty %}<div class="empty-chat">{% trans "No messages yet." %}</div>{% endfor %}
+      </div>
+      {% if not conversation.is_closed %}
+        <form method="post" enctype="multipart/form-data" action="{% url 'customer-application-send-message' application.pk %}" class="chat-compose">
+          {% csrf_token %}{{ message_form.body }}
+          <div class="chat-compose-actions"><div class="chat-file-control">{{ message_form.attachment }}</div><button class="button" type="submit">{% trans "Send" %}</button></div>
+        </form>
+      {% endif %}
+    </div>
+  </section>
+{% endif %}
+{% endblock %}

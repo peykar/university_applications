@@ -1,0 +1,127 @@
+{% extends "customer/base.html" %}
+{% load i18n %}
+{% block title %}{{ lead }} · {{ entity_tab|title }} — TurkDemy{% endblock %}
+{% block customer_content %}
+{% include "includes/applicant_entity_header.html" %}
+
+{% if entity_tab == "profile" %}
+  <section class="lead-panel entity-section">
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Profile" %}</p><h2>{% trans "Applicant profile" %}</h2></div></div>
+    <dl class="entity-facts-grid">
+      <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:"—" }}</dd></div>
+      <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
+      <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
+      <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }}{% if lead.city_of_residence %}, {{ lead.city_of_residence }}{% endif %}</dd></div>
+      <div><dt>{% trans "Birthdate" %}</dt><dd>{{ lead.birthdate|default:"—" }}</dd></div>
+      <div><dt>{% trans "Gender" %}</dt><dd>{{ lead.get_gender_display|default:"—" }}</dd></div>
+      <div><dt>{% trans "Passport number" %}</dt><dd>{{ lead.passport_no|default:"—" }}</dd></div>
+      <div><dt>{% trans "Educational background" %}</dt><dd>{{ lead.educational_background|default:"—"|linebreaksbr }}</dd></div>
+    </dl>
+  </section>
+
+{% elif entity_tab == "programs" %}
+  <section class="lead-panel entity-section">
+    <div class="section-heading">
+      <div><p class="eyebrow">{% trans "Programs" %}</p><h2>{% trans "Programs" %}</h2></div>
+      <a class="section-link" href="{% url 'program-list' %}">{% trans "Find programs" %} →</a>
+    </div>
+    <div class="lead-interest-list">
+      {% for interest in interests %}
+        <article class="lead-interest-card">
+          <div class="interest-source-line">
+            {% if interest.source == "agent" %}<span class="interest-source interest-source-agent">{% trans "Suggested by your advisor" %}</span>
+            {% else %}<span class="interest-source interest-source-user">{% trans "Added by you" %}</span>{% endif %}
+          </div>
+          <h3><a href="{% url 'program-detail' interest.program.slug_en %}">{{ interest.program.name_en }}</a></h3>
+          <p>{{ interest.program.university.name_en }} · {{ interest.program.get_degree_display }}</p>
+          {% if interest.program_offering %}<p><strong>{% trans "Intake:" %}</strong> {{ interest.program_offering.semester.name_en }} {{ interest.program_offering.academic_year.name_en }}</p>{% endif %}
+        </article>
+      {% empty %}
+        <div class="empty-state"><p>{% trans "No programs selected yet." %}</p><a class="button button-secondary" href="{% url 'program-list' %}">{% trans "Browse programs" %}</a></div>
+      {% endfor %}
+    </div>
+  </section>
+
+{% elif entity_tab == "documents" %}
+  <section class="lead-panel entity-section">
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Documents" %}</p><h2>{% trans "Applicant documents" %}</h2></div></div>
+    <div class="lead-document-list">
+      {% for document in documents %}
+        <div class="lead-document-row lead-document-row-review-{{ document.review_status }}">
+          <div class="lead-document-copy"><strong>{{ document.get_document_type_display }}</strong><span>{{ document.name }}</span></div>
+          <div class="lead-document-actions">
+            <span class="badge">{{ document.get_review_status_display }}</span>
+            <a href="{{ document.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
+          </div>
+        </div>
+      {% empty %}<div class="empty-state">{% trans "No documents uploaded yet." %}</div>{% endfor %}
+    </div>
+    <div class="customer-document-upload-row">
+      <div><strong>{% trans "Add another document" %}</strong><span>{% trans "Upload a file for this applicant." %}</span></div>
+      <button type="button" class="button button-secondary modal-trigger" data-modal-target="customer-document-upload">{% trans "Upload document" %}</button>
+    </div>
+  </section>
+  <dialog class="customer-document-modal" id="customer-document-upload">
+    <div class="customer-document-modal-card">
+      <div class="customer-document-modal-head"><div><span class="eyebrow">{% trans "Documents" %}</span><h2>{% trans "Upload document" %}</h2></div><button type="button" class="modal-close button-reset">×</button></div>
+      <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-upload' lead.pk %}" class="customer-document-modal-form">
+        {% csrf_token %}{{ document_form.as_p }}
+        <div class="customer-document-modal-actions"><button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button><button class="button" type="submit">{% trans "Upload document" %}</button></div>
+      </form>
+    </div>
+  </dialog>
+
+{% elif entity_tab == "applications" %}
+  <section class="lead-panel entity-section">
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Applications" %}</p><h2>{% trans "Applications" %}</h2></div></div>
+    <div class="entity-list">
+      {% for application in applications %}
+        <a class="entity-list-row" href="{% url 'customer-application-detail' application.pk %}">
+          <span><strong>{{ application.program_offering.program.name_en }}</strong><small>{{ application.program_offering.program.university.name_en }}</small></span>
+          <span class="status-pill">{{ application.get_status_display }}</span>
+        </a>
+      {% empty %}
+        <div class="empty-state">
+          {% if lead.converted_student %}{% trans "No formal applications yet." %}{% else %}{% trans "Formal applications become available after this applicant is finalized as a student." %}{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+{% elif entity_tab == "messages" %}
+  <section class="lead-panel entity-section">
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Messages" %}</p><h2>{% trans "Messages about this applicant" %}</h2></div></div>
+    <div class="lead-chat">
+      <div class="lead-chat-messages">
+        {% for message in lead_messages %}
+          <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
+            <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|date:"Y-m-d H:i" }}</time></div>
+            {% if message.body %}<div class="chat-message-body">{{ message.body|linebreaksbr }}</div>{% endif %}
+            {% for attachment in message.attachments.all %}<a class="chat-attachment" href="{{ attachment.file.url }}">📎 {{ attachment.original_name }}</a>{% endfor %}
+          </article>
+        {% empty %}<div class="empty-chat">{% trans "No messages yet." %}</div>{% endfor %}
+      </div>
+      {% if not conversation.is_closed %}
+        <form method="post" enctype="multipart/form-data" action="{% url 'lead-send-message' lead.pk %}" class="chat-compose">
+          {% csrf_token %}{{ message_form.body }}
+          <div class="chat-compose-actions"><div class="chat-file-control">{{ message_form.attachment }}</div><button class="button" type="submit">{% trans "Send" %}</button></div>
+        </form>
+      {% endif %}
+    </div>
+  </section>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".modal-trigger").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const dialog = document.getElementById(trigger.dataset.modalTarget);
+      if (dialog) dialog.showModal();
+    });
+  });
+  document.querySelectorAll("dialog").forEach((dialog) => {
+    dialog.querySelectorAll(".modal-close").forEach((button) => button.addEventListener("click", () => dialog.close()));
+  });
+});
+</script>
+{% endblock %}

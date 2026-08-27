@@ -11,6 +11,36 @@ urlpatterns = [
         name="agent-applicant-detail",
     ),
     path(
+        "agent/applicants/<uuid:lead_id>/profile/",
+        views.applicant_section,
+        {"section": "profile"},
+        name="agent-applicant-profile",
+    ),
+    path(
+        "agent/applicants/<uuid:lead_id>/programs/",
+        views.applicant_section,
+        {"section": "programs"},
+        name="agent-applicant-programs",
+    ),
+    path(
+        "agent/applicants/<uuid:lead_id>/documents/",
+        views.applicant_section,
+        {"section": "documents"},
+        name="agent-applicant-documents",
+    ),
+    path(
+        "agent/applicants/<uuid:lead_id>/applications/",
+        views.applicant_section,
+        {"section": "applications"},
+        name="agent-applicant-applications",
+    ),
+    path(
+        "agent/applicants/<uuid:lead_id>/messages/",
+        views.applicant_section,
+        {"section": "messages"},
+        name="agent-applicant-messages",
+    ),
+    path(
         "agent/applicants/<uuid:lead_id>/edit/",
         views.applicant_edit,
         name="agent-applicant-edit",
@@ -51,7 +81,7 @@ urlpatterns = [
         name="agent-applicant-finalize",
     ),
     path(
-        "agent/applicants/<uuid:lead_id>/messages/",
+        "agent/applicants/<uuid:lead_id>/messages/send/",
         views.applicant_message,
         name="agent-applicant-message",
     ),
@@ -98,7 +128,31 @@ urlpatterns = [
         name="agent-application-detail",
     ),
     path(
+        "agent/applications/<uuid:application_id>/requirements/",
+        views.application_section,
+        {"section": "requirements"},
+        name="agent-application-requirements",
+    ),
+    path(
+        "agent/applications/<uuid:application_id>/documents/",
+        views.application_section,
+        {"section": "documents"},
+        name="agent-application-documents",
+    ),
+    path(
+        "agent/applications/<uuid:application_id>/activity/",
+        views.application_section,
+        {"section": "activity"},
+        name="agent-application-activity",
+    ),
+    path(
         "agent/applications/<uuid:application_id>/messages/",
+        views.application_section,
+        {"section": "messages"},
+        name="agent-application-messages",
+    ),
+    path(
+        "agent/applications/<uuid:application_id>/messages/send/",
         views.application_message,
         name="agent-application-message",
     ),

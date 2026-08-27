@@ -1,0 +1,21 @@
+{% load i18n %}
+<nav class="entity-nav applicant-entity-nav" aria-label="{% trans 'Applicant navigation' %}">
+  {% if agent_context %}
+    <a href="{% url 'agent-applicant-detail' lead.pk %}"{% if entity_tab == "overview" %} class="is-active"{% endif %}>{% trans "Overview" %}</a>
+    <a href="{% url 'agent-applicant-profile' lead.pk %}"{% if entity_tab == "profile" %} class="is-active"{% endif %}>{% trans "Profile" %}</a>
+    <a href="{% url 'agent-applicant-programs' lead.pk %}"{% if entity_tab == "programs" %} class="is-active"{% endif %}>{% trans "Programs" %}</a>
+    <a href="{% url 'agent-applicant-documents' lead.pk %}"{% if entity_tab == "documents" %} class="is-active"{% endif %}>{% trans "Documents" %}</a>
+    <a href="{% url 'agent-applicant-applications' lead.pk %}"{% if entity_tab == "applications" %} class="is-active"{% endif %}>{% trans "Applications" %}</a>
+    <a href="{% url 'agent-applicant-messages' lead.pk %}"{% if entity_tab == "messages" %} class="is-active"{% endif %}>
+      {% trans "Messages" %}
+      {% if applicant_unread_count %}<b class="unread-badge">{{ applicant_unread_count }}</b>{% endif %}
+    </a>
+  {% else %}
+    <a href="{% url 'lead-detail' lead.pk %}"{% if entity_tab == "overview" %} class="is-active"{% endif %}>{% trans "Overview" %}</a>
+    <a href="{% url 'lead-profile' lead.pk %}"{% if entity_tab == "profile" %} class="is-active"{% endif %}>{% trans "Profile" %}</a>
+    <a href="{% url 'lead-programs' lead.pk %}"{% if entity_tab == "programs" %} class="is-active"{% endif %}>{% trans "Programs" %}</a>
+    <a href="{% url 'lead-documents' lead.pk %}"{% if entity_tab == "documents" %} class="is-active"{% endif %}>{% trans "Documents" %}</a>
+    <a href="{% url 'lead-applications' lead.pk %}"{% if entity_tab == "applications" %} class="is-active"{% endif %}>{% trans "Applications" %}</a>
+    <a href="{% url 'lead-messages' lead.pk %}"{% if entity_tab == "messages" %} class="is-active"{% endif %}>{% trans "Messages" %}</a>
+  {% endif %}
+</nav>

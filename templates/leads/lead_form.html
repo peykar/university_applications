@@ -2,6 +2,9 @@
 {% load i18n %}
 {% block title %}{{ title }} — TurkDemy{% endblock %}
 {% block customer_content %}
+{% if lead %}
+  {% include "includes/applicant_entity_header.html" %}
+{% endif %}
 <section class="applicant-form-page">
   <header class="applicant-form-header">
     <p class="eyebrow">{% trans "Applicant profile" %}</p>

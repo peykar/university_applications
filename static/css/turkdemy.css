@@ -4676,3 +4676,175 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
     margin-top:4px;
   }
 }
+
+
+/* Entity-level navigation: Applicant and Application */
+.entity-context-head{
+  margin-bottom:22px;
+}
+.entity-breadcrumbs{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:10px;
+  color:#7c8a99;
+  font-size:.7rem;
+  font-weight:700;
+}
+.entity-breadcrumbs a{
+  color:#536b82;
+}
+.entity-context-title{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+.entity-context-title h1{
+  margin:.15rem 0 .35rem;
+  font-size:clamp(1.8rem,3vw,2.65rem);
+  line-height:1.05;
+  letter-spacing:-.035em;
+}
+.entity-nav{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  margin-top:18px;
+  padding-bottom:0;
+  border-bottom:1px solid #dfe6ec;
+  overflow-x:auto;
+  scrollbar-width:thin;
+}
+.entity-nav>a{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex:0 0 auto;
+  min-height:42px;
+  padding:8px 11px;
+  color:#647487;
+  font-size:.76rem;
+  font-weight:800;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.entity-nav>a:hover{
+  color:#173b61;
+}
+.entity-nav>a.is-active{
+  color:#0b3a67;
+}
+.entity-nav>a.is-active::after{
+  content:"";
+  position:absolute;
+  inset-inline:8px;
+  bottom:-1px;
+  height:2px;
+  border-radius:2px 2px 0 0;
+  background:#0b3a67;
+}
+.entity-section{
+  max-width:100%;
+}
+.entity-facts-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin:0;
+}
+.entity-facts-grid>div{
+  min-width:0;
+  padding:12px 13px;
+  border:1px solid #e5eaef;
+  border-radius:10px;
+  background:#fafbfd;
+}
+.entity-facts-grid dt{
+  color:#7d8b99;
+  font-size:.64rem;
+  font-weight:850;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.entity-facts-grid dd{
+  margin:3px 0 0;
+  color:#263a4f;
+  font-size:.81rem;
+  font-weight:650;
+  overflow-wrap:anywhere;
+}
+.entity-list{
+  display:grid;
+}
+.entity-list-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  min-height:58px;
+  padding:11px 4px;
+  border-bottom:1px solid #edf1f4;
+  color:inherit;
+  text-decoration:none;
+}
+.entity-list-row:last-child{
+  border-bottom:0;
+}
+.entity-list-row>span:first-child{
+  display:grid;
+  gap:2px;
+  min-width:0;
+}
+.entity-list-row strong{
+  color:#25394c;
+  font-size:.82rem;
+}
+.entity-list-row small{
+  color:#7b8997;
+  font-size:.69rem;
+}
+.entity-list-actions{
+  display:flex!important;
+  align-items:center;
+  gap:10px;
+}
+.entity-list-row:hover{
+  text-decoration:none;
+}
+a.entity-list-row:hover{
+  background:#fbfcfd;
+}
+.customer-applicant-page>.entity-context-head{
+  margin-bottom:18px;
+}
+.customer-applicant-page>.entity-context-head + .applicant-workspace{
+  margin-top:0;
+}
+
+/* Application detail pages use the same entity hierarchy. */
+.application-entity-nav{
+  margin-bottom:4px;
+}
+
+@media(max-width:760px){
+  .entity-context-title{
+    display:block;
+  }
+  .entity-context-title>.button,
+  .entity-context-title>button{
+    margin-top:12px;
+    width:100%;
+  }
+  .entity-nav{
+    margin-inline:-11px;
+    padding-inline:11px;
+  }
+  .entity-facts-grid{
+    grid-template-columns:1fr;
+  }
+  .entity-list-row{
+    align-items:flex-start;
+  }
+}

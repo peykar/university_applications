@@ -96,7 +96,7 @@ class AgentWorkspaceTests(TestCase):
         )
         self.assertRedirects(
             response,
-            reverse("agent-applicant-detail", args=[self.lead.pk]),
+            reverse("agent-applicant-messages", args=[self.lead.pk]),
         )
         conversation = get_or_create_conversation(subject=self.lead)
         reply = conversation.messages.order_by("-created_at").first()

@@ -4,25 +4,7 @@
 {% endblock %}
 {% block customer_content %}
 <div class="customer-applicant-page">
-<section class="applicant-hero">
-  <div class="applicant-title">
-    <div class="applicant-avatar applicant-avatar-large">{{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}</div>
-    <div>
-      <p class="eyebrow">{% trans "Applicant" %}</p>
-      <h1>{{ lead }}</h1>
-      <div class="applicant-status-row">
-        <span class="lead-status lead-status-{{ lead.status }}">{{ lead.get_status_display }}</span>
-        {% if lead.needs_program_recommendation %}
-          <span class="badge">{% trans "Needs program recommendations" %}</span>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-  <div class="applicant-hero-actions">
-    <a class="button button-secondary" href="{% url 'lead-edit' lead.id %}">{% trans "Edit profile" %}</a>
-    <a class="button" href="{% url 'lead-preferences' lead.id %}">{% trans "Study preferences" %}</a>
-  </div>
-</section>
+{% include "includes/applicant_entity_header.html" %}
 
 <div class="applicant-workspace">
   <main>

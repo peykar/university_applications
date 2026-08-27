@@ -13,7 +13,7 @@
       <a href="{% url 'dashboard' %}"{% if current_url == "dashboard" %} class="is-active"{% endif %}>
         <span>{% trans "Overview" %}</span>
       </a>
-      <a href="{% url 'lead-list' %}"{% if "lead-" in current_url %} class="is-active"{% endif %}>
+      <a href="{% url 'lead-list' %}"{% if "lead-" in current_url or "customer-application" in current_url %} class="is-active"{% endif %}>
         <span>{% trans "Applicants" %}</span>
       </a>
       <a href="{% url 'customer-message-inbox' %}"{% if "customer-message" in current_url %} class="is-active"{% endif %}>

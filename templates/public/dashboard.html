@@ -35,7 +35,11 @@
     {% for application in applications %}
       <div class="more-program-row">
         <div>
-          <strong>{{ application.student }} — {{ application.program_offering.program.name_en }}</strong>
+          <strong>
+            <a href="{% url 'customer-application-detail' application.pk %}">
+              {{ application.student }} — {{ application.program_offering.program.name_en }}
+            </a>
+          </strong>
           <span>{{ application.program_offering.program.university.name_en }} · {{ application.get_status_display }}</span>
         </div>
       </div>
