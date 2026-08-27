@@ -2,8 +2,13 @@
 {% load i18n %}
 {% block title %}{% trans "Dashboard" %} — TurkDemy{% endblock %}
 {% block content %}
+{% include "includes/customer_workspace_nav.html" %}
 <div class="section-heading">
-  <div><p class="eyebrow">{% trans "Account" %}</p><h1>{% trans "Dashboard" %}</h1></div>
+  <div>
+    <p class="eyebrow">{% trans "MY TURKDEMY" %}</p>
+    <h1>{% trans "Overview" %}</h1>
+    <p class="muted">{% trans "A quick view of your applicants, applications and conversations." %}</p>
+  </div>
   <a class="button" href="{% url 'lead-create' %}">{% trans "Add applicant" %}</a>
 </div>
 

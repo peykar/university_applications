@@ -24,5 +24,11 @@ class HeaderNavigationTests(SimpleTestCase):
 
     def test_language_is_part_of_header_utility_group(self):
         utility_start = self.template.index('class="header-utility"')
-        utility_end = self.template.index("</div>", utility_start)
+        utility_end = self.template.index(
+            '<button\n        class="mobile-nav-toggle"', utility_start
+        )
         self.assertIn("header-language-form", self.template[utility_start:utility_end])
+
+    def test_my_turkdemy_workspace_menu_is_in_header(self):
+        self.assertIn('class="workspace-menu"', self.template)
+        self.assertIn('{% trans "My TurkDemy" %}', self.template)

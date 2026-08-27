@@ -12,8 +12,8 @@
       <nav class="agent-tabs" aria-label="{% trans 'Agent workspace' %}">
         <a href="{% url 'agent-dashboard' %}">{% trans "Overview" %}</a>
         <a href="{% url 'agent-applicant-list' %}">{% trans "Applicants" %}</a>
-        <a href="{% url 'agent-message-inbox' %}">{% trans "Messages" %}{% if agent_unread_message_count %} <b class="unread-badge">{{ agent_unread_message_count }}</b>{% endif %}</a>
         <a href="{% url 'agent-application-list' %}">{% trans "Applications" %}</a>
+        <a href="{% url 'agent-message-inbox' %}">{% trans "Messages" %}{% if agent_unread_message_count %} <b class="unread-badge">{{ agent_unread_message_count }}</b>{% endif %}</a>
       </nav>
     </div>
     {% block agent_content %}{% endblock %}

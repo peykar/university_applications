@@ -32,21 +32,38 @@
         <a href="{% url 'university-list' %}">{% trans "Universities" %}</a>
         <a href="{% url 'program-list' %}">{% trans "Programs" %}</a>
         <a href="{% url 'faq' %}">{% trans "FAQ" %}</a>
-        <a href="{% url 'contact' %}">{% trans "Contact" %}</a>
         <a href="{% url 'about' %}">{% trans "About" %}</a>
       </nav>
 
       <div class="header-utility">
         {% if request.user.is_authenticated %}
-          <nav class="workspace-nav" aria-label="{% trans 'User workspace' %}">
-            <a href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
-            <a href="{% url 'lead-list' %}">{% trans "Applicants" %}</a>
-          <a href="{% url 'customer-message-inbox' %}">{% trans "Messages" %}{% if customer_unread_message_count %} <b class="unread-badge">{{ customer_unread_message_count }}</b>{% endif %}</a>
-            <a href="{% url 'customer-message-inbox' %}">{% trans "Messages" %}{% if customer_unread_message_count %} <b class="unread-badge">{{ customer_unread_message_count }}</b>{% endif %}</a>
-            {% if request.user.is_superuser or request.user.agents.exists %}
-              <a href="{% url 'agent-dashboard' %}">{% trans "Agent workspace" %}</a>
-            {% endif %}
-          </nav>
+          <details class="workspace-menu">
+            <summary class="workspace-menu-trigger">
+              <span>{% trans "My TurkDemy" %}</span>
+              {% if customer_unread_message_count %}
+                <b class="unread-badge">{{ customer_unread_message_count }}</b>
+              {% endif %}
+              <svg viewBox="0 0 20 20" width="13" height="13" fill="none" aria-hidden="true">
+                <path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="workspace-menu-popover">
+              <span class="workspace-menu-label">{% trans "MY TURKDEMY" %}</span>
+              <a href="{% url 'dashboard' %}">{% trans "Overview" %}</a>
+              <a href="{% url 'lead-list' %}">{% trans "Applicants" %}</a>
+              <a href="{% url 'customer-message-inbox' %}">
+                <span>{% trans "Messages" %}</span>
+                {% if customer_unread_message_count %}
+                  <b class="unread-badge">{{ customer_unread_message_count }}</b>
+                {% endif %}
+              </a>
+              {% if request.user.is_superuser or request.user.agents.exists %}
+                <div class="workspace-menu-divider"></div>
+                <span class="workspace-menu-label">{% trans "SWITCH WORKSPACE" %}</span>
+                <a href="{% url 'agent-dashboard' %}">{% trans "Agent workspace" %} →</a>
+              {% endif %}
+            </div>
+          </details>
         {% endif %}
 
         <form action="{% url 'set_language' %}" method="post" class="language-form header-language-form">
@@ -106,6 +123,13 @@
                 </svg>
                 <span>{% trans "Sign-in methods" %}</span>
               </a>
+              {% if request.user.is_superuser or request.user.agents.exists %}
+                <div class="account-menu-divider"></div>
+                <span class="workspace-menu-label">{% trans "WORKSPACES" %}</span>
+                <a href="{% url 'dashboard' %}"><span>{% trans "My TurkDemy" %}</span></a>
+                <a href="{% url 'agent-dashboard' %}"><span>{% trans "Agent workspace" %}</span></a>
+              {% endif %}
+
 
               <div class="account-menu-divider"></div>
 
@@ -139,31 +163,36 @@
 
     <div class="mobile-site-menu" id="mobile-site-menu" hidden>
       <nav class="mobile-site-links" aria-label="{% trans 'Mobile navigation' %}">
+        <div class="mobile-menu-section-label">{% trans "EXPLORE" %}</div>
         <a href="{% url 'university-list' %}">{% trans "Universities" %}</a>
         <a href="{% url 'program-list' %}">{% trans "Programs" %}</a>
         <a href="{% url 'faq' %}">{% trans "FAQ" %}</a>
-        <a href="{% url 'contact' %}">{% trans "Contact" %}</a>
         <a href="{% url 'about' %}">{% trans "About" %}</a>
+        <a href="{% url 'contact' %}">{% trans "Contact" %}</a>
 
         {% if request.user.is_authenticated %}
-          <div class="mobile-menu-section-label">{% trans "Dashboard" %}</div>
-          <a href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
+          <div class="mobile-menu-section-label">{% trans "MY TURKDEMY" %}</div>
+          <a href="{% url 'dashboard' %}">{% trans "Overview" %}</a>
           <a href="{% url 'lead-list' %}">{% trans "Applicants" %}</a>
+          <a href="{% url 'customer-message-inbox' %}">
+            {% trans "Messages" %}
+            {% if customer_unread_message_count %}
+              <b class="unread-badge">{{ customer_unread_message_count }}</b>
+            {% endif %}
+          </a>
+
           {% if request.user.is_superuser or request.user.agents.exists %}
+            <div class="mobile-menu-section-label">{% trans "WORKSPACES" %}</div>
             <a href="{% url 'agent-dashboard' %}">{% trans "Agent workspace" %}</a>
           {% endif %}
 
-          <div class="mobile-menu-section-label">{% trans "Profile" %}</div>
+          <div class="mobile-menu-section-label">{% trans "ACCOUNT" %}</div>
           <a href="{% url 'profile' %}">{% trans "Profile" %}</a>
           <a href="{% url 'sign-in-methods' %}">{% trans "Sign-in methods" %}</a>
 
           <form method="post" action="{% url 'account_logout' %}">
             {% csrf_token %}
             <button class="mobile-menu-button mobile-menu-logout" type="submit">
-              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
-                <path d="M10 5H6.5A2.5 2.5 0 0 0 4 7.5v9A2.5 2.5 0 0 0 6.5 19H10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M14 8l4 4-4 4M18 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
               <span>{% trans "Logout" %}</span>
             </button>
           </form>

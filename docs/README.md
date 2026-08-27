@@ -31,3 +31,5 @@
 - `lead-user-journey.md`
 
 - [Agent workspace](agent-workspace.md) — agent operations, permissions, messages, program requests, and formal applications.
+
+- [Navigation and workspace architecture](navigation.md)

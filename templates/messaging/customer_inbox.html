@@ -1,5 +1,6 @@
 {% extends "base.html" %}{% load i18n %}
 {% block title %}{% trans "Messages" %} — TurkDemy{% endblock %}
-{% block content %}<main class="section"><div class="container"><div class="section-heading"><h1>{% trans "Messages" %}</h1></div><section class="agent-panel"><div class="agent-list">
+{% block content %}
+{% include "includes/customer_workspace_nav.html" %}<main class="section"><div class="container"><div class="section-heading"><h1>{% trans "Messages" %}</h1></div><section class="agent-panel"><div class="agent-list">
 {% for row in conversation_rows %}<a class="agent-list-row" href="{{ row.conversation.get_customer_url }}"><span><strong>{{ row.conversation.agent }}</strong><small>{{ row.conversation.subject_label }}</small></span><span>{% if row.unread_count %}<b class="unread-badge">{{ row.unread_count }}</b>{% else %}<span class="status-pill">{% trans "Read" %}</span>{% endif %}</span></a>{% empty %}<p class="empty-state">{% trans "No conversations yet." %}</p>{% endfor %}
 </div></section></div></main>{% endblock %}

@@ -1,0 +1,24 @@
+{% load i18n %}
+{% with current_url=request.resolver_match.url_name|default:"" %}
+<nav class="customer-workspace-nav" aria-label="{% trans 'My TurkDemy' %}">
+  <div class="customer-workspace-nav-inner">
+    <div class="customer-workspace-brand">
+      <span class="eyebrow">{% trans "MY TURKDEMY" %}</span>
+    </div>
+    <div class="customer-workspace-links">
+      <a href="{% url 'dashboard' %}"{% if current_url == "dashboard" %} class="is-active"{% endif %}>
+        {% trans "Overview" %}
+      </a>
+      <a href="{% url 'lead-list' %}"{% if "lead-" in current_url %} class="is-active"{% endif %}>
+        {% trans "Applicants" %}
+      </a>
+      <a href="{% url 'customer-message-inbox' %}"{% if "customer-message" in current_url %} class="is-active"{% endif %}>
+        {% trans "Messages" %}
+        {% if customer_unread_message_count %}
+          <b class="unread-badge">{{ customer_unread_message_count }}</b>
+        {% endif %}
+      </a>
+    </div>
+  </div>
+</nav>
+{% endwith %}
