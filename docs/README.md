@@ -35,3 +35,6 @@
 - [Navigation and workspace architecture](navigation.md)
 
 - [Entity-level navigation](entity-navigation.md)
+
+
+See also: [Agent workspace context](agent-workspace-context.md).

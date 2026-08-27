@@ -5,10 +5,43 @@
 {% with current_url=request.resolver_match.url_name|default:"" %}
 <div class="workspace-shell agent-workspace-shell">
   <aside class="workspace-sidebar agent-workspace-sidebar" aria-label="{% trans 'Agent workspace' %}">
-    <div class="workspace-sidebar-head">
-      <span class="workspace-sidebar-eyebrow">{% trans "AGENT WORKSPACE" %}</span>
-      <strong>{% trans "Operations" %}</strong>
+    <div class="workspace-sidebar-head agent-identity">
+      {% if active_agent %}
+        {% if active_agent.logo %}
+          <img
+            class="agent-sidebar-logo"
+            src="{{ active_agent.logo.url }}"
+            alt="{{ active_agent.company_name }}"
+          >
+        {% else %}
+          <span class="agent-sidebar-logo agent-sidebar-logo-fallback" aria-hidden="true">
+            {{ active_agent.company_name|slice:":1"|upper }}
+          </span>
+        {% endif %}
+        <div class="agent-sidebar-identity-copy">
+          <strong>{{ active_agent.company_name }}</strong>
+          {% if available_agent_workspaces|length > 1 %}
+            <span>{% trans "Active organization" %}</span>
+          {% endif %}
+        </div>
+      {% endif %}
     </div>
+
+    {% if available_agent_workspaces|length > 1 %}
+      <form method="post" action="{% url 'agent-switch' %}" class="agent-workspace-switcher">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{% url 'agent-dashboard' %}">
+        <label for="active-agent-select">{% trans "Switch organization" %}</label>
+        <select id="active-agent-select" name="agent_id" onchange="this.form.submit()">
+          {% for agent in available_agent_workspaces %}
+            <option value="{{ agent.pk }}"{% if active_agent and agent.pk == active_agent.pk %} selected{% endif %}>
+              {{ agent.company_name }}
+            </option>
+          {% endfor %}
+        </select>
+        <noscript><button class="button button-secondary" type="submit">{% trans "Switch" %}</button></noscript>
+      </form>
+    {% endif %}
 
     <nav class="workspace-sidebar-nav">
       <a href="{% url 'agent-dashboard' %}"{% if current_url == "agent-dashboard" %} class="is-active"{% endif %}>

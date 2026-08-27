@@ -217,3 +217,6 @@ Current decisions:
 - Program: no entity tabs yet.
 - Agent organization: may gain entity navigation later for manager-only
   organization management.
+
+
+See also: [Agent workspace context](agent-workspace-context.md).

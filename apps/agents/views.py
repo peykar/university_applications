@@ -9,7 +9,7 @@ from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
+from django.urls import Resolver404, resolve, reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
@@ -55,36 +55,25 @@ from .forms import (
     StudentApplicationOfferingForm,
     StudentDocumentUploadForm,
 )
-from .models import Agent
+from .services.context import available_agents, resolve_active_agent, switch_active_agent
 
 
-def _agent_ids(user) -> list:
-    if user.is_superuser:
-        return list(Agent.objects.filter(is_active=True).values_list("pk", flat=True))
-    return list(user.agents.filter(is_active=True).values_list("pk", flat=True))
+def _active_agent(request):
+    return resolve_active_agent(request)
 
 
-def _require_agent(user) -> list:
-    agent_ids = _agent_ids(user)
-    if not agent_ids:
-        raise PermissionDenied("An active agent membership is required.")
-    return agent_ids
+def _agent_leads(request):
+    return Lead.objects.filter(agent=_active_agent(request))
 
 
-def _agent_leads(user):
-    agent_ids = _require_agent(user)
-    return Lead.objects.filter(agent_id__in=agent_ids)
+def _agent_students(request):
+    return Student.objects.filter(agent=_active_agent(request))
 
 
-def _agent_students(user):
-    agent_ids = _require_agent(user)
-    return Student.objects.filter(agent_id__in=agent_ids)
-
-
-def _agent_applications(user):
-    agent_ids = _require_agent(user)
+def _agent_applications(request):
+    agent = _active_agent(request)
     return Application.objects.filter(
-        Q(agent_id__in=agent_ids) | Q(agent__isnull=True, student__agent_id__in=agent_ids)
+        Q(agent=agent) | Q(agent__isnull=True, student__agent=agent)
     ).distinct()
 
 
@@ -115,14 +104,56 @@ def _render_agent_not_found(
 
 
 @login_required
-def dashboard(request):
-    leads = _agent_leads(request.user)
-    applications = _agent_applications(request.user)
+def choose_agent(request):
+    agents = available_agents(request.user)
+    if not agents.exists():
+        raise PermissionDenied("An active agent membership is required.")
+    active_agent = resolve_active_agent(request, required=False)
+    if active_agent is not None:
+        return redirect("agent-dashboard")
+    return render(
+        request,
+        "agents/choose_agent.html",
+        {"available_agent_workspaces": agents},
+    )
 
-    unread_message_count = agent_unread_count(request.user)
+
+@login_required
+@require_POST
+def switch_agent(request):
+    agent_id = request.POST.get("agent_id", "")
+    switch_active_agent(request, agent_id)
+    next_url = request.POST.get("next", "")
+    if next_url.startswith("/agent/") and not next_url.startswith("//"):
+        try:
+            match = resolve(next_url)
+        except Resolver404:
+            match = None
+        if match is not None and match.url_name in {
+            "agent-dashboard",
+            "agent-applicant-list",
+            "agent-application-list",
+            "agent-message-inbox",
+        }:
+            return redirect(next_url)
+    return redirect("agent-dashboard")
+
+
+@login_required
+def dashboard(request):
+    if resolve_active_agent(request, required=False) is None:
+        if available_agents(request.user).exists():
+            return redirect("agent-choose")
+        raise PermissionDenied("An active agent membership is required.")
+
+    leads = _agent_leads(request)
+    applications = _agent_applications(request)
+
+    active_agent = _active_agent(request)
+    unread_message_count = agent_unread_count(request.user, agent=active_agent)
     recent_messages = (
         Message.objects.filter(
-            conversation__agent__users=request.user,
+            conversation__agent=active_agent,
             sender_role=MessageSenderRole.CUSTOMER,
         )
         .select_related("conversation", "conversation__subject_content_type", "sender")
@@ -172,7 +203,7 @@ def dashboard(request):
 
 @login_required
 def applicant_list(request):
-    leads = _agent_leads(request.user).select_related("agent", "user", "assigned_to")
+    leads = _agent_leads(request).select_related("agent", "user", "assigned_to")
     status = (request.GET.get("status") or "").strip()
     query = (request.GET.get("q") or "").strip()
 
@@ -261,7 +292,7 @@ def _agent_applicant_context(*, request, lead, mark_read=False):
 @login_required
 def applicant_detail(request, lead_id):
     lead = (
-        _agent_leads(request.user)
+        _agent_leads(request)
         .select_related("agent", "user", "converted_student", "assigned_to")
         .filter(pk=lead_id)
         .first()
@@ -282,7 +313,7 @@ def applicant_section(request, lead_id, section):
     if section not in {"profile", "programs", "documents", "applications", "messages"}:
         raise PermissionDenied("Unknown applicant section.")
     lead = (
-        _agent_leads(request.user)
+        _agent_leads(request)
         .select_related("agent", "user", "converted_student", "assigned_to")
         .filter(pk=lead_id)
         .first()
@@ -305,7 +336,7 @@ def applicant_section(request, lead_id, section):
 @login_required
 def applicant_activity(request, lead_id):
     lead = (
-        _agent_leads(request.user)
+        _agent_leads(request)
         .select_related("agent", "user", "assigned_to")
         .filter(pk=lead_id)
         .first()
@@ -371,7 +402,7 @@ def applicant_activity(request, lead_id):
 @login_required
 @require_POST
 def applicant_internal_notes(request, lead_id):
-    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     if lead.status == LeadStatus.FINALIZED:
         messages.error(
             request,
@@ -414,7 +445,7 @@ def applicant_internal_notes(request, lead_id):
 @login_required
 @require_POST
 def applicant_edit(request, lead_id):
-    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
         messages.error(
             request,
@@ -448,7 +479,7 @@ def applicant_edit(request, lead_id):
 @login_required
 @require_POST
 def applicant_document_upload(request, lead_id):
-    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     if lead.status == LeadStatus.FINALIZED:
         messages.error(
             request,
@@ -502,7 +533,7 @@ def applicant_document_upload(request, lead_id):
 @require_POST
 def applicant_status(request, lead_id):
     """Only closing/reopening is manually controlled; other statuses are derived."""
-    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     action = (request.POST.get("action") or "").strip()
 
     if action == "close":
@@ -601,7 +632,7 @@ def _assign_lead(lead, *, target_user, performed_by) -> None:
 @login_required
 @require_POST
 def applicant_assign_to_me(request, lead_id):
-    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
         messages.error(request, "This applicant can no longer be assigned.")
         return redirect("agent-applicant-detail", lead_id=lead.pk)
@@ -626,7 +657,7 @@ def applicant_assign_to_me(request, lead_id):
 @login_required
 @require_POST
 def applicant_assign(request, lead_id):
-    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
         messages.error(request, "This applicant can no longer be assigned.")
         return redirect("agent-applicant-detail", lead_id=lead.pk)
@@ -666,7 +697,7 @@ def applicant_assign(request, lead_id):
 @login_required
 @require_POST
 def applicant_finalize(request, lead_id):
-    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
 
     if lead.status == LeadStatus.CLOSED:
         messages.error(request, "Reopen this applicant before finalizing it.")
@@ -708,7 +739,7 @@ def applicant_finalize(request, lead_id):
 @login_required
 @require_POST
 def applicant_message(request, lead_id):
-    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     conversation = ensure_conversation(lead)
     if conversation.is_closed:
         messages.error(request, "This conversation is closed.")
@@ -732,7 +763,7 @@ def applicant_message(request, lead_id):
 @login_required
 @require_POST
 def applicant_document_review(request, lead_id, document_id):
-    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     document = get_object_or_404(LeadDocument, pk=document_id, lead=lead)
     form = DocumentReviewForm(request.POST)
 
@@ -794,7 +825,7 @@ def applicant_document_review(request, lead_id, document_id):
 @login_required
 @require_POST
 def applicant_attachment_to_document(request, lead_id, attachment_id):
-    lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     attachment = get_object_or_404(
         MessageAttachment.objects.select_related(
             "message",
@@ -856,8 +887,9 @@ def applicant_attachment_to_document(request, lead_id, attachment_id):
 
 @login_required
 def message_inbox(request):
+    active_agent = _active_agent(request)
     conversations = (
-        Conversation.objects.filter(agent__users=request.user)
+        Conversation.objects.filter(agent=active_agent)
         .select_related("agent", "customer", "subject_content_type")
         .distinct()
         .order_by("-updated_at")
@@ -882,7 +914,7 @@ def message_inbox(request):
 @login_required
 def student_detail(request, student_id):
     student = (
-        _agent_students(request.user)
+        _agent_students(request)
         .select_related("agent", "user", "source_lead")
         .filter(pk=student_id)
         .first()
@@ -946,7 +978,7 @@ def student_detail(request, student_id):
 @login_required
 @require_POST
 def student_document_upload(request, student_id):
-    student = get_object_or_404(_agent_students(request.user), pk=student_id)
+    student = get_object_or_404(_agent_students(request), pk=student_id)
     form = StudentDocumentUploadForm(request.POST, request.FILES)
     if not form.is_valid():
         messages.error(request, "Could not upload document. Check the supplied fields.")
@@ -964,7 +996,7 @@ def student_document_upload(request, student_id):
 @login_required
 @require_POST
 def student_new_application(request, student_id):
-    student = get_object_or_404(_agent_students(request.user), pk=student_id)
+    student = get_object_or_404(_agent_students(request), pk=student_id)
     form = StudentApplicationOfferingForm(request.POST)
     if not form.is_valid():
         messages.error(request, "Choose a valid program intake.")
@@ -987,7 +1019,7 @@ def student_new_application(request, student_id):
 @login_required
 @require_POST
 def student_start_discussed_application(request, student_id, interest_id):
-    student = get_object_or_404(_agent_students(request.user), pk=student_id)
+    student = get_object_or_404(_agent_students(request), pk=student_id)
     source_lead = getattr(student, "source_lead", None)
     if source_lead is None:
         messages.error(request, "This student has no originating applicant record.")
@@ -1031,7 +1063,7 @@ def student_start_discussed_application(request, student_id, interest_id):
 @login_required
 @require_POST
 def student_message(request, student_id):
-    student = get_object_or_404(_agent_students(request.user), pk=student_id)
+    student = get_object_or_404(_agent_students(request), pk=student_id)
     conversation = get_or_create_conversation(subject=student)
     form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
@@ -1050,7 +1082,7 @@ def student_message(request, student_id):
 @login_required
 @require_POST
 def application_message(request, application_id):
-    application = get_object_or_404(_agent_applications(request.user), pk=application_id)
+    application = get_object_or_404(_agent_applications(request), pk=application_id)
     conversation = get_or_create_conversation(subject=application)
     form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
@@ -1068,7 +1100,7 @@ def application_message(request, application_id):
 
 @login_required
 def application_list(request):
-    leads = _agent_leads(request.user)
+    leads = _agent_leads(request)
     program_requests = LeadProgramInterest.objects.filter(
         lead__in=leads,
         source="user",
@@ -1078,7 +1110,7 @@ def application_list(request):
         "program__university",
         "program_offering",
     )
-    applications = _agent_applications(request.user).select_related(
+    applications = _agent_applications(request).select_related(
         "student",
         "agent",
         "program_offering__program",
@@ -1170,7 +1202,7 @@ def _agent_application_context(*, request, application, tab, mark_read=False):
 @login_required
 def application_detail(request, application_id):
     application = (
-        _agent_applications(request.user)
+        _agent_applications(request)
         .select_related(
             "student",
             "student__source_lead",
@@ -1202,7 +1234,7 @@ def application_section(request, application_id, section):
     if section not in {"requirements", "documents", "activity", "messages"}:
         raise PermissionDenied("Unknown application section.")
     application = (
-        _agent_applications(request.user)
+        _agent_applications(request)
         .select_related(
             "student",
             "student__source_lead",
@@ -1233,7 +1265,7 @@ def application_section(request, application_id, section):
 @require_POST
 def application_add_existing_document(request, application_id):
     application = get_object_or_404(
-        _agent_applications(request.user).select_related("student"),
+        _agent_applications(request).select_related("student"),
         pk=application_id,
     )
     form = ApplicationExistingDocumentForm(
@@ -1260,7 +1292,7 @@ def application_add_existing_document(request, application_id):
 @require_POST
 def application_upload_document(request, application_id):
     application = get_object_or_404(
-        _agent_applications(request.user).select_related("student"),
+        _agent_applications(request).select_related("student"),
         pk=application_id,
     )
     form = ApplicationDocumentUploadForm(request.POST, request.FILES)
@@ -1289,7 +1321,7 @@ def application_upload_document(request, application_id):
 @require_POST
 def application_status(request, application_id):
     application = get_object_or_404(
-        _agent_applications(request.user),
+        _agent_applications(request),
         pk=application_id,
     )
     status = request.POST.get("status")

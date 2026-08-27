@@ -60,7 +60,7 @@
               {% if request.user.is_superuser or request.user.agents.exists %}
                 <div class="workspace-menu-divider"></div>
                 <span class="workspace-menu-label">{% trans "SWITCH WORKSPACE" %}</span>
-                <a href="{% url 'agent-dashboard' %}">{% trans "Agent workspace" %} →</a>
+                <a href="{% url 'agent-dashboard' %}">{% if active_agent %}{{ active_agent.company_name }}{% else %}{% trans "Agent workspace" %}{% endif %} →</a>
               {% endif %}
             </div>
           </details>
@@ -127,7 +127,7 @@
                 <div class="account-menu-divider"></div>
                 <span class="workspace-menu-label">{% trans "WORKSPACES" %}</span>
                 <a href="{% url 'dashboard' %}"><span>{% trans "My TurkDemy" %}</span></a>
-                <a href="{% url 'agent-dashboard' %}"><span>{% trans "Agent workspace" %}</span></a>
+                <a href="{% url 'agent-dashboard' %}"><span>{% if active_agent %}{{ active_agent.company_name }}{% else %}{% trans "Agent workspace" %}{% endif %}</span></a>
               {% endif %}
 
 
@@ -183,7 +183,7 @@
 
           {% if request.user.is_superuser or request.user.agents.exists %}
             <div class="mobile-menu-section-label">{% trans "WORKSPACES" %}</div>
-            <a href="{% url 'agent-dashboard' %}">{% trans "Agent workspace" %}</a>
+            <a href="{% url 'agent-dashboard' %}">{% if active_agent %}{{ active_agent.company_name }}{% else %}{% trans "Agent workspace" %}{% endif %}</a>
           {% endif %}
 
           <div class="mobile-menu-section-label">{% trans "ACCOUNT" %}</div>

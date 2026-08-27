@@ -132,6 +132,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "apps.messaging.context_processors.message_badges",
                 "apps.accounts.context_processors.authentication_providers",
+                "apps.agents.context_processors.agent_workspace",
             ],
         },
     }

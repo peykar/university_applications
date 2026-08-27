@@ -3,6 +3,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path("agent/choose/", views.choose_agent, name="agent-choose"),
+    path("agent/switch/", views.switch_agent, name="agent-switch"),
     path("agent/", views.dashboard, name="agent-dashboard"),
     path("agent/applicants/", views.applicant_list, name="agent-applicant-list"),
     path(

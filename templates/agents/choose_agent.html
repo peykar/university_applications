@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Choose organization" %} — TurkDemy{% endblock %}
+{% block content %}
+<section class="agent-chooser">
+  <div class="agent-chooser-card">
+    <p class="eyebrow">{% trans "Agent workspace" %}</p>
+    <h1>{% trans "Choose an organization" %}</h1>
+    <p class="muted">{% trans "You belong to more than one Agent. Choose the organization you want to work in." %}</p>
+    <div class="agent-chooser-list">
+      {% for agent in available_agent_workspaces %}
+        <form method="post" action="{% url 'agent-switch' %}">
+          {% csrf_token %}
+          <input type="hidden" name="agent_id" value="{{ agent.pk }}">
+          <input type="hidden" name="next" value="{% url 'agent-dashboard' %}">
+          <button class="agent-chooser-option" type="submit">
+            {% if agent.logo %}
+              <img src="{{ agent.logo.url }}" alt="">
+            {% else %}
+              <span class="agent-sidebar-logo agent-sidebar-logo-fallback" aria-hidden="true">{{ agent.company_name|slice:":1"|upper }}</span>
+            {% endif %}
+            <span><strong>{{ agent.company_name }}</strong><small>{% trans "Open workspace" %}</small></span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </form>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -4848,3 +4848,120 @@ a.entity-list-row:hover{
     align-items:flex-start;
   }
 }
+
+
+/* Active Agent organization identity and switcher */
+.agent-identity{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.agent-sidebar-logo{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  object-fit:contain;
+  border:1px solid #e1e7ec;
+  border-radius:9px;
+  background:#fff;
+}
+.agent-sidebar-logo-fallback{
+  display:grid;
+  place-items:center;
+  color:#173b61;
+  font-size:.92rem;
+  font-weight:900;
+}
+.agent-sidebar-identity-copy{
+  display:grid;
+  gap:2px;
+  min-width:0;
+}
+.agent-sidebar-identity-copy strong{
+  overflow:hidden;
+  color:#263b50;
+  font-size:.8rem;
+  line-height:1.2;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.agent-sidebar-identity-copy span{
+  color:#8a98a5;
+  font-size:.61rem;
+  font-weight:700;
+}
+.agent-workspace-switcher{
+  display:grid;
+  gap:5px;
+  margin:0 0 14px;
+  padding:0 12px 13px;
+  border-bottom:1px solid #e7ebef;
+}
+.agent-workspace-switcher label{
+  color:#84919e;
+  font-size:.58rem;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.agent-workspace-switcher select{
+  width:100%;
+  min-width:0;
+  padding:7px 28px 7px 8px;
+  border:1px solid #dce3e9;
+  border-radius:7px;
+  background:#fff;
+  color:#34495e;
+  font-size:.7rem;
+  font-weight:700;
+}
+
+.agent-chooser{
+  max-width:680px;
+  margin:44px auto;
+}
+.agent-chooser-card{
+  padding:28px;
+  border:1px solid #e0e6eb;
+  border-radius:16px;
+  background:#fff;
+}
+.agent-chooser-card h1{
+  margin:.25rem 0 .5rem;
+}
+.agent-chooser-list{
+  display:grid;
+  gap:9px;
+  margin-top:22px;
+}
+.agent-chooser-option{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:12px;
+  border:1px solid #e1e7ec;
+  border-radius:10px;
+  background:#fff;
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+.agent-chooser-option:hover{
+  border-color:#b9c8d6;
+  background:#fafcfd;
+}
+.agent-chooser-option img{
+  width:38px;
+  height:38px;
+  object-fit:contain;
+  border-radius:8px;
+}
+.agent-chooser-option>span:nth-child(2){
+  display:grid;
+  gap:2px;
+}
+.agent-chooser-option small{
+  color:#82909d;
+}
