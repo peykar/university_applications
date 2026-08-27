@@ -61,3 +61,12 @@ class StudentApplicationWorkflowTests(SimpleTestCase):
             forms_source,
         )
         self.assertIn("offering_field.queryset =", forms_source)
+
+    def test_offering_queryset_uses_translated_name_fields(self):
+        forms_source = (Path(settings.BASE_DIR) / "apps/agents/forms.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('"academic_year__name_en"', forms_source)
+        self.assertIn('"semester__name_en"', forms_source)
+        self.assertNotIn('"academic_year__name"', forms_source)
+        self.assertNotIn('"semester__name"', forms_source)

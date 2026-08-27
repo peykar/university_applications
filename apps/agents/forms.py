@@ -114,6 +114,6 @@ class StudentApplicationOfferingForm(forms.Form):
             offering_field.queryset = queryset.order_by(
                 "program__university__name_en",
                 "program__name_en",
-                "academic_year__name",
-                "semester__name",
+                "academic_year__name_en",
+                "semester__name_en",
             )
