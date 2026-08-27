@@ -95,3 +95,17 @@ phone-check:
 	uv run python manage.py check_phone_library
 
 
+
+
+# Spec-driven development helpers.
+# Usage: make spec-new NAME=document-requirements
+spec-new:
+	@test -n "$(NAME)" || (echo "Usage: make spec-new NAME=<capability-name>" && exit 1)
+	@test ! -e "docs/specs/$(NAME)" || (echo "docs/specs/$(NAME) already exists" && exit 1)
+	cp -R docs/specs/_template "docs/specs/$(NAME)"
+	@echo "Created docs/specs/$(NAME). Rename CAP-* requirement IDs before approval."
+
+spec-status:
+	@printf "TurkDemy specification files:\n"
+	@find docs/specs -mindepth 2 -maxdepth 2 -name spec.md -not -path "*/_template/*" \
+		-print | sort
