@@ -61,3 +61,18 @@ On an Application, **Add document** can either:
 Agent-side uploads and selections are marked verified. The displayed document
 type links directly to the stored file; the underlying filename is available
 as the link tooltip.
+
+
+## Application document attachment vs. requirements
+
+Attaching a document does not define whether that document type is required by
+the university. The **Add existing student document** and **Upload new
+document** forms therefore do not expose `ApplicationDocument.is_required`.
+
+For now, documents attached through these agent actions use the model default
+(`is_required=False`). University/application document requirements should be
+implemented as a separate checklist/requirements workflow, where a requirement
+can be satisfied by selecting an appropriate StudentDocument.
+
+The **+ Add document** control uses the same compact section-header action
+styling as document actions elsewhere in the Agent workspace.

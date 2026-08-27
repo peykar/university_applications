@@ -34,3 +34,28 @@ class StudentApplicationDocumentWorkflowTests(SimpleTestCase):
     def test_application_document_type_links_to_file(self):
         self.assertIn('href="{{ document.student_document.file.url }}"', self.application)
         self.assertIn('title="{{ document.student_document.file.name }}"', self.application)
+
+    def test_attachment_forms_do_not_ask_if_document_is_required(self):
+        forms_source = (Path(settings.BASE_DIR) / "apps/agents/forms.py").read_text(
+            encoding="utf-8"
+        )
+        existing_form = forms_source.split(
+            "class ApplicationExistingDocumentForm",
+            1,
+        )[1].split("class ApplicationDocumentUploadForm", 1)[0]
+        upload_form = forms_source.split(
+            "class ApplicationDocumentUploadForm",
+            1,
+        )[1]
+        self.assertNotIn("is_required = forms.BooleanField", existing_form)
+        self.assertNotIn("is_required = forms.BooleanField", upload_form)
+
+    def test_add_document_uses_section_action_styling(self):
+        self.assertIn(
+            'class="section-action modal-trigger"',
+            self.application,
+        )
+        self.assertNotIn(
+            'class="section-action button-reset modal-trigger"',
+            self.application,
+        )

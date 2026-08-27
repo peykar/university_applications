@@ -137,7 +137,6 @@ class ApplicationExistingDocumentForm(forms.Form):
         queryset=StudentDocument.objects.none(),
         label=_("Student document"),
     )
-    is_required = forms.BooleanField(required=False, label=_("Required"))
 
     def __init__(self, *args, student=None, application=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -152,4 +151,4 @@ class ApplicationExistingDocumentForm(forms.Form):
 
 
 class ApplicationDocumentUploadForm(StudentDocumentUploadForm):
-    is_required = forms.BooleanField(required=False, label=_("Required"))
+    pass

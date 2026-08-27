@@ -16,7 +16,14 @@
  {% if application.notes %}<div class="agent-notes"><h3>{% trans "Notes" %}</h3><p>{{ application.notes|linebreaksbr }}</p></div>{% endif %}
 </section>
 <aside><section class="agent-panel">
-<div class="agent-panel-head"><h2>{% trans "Application documents" %}</h2><button type="button" class="section-action button-reset modal-trigger" data-modal-target="add-document-modal">+ {% trans "Add document" %}</button></div>
+<div class="agent-panel-head">
+ <h2>{% trans "Application documents" %}</h2>
+ <button
+  type="button"
+  class="section-action modal-trigger"
+  data-modal-target="add-document-modal"
+ >+ {% trans "Add document" %}</button>
+</div>
 <div class="agent-list">{% for document in application.documents.all %}<div class="agent-list-row"><span><a href="{{ document.student_document.file.url }}" target="_blank" rel="noopener" title="{{ document.student_document.file.name }}"><strong>{{ document.student_document.get_document_type_display }}</strong></a><small>{% if document.is_required %}{% trans "Required" %}{% endif %}</small></span>{% if document.is_verified %}<span class="status-pill">{% trans "Verified" %}</span>{% else %}<span class="status-pill warning">{% trans "Needs review" %}</span>{% endif %}</div>{% empty %}<p class="empty-state">{% trans "No application documents." %}</p>{% endfor %}</div>
 </section></aside>
 </div>

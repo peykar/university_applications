@@ -1103,7 +1103,6 @@ def application_add_existing_document(request, application_id):
     ApplicationDocument.objects.create(
         application=application,
         student_document=form.cleaned_data["student_document"],
-        is_required=form.cleaned_data["is_required"],
         is_verified=True,
         created_by=request.user,
         updated_by=request.user,
@@ -1133,7 +1132,6 @@ def application_upload_document(request, application_id):
     ApplicationDocument.objects.create(
         application=application,
         student_document=student_document,
-        is_required=form.cleaned_data["is_required"],
         is_verified=True,
         created_by=request.user,
         updated_by=request.user,
