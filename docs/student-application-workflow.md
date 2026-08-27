@@ -44,3 +44,20 @@ duplicate check.
 
 StudentDocuments remain reusable master documents. ApplicationDocument can
 reference the StudentDocuments selected for a specific university application.
+
+
+## Document workflow
+
+Agents can upload reusable master documents directly from the Student workspace.
+This creates `StudentDocument`.
+
+On an Application, **Add document** can either:
+
+1. reuse an existing StudentDocument that is not already linked to that
+   Application, creating `ApplicationDocument`; or
+2. upload a new file, which first creates a reusable StudentDocument and then
+   links it to the current Application.
+
+Agent-side uploads and selections are marked verified. The displayed document
+type links directly to the stored file; the underlying filename is available
+as the link tooltip.

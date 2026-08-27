@@ -9,6 +9,7 @@ from apps.leads.models import (
     LeadDocument,
     LeadDocumentReviewStatus,
 )
+from apps.students.models import StudentDocument
 from apps.universities.models import ProgramOffering
 
 
@@ -117,3 +118,38 @@ class StudentApplicationOfferingForm(forms.Form):
                 "academic_year__name_en",
                 "semester__name_en",
             )
+
+
+class StudentDocumentUploadForm(forms.ModelForm):
+    class Meta:
+        model = StudentDocument
+        fields = ("document_type", "file", "short_description")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["short_description"].widget = forms.Textarea(
+            attrs={"rows": 2},
+        )
+
+
+class ApplicationExistingDocumentForm(forms.Form):
+    student_document = forms.ModelChoiceField(
+        queryset=StudentDocument.objects.none(),
+        label=_("Student document"),
+    )
+    is_required = forms.BooleanField(required=False, label=_("Required"))
+
+    def __init__(self, *args, student=None, application=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        queryset = StudentDocument.objects.none()
+        if student is not None:
+            queryset = student.documents.all()
+            if application is not None:
+                queryset = queryset.exclude(applications__application=application)
+        field = self.fields["student_document"]
+        if isinstance(field, forms.ModelChoiceField):
+            field.queryset = queryset.order_by("document_type", "-created_at")
+
+
+class ApplicationDocumentUploadForm(StudentDocumentUploadForm):
+    is_required = forms.BooleanField(required=False, label=_("Required"))

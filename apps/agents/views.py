@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from apps.applications.models import Application, ApplicationStatus
+from apps.applications.models import Application, ApplicationDocument, ApplicationStatus
 from apps.applications.services import create_student_application
 from apps.leads.forms import LeadMessageForm
 from apps.leads.models import (
@@ -36,9 +36,12 @@ from apps.students.models import Student
 from .forms import (
     AgentLeadDocumentUploadForm,
     AgentLeadEditForm,
+    ApplicationDocumentUploadForm,
+    ApplicationExistingDocumentForm,
     DocumentReviewForm,
     PromoteChatAttachmentForm,
     StudentApplicationOfferingForm,
+    StudentDocumentUploadForm,
 )
 from .models import Agent
 
@@ -922,8 +925,27 @@ def student_detail(request, student_id):
             "discussed_programs": discussed_programs,
             "applications": applications,
             "new_application_form": StudentApplicationOfferingForm(),
+            "student_document_form": StudentDocumentUploadForm(),
         },
     )
+
+
+@login_required
+@require_POST
+def student_document_upload(request, student_id):
+    student = get_object_or_404(_agent_students(request.user), pk=student_id)
+    form = StudentDocumentUploadForm(request.POST, request.FILES)
+    if not form.is_valid():
+        messages.error(request, "Could not upload document. Check the supplied fields.")
+        return redirect("agent-student-detail", student_id=student.pk)
+
+    document = form.save(commit=False)
+    document.student = student
+    document.created_by = request.user
+    document.updated_by = request.user
+    document.save()
+    messages.success(request, "Student document uploaded.")
+    return redirect("agent-student-detail", student_id=student.pk)
 
 
 @login_required
@@ -1053,8 +1075,71 @@ def application_detail(request, application_id):
         {
             "application": application,
             "status_choices": ApplicationStatus.choices,
+            "existing_document_form": ApplicationExistingDocumentForm(
+                student=application.student,
+                application=application,
+            ),
+            "application_document_upload_form": ApplicationDocumentUploadForm(),
         },
     )
+
+
+@login_required
+@require_POST
+def application_add_existing_document(request, application_id):
+    application = get_object_or_404(
+        _agent_applications(request.user).select_related("student"),
+        pk=application_id,
+    )
+    form = ApplicationExistingDocumentForm(
+        request.POST,
+        student=application.student,
+        application=application,
+    )
+    if not form.is_valid():
+        messages.error(request, "Choose an available student document.")
+        return redirect("agent-application-detail", application_id=application.pk)
+
+    ApplicationDocument.objects.create(
+        application=application,
+        student_document=form.cleaned_data["student_document"],
+        is_required=form.cleaned_data["is_required"],
+        is_verified=True,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    messages.success(request, "Student document added to application.")
+    return redirect("agent-application-detail", application_id=application.pk)
+
+
+@login_required
+@require_POST
+def application_upload_document(request, application_id):
+    application = get_object_or_404(
+        _agent_applications(request.user).select_related("student"),
+        pk=application_id,
+    )
+    form = ApplicationDocumentUploadForm(request.POST, request.FILES)
+    if not form.is_valid():
+        messages.error(request, "Could not upload document. Check the supplied fields.")
+        return redirect("agent-application-detail", application_id=application.pk)
+
+    student_document = form.save(commit=False)
+    student_document.student = application.student
+    student_document.created_by = request.user
+    student_document.updated_by = request.user
+    student_document.save()
+
+    ApplicationDocument.objects.create(
+        application=application,
+        student_document=student_document,
+        is_required=form.cleaned_data["is_required"],
+        is_verified=True,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    messages.success(request, "Document uploaded and added to application.")
+    return redirect("agent-application-detail", application_id=application.pk)
 
 
 @login_required

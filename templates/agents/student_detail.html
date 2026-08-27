@@ -131,7 +131,10 @@
 
  <aside>
   <section class="agent-panel">
-   <div class="agent-panel-head"><h2>{% trans "Student documents" %}</h2></div>
+   <div class="agent-panel-head">
+    <h2>{% trans "Student documents" %}</h2>
+    <button type="button" class="section-action button-reset modal-trigger" data-modal-target="student-document-modal">+ {% trans "Upload" %}</button>
+   </div>
    <div class="agent-list">
     {% for document in student.documents.all %}
      <div class="agent-list-row">
@@ -149,6 +152,24 @@
   </section>
  </aside>
 </div>
+
+
+<dialog class="agent-modal" id="student-document-modal">
+ <div class="agent-modal-card">
+  <div class="agent-modal-head">
+   <div><span class="eyebrow">{% trans "Student document" %}</span><h2>{% trans "Upload document" %}</h2></div>
+   <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+  </div>
+  <form method="post" enctype="multipart/form-data" action="{% url 'agent-student-document-upload' student.pk %}" class="agent-modal-form">
+   {% csrf_token %}
+   {{ student_document_form.as_p }}
+   <div class="agent-modal-actions">
+    <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+    <button class="button" type="submit">{% trans "Upload document" %}</button>
+   </div>
+  </form>
+ </div>
+</dialog>
 
 <dialog class="agent-modal" id="new-application-modal" aria-labelledby="new-application-title">
  <div class="agent-modal-card">

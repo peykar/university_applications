@@ -72,6 +72,11 @@ urlpatterns = [
         name="agent-student-detail",
     ),
     path(
+        "agent/students/<uuid:student_id>/documents/upload/",
+        views.student_document_upload,
+        name="agent-student-document-upload",
+    ),
+    path(
         "agent/students/<uuid:student_id>/applications/new/",
         views.student_new_application,
         name="agent-student-new-application",
@@ -86,6 +91,16 @@ urlpatterns = [
         "agent/applications/<uuid:application_id>/",
         views.application_detail,
         name="agent-application-detail",
+    ),
+    path(
+        "agent/applications/<uuid:application_id>/documents/add/",
+        views.application_add_existing_document,
+        name="agent-application-add-existing-document",
+    ),
+    path(
+        "agent/applications/<uuid:application_id>/documents/upload/",
+        views.application_upload_document,
+        name="agent-application-upload-document",
     ),
     path(
         "agent/applications/<uuid:application_id>/status/",

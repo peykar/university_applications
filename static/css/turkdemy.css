@@ -4299,3 +4299,6 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   .student-workspace-head{flex-direction:column}
   .student-workspace-head>.button{width:100%}
 }
+
+.modal-divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:#8996a0;font-size:.7rem}
+.modal-divider::before,.modal-divider::after{content:"";height:1px;background:#e2e8ec;flex:1}

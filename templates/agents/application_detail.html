@@ -15,8 +15,42 @@
  <button class="button" type="submit">{% trans "Update status" %}</button></form>
  {% if application.notes %}<div class="agent-notes"><h3>{% trans "Notes" %}</h3><p>{{ application.notes|linebreaksbr }}</p></div>{% endif %}
 </section>
-<aside><section class="agent-panel"><div class="agent-panel-head"><h2>{% trans "Application documents" %}</h2></div>
-<div class="agent-list">{% for document in application.documents.all %}<div class="agent-list-row"><span><strong>{{ document.student_document.get_document_type_display }}</strong><small>{% if document.is_required %}{% trans "Required" %}{% endif %}</small></span>{% if document.is_verified %}<span class="status-pill">{% trans "Verified" %}</span>{% else %}<span class="status-pill warning">{% trans "Needs review" %}</span>{% endif %}</div>{% empty %}<p class="empty-state">{% trans "No application documents." %}</p>{% endfor %}</div>
+<aside><section class="agent-panel">
+<div class="agent-panel-head"><h2>{% trans "Application documents" %}</h2><button type="button" class="section-action button-reset modal-trigger" data-modal-target="add-document-modal">+ {% trans "Add document" %}</button></div>
+<div class="agent-list">{% for document in application.documents.all %}<div class="agent-list-row"><span><a href="{{ document.student_document.file.url }}" target="_blank" rel="noopener" title="{{ document.student_document.file.name }}"><strong>{{ document.student_document.get_document_type_display }}</strong></a><small>{% if document.is_required %}{% trans "Required" %}{% endif %}</small></span>{% if document.is_verified %}<span class="status-pill">{% trans "Verified" %}</span>{% else %}<span class="status-pill warning">{% trans "Needs review" %}</span>{% endif %}</div>{% empty %}<p class="empty-state">{% trans "No application documents." %}</p>{% endfor %}</div>
 </section></aside>
 </div>
+
+<dialog class="agent-modal" id="add-document-modal">
+ <div class="agent-modal-card">
+  <div class="agent-modal-head"><div><span class="eyebrow">{% trans "Application document" %}</span><h2>{% trans "Add existing student document" %}</h2><p>{% trans "Reuse a document already stored for this student." %}</p></div><button type="button" class="modal-close button-reset">×</button></div>
+  <form method="post" action="{% url 'agent-application-add-existing-document' application.pk %}" class="agent-modal-form">{% csrf_token %}{{ existing_document_form.as_p }}<div class="agent-modal-actions"><button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button><button class="button" type="submit">{% trans "Add document" %}</button></div></form>
+  <div class="modal-divider"><span>{% trans "or" %}</span></div>
+  <button type="button" class="button button-secondary modal-switch" data-modal-target="upload-application-document-modal">{% trans "Upload new document" %}</button>
+ </div>
+</dialog>
+
+<dialog class="agent-modal" id="upload-application-document-modal">
+ <div class="agent-modal-card">
+  <div class="agent-modal-head"><div><span class="eyebrow">{% trans "Application document" %}</span><h2>{% trans "Upload new document" %}</h2><p>{% trans "The file is stored as a reusable Student document and added to this application." %}</p></div><button type="button" class="modal-close button-reset">×</button></div>
+  <form method="post" enctype="multipart/form-data" action="{% url 'agent-application-upload-document' application.pk %}" class="agent-modal-form">{% csrf_token %}{{ application_document_upload_form.as_p }}<div class="agent-modal-actions"><button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button><button class="button" type="submit">{% trans "Upload & add" %}</button></div></form>
+ </div>
+</dialog>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+ document.querySelectorAll(".modal-trigger,.modal-switch").forEach((trigger) => {
+  trigger.addEventListener("click", () => {
+   const current = trigger.closest("dialog");
+   if (current && current.open) current.close();
+   const target = document.getElementById(trigger.dataset.modalTarget);
+   if (target) target.showModal();
+  });
+ });
+ document.querySelectorAll(".agent-modal").forEach((dialog) => {
+  dialog.querySelectorAll(".modal-close").forEach((button) => button.addEventListener("click", () => dialog.close()));
+  dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+ });
+});
+</script>
 {% endblock %}
