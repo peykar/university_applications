@@ -61,8 +61,11 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
         self.assertIn("sticky-modal-actions", self.template)
 
     def test_edit_activity_preserves_old_and_new_values(self):
-        self.assertIn("form.initial.get(field_name)", self.views)
-        self.assertIn("form.cleaned_data.get(field_name)", self.views)
+        activity_service = (Path(settings.BASE_DIR) / "apps/leads/services/activity.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("form.initial.get(field_name)", activity_service)
+        self.assertIn("form.cleaned_data.get(field_name)", activity_service)
         self.assertIn("→", self.views)
 
     def test_agent_uploaded_document_is_auto_approved(self):

@@ -152,3 +152,31 @@ Before converting, staff should:
 4. mark those interests `QUALIFIED`
 5. finalize the Lead
 6. convert it
+
+
+## Applicant profile activity auditing
+
+Applicant-profile edits are audited consistently regardless of who performs
+the edit. Both the customer-facing Lead edit view and the Agent Applicant edit
+view call `apps.leads.services.activity.record_applicant_profile_update()`.
+
+The activity type is `APPLICANT_UPDATED`. Its metadata contains only fields
+whose human-readable value actually changed:
+
+```json
+{
+  "changes": [
+    {
+      "field": "country_of_residence",
+      "label": "Country of residence",
+      "old": "Germany",
+      "new": "Netherlands"
+    }
+  ]
+}
+```
+
+Model-choice values such as countries are resolved to their display value
+instead of storing UUIDs. Submitting the form without a meaningful change does
+not create an Activity row. The `created_by`/`updated_by` actor identifies
+whether the change was made by the customer or an Agent user.

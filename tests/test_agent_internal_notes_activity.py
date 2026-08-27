@@ -42,7 +42,10 @@ class AgentInternalNotesActivityTests(SimpleTestCase):
         )
 
     def test_activity_changes_are_structured(self):
-        self.assertIn('metadata={"changes": changes}', self.views)
+        self.assertIn('"changes": [', self.views)
+        self.assertIn('"field": "notes"', self.views)
+        self.assertIn('"old": old_notes or "—"', self.views)
+        self.assertIn('"new": new_notes or "—"', self.views)
         self.assertIn('class="activity-change-row"', self.activity_template)
 
     def test_customer_visible_badge_is_on_activity_page(self):

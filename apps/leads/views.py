@@ -31,6 +31,7 @@ from .models import (
     LeadProgramInterest,
     LeadProgramInterestSource,
 )
+from .services.activity import record_applicant_profile_update
 from .services.messaging import ensure_conversation, send_system_message
 
 
@@ -120,11 +121,19 @@ def lead_edit(request, lead_id):
     if request.method == "POST":
         form = LeadForm(request.POST, instance=lead)
         if form.is_valid():
-            lead = form.save(commit=False)
-            lead.updated_by = request.user
-            lead.save()
-            messages.success(request, "Applicant profile updated.")
-            return redirect("lead-detail", lead_id=lead.pk)
+            updated_lead = form.save(commit=False)
+            updated_lead.updated_by = request.user
+            updated_lead.save()
+
+            if record_applicant_profile_update(
+                lead=updated_lead,
+                form=form,
+                actor=request.user,
+            ):
+                messages.success(request, "Applicant profile updated.")
+            else:
+                messages.info(request, "No applicant profile data changed.")
+            return redirect("lead-detail", lead_id=updated_lead.pk)
     else:
         form = LeadForm(instance=lead)
 

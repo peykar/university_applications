@@ -4,9 +4,9 @@ from django import forms
 from django.conf import settings
 from django.test import SimpleTestCase
 
-from apps.agents.views import _audit_form_value
 from apps.geography.models import Country
 from apps.leads.models import LeadActivityType
+from apps.leads.services.activity import audit_form_value
 
 
 class AgentActivityAuditNormalizationTests(SimpleTestCase):
@@ -14,16 +14,16 @@ class AgentActivityAuditNormalizationTests(SimpleTestCase):
         country = Country()
         country.__dict__["country_name"] = "Netherlands"
         field = forms.ModelChoiceField(queryset=Country.objects.none())
-        self.assertEqual(_audit_form_value(field, country), str(country))
+        self.assertEqual(audit_form_value(field, country), str(country))
 
     def test_choice_value_uses_display_label(self):
         field = forms.ChoiceField(choices=(("male", "Male"), ("female", "Female")))
-        self.assertEqual(_audit_form_value(field, "male"), "Male")
+        self.assertEqual(audit_form_value(field, "male"), "Male")
 
     def test_boolean_value_is_human_readable(self):
         field = forms.BooleanField(required=False)
-        self.assertEqual(_audit_form_value(field, True), "Yes")
-        self.assertEqual(_audit_form_value(field, False), "No")
+        self.assertEqual(audit_form_value(field, True), "Yes")
+        self.assertEqual(audit_form_value(field, False), "No")
 
     def test_dedicated_activity_types_exist(self):
         self.assertEqual(
@@ -37,11 +37,11 @@ class AgentActivityAuditNormalizationTests(SimpleTestCase):
 
     def test_noop_normalized_changes_are_skipped(self):
         root = Path(settings.BASE_DIR)
-        views = (root / "apps/agents/views.py").read_text(encoding="utf-8")
-        self.assertIn("if old_value == new_value:", views)
-        self.assertIn("LeadActivityType.APPLICANT_UPDATED", views)
+        activity_service = (root / "apps/leads/services/activity.py").read_text(encoding="utf-8")
+        self.assertIn("if old_value == new_value:", activity_service)
+        self.assertIn("LeadActivityType.APPLICANT_UPDATED", activity_service)
 
     def test_model_choice_without_queryset_falls_back_safely(self):
         field = forms.ModelChoiceField(queryset=Country.objects.none())
         field.queryset = None
-        self.assertEqual(_audit_form_value(field, "abc"), "abc")
+        self.assertEqual(audit_form_value(field, "abc"), "abc")
