@@ -9,6 +9,9 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from apps.messaging.forms import MessageForm
+from apps.messaging.models import ConversationParticipantRole, MessageSenderRole
+from apps.messaging.services import mark_conversation_read, send_message
 from apps.universities.models import Program
 
 from .forms import (
@@ -16,7 +19,6 @@ from .forms import (
     LeadDocumentForm,
     LeadDocumentReplacementForm,
     LeadForm,
-    LeadMessageForm,
     LeadPreferenceForm,
 )
 from .models import (
@@ -26,10 +28,6 @@ from .models import (
     LeadDocument,
     LeadDocumentReviewStatus,
     LeadDocumentVersion,
-    LeadMessage,
-    LeadMessageAttachment,
-    LeadMessageRead,
-    LeadMessageSenderType,
     LeadProgramInterest,
     LeadProgramInterestSource,
 )
@@ -179,15 +177,11 @@ def lead_detail(request, lead_id):
     conversation = ensure_conversation(lead)
 
     message_qs = conversation.messages.select_related("sender").prefetch_related("attachments")
-    for message in message_qs.exclude(sender=request.user):
-        LeadMessageRead.objects.get_or_create(
-            message=message,
-            user=request.user,
-            defaults={
-                "created_by": request.user,
-                "updated_by": request.user,
-            },
-        )
+    mark_conversation_read(
+        conversation=conversation,
+        user=request.user,
+        participant_role=ConversationParticipantRole.CUSTOMER,
+    )
 
     interests = lead.program_interests.select_related(
         "program",
@@ -207,7 +201,7 @@ def lead_detail(request, lead_id):
             "documents": lead.documents.order_by("-created_at"),
             "conversation": conversation,
             "lead_messages": message_qs,
-            "message_form": LeadMessageForm(),
+            "message_form": MessageForm(),
             "document_form": LeadDocumentForm(),
             "replacement_form": LeadDocumentReplacementForm(),
             "activities": lead.activities.filter(is_customer_visible=True).order_by("-created_at")[
@@ -337,28 +331,15 @@ def lead_send_message(request, lead_id):
         messages.error(request, "This conversation is closed.")
         return redirect("lead-detail", lead_id=lead.pk)
 
-    form = LeadMessageForm(request.POST, request.FILES)
+    form = MessageForm(request.POST, request.FILES)
     if form.is_valid():
-        message = LeadMessage.objects.create(
+        send_message(
             conversation=conversation,
             sender=request.user,
-            sender_type=LeadMessageSenderType.CUSTOMER,
+            sender_role=MessageSenderRole.CUSTOMER,
             body=form.cleaned_data.get("body", ""),
-            created_by=request.user,
-            updated_by=request.user,
+            attachment=form.cleaned_data.get("attachment"),
         )
-
-        attachment = form.cleaned_data.get("attachment")
-        if attachment:
-            LeadMessageAttachment.objects.create(
-                message=message,
-                file=attachment,
-                original_name=attachment.name,
-                content_type=getattr(attachment, "content_type", ""),
-                size=getattr(attachment, "size", None),
-                created_by=request.user,
-                updated_by=request.user,
-            )
     else:
         messages.error(request, "Write a message or attach a file.")
 

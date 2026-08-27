@@ -27,8 +27,8 @@
     <div class="agent-panel-head"><h2>{% trans "Unread messages" %}</h2><a href="{% url 'agent-message-inbox' %}">{% trans "Inbox" %}</a></div>
     <div class="agent-list">
       {% for message in recent_messages %}
-        <a class="agent-list-row" href="{% url 'agent-applicant-detail' message.conversation.lead.pk %}#messages">
-          <span><strong>{{ message.conversation.lead }}</strong><small>{{ message.body|truncatechars:72|default:"Attachment" }}</small></span>
+        <a class="agent-list-row" href="{{ message.conversation.get_agent_url }}">
+          <span><strong>{{ message.conversation.subject_label }}</strong><small>{{ message.body|truncatechars:72|default:"Attachment" }}</small></span>
           <time>{{ message.created_at|date:"M j, H:i" }}</time>
         </a>
       {% empty %}<p class="empty-state">{% trans "You're all caught up." %}</p>{% endfor %}

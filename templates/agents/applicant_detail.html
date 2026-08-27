@@ -352,24 +352,24 @@ document.addEventListener("DOMContentLoaded", () => {
  <div class="agent-panel-head"><h2>{% trans "Conversation" %}</h2></div>
  <div class="agent-chat">
  {% for message in lead_messages %}
-  <article class="agent-message {% if message.sender_type == 'system' %}system-event{% elif message.sender_type == 'customer' %}from-customer{% else %}from-agent{% endif %}">
-   {% if message.sender_type == "system" %}
+  <article class="agent-message {% if message.sender_role == 'system' %}system-event{% elif message.sender_role == 'customer' %}from-customer{% else %}from-agent{% endif %}">
+   {% if message.sender_role == "system" %}
     <div class="system-event-row">
       <span class="system-event-icon" aria-hidden="true">✓</span>
       <span class="system-event-text">{{ message.body }}</span>
       <time>{{ message.created_at|date:"M j, H:i" }}</time>
     </div>
    {% else %}
-    <header><strong>{{ message.get_sender_type_display }}</strong><time>{{ message.created_at|date:"M j, H:i" }}</time></header>
+    <header><strong>{{ message.get_sender_role_display }}</strong><time>{{ message.created_at|date:"M j, H:i" }}</time></header>
     {% if message.body %}<p>{{ message.body|linebreaksbr }}</p>{% endif %}
    {% endif %}
-   {% if message.sender_type != "system" %}
+   {% if message.sender_role != "system" %}
    {% for attachment in message.attachments.all %}
     <div class="agent-chat-attachment">
       <span class="attachment-file-name">{{ attachment.original_name|default:"Attachment" }}</span>
       <div class="attachment-actions">
         <a class="text-action" href="{{ attachment.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
-        {% if message.sender_type == "customer" %}
+        {% if message.sender_role == "customer" %}
           {% if attachment.promoted_document %}
             <button type="button" class="status-pill success modal-trigger" data-modal-target="document-review-{{ attachment.promoted_document.pk }}">✓ {% trans "Added to documents" %}</button>
           {% else %}
@@ -378,7 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {% endif %}
       </div>
     </div>
-    {% if message.sender_type == "customer" and not attachment.promoted_document %}
+    {% if message.sender_role == "customer" and not attachment.promoted_document %}
       <dialog class="agent-modal" id="promote-attachment-{{ attachment.pk }}" aria-labelledby="promote-title-{{ attachment.pk }}">
         <div class="agent-modal-card">
           <div class="agent-modal-head">

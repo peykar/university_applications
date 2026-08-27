@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
-from django.db.models import Count, Max, Q
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -14,7 +14,6 @@ from django.views.decorators.http import require_POST
 
 from apps.applications.models import Application, ApplicationDocument, ApplicationStatus
 from apps.applications.services import create_student_application
-from apps.leads.forms import LeadMessageForm
 from apps.leads.models import (
     Lead,
     LeadActivity,
@@ -22,15 +21,26 @@ from apps.leads.models import (
     LeadDocument,
     LeadDocumentReviewHistory,
     LeadDocumentReviewStatus,
-    LeadMessage,
-    LeadMessageAttachment,
-    LeadMessageRead,
-    LeadMessageSenderType,
     LeadProgramInterest,
     LeadStatus,
 )
 from apps.leads.services.conversion import finalize_lead
 from apps.leads.services.messaging import ensure_conversation, send_system_message
+from apps.messaging.forms import MessageForm
+from apps.messaging.models import (
+    Conversation,
+    ConversationParticipantRole,
+    Message,
+    MessageAttachment,
+    MessageSenderRole,
+)
+from apps.messaging.services import (
+    agent_unread_count,
+    get_or_create_conversation,
+    mark_conversation_read,
+    send_message,
+    unread_count_for_conversation,
+)
 from apps.students.models import Student
 
 from .forms import (
@@ -135,10 +145,15 @@ def dashboard(request):
     leads = _agent_leads(request.user)
     applications = _agent_applications(request.user)
 
-    unread_messages = LeadMessage.objects.filter(
-        conversation__lead__in=leads,
-        sender_type=LeadMessageSenderType.CUSTOMER,
-    ).exclude(read_receipts__user=request.user)
+    unread_message_count = agent_unread_count(request.user)
+    recent_messages = (
+        Message.objects.filter(
+            conversation__agent__users=request.user,
+            sender_role=MessageSenderRole.CUSTOMER,
+        )
+        .select_related("conversation", "conversation__subject_content_type", "sender")
+        .order_by("-created_at")[:8]
+    )
     program_requests = LeadProgramInterest.objects.filter(
         lead__in=leads,
         source="user",
@@ -151,7 +166,7 @@ def dashboard(request):
         "recommendation_count": leads.filter(needs_program_recommendation=True)
         .exclude(status__in=(LeadStatus.FINALIZED, LeadStatus.CLOSED))
         .count(),
-        "unread_message_count": unread_messages.count(),
+        "unread_message_count": unread_message_count,
         "application_count": applications.count(),
         "application_action_count": (
             applications.filter(
@@ -168,9 +183,7 @@ def dashboard(request):
             is_verified=False,
         ).count(),
         "recent_leads": leads.select_related("agent", "user").order_by("-updated_at")[:8],
-        "recent_messages": unread_messages.select_related("conversation__lead", "sender").order_by(
-            "-created_at"
-        )[:8],
+        "recent_messages": recent_messages,
         "recent_program_requests": program_requests.select_related(
             "lead", "program", "program__university", "program_offering"
         ).order_by("-updated_at")[:8],
@@ -230,15 +243,11 @@ def applicant_detail(request, lead_id):
         "attachments__promoted_document"
     )
 
-    unread = lead_messages.filter(sender_type=LeadMessageSenderType.CUSTOMER).exclude(
-        read_receipts__user=request.user
+    mark_conversation_read(
+        conversation=conversation,
+        user=request.user,
+        participant_role=ConversationParticipantRole.AGENT,
     )
-    for message in unread:
-        LeadMessageRead.objects.get_or_create(
-            message=message,
-            user=request.user,
-            defaults={"created_by": request.user, "updated_by": request.user},
-        )
 
     agent_users = (
         lead.agent.users.filter(is_active=True).order_by(
@@ -256,7 +265,7 @@ def applicant_detail(request, lead_id):
             "agent_users": agent_users,
             "lead_messages": lead_messages,
             "conversation": conversation,
-            "message_form": LeadMessageForm(),
+            "message_form": MessageForm(),
             "lead_edit_form": AgentLeadEditForm(instance=lead),
             "document_upload_form": AgentLeadDocumentUploadForm(),
             "document_review_form": DocumentReviewForm(),
@@ -707,30 +716,18 @@ def applicant_message(request, lead_id):
         messages.error(request, "This conversation is closed.")
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
-    form = LeadMessageForm(request.POST, request.FILES)
+    form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
         messages.error(request, "Write a message or attach a file.")
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
-    message = LeadMessage.objects.create(
+    send_message(
         conversation=conversation,
         sender=request.user,
-        sender_type=LeadMessageSenderType.STAFF,
+        sender_role=MessageSenderRole.AGENT,
         body=form.cleaned_data.get("body", ""),
-        created_by=request.user,
-        updated_by=request.user,
+        attachment=form.cleaned_data.get("attachment"),
     )
-    attachment = form.cleaned_data.get("attachment")
-    if attachment:
-        LeadMessageAttachment.objects.create(
-            message=message,
-            file=attachment,
-            original_name=attachment.name,
-            content_type=getattr(attachment, "content_type", ""),
-            size=getattr(attachment, "size", None),
-            created_by=request.user,
-            updated_by=request.user,
-        )
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 
@@ -801,14 +798,16 @@ def applicant_document_review(request, lead_id, document_id):
 def applicant_attachment_to_document(request, lead_id, attachment_id):
     lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
     attachment = get_object_or_404(
-        LeadMessageAttachment.objects.select_related(
+        MessageAttachment.objects.select_related(
             "message",
             "message__conversation",
+            "message__conversation__subject_content_type",
         ),
         pk=attachment_id,
-        message__conversation__lead=lead,
-        message__sender_type=LeadMessageSenderType.CUSTOMER,
+        message__sender_role=MessageSenderRole.CUSTOMER,
     )
+    if attachment.message.conversation.subject != lead:
+        raise PermissionDenied("Attachment does not belong to this applicant.")
 
     if hasattr(attachment, "promoted_document"):
         messages.info(request, "This attachment is already in Documents.")
@@ -859,24 +858,27 @@ def applicant_attachment_to_document(request, lead_id, attachment_id):
 
 @login_required
 def message_inbox(request):
-    leads = _agent_leads(request.user)
     conversations = (
-        leads.filter(conversation__isnull=False)
-        .select_related("conversation", "user")
-        .annotate(
-            unread_count=Count(
-                "conversation__messages",
-                filter=Q(conversation__messages__sender_type=LeadMessageSenderType.CUSTOMER)
-                & ~Q(conversation__messages__read_receipts__user=request.user),
-                distinct=True,
-            )
-        )
-        .filter(conversation__messages__isnull=False)
-        .annotate(last_message_at=Max("conversation__messages__created_at"))
+        Conversation.objects.filter(agent__users=request.user)
+        .select_related("agent", "customer", "subject_content_type")
         .distinct()
-        .order_by("-last_message_at")
+        .order_by("-updated_at")
     )
-    return render(request, "agents/message_inbox.html", {"leads": conversations})
+    rows = []
+    for conversation in conversations:
+        latest = conversation.messages.select_related("sender").order_by("-created_at").first()
+        rows.append(
+            {
+                "conversation": conversation,
+                "latest_message": latest,
+                "unread_count": unread_count_for_conversation(
+                    conversation=conversation,
+                    user=request.user,
+                    participant_role=ConversationParticipantRole.AGENT,
+                ),
+            }
+        )
+    return render(request, "agents/message_inbox.html", {"conversation_rows": rows})
 
 
 @login_required
@@ -916,6 +918,16 @@ def student_detail(request, student_id):
         "program_offering__semester",
     ).order_by("-updated_at")
 
+    student_conversation = get_or_create_conversation(subject=student)
+    student_messages = student_conversation.messages.select_related("sender").prefetch_related(
+        "attachments"
+    )
+    mark_conversation_read(
+        conversation=student_conversation,
+        user=request.user,
+        participant_role=ConversationParticipantRole.AGENT,
+    )
+
     return render(
         request,
         "agents/student_detail.html",
@@ -926,6 +938,9 @@ def student_detail(request, student_id):
             "applications": applications,
             "new_application_form": StudentApplicationOfferingForm(),
             "student_document_form": StudentDocumentUploadForm(),
+            "conversation": student_conversation,
+            "student_messages": student_messages,
+            "message_form": MessageForm(),
         },
     )
 
@@ -1016,6 +1031,44 @@ def student_start_discussed_application(request, student_id, interest_id):
 
 
 @login_required
+@require_POST
+def student_message(request, student_id):
+    student = get_object_or_404(_agent_students(request.user), pk=student_id)
+    conversation = get_or_create_conversation(subject=student)
+    form = MessageForm(request.POST, request.FILES)
+    if not form.is_valid():
+        messages.error(request, "Write a message or attach a file.")
+        return redirect("agent-student-detail", student_id=student.pk)
+    send_message(
+        conversation=conversation,
+        sender=request.user,
+        sender_role=MessageSenderRole.AGENT,
+        body=form.cleaned_data.get("body", ""),
+        attachment=form.cleaned_data.get("attachment"),
+    )
+    return redirect("agent-student-detail", student_id=student.pk)
+
+
+@login_required
+@require_POST
+def application_message(request, application_id):
+    application = get_object_or_404(_agent_applications(request.user), pk=application_id)
+    conversation = get_or_create_conversation(subject=application)
+    form = MessageForm(request.POST, request.FILES)
+    if not form.is_valid():
+        messages.error(request, "Write a message or attach a file.")
+        return redirect("agent-application-detail", application_id=application.pk)
+    send_message(
+        conversation=conversation,
+        sender=request.user,
+        sender_role=MessageSenderRole.AGENT,
+        body=form.cleaned_data.get("body", ""),
+        attachment=form.cleaned_data.get("attachment"),
+    )
+    return redirect("agent-application-detail", application_id=application.pk)
+
+
+@login_required
 def application_list(request):
     leads = _agent_leads(request.user)
     program_requests = LeadProgramInterest.objects.filter(
@@ -1069,6 +1122,16 @@ def application_detail(request, application_id):
             resource_name="application",
             list_url_name="agent-application-list",
         )
+    application_conversation = get_or_create_conversation(subject=application)
+    application_messages = application_conversation.messages.select_related(
+        "sender"
+    ).prefetch_related("attachments")
+    mark_conversation_read(
+        conversation=application_conversation,
+        user=request.user,
+        participant_role=ConversationParticipantRole.AGENT,
+    )
+
     return render(
         request,
         "agents/application_detail.html",
@@ -1080,6 +1143,9 @@ def application_detail(request, application_id):
                 application=application,
             ),
             "application_document_upload_form": ApplicationDocumentUploadForm(),
+            "conversation": application_conversation,
+            "application_messages": application_messages,
+            "message_form": MessageForm(),
         },
     )
 

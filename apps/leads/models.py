@@ -421,7 +421,7 @@ class LeadDocument(BaseModel):
     reviewed_at = models.DateTimeField(null=True, blank=True)
     review_note = models.TextField(blank=True)
     source_message_attachment = models.OneToOneField(
-        "LeadMessageAttachment",
+        "messaging.MessageAttachment",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

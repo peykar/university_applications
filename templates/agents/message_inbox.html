@@ -2,10 +2,10 @@
 {% block agent_title %}{% trans "Messages" %}{% endblock %}
 {% block agent_content %}
 <section class="agent-panel"><div class="agent-list">
-{% for lead in leads %}
-<a class="agent-list-row" href="{% url 'agent-applicant-detail' lead.pk %}#messages">
- <span><strong>{{ lead }}</strong><small>{{ lead.email|default:lead.user.email }}</small></span>
- <span>{% if lead.unread_count %}<b class="unread-badge">{{ lead.unread_count }}</b>{% else %}<span class="status-pill">{% trans "Read" %}</span>{% endif %}</span>
+{% for row in conversation_rows %}
+<a class="agent-list-row" href="{{ row.conversation.get_agent_url }}">
+ <span><strong>{{ row.conversation.customer.get_full_name|default:row.conversation.customer.username }}</strong><small>{{ row.conversation.subject_label }}{% if row.latest_message %} · {{ row.latest_message.body|truncatechars:64|default:"Attachment" }}{% endif %}</small></span>
+ <span>{% if row.unread_count %}<b class="unread-badge">{{ row.unread_count }}</b>{% else %}<span class="status-pill">{% trans "Read" %}</span>{% endif %}</span>
 </a>
 {% empty %}<p class="empty-state">{% trans "No conversations yet." %}</p>{% endfor %}
 </div></section>

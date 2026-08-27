@@ -5,11 +5,14 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.agents.models import Agent
-from apps.leads.models import (
-    Lead,
-    LeadMessage,
-    LeadMessageSenderType,
+from apps.leads.models import Lead
+from apps.messaging.models import (
+    ConversationParticipantRole,
+    ConversationParticipantState,
+    Message,
+    MessageSenderRole,
 )
+from apps.messaging.services import get_or_create_conversation
 
 
 class AgentWorkspaceTests(TestCase):
@@ -48,11 +51,11 @@ class AgentWorkspaceTests(TestCase):
             first_name="Other",
             last_name="Applicant",
         )
-        conversation = self.lead.conversation
-        LeadMessage.objects.create(
+        conversation = get_or_create_conversation(subject=self.lead)
+        Message.objects.create(
             conversation=conversation,
             sender=self.customer,
-            sender_type=LeadMessageSenderType.CUSTOMER,
+            sender_role=MessageSenderRole.CUSTOMER,
             body="I need help with my application.",
         )
 
@@ -77,8 +80,13 @@ class AgentWorkspaceTests(TestCase):
         self.client.force_login(self.agent_user)
         response = self.client.get(reverse("agent-applicant-detail", args=[self.lead.pk]))
         self.assertEqual(response.status_code, 200)
-        message = self.lead.conversation.messages.get()
-        self.assertTrue(message.read_receipts.filter(user=self.agent_user).exists())
+        conversation = get_or_create_conversation(subject=self.lead)
+        state = ConversationParticipantState.objects.get(
+            conversation=conversation,
+            user=self.agent_user,
+            participant_role=ConversationParticipantRole.AGENT,
+        )
+        self.assertEqual(state.last_read_message, conversation.messages.get())
 
     def test_agent_can_reply_to_customer(self):
         self.client.force_login(self.agent_user)
@@ -90,8 +98,10 @@ class AgentWorkspaceTests(TestCase):
             response,
             reverse("agent-applicant-detail", args=[self.lead.pk]),
         )
-        reply = self.lead.conversation.messages.order_by("-created_at").first()
-        self.assertEqual(reply.sender_type, LeadMessageSenderType.STAFF)
+        conversation = get_or_create_conversation(subject=self.lead)
+        reply = conversation.messages.order_by("-created_at").first()
+        self.assertIsNotNone(reply)
+        self.assertEqual(reply.sender_role, MessageSenderRole.AGENT)
         self.assertEqual(reply.sender, self.agent_user)
 
     def test_agent_program_names_link_to_public_program_page(self):

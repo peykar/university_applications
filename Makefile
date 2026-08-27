@@ -93,3 +93,11 @@ docker-prod:
 
 phone-check:
 	uv run python manage.py check_phone_library
+
+
+.PHONY: messages-migrate messages-migrate-dry-run
+messages-migrate:
+	uv run python manage.py migrate_legacy_messages
+
+messages-migrate-dry-run:
+	uv run python manage.py migrate_legacy_messages --dry-run

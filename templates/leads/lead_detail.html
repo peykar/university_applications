@@ -177,10 +177,10 @@
       <div class="lead-chat">
         <div class="lead-chat-messages">
           {% for message in lead_messages %}
-            <article class="chat-message chat-message-{{ message.sender_type }}{% if message.sender == request.user %} chat-message-own{% endif %}">
+            <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
               <div class="chat-message-meta">
                 <strong>
-                  {% if message.sender_type == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}
+                  {% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}
                 </strong>
                 <time>{{ message.created_at|date:"Y-m-d H:i" }}</time>
               </div>

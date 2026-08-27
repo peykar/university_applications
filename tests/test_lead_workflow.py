@@ -5,16 +5,17 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.urls import reverse
 
+from apps.agents.models import Agent
 from apps.geography.models import City, Country, Province
 from apps.leads.models import (
     Lead,
-    LeadMessage,
-    LeadMessageSenderType,
     LeadProgramInterest,
     LeadProgramInterestSource,
     LeadStatus,
 )
 from apps.leads.services.conversion import finalize_lead
+from apps.messaging.models import Message, MessageSenderRole
+from apps.messaging.services import get_or_create_conversation
 from apps.students.models import Gender, Student
 from apps.universities.models import (
     AcademicYear,
@@ -45,6 +46,8 @@ class LeadWorkflowTests(TestCase):
             password="test-password-123",
             is_staff=True,
         )
+        self.agent = Agent.objects.create(company_name="Workflow Agent")
+        self.agent.users.add(self.staff)
 
         self.country = Country.objects.create(
             iso2="TR",
@@ -151,6 +154,7 @@ class LeadWorkflowTests(TestCase):
     def make_lead(self, first_name="Sara"):
         return Lead.objects.create(
             user=self.user,
+            agent=self.agent,
             first_name=first_name,
             last_name="Example",
             nationality=self.country,
@@ -167,7 +171,7 @@ class LeadWorkflowTests(TestCase):
     def test_lead_creation_creates_preferences_and_conversation(self):
         lead = self.make_lead()
         self.assertIsNotNone(lead.preferences)
-        self.assertIsNotNone(lead.conversation)
+        self.assertIsNotNone(get_or_create_conversation(subject=lead))
 
     def test_only_logged_in_user_can_apply(self):
         url = reverse("apply-program", kwargs={"slug": self.program.slug_en})
@@ -204,9 +208,10 @@ class LeadWorkflowTests(TestCase):
             {"body": "Can you check my options?"},
         )
         self.assertEqual(response.status_code, 302)
-        message = LeadMessage.objects.get()
+        conversation = get_or_create_conversation(subject=lead)
+        message = Message.objects.get(conversation=conversation)
         self.assertEqual(message.sender, self.user)
-        self.assertEqual(message.sender_type, LeadMessageSenderType.CUSTOMER)
+        self.assertEqual(message.sender_role, MessageSenderRole.CUSTOMER)
 
     def test_finalizing_lead_creates_student_without_application(self):
         lead = self.make_lead()

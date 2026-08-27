@@ -13,7 +13,7 @@ class AgentDocumentSidebarAndSystemEventTests(SimpleTestCase):
         self.css = (root / "static" / "css" / "turkdemy.css").read_text(encoding="utf-8")
 
     def test_system_messages_use_compact_event_row(self):
-        self.assertIn('message.sender_type == "system"', self.template)
+        self.assertIn('message.sender_role == "system"', self.template)
         self.assertIn("system-event-row", self.template)
         self.assertIn(".agent-message.system-event", self.css)
 

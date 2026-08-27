@@ -25,6 +25,7 @@ urlpatterns += i18n_patterns(
     path("", include("apps.public.urls")),
     path("", include("apps.agents.urls")),
     path("", include("apps.leads.urls")),
+    path("", include("apps.messaging.urls")),
 )
 
 if settings.DEBUG:
