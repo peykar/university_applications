@@ -8,9 +8,8 @@ from apps.leads.models import (
     Lead,
     LeadDocument,
     LeadDocumentReviewStatus,
-    LeadProgramInterest,
 )
-from apps.universities.models import Program, ProgramOffering
+from apps.universities.models import ProgramOffering
 
 
 class DocumentReviewForm(forms.Form):
@@ -94,62 +93,27 @@ class AgentLeadDocumentUploadForm(forms.ModelForm):
         }
 
 
-class AgentProgramSuggestionForm(forms.ModelForm):
-    """Create an agent-suggested program interest for a Lead."""
+class StudentApplicationOfferingForm(forms.Form):
+    offering = forms.ModelChoiceField(
+        queryset=ProgramOffering.objects.none(),
+        label=_("Program / intake"),
+    )
 
-    class Meta:
-        model = LeadProgramInterest
-        fields = ("program", "program_offering", "suggestion_reason")
-        widgets: ClassVar[dict[str, forms.Widget]] = {
-            "suggestion_reason": forms.Textarea(attrs={"rows": 2, "class": "compact-note-input"}),
-        }
-        labels: ClassVar[dict[str, object]] = {
-            "suggestion_reason": _("Suggestion note (optional)"),
-        }
-
-    def __init__(self, *args, lead=None, **kwargs):
+    def __init__(self, *args, program=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.lead = lead
-        program_field = self.fields["program"]
-        offering_field = self.fields["program_offering"]
-        if not isinstance(program_field, forms.ModelChoiceField):
-            raise TypeError("program must be a ModelChoiceField")
-        if not isinstance(offering_field, forms.ModelChoiceField):
-            raise TypeError("program_offering must be a ModelChoiceField")
-
-        program_field.widget.attrs.update(
-            {
-                "class": "searchable-single",
-                "data-placeholder": "Search program or university",
-            }
+        queryset = ProgramOffering.objects.filter(is_active=True).select_related(
+            "program",
+            "program__university",
+            "academic_year",
+            "semester",
         )
-        offering_field.required = False
-        offering_field.widget.attrs.update(
-            {
-                "class": "searchable-single dependent-offering",
-                "data-placeholder": "Select program first",
-                "disabled": True,
-            }
-        )
-
-        if self.is_bound:
-            program_field.queryset = Program.objects.filter(is_active=True).select_related(
-                "university"
+        if program is not None:
+            queryset = queryset.filter(program=program)
+        offering_field = self.fields["offering"]
+        if isinstance(offering_field, forms.ModelChoiceField):
+            offering_field.queryset = queryset.order_by(
+                "program__university__name_en",
+                "program__name_en",
+                "academic_year__name",
+                "semester__name",
             )
-            offering_field.queryset = ProgramOffering.objects.filter(is_active=True).select_related(
-                "program", "academic_year", "semester"
-            )
-        else:
-            program_field.queryset = Program.objects.none()
-            offering_field.queryset = ProgramOffering.objects.none()
-
-    def clean(self):
-        cleaned = super().clean() or {}
-        program = cleaned.get("program")
-        offering = cleaned.get("program_offering")
-        if program is not None and offering is not None and offering.program_id != program.pk:
-            self.add_error(
-                "program_offering",
-                _("The selected intake must belong to the selected program."),
-            )
-        return cleaned

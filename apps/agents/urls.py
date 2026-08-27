@@ -6,16 +6,6 @@ urlpatterns = [
     path("agent/", views.dashboard, name="agent-dashboard"),
     path("agent/applicants/", views.applicant_list, name="agent-applicant-list"),
     path(
-        "agent/program-search/",
-        views.agent_program_search,
-        name="agent-program-search",
-    ),
-    path(
-        "agent/program-offering-search/",
-        views.agent_program_offering_search,
-        name="agent-program-offering-search",
-    ),
-    path(
         "agent/applicants/<uuid:lead_id>/",
         views.applicant_detail,
         name="agent-applicant-detail",
@@ -56,11 +46,6 @@ urlpatterns = [
         name="agent-applicant-assign",
     ),
     path(
-        "agent/applicants/<uuid:lead_id>/programs/suggest/",
-        views.applicant_program_suggest,
-        name="agent-applicant-program-suggest",
-    ),
-    path(
         "agent/applicants/<uuid:lead_id>/finalize/",
         views.applicant_finalize,
         name="agent-applicant-finalize",
@@ -81,6 +66,21 @@ urlpatterns = [
         name="agent-applicant-attachment-to-document",
     ),
     path("agent/messages/", views.message_inbox, name="agent-message-inbox"),
+    path(
+        "agent/students/<uuid:student_id>/",
+        views.student_detail,
+        name="agent-student-detail",
+    ),
+    path(
+        "agent/students/<uuid:student_id>/applications/new/",
+        views.student_new_application,
+        name="agent-student-new-application",
+    ),
+    path(
+        "agent/students/<uuid:student_id>/programs/<uuid:interest_id>/start-application/",
+        views.student_start_discussed_application,
+        name="agent-student-start-discussed-application",
+    ),
     path("agent/applications/", views.application_list, name="agent-application-list"),
     path(
         "agent/applications/<uuid:application_id>/",

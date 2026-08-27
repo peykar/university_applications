@@ -7,13 +7,13 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
 from django.db.models import Count, Max, Q
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from apps.applications.models import Application, ApplicationStatus
+from apps.applications.services import create_student_application
 from apps.leads.forms import LeadMessageForm
 from apps.leads.models import (
     Lead,
@@ -27,19 +27,18 @@ from apps.leads.models import (
     LeadMessageRead,
     LeadMessageSenderType,
     LeadProgramInterest,
-    LeadProgramInterestSource,
     LeadStatus,
 )
 from apps.leads.services.conversion import finalize_lead
 from apps.leads.services.messaging import ensure_conversation, send_system_message
-from apps.universities.models import Program, ProgramOffering
+from apps.students.models import Student
 
 from .forms import (
     AgentLeadDocumentUploadForm,
     AgentLeadEditForm,
-    AgentProgramSuggestionForm,
     DocumentReviewForm,
     PromoteChatAttachmentForm,
+    StudentApplicationOfferingForm,
 )
 from .models import Agent
 
@@ -88,6 +87,11 @@ def _audit_form_value(field, value):
 def _agent_leads(user):
     agent_ids = _require_agent(user)
     return Lead.objects.filter(agent_id__in=agent_ids)
+
+
+def _agent_students(user):
+    agent_ids = _require_agent(user)
+    return Student.objects.filter(agent_id__in=agent_ids)
 
 
 def _agent_applications(user):
@@ -241,21 +245,6 @@ def applicant_detail(request, lead_id):
         else []
     )
 
-    interests = list(
-        lead.program_interests.select_related(
-            "program",
-            "program__university",
-            "program_offering",
-        ).order_by("-created_at")
-    )
-    for interest in interests:
-        interest.available_offerings = list(
-            interest.program.offerings.filter(is_active=True).select_related(
-                "academic_year",
-                "semester",
-            )
-        )
-
     return render(
         request,
         "agents/applicant_detail.html",
@@ -273,7 +262,9 @@ def applicant_detail(request, lead_id):
                 "reviewed_by",
                 "source_message_attachment",
             ).order_by("-created_at"),
-            "interests": interests,
+            "interests": lead.program_interests.select_related(
+                "program", "program__university", "program_offering"
+            ).order_by("-created_at"),
             "activities": lead.activities.select_related("created_by").order_by("-created_at")[:50],
             "status_choices": LeadStatus.choices,
         },
@@ -663,131 +654,6 @@ def applicant_assign(request, lead_id):
 
 
 @login_required
-def agent_program_search(request):
-    _require_agent(request.user)
-    query = (request.GET.get("q") or "").strip()
-    programs = Program.objects.filter(is_active=True).select_related("university")
-    if query:
-        programs = programs.filter(
-            Q(name_en__icontains=query)
-            | Q(name_tr__icontains=query)
-            | Q(university__name_en__icontains=query)
-            | Q(university__name_tr__icontains=query)
-        )
-    programs = programs.order_by("university__name_en", "name_en")[:20]
-    return JsonResponse(
-        {
-            "results": [
-                {
-                    "id": str(program.pk),
-                    "label": f"{program.name_en} — {program.university.name_en}",
-                }
-                for program in programs
-            ]
-        }
-    )
-
-
-@login_required
-def agent_program_offering_search(request):
-    _require_agent(request.user)
-    program_id = (request.GET.get("program_id") or "").strip()
-    if not program_id:
-        return JsonResponse({"results": []})
-
-    offerings = (
-        ProgramOffering.objects.filter(is_active=True, program_id=program_id)
-        .select_related("program", "academic_year", "semester")
-        .order_by("-academic_year__name_en", "semester__name_en")[:30]
-    )
-    return JsonResponse(
-        {
-            "results": [
-                {
-                    "id": str(offering.pk),
-                    "label": str(offering),
-                }
-                for offering in offerings
-            ]
-        }
-    )
-
-
-@login_required
-def applicant_program_suggest(request, lead_id):
-    lead = get_object_or_404(
-        _agent_leads(request.user).select_related("agent", "assigned_to"),
-        pk=lead_id,
-    )
-
-    if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
-        messages.error(
-            request,
-            "Programs can only be suggested for an active applicant.",
-        )
-        return redirect("agent-applicant-detail", lead_id=lead.pk)
-
-    if request.method == "POST":
-        form = AgentProgramSuggestionForm(request.POST, lead=lead)
-        if form.is_valid():
-            interest = form.save(commit=False)
-            interest.lead = lead
-            interest.source = LeadProgramInterestSource.AGENT
-            interest.suggested_by = request.user
-            interest.created_by = request.user
-            interest.updated_by = request.user
-            try:
-                interest.full_clean()
-                interest.save()
-            except ValidationError as exc:
-                detail = " ".join(str(message) for message in exc.messages)
-                messages.error(request, f"Program could not be suggested. {detail}")
-            else:
-                LeadActivity.objects.create(
-                    lead=lead,
-                    activity_type=LeadActivityType.PROGRAM_SUGGESTED,
-                    description=f"{interest.program} was suggested by an agent user.",
-                    metadata={
-                        "program_id": str(interest.program_id),
-                        "program_offering_id": (
-                            str(interest.program_offering_id)
-                            if interest.program_offering_id
-                            else None
-                        ),
-                    },
-                    is_customer_visible=True,
-                    created_by=request.user,
-                    updated_by=request.user,
-                )
-                send_system_message(
-                    lead,
-                    f"We suggested {interest.program} for you to consider.",
-                    performed_by=request.user,
-                )
-                messages.success(
-                    request,
-                    f"{interest.program} suggested to the applicant.",
-                )
-                return redirect("agent-applicant-detail", lead_id=lead.pk)
-        else:
-            messages.error(
-                request,
-                "Program could not be suggested. Please review the highlighted fields.",
-            )
-    else:
-        form = AgentProgramSuggestionForm(lead=lead)
-
-    return render(
-        request,
-        "agents/program_suggest.html",
-        {
-            "lead": lead,
-            "form": form,
-        },
-    )
-
-
-@login_required
 @require_POST
 def applicant_finalize(request, lead_id):
     lead = get_object_or_404(_agent_leads(request.user), pk=lead_id)
@@ -806,15 +672,7 @@ def applicant_finalize(request, lead_id):
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     try:
-        student = finalize_lead(
-            lead,
-            performed_by=request.user,
-            selected_interest_ids=request.POST.getlist("program_interests"),
-            selected_offering_ids={
-                interest_id: request.POST.get(f"program_offering_{interest_id}", "")
-                for interest_id in request.POST.getlist("program_interests")
-            },
-        )
+        student = finalize_lead(lead, performed_by=request.user)
     except ValidationError as exc:
         if hasattr(exc, "message_dict"):
             detail = " ".join(
@@ -1016,6 +874,123 @@ def message_inbox(request):
         .order_by("-last_message_at")
     )
     return render(request, "agents/message_inbox.html", {"leads": conversations})
+
+
+@login_required
+def student_detail(request, student_id):
+    student = (
+        _agent_students(request.user)
+        .select_related("agent", "user", "source_lead")
+        .filter(pk=student_id)
+        .first()
+    )
+    if student is None:
+        return _render_agent_not_found(
+            request,
+            resource_name="student",
+            list_url_name="agent-application-list",
+        )
+
+    source_lead = getattr(student, "source_lead", None)
+    discussed_programs = (
+        source_lead.program_interests.select_related(
+            "program",
+            "program__university",
+            "program_offering",
+            "program_offering__academic_year",
+            "program_offering__semester",
+            "converted_application",
+        ).order_by("-created_at")
+        if source_lead is not None
+        else []
+    )
+
+    applications = student.applications.select_related(
+        "program_offering",
+        "program_offering__program",
+        "program_offering__program__university",
+        "program_offering__academic_year",
+        "program_offering__semester",
+    ).order_by("-updated_at")
+
+    return render(
+        request,
+        "agents/student_detail.html",
+        {
+            "student": student,
+            "source_lead": source_lead,
+            "discussed_programs": discussed_programs,
+            "applications": applications,
+            "new_application_form": StudentApplicationOfferingForm(),
+        },
+    )
+
+
+@login_required
+@require_POST
+def student_new_application(request, student_id):
+    student = get_object_or_404(_agent_students(request.user), pk=student_id)
+    form = StudentApplicationOfferingForm(request.POST)
+    if not form.is_valid():
+        messages.error(request, "Choose a valid program intake.")
+        return redirect("agent-student-detail", student_id=student.pk)
+
+    try:
+        application = create_student_application(
+            student=student,
+            offering=form.cleaned_data["offering"],
+            performed_by=request.user,
+        )
+    except ValidationError as exc:
+        messages.error(request, " ".join(exc.messages))
+        return redirect("agent-student-detail", student_id=student.pk)
+
+    messages.success(request, "Draft application created.")
+    return redirect("agent-application-detail", application_id=application.pk)
+
+
+@login_required
+@require_POST
+def student_start_discussed_application(request, student_id, interest_id):
+    student = get_object_or_404(_agent_students(request.user), pk=student_id)
+    source_lead = getattr(student, "source_lead", None)
+    if source_lead is None:
+        messages.error(request, "This student has no originating applicant record.")
+        return redirect("agent-student-detail", student_id=student.pk)
+
+    interest = get_object_or_404(
+        source_lead.program_interests.select_related(
+            "program",
+            "program_offering",
+        ),
+        pk=interest_id,
+    )
+
+    if interest.program_offering_id:
+        offering = interest.program_offering
+    else:
+        form = StudentApplicationOfferingForm(request.POST, program=interest.program)
+        if not form.is_valid():
+            messages.error(
+                request,
+                "Choose a valid intake for the discussed program.",
+            )
+            return redirect("agent-student-detail", student_id=student.pk)
+        offering = form.cleaned_data["offering"]
+
+    try:
+        application = create_student_application(
+            student=student,
+            offering=offering,
+            performed_by=request.user,
+            source_interest=interest,
+        )
+    except ValidationError as exc:
+        messages.error(request, " ".join(exc.messages))
+        return redirect("agent-student-detail", student_id=student.pk)
+
+    messages.success(request, "Discussed program converted to a draft application.")
+    return redirect("agent-application-detail", application_id=application.pk)
 
 
 @login_required

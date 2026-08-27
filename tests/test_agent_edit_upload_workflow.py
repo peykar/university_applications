@@ -39,11 +39,14 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
         self.assertIn("for field_messages in form.errors.values()", self.views)
         self.assertIn("for message in field_messages", self.views)
 
-    def test_section_actions_are_compact(self):
+    def test_section_actions_are_compact_and_applicant_update_is_auditable(self):
         self.assertIn(
-            'class="section-action agent-action-control button-reset modal-trigger"',
+            'class="section-action button-reset modal-trigger"',
             self.template,
         )
+        self.assertIn("Last updated by", self.template)
+        self.assertIn("lead.updated_by", self.template)
+        self.assertIn("lead.updated_at", self.template)
 
     def test_edit_modal_is_grouped_and_sticky(self):
         for heading in (

@@ -7,11 +7,9 @@ from django.core.files.base import ContentFile
 from django.db import transaction
 from django.utils import timezone
 
-from apps.applications.models import Application, ApplicationStatus
 from apps.core.audit import get_system_user
 from apps.core.phone import normalize_phone_number
 from apps.students.models import Student, StudentDocument
-from apps.universities.models import ProgramOffering
 
 from ..models import (
     Lead,
@@ -96,92 +94,11 @@ def _copy_verified_documents(
     return copied
 
 
-def _create_selected_draft_applications(
-    lead: Lead,
-    student: Student,
-    *,
-    selected_interest_ids: list[str] | tuple[str, ...],
-    selected_offering_ids: dict[str, str] | None,
-    actor,
-) -> list[Application]:
-    """Create Draft Applications from explicitly selected Lead interests."""
-    if not selected_interest_ids:
-        return []
-
-    interests = list(
-        lead.program_interests.select_related(
-            "program",
-            "program__university",
-            "program_offering",
-        ).filter(pk__in=selected_interest_ids)
-    )
-
-    if len(interests) != len(set(selected_interest_ids)):
-        raise ValidationError("One or more selected programs do not belong to this applicant.")
-
-    selected_offering_ids = selected_offering_ids or {}
-    applications: list[Application] = []
-    for interest in interests:
-        offering = interest.program_offering
-        selected_offering_id = selected_offering_ids.get(str(interest.pk), "")
-        if selected_offering_id:
-            try:
-                offering = ProgramOffering.objects.get(
-                    pk=selected_offering_id,
-                    program=interest.program,
-                    is_active=True,
-                )
-            except (ProgramOffering.DoesNotExist, ValueError):
-                raise ValidationError(
-                    {"programs": f"Choose a valid intake for {interest.program}."}
-                ) from None
-
-        if offering is None:
-            raise ValidationError({"programs": f"Choose an intake for {interest.program}."})
-
-        if interest.program_offering_id != offering.pk:
-            interest.program_offering = offering
-            interest.updated_by = actor
-            interest.save(update_fields=("program_offering", "updated_by", "updated_at"))
-
-        if interest.converted_application_id:
-            converted = interest.converted_application
-            if converted is not None:
-                applications.append(converted)
-                continue
-
-        application = Application.objects.create(
-            student=student,
-            agent=lead.agent,
-            program_offering=offering,
-            status=ApplicationStatus.DRAFT,
-            tuition=offering.tuition,
-            deposit=offering.deposit,
-            notes=interest.notes,
-            created_by=actor,
-            updated_by=actor,
-        )
-        interest.converted_application = application
-        interest.updated_by = actor
-        interest.save(
-            update_fields=(
-                "converted_application",
-                "updated_by",
-                "updated_at",
-            )
-        )
-        applications.append(application)
-
-    return applications
-
-
 @transaction.atomic
 def finalize_lead(
     lead: Lead,
     *,
     performed_by=None,
-    selected_interest_ids: list[str] | tuple[str, ...] | None = None,
-    selected_offering_ids: dict[str, str] | None = None,
 ) -> Student:
     """
     Atomically finalize a Lead and create its canonical Student record.
@@ -198,7 +115,6 @@ def finalize_lead(
     converted into formal university applications.
     """
     actor = performed_by or get_system_user()
-    selected_interest_ids = list(selected_interest_ids or [])
 
     if lead.status == LeadStatus.CLOSED:
         raise ValidationError("A closed lead cannot be finalized.")
@@ -246,13 +162,6 @@ def finalize_lead(
     )
 
     _copy_verified_documents(lead, student, actor=actor)
-    draft_applications = _create_selected_draft_applications(
-        lead,
-        student,
-        selected_interest_ids=selected_interest_ids,
-        selected_offering_ids=selected_offering_ids,
-        actor=actor,
-    )
 
     now = timezone.now()
     lead.converted_student = student
@@ -276,10 +185,7 @@ def finalize_lead(
     LeadActivity.objects.create(
         lead=lead,
         activity_type=LeadActivityType.FINALIZED,
-        description=(
-            f"Finalized and converted to Student {student.pk}; "
-            f"{len(draft_applications)} draft application(s) created."
-        ),
+        description=f"Finalized and converted to Student {student.pk}.",
         is_customer_visible=True,
         created_by=actor,
         updated_by=actor,

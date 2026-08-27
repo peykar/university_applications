@@ -1,4 +1,4 @@
-{% extends "agents/base.html" %}{% load i18n static %}
+{% extends "agents/base.html" %}{% load i18n %}
 {% block agent_title %}{{ lead }}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -31,18 +31,21 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-
-
-
 {% endblock %}
 {% block agent_content %}
-<div class="agent-detail-grid applicant-workspace-detail">
+<div class="agent-detail-grid">
 <div>
 <section class="agent-panel">
- <div class="agent-panel-head"><div><div class="section-heading-actions"><h2>{% trans "Applicant" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<button type="button" class="section-action agent-action-control button-reset modal-trigger" data-modal-target="edit-applicant-modal">{% trans "Edit applicant" %}</button>{% endif %}</div>
-</div><span class="status-pill">{{ lead.get_status_display }}</span></div>
+ <div class="agent-panel-head"><div><div class="section-heading-actions"><h2>{% trans "Applicant" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<button type="button" class="section-action button-reset modal-trigger" data-modal-target="edit-applicant-modal">{% trans "Edit applicant" %}</button>{% endif %}</div>
+ <div class="section-audit">
+  <span
+   class="section-audit-indicator"
+   title="{% if lead.updated_by %}{% blocktrans with person=lead.updated_by.get_full_name|default:lead.updated_by.username when=lead.updated_at|date:'M j, Y H:i' %}Last updated by {{ person }} · {{ when }}{% endblocktrans %}{% else %}{% blocktrans with when=lead.updated_at|date:'M j, Y H:i' %}Last updated · {{ when }}{% endblocktrans %}{% endif %}"
+  >
+   {% trans "Updated" %} {{ lead.updated_at|date:"M j, Y H:i" }}
+  </span>
+ </div><p>{{ lead.email|default:lead.user.email }}</p></div><span class="status-pill">{{ lead.get_status_display }}</span></div>
  <dl class="agent-facts">
-  <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:lead.user.email|default:"—" }}</dd></div>
   <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
   <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
   <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }} {{ lead.city_of_residence }}</dd></div>
@@ -59,11 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
      <div class="responsibility-actions">
       {% if lead.assigned_to != request.user %}
        <form method="post" action="{% url 'agent-applicant-assign-to-me' lead.pk %}">{% csrf_token %}
-        <button class="responsibility-action agent-action-control" type="submit">{% trans "Assign to me" %}</button>
+        <button class="responsibility-action" type="submit">{% trans "Assign to me" %}</button>
        </form>
       {% endif %}
       {% if agent_users %}
-       <button type="button" class="responsibility-action agent-action-control button-reset modal-trigger" data-modal-target="assign-agent-modal">{% if lead.assigned_to %}{% trans "Reassign" %}{% else %}{% trans "Assign agent" %}{% endif %}</button>
+       <button type="button" class="responsibility-action button-reset modal-trigger" data-modal-target="assign-agent-modal">{% if lead.assigned_to %}{% trans "Reassign" %}{% else %}{% trans "Assign agent" %}{% endif %}</button>
       {% endif %}
      </div>
     {% endif %}
@@ -82,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
    {% endif %}
   {% elif lead.status == "finalized" %}
    {% if lead.converted_student %}
-    <a class="button button-secondary" href="{% url 'admin:students_student_change' lead.converted_student.pk %}">{% trans "View student" %}</a>
+    <a class="button button-secondary" href="{% url 'agent-student-detail' lead.converted_student.pk %}">{% trans "View student" %}</a>
    {% endif %}
   {% else %}
    <button
@@ -268,7 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
  {% endif %}
 
  {% if lead.status != "finalized" and lead.status != "closed" and lead.assigned_to == request.user %}
- <dialog class="agent-modal finalize-applicant-modal" id="finalize-applicant-modal" aria-labelledby="finalize-applicant-title">
+ <dialog class="agent-modal" id="finalize-applicant-modal" aria-labelledby="finalize-applicant-title">
   <div class="agent-modal-card">
    <div class="agent-modal-head">
     <div>
@@ -286,54 +289,11 @@ document.addEventListener("DOMContentLoaded", () => {
     <div><span>{% trans "Email" %}</span><strong>{{ lead.email|default:"—" }}</strong></div>
     <div><span>{% trans "Responsible agent" %}</span><strong>{{ lead.assigned_to.get_full_name|default:lead.assigned_to.username }}</strong></div>
    </div>
-   <div class="finalize-programs">
-    <div class="finalize-programs-head">
-     <strong>{% trans "Draft applications" %}</strong>
-     <span>{% trans "Select the programs to create as draft applications and choose an intake for each. Selecting none is allowed." %}</span>
-    </div>
-    <div class="finalize-program-list">
-     {% for interest in interests %}
-      <div class="finalize-program-option finalize-program-row">
-       <label class="finalize-program-choice">
-        <input
-         type="checkbox"
-         name="program_interests"
-         value="{{ interest.pk }}"
-         form="finalize-applicant-form"
-        >
-        <span class="finalize-program-identity">
-         <strong>{{ interest.program.name_en }}</strong>
-         <small>{{ interest.program.university.name_en }}</small>
-        </span>
-       </label>
-       <div class="finalize-program-intake">
-        <label for="program-offering-{{ interest.pk }}">{% trans "Intake" %}</label>
-        <select
-         id="program-offering-{{ interest.pk }}"
-         name="program_offering_{{ interest.pk }}"
-         form="finalize-applicant-form"
-        >
-         <option value="">{% trans "Choose intake" %}</option>
-         {% for offering in interest.available_offerings %}
-          <option value="{{ offering.pk }}"{% if interest.program_offering_id == offering.pk %} selected{% endif %}>{{ offering }}</option>
-         {% endfor %}
-        </select>
-       </div>
-       {% if not interest.available_offerings %}
-        <small class="finalize-program-missing finalize-program-row-message">{% trans "No active intake is available for this program." %}</small>
-       {% endif %}
-      </div>
-     {% empty %}
-      <p class="empty-state">{% trans "No discussed programs yet." %}</p>
-     {% endfor %}
-    </div>
-   </div>
-
    {% if not lead.first_name or not lead.last_name or not lead.nationality or not lead.gender %}
     <p class="finalize-warning">{% trans "Some required information is missing. Finalization will stop and tell you what must be completed." %}</p>
    {% endif %}
    <p class="modal-help">{% trans "Finalizing creates the Student record, copies verified documents, and changes this lead to Finalized. Optional information can still be completed on the student later." %}</p>
-   <form id="finalize-applicant-form" method="post" action="{% url 'agent-applicant-finalize' lead.pk %}" class="agent-modal-actions">
+   <form method="post" action="{% url 'agent-applicant-finalize' lead.pk %}" class="agent-modal-actions">
     {% csrf_token %}
     <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
     <button class="button" type="submit">{% trans "Finalize and create student" %}</button>
@@ -473,7 +433,7 @@ document.addEventListener("DOMContentLoaded", () => {
  </dl>{% else %}<p class="empty-state">{% trans "No study preferences." %}</p>{% endif %}
 </section>
 <section class="agent-panel">
- <div class="agent-panel-head"><div class="section-heading-actions"><h2>{% trans "Documents" %}</h2>{% if lead.status != "finalized" %}<button type="button" class="section-action agent-action-control button-reset modal-trigger" data-modal-target="upload-document-modal">{% trans "Upload document" %}</button>{% endif %}</div></div>
+ <div class="agent-panel-head"><div class="section-heading-actions"><h2>{% trans "Documents" %}</h2>{% if lead.status != "finalized" %}<button type="button" class="section-action button-reset modal-trigger" data-modal-target="upload-document-modal">{% trans "Upload document" %}</button>{% endif %}</div></div>
  <div class="agent-document-list">
  {% for document in documents %}
   <article class="agent-document-card" id="document-{{ document.pk }}">
@@ -558,9 +518,9 @@ document.addEventListener("DOMContentLoaded", () => {
    >{% trans "Private" %}</span>
   </div>
   <div class="internal-notes-actions">
-   <a class="section-action agent-action-control" href="{% url 'agent-applicant-activity' lead.pk %}">{% trans "Activity" %}</a>
+   <a class="section-action" href="{% url 'agent-applicant-activity' lead.pk %}">{% trans "Activity" %}</a>
    {% if lead.status != "finalized" %}
-    <button type="button" class="section-action agent-action-control button-reset modal-trigger" data-modal-target="internal-notes-modal">{% trans "Edit" %}</button>
+    <button type="button" class="section-action button-reset modal-trigger" data-modal-target="internal-notes-modal">{% trans "Edit" %}</button>
    {% endif %}
   </div>
  </div>
@@ -575,11 +535,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-<section class="agent-panel"><div class="agent-panel-head"><div class="section-heading-actions"><h2>{% trans "Programs" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<a class="section-action agent-action-control program-suggest-action" href="{% url 'agent-applicant-program-suggest' lead.pk %}"><span aria-hidden="true">+</span>{% trans "Suggest program" %}</a>{% endif %}</div></div>
-<div class="agent-list program-interest-list">{% for interest in interests %}<div class="agent-list-row program-interest-row"><span><a class="agent-program-link" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener"><strong>{{ interest.program.name_en }}</strong></a><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill program-source program-source-{{ interest.source }}">{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</span></div>{% empty %}<p class="empty-state">{% trans "No programs." %}</p>{% endfor %}</div>
+<section class="agent-panel"><div class="agent-panel-head"><h2>{% trans "Programs" %}</h2></div>
+<div class="agent-list">{% for interest in interests %}<div class="agent-list-row"><span><a class="agent-program-link" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener"><strong>{{ interest.program.name_en }}</strong></a><small>{{ interest.program.university.name_en }}</small></span><span class="status-pill">{% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}</span></div>{% empty %}<p class="empty-state">{% trans "No programs." %}</p>{% endfor %}</div>
 </section>
 </aside>
 </div>
 
 {% endblock %}
-

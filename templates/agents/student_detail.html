@@ -1,0 +1,198 @@
+{% extends "agents/base.html" %}
+{% load i18n %}
+
+{% block agent_title %}{{ student }} · {% trans "Student" %}{% endblock %}
+
+{% block agent_content %}
+<div class="student-workspace-head">
+ <div>
+  <span class="eyebrow">{% trans "Student" %}</span>
+  <h1>{{ student }}</h1>
+  <div class="student-context-meta">
+   <span>{{ student.email|default:"—" }}</span>
+   {% if student.agent %}<span><strong>{% trans "Agent:" %}</strong> {{ student.agent }}</span>{% endif %}
+   {% if source_lead %}
+    <a href="{% url 'agent-applicant-detail' source_lead.pk %}">{% trans "Originating applicant" %}</a>
+   {% endif %}
+  </div>
+ </div>
+ <button type="button" class="button modal-trigger" data-modal-target="new-application-modal">
+  + {% trans "New application" %}
+ </button>
+</div>
+
+<div class="student-workspace-grid">
+ <div>
+  <section class="agent-panel">
+   <div class="agent-panel-head">
+    <div>
+     <h2>{% trans "Applications" %}</h2>
+     <p>{% trans "Formal applications for a specific program intake." %}</p>
+    </div>
+   </div>
+
+   <div class="agent-list">
+    {% for application in applications %}
+     <div class="agent-list-row student-application-row">
+      <span>
+       <a href="{% url 'agent-application-detail' application.pk %}">
+        <strong>{{ application.program_offering.program.name_en }}</strong>
+       </a>
+       <small>
+        {{ application.program_offering.program.university.name_en }}
+        · {{ application.program_offering.academic_year }}
+        · {{ application.program_offering.semester }}
+       </small>
+      </span>
+      <span class="status-pill">{{ application.get_status_display }}</span>
+     </div>
+    {% empty %}
+     <p class="empty-state">{% trans "No formal applications yet." %}</p>
+    {% endfor %}
+   </div>
+  </section>
+
+  <section class="agent-panel">
+   <div class="agent-panel-head">
+    <div>
+     <h2>{% trans "Programs discussed during applicant stage" %}</h2>
+     <p>{% trans "These remain discussion history until an agent starts a formal application." %}</p>
+    </div>
+   </div>
+
+   <div class="agent-list">
+    {% for interest in discussed_programs %}
+     <div class="agent-list-row discussed-program-row">
+      <span>
+       <strong>{{ interest.program.name_en }}</strong>
+       <small>
+        {{ interest.program.university.name_en }}
+        · {% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}
+        {% if interest.program_offering %} · {{ interest.program_offering }}{% endif %}
+       </small>
+      </span>
+
+      {% if interest.converted_application %}
+       <a class="status-pill success" href="{% url 'agent-application-detail' interest.converted_application.pk %}">
+        {% trans "Application created" %}
+       </a>
+      {% elif interest.program_offering %}
+       <form method="post" action="{% url 'agent-student-start-discussed-application' student.pk interest.pk %}">
+        {% csrf_token %}
+        <button class="section-action" type="submit">{% trans "Start application" %}</button>
+       </form>
+      {% else %}
+       <button
+        type="button"
+        class="section-action button-reset modal-trigger"
+        data-modal-target="interest-application-{{ interest.pk }}"
+       >{% trans "Choose intake & start" %}</button>
+      {% endif %}
+     </div>
+
+     {% if not interest.converted_application and not interest.program_offering %}
+      <dialog class="agent-modal" id="interest-application-{{ interest.pk }}">
+       <div class="agent-modal-card">
+        <div class="agent-modal-head">
+         <div>
+          <span class="eyebrow">{% trans "Start application" %}</span>
+          <h2>{{ interest.program.name_en }}</h2>
+          <p>{{ interest.program.university.name_en }}</p>
+         </div>
+         <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+        </div>
+        <form method="post" action="{% url 'agent-student-start-discussed-application' student.pk interest.pk %}" class="agent-modal-form">
+         {% csrf_token %}
+         <label>
+          <span>{% trans "Program intake" %}</span>
+          <select name="offering" required>
+           <option value="">{% trans "Choose intake" %}</option>
+           {% for offering in interest.program.offerings.all %}
+            {% if offering.is_active %}
+             <option value="{{ offering.pk }}">{{ offering }}</option>
+            {% endif %}
+           {% endfor %}
+          </select>
+         </label>
+         <div class="agent-modal-actions">
+          <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+          <button class="button" type="submit">{% trans "Create draft application" %}</button>
+         </div>
+        </form>
+       </div>
+      </dialog>
+     {% endif %}
+    {% empty %}
+     <p class="empty-state">{% trans "No programs were discussed during the applicant stage." %}</p>
+    {% endfor %}
+   </div>
+  </section>
+ </div>
+
+ <aside>
+  <section class="agent-panel">
+   <div class="agent-panel-head"><h2>{% trans "Student documents" %}</h2></div>
+   <div class="agent-list">
+    {% for document in student.documents.all %}
+     <div class="agent-list-row">
+      <span>
+       <a href="{{ document.file.url }}" target="_blank" rel="noopener">
+        <strong>{{ document.get_document_type_display }}</strong>
+       </a>
+       <small>{{ document.short_description }}</small>
+      </span>
+     </div>
+    {% empty %}
+     <p class="empty-state">{% trans "No student documents." %}</p>
+    {% endfor %}
+   </div>
+  </section>
+ </aside>
+</div>
+
+<dialog class="agent-modal" id="new-application-modal" aria-labelledby="new-application-title">
+ <div class="agent-modal-card">
+  <div class="agent-modal-head">
+   <div>
+    <span class="eyebrow">{% trans "Formal application" %}</span>
+    <h2 id="new-application-title">{% trans "New application" %}</h2>
+    <p>{% trans "Choose a concrete program intake. The application starts as Draft." %}</p>
+   </div>
+   <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
+  </div>
+  <form method="post" action="{% url 'agent-student-new-application' student.pk %}" class="agent-modal-form">
+   {% csrf_token %}
+   <label>
+    <span>{{ new_application_form.offering.label }}</span>
+    {{ new_application_form.offering }}
+   </label>
+   <div class="agent-modal-actions">
+    <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
+    <button class="button" type="submit">{% trans "Create draft application" %}</button>
+   </div>
+  </form>
+ </div>
+</dialog>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const closeModal = (dialog) => {
+    if (dialog && dialog.open) dialog.close();
+  };
+  document.querySelectorAll(".modal-trigger").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const dialog = document.getElementById(trigger.dataset.modalTarget);
+      if (dialog) dialog.showModal();
+    });
+  });
+  document.querySelectorAll(".agent-modal").forEach((dialog) => {
+    dialog.querySelectorAll(".modal-close").forEach((button) => {
+      button.addEventListener("click", () => closeModal(dialog));
+    });
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) closeModal(dialog);
+    });
+  });
+});
+</script>
+{% endblock %}
