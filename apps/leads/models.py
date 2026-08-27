@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from contextlib import suppress
 from pathlib import Path
 from uuid import uuid4
 
@@ -499,60 +498,6 @@ class LeadActivity(BaseModel):
         return f"{self.lead}: {self.get_activity_type_display()}"
 
 
-class LeadConversation(BaseModel):
-    lead = models.OneToOneField(
-        Lead,
-        on_delete=models.CASCADE,
-        related_name="conversation",
-    )
-    is_closed = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"Conversation: {self.lead}"
-
-
-class LeadMessageSenderType(models.TextChoices):
-    CUSTOMER = "customer", _("Customer")
-    STAFF = "staff", _("Staff")
-    SYSTEM = "system", _("System")
-
-
-class LeadMessage(BaseModel):
-    conversation = models.ForeignKey(
-        LeadConversation,
-        on_delete=models.CASCADE,
-        related_name="messages",
-    )
-    sender = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="+",
-    )
-    sender_type = models.CharField(
-        max_length=16,
-        choices=LeadMessageSenderType.choices,
-    )
-    body = models.TextField(blank=True)
-    edited_at = models.DateTimeField(null=True, blank=True)
-
-    class Meta:
-        ordering = ("created_at",)
-
-    def clean(self):
-        super().clean()
-        if self.sender_type != LeadMessageSenderType.SYSTEM and not self.sender_id:
-            raise ValidationError({"sender": _("Customer/staff messages require a sender.")})
-        if not self.body and not self.pk:
-            # An attachment can be added immediately after message creation;
-            # public form still requires either body or attachment.
-            pass
-
-    def __str__(self):
-        return f"{self.conversation.lead} - {self.get_sender_type_display()}"
-
-
 def lead_document_version_upload_path(instance, filename):
     suffix = Path(filename).suffix.lower()[:16]
     stored_name = f"{uuid4().hex}{suffix}"
@@ -616,65 +561,3 @@ class LeadDocumentReviewHistory(BaseModel):
 
     class Meta:
         ordering = ("-reviewed_at", "-created_at")
-
-
-def lead_message_attachment_upload_path(instance, filename):
-    """Build a bounded storage path while preserving the original extension."""
-    suffix = Path(filename).suffix.lower()[:16]
-    stored_name = f"{uuid4().hex}{suffix}"
-    return (
-        f"leads/{instance.message.conversation.lead_id}/"
-        f"messages/{instance.message_id}/{stored_name}"
-    )
-
-
-class LeadMessageAttachment(BaseModel):
-    message = models.ForeignKey(
-        LeadMessage,
-        on_delete=models.CASCADE,
-        related_name="attachments",
-    )
-    file = models.FileField(
-        upload_to=lead_message_attachment_upload_path,
-        max_length=500,
-    )
-    original_name = models.CharField(max_length=255, blank=True)
-    content_type = models.CharField(max_length=128, blank=True)
-    size = models.PositiveBigIntegerField(null=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        if self.file:
-            if not self.original_name:
-                self.original_name = Path(self.file.name).name
-            if self.size is None:
-                with suppress(OSError, ValueError):
-                    self.size = self.file.size
-        return super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.original_name or Path(self.file.name).name
-
-
-class LeadMessageRead(BaseModel):
-    message = models.ForeignKey(
-        LeadMessage,
-        on_delete=models.CASCADE,
-        related_name="read_receipts",
-    )
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="+",
-    )
-    read_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        constraints = (
-            models.UniqueConstraint(
-                fields=("message", "user"),
-                name="unique_lead_message_read",
-            ),
-        )
-
-    def __str__(self):
-        return f"{self.user} read {self.message_id}"

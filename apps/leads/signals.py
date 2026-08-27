@@ -8,7 +8,6 @@ from .models import (
     Lead,
     LeadActivity,
     LeadActivityType,
-    LeadConversation,
     LeadPreference,
 )
 
@@ -19,13 +18,6 @@ def create_lead_workspace(sender, instance, created, **kwargs):
         return
 
     LeadPreference.objects.get_or_create(
-        lead=instance,
-        defaults={
-            "created_by": instance.created_by,
-            "updated_by": instance.updated_by,
-        },
-    )
-    LeadConversation.objects.get_or_create(
         lead=instance,
         defaults={
             "created_by": instance.created_by,

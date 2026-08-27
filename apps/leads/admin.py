@@ -8,10 +8,7 @@ from apps.core.admin import AuditAdminMixin
 from .models import (
     Lead,
     LeadActivity,
-    LeadConversation,
     LeadDocument,
-    LeadMessage,
-    LeadMessageAttachment,
     LeadPreference,
     LeadProgramInterest,
     LeadProgramInterestSource,
@@ -347,55 +344,6 @@ class LeadDocumentAdmin(AuditAdminMixin, admin.ModelAdmin):
         "lead",
         "verified_by",
     )
-
-
-class LeadMessageAttachmentInline(admin.TabularInline):
-    model = LeadMessageAttachment
-    extra = 0
-
-
-@admin.register(LeadMessage)
-class LeadMessageAdmin(AuditAdminMixin, admin.ModelAdmin):
-    list_display = (
-        "lead_name",
-        "sender_type",
-        "sender",
-        "short_body",
-        "created_at",
-    )
-    list_filter = ("sender_type", "created_at")
-    search_fields = (
-        "conversation__lead__first_name",
-        "conversation__lead__last_name",
-        "body",
-        "sender__username",
-        "sender__email",
-    )
-    autocomplete_fields = ("conversation", "sender")
-    inlines = (LeadMessageAttachmentInline,)
-
-    @admin.display(description="Lead")
-    def lead_name(self, obj):
-        return obj.conversation.lead
-
-    @admin.display(description="Message")
-    def short_body(self, obj):
-        return obj.body[:100]
-
-    def save_model(self, request, obj, form, change):
-        if not obj.sender_id:
-            obj.sender = request.user
-        if not obj.sender_type:
-            obj.sender_type = "staff"
-        super().save_model(request, obj, form, change)
-
-
-@admin.register(LeadConversation)
-class LeadConversationAdmin(AuditAdminMixin, admin.ModelAdmin):
-    list_display = ("lead", "is_closed", "updated_at")
-    list_filter = ("is_closed",)
-    search_fields = ("lead__first_name", "lead__last_name")
-    autocomplete_fields = ("lead",)
 
 
 @admin.register(LeadActivity)

@@ -47,37 +47,6 @@ Application, general, and future subjects. Lead conversations remain visible on
 the Applicant page as well. Opening a conversation advances only that customer's
 read cursor; Agent-user read cursors are independent.
 
+## Fresh installation
 
-## Explicit legacy-message migration command
-
-Although the generic messaging schema includes a data migration, legacy Lead
-messages can also be migrated explicitly and safely with the management
-command:
-
-```bash
-uv run python manage.py migrate_legacy_messages --dry-run
-uv run python manage.py migrate_legacy_messages
-```
-
-or:
-
-```bash
-make messages-migrate-dry-run
-make messages-migrate
-```
-
-The command is idempotent: conversations, messages and attachments already
-present in the generic tables are reused instead of duplicated. Existing
-`LeadMessageRead` rows are collapsed to the latest read cursor for each
-conversation/user and stored in `ConversationParticipantState`.
-
-`--dry-run` performs all validation and prints counts, then rolls back the
-transaction.
-
-The command reports created/existing/skipped counts for conversations,
-messages, attachments and participant read states. A legacy conversation is
-skipped (and its id reported) if its Lead has no Agent or no customer User.
-
-The command does not delete legacy Lead messaging rows. Removal of the old
-models/tables should be done only after migration output and the new UI have
-been verified.
+Legacy Lead messaging has been removed. Generate fresh migrations with `uv run python manage.py makemigrations` and apply them with `uv run python manage.py migrate`.
