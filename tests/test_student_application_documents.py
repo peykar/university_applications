@@ -50,12 +50,12 @@ class StudentApplicationDocumentWorkflowTests(SimpleTestCase):
         self.assertNotIn("is_required = forms.BooleanField", existing_form)
         self.assertNotIn("is_required = forms.BooleanField", upload_form)
 
-    def test_add_document_uses_section_action_styling(self):
+    def test_add_document_uses_button_styling(self):
         self.assertIn(
-            'class="section-action modal-trigger"',
+            'class="button agent-panel-action modal-trigger"',
             self.application,
         )
         self.assertNotIn(
-            'class="section-action button-reset modal-trigger"',
+            'class="section-action modal-trigger"',
             self.application,
         )

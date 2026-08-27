@@ -4302,3 +4302,13 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 
 .modal-divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:#8996a0;font-size:.7rem}
 .modal-divider::before,.modal-divider::after{content:"";height:1px;background:#e2e8ec;flex:1}
+
+.agent-panel-action{
+  flex:0 0 auto;
+  width:auto;
+  min-height:32px;
+  padding:6px 11px;
+  white-space:nowrap;
+  font-size:.72rem;
+  line-height:1;
+}
