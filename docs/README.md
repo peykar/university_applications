@@ -38,3 +38,6 @@
 
 
 See also: [Agent workspace context](agent-workspace-context.md).
+
+
+See also: [Agent applicant workspace](agent-applicant-workspace.md).

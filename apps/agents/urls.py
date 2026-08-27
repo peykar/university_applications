@@ -25,6 +25,16 @@ urlpatterns = [
         name="agent-applicant-programs",
     ),
     path(
+        "agent/applicants/<uuid:lead_id>/programs/recommend/",
+        views.applicant_recommend_program,
+        name="agent-applicant-program-recommend",
+    ),
+    path(
+        "agent/applicants/<uuid:lead_id>/programs/<uuid:interest_id>/remove/",
+        views.applicant_remove_recommendation,
+        name="agent-applicant-program-remove",
+    ),
+    path(
         "agent/applicants/<uuid:lead_id>/documents/",
         views.applicant_section,
         {"section": "documents"},

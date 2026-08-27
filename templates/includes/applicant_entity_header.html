@@ -20,13 +20,18 @@
         {% endif %}
       </div>
     </div>
-    {% if entity_tab == "profile" %}
-      {% if agent_context %}
-        <button class="button button-secondary modal-trigger" type="button" data-modal-target="edit-applicant-modal">{% trans "Edit applicant" %}</button>
-      {% else %}
-        <a class="button button-secondary" href="{% url 'lead-edit' lead.pk %}">{% trans "Edit profile" %}</a>
+    <div class="entity-context-actions">
+      {% if agent_context and entity_tab == "overview" and lead.status != "finalized" and lead.status != "closed" %}
+        <a class="button" href="{% url 'agent-applicant-programs' lead.pk %}#recommend-program">{% trans "Recommend program" %}</a>
       {% endif %}
-    {% endif %}
+      {% if entity_tab == "profile" %}
+        {% if agent_context %}
+          <button class="button button-secondary modal-trigger" type="button" data-modal-target="edit-applicant-modal">{% trans "Edit applicant" %}</button>
+        {% else %}
+          <a class="button button-secondary" href="{% url 'lead-edit' lead.pk %}">{% trans "Edit profile" %}</a>
+        {% endif %}
+      {% endif %}
+    </div>
   </div>
   {% include "includes/applicant_entity_nav.html" %}
 </div>

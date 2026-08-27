@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 {% block agent_page_header %}{% endblock %}
 {% block agent_content %}
 {% include "includes/applicant_entity_header.html" %}
-<div class="agent-detail-grid">
+<div class="agent-detail-grid agent-applicant-overview">
 <div>
 <section class="agent-panel">
  <div class="agent-panel-head"><div><div class="section-heading-actions"><h2>{% trans "Applicant" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<button type="button" class="section-action button-reset modal-trigger" data-modal-target="edit-applicant-modal">{% trans "Edit applicant" %}</button>{% endif %}</div>
@@ -348,6 +348,39 @@ document.addEventListener("DOMContentLoaded", () => {
   </div>
  </dialog>
  {% endif %}
+</section>
+
+<section class="applicant-overview-links" aria-label="{% trans 'Applicant overview' %}">
+  <a class="overview-link-card" href="{% url 'agent-applicant-profile' lead.pk %}">
+    <span class="overview-link-label">{% trans "Profile" %}</span>
+    <strong>{% trans "Applicant details" %}</strong>
+    <small>{% trans "Identity, contact, residence and education" %}</small>
+  </a>
+  <a class="overview-link-card" href="{% url 'agent-applicant-programs' lead.pk %}">
+    <span class="overview-link-label">{% trans "Programs" %}</span>
+    <strong>{{ program_interest_count }}</strong>
+    <small>{% trans "Discussed or recommended programs" %}</small>
+  </a>
+  <a class="overview-link-card" href="{% url 'agent-applicant-documents' lead.pk %}">
+    <span class="overview-link-label">{% trans "Documents" %}</span>
+    <strong>{{ document_count }}</strong>
+    <small>{% trans "Applicant documents" %}</small>
+  </a>
+  <a class="overview-link-card" href="{% url 'agent-applicant-applications' lead.pk %}">
+    <span class="overview-link-label">{% trans "Applications" %}</span>
+    <strong>{{ application_count }}</strong>
+    <small>{% trans "Formal applications" %}</small>
+  </a>
+  <a class="overview-link-card" href="{% url 'agent-applicant-messages' lead.pk %}">
+    <span class="overview-link-label">{% trans "Messages" %}</span>
+    <strong>{% trans "Open conversation" %}</strong>
+    <small>{% trans "Applicant-specific communication" %}</small>
+  </a>
+  <a class="overview-link-card" href="{% url 'agent-applicant-activity' lead.pk %}">
+    <span class="overview-link-label">{% trans "Activity" %}</span>
+    <strong>{% trans "View history" %}</strong>
+    <small>{% trans "Changes, notes and workflow events" %}</small>
+  </a>
 </section>
 
 <section class="agent-panel" id="messages">

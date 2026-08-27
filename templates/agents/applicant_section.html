@@ -28,17 +28,105 @@
 </dialog>
 
 {% elif entity_tab == "programs" %}
-<section class="agent-panel entity-section">
-  <div class="agent-panel-head"><h2>{% trans "Programs" %}</h2></div>
-  <div class="entity-list">
+<section class="agent-panel entity-section applicant-programs-section">
+  <div class="agent-panel-head">
+    <div>
+      <h2>{% trans "Programs" %}</h2>
+      <p>{% trans "Programs discussed with or recommended to this applicant." %}</p>
+    </div>
+    {% if lead.status != "finalized" and lead.status != "closed" %}
+      <a class="button" href="#recommend-program">{% trans "Recommend a program" %}</a>
+    {% endif %}
+  </div>
+
+  <div class="entity-list applicant-program-list">
     {% for interest in interests %}
-      <a class="entity-list-row" href="{% url 'program-detail' interest.program.slug_en %}">
-        <span><strong>{{ interest.program.name_en }}</strong><small>{{ interest.program.university.name_en }} · {{ interest.get_source_display }}</small></span>
-        {% if interest.program_offering %}<small>{{ interest.program_offering }}</small>{% endif %}
-      </a>
-    {% empty %}<div class="empty-state">{% trans "No programs associated with this applicant." %}</div>{% endfor %}
+      <div class="entity-list-row applicant-program-row">
+        <a class="applicant-program-main" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener">
+          <span>
+            <strong>{{ interest.program.name_en }}</strong>
+            <small>{{ interest.program.university.name_en }} · {{ interest.get_source_display }}</small>
+            {% if interest.suggestion_reason %}
+              <small class="program-recommendation-reason">{{ interest.suggestion_reason }}</small>
+            {% endif %}
+          </span>
+        </a>
+        <div class="applicant-program-actions">
+          {% if interest.program_offering %}
+            <small>{{ interest.program_offering }}</small>
+          {% endif %}
+          {% if interest.source == "agent" and not interest.converted_application and lead.status != "finalized" and lead.status != "closed" %}
+            <form method="post" action="{% url 'agent-applicant-program-remove' lead.pk interest.pk %}">
+              {% csrf_token %}
+              <button class="text-action danger-action" type="submit">{% trans "Remove recommendation" %}</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <div class="empty-state">
+        <strong>{% trans "No programs yet." %}</strong>
+        <p>{% trans "Search below to recommend a suitable program to this applicant." %}</p>
+      </div>
+    {% endfor %}
   </div>
 </section>
+
+{% if lead.status != "finalized" and lead.status != "closed" %}
+<section class="agent-panel entity-section program-recommend-panel" id="recommend-program">
+  <div class="agent-panel-head">
+    <div>
+      <h2>{% trans "Recommend another program" %}</h2>
+      <p>{% trans "Search the catalogue by program or university name, then send a recommendation." %}</p>
+    </div>
+  </div>
+
+  <form method="get" class="program-recommend-search">
+    <label class="sr-only" for="program-recommend-search-input">{% trans "Search programs" %}</label>
+    <input
+      id="program-recommend-search-input"
+      type="search"
+      name="program_q"
+      value="{{ program_search_query }}"
+      placeholder="{% trans 'Search program or university…' %}"
+      autocomplete="off"
+    >
+    <button class="button button-secondary" type="submit">{% trans "Search" %}</button>
+  </form>
+
+  {% if program_search_query %}
+    <div class="program-search-results">
+      {% for program in program_search_results %}
+        <article class="program-search-result">
+          <div class="program-search-result-copy">
+            <strong>{{ program.name_en }}</strong>
+            <span>{{ program.university.name_en }} · {{ program.get_degree_display }} · {{ program.program_language.name_en }}</span>
+          </div>
+          <form method="post" action="{% url 'agent-applicant-program-recommend' lead.pk %}" class="program-recommend-form">
+            {% csrf_token %}
+            <input type="hidden" name="program_id" value="{{ program.pk }}">
+            <input
+              type="text"
+              name="suggestion_reason"
+              maxlength="500"
+              placeholder="{% trans 'Optional reason for the applicant' %}"
+              aria-label="{% trans 'Recommendation reason' %}"
+            >
+            <button class="button" type="submit">{% trans "Recommend" %}</button>
+          </form>
+        </article>
+      {% empty %}
+        <div class="empty-state">{% trans "No matching active programs found." %}</div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="program-recommend-help">
+      <strong>{% trans "Tip" %}</strong>
+      <span>{% trans "Try a program name such as Computer Engineering or a university name." %}</span>
+    </div>
+  {% endif %}
+</section>
+{% endif %}
 
 {% elif entity_tab == "documents" %}
 <section class="agent-panel entity-section">

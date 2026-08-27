@@ -44,6 +44,7 @@ from apps.messaging.services import (
     unread_count_for_conversation,
 )
 from apps.students.models import Student
+from apps.universities.models import Program
 
 from .forms import (
     AgentLeadDocumentUploadForm,
@@ -262,6 +263,20 @@ def _agent_applicant_context(*, request, lead, mark_read=False):
         if student is not None
         else []
     )
+    program_search_query = (request.GET.get("program_q") or "").strip()
+    program_search_results = Program.objects.none()
+    if program_search_query:
+        program_search_results = (
+            Program.objects.filter(
+                Q(name_en__icontains=program_search_query)
+                | Q(university__name_en__icontains=program_search_query),
+                is_active=True,
+                university__is_active=True,
+            )
+            .select_related("university", "program_language")
+            .order_by("-listing_priority", "university__name_en", "name_en")[:20]
+        )
+
     return {
         "lead": lead,
         "agent_users": agent_users,
@@ -278,6 +293,11 @@ def _agent_applicant_context(*, request, lead, mark_read=False):
         ).order_by("-created_at"),
         "interests": interests,
         "applications": applications,
+        "program_search_query": program_search_query,
+        "program_search_results": program_search_results,
+        "program_interest_count": lead.program_interests.count(),
+        "document_count": lead.documents.count(),
+        "application_count": (student.applications.count() if student is not None else 0),
         "activities": lead.activities.select_related("created_by").order_by("-created_at")[:50],
         "status_choices": LeadStatus.choices,
         "agent_context": True,
@@ -331,6 +351,128 @@ def applicant_section(request, lead_id, section):
     )
     context["entity_tab"] = section
     return render(request, "agents/applicant_section.html", context)
+
+
+@login_required
+@require_POST
+def applicant_recommend_program(request, lead_id):
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
+    if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
+        messages.error(
+            request,
+            "Program recommendations cannot be changed after the applicant is finalized or closed.",
+        )
+        return redirect("agent-applicant-programs", lead_id=lead.pk)
+
+    program = get_object_or_404(
+        Program.objects.select_related("university"),
+        pk=request.POST.get("program_id"),
+        is_active=True,
+        university__is_active=True,
+    )
+    reason = (request.POST.get("suggestion_reason") or "").strip()
+
+    interest = lead.program_interests.filter(
+        program=program,
+        program_offering__isnull=True,
+    ).first()
+
+    if interest is not None:
+        if interest.source == "user":
+            messages.info(
+                request,
+                "This program is already on the applicant's list.",
+            )
+            return redirect("agent-applicant-programs", lead_id=lead.pk)
+
+        changed = False
+        if reason != interest.suggestion_reason:
+            interest.suggestion_reason = reason
+            interest.updated_by = request.user
+            changed = True
+        if interest.suggested_by_id != request.user.pk:
+            interest.suggested_by = request.user
+            changed = True
+        if changed:
+            interest.save(
+                update_fields=(
+                    "suggestion_reason",
+                    "suggested_by",
+                    "updated_by",
+                    "updated_at",
+                )
+            )
+            messages.success(request, "Recommendation updated.")
+        else:
+            messages.info(request, "This program is already recommended.")
+        return redirect("agent-applicant-programs", lead_id=lead.pk)
+
+    interest = LeadProgramInterest.objects.create(
+        lead=lead,
+        program=program,
+        source="agent",
+        suggested_by=request.user,
+        suggestion_reason=reason,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=LeadActivityType.PROGRAM_SUGGESTED,
+        description=f"Program suggested: {program.name_en}.",
+        metadata={
+            "program_id": str(program.pk),
+            "interest_id": str(interest.pk),
+            "suggestion_reason": reason,
+        },
+        is_customer_visible=True,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    recommendation_message = (
+        f"Your advisor recommended {program.name_en} at {program.university.name_en}."
+    )
+    if reason:
+        recommendation_message = f"{recommendation_message} Reason: {reason}"
+    send_system_message(
+        lead,
+        recommendation_message,
+        performed_by=request.user,
+    )
+    messages.success(request, "Program recommended to applicant.")
+    return redirect("agent-applicant-programs", lead_id=lead.pk)
+
+
+@login_required
+@require_POST
+def applicant_remove_recommendation(request, lead_id, interest_id):
+    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
+    if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
+        messages.error(
+            request,
+            "Program recommendations cannot be changed after the applicant is finalized or closed.",
+        )
+        return redirect("agent-applicant-programs", lead_id=lead.pk)
+
+    interest = get_object_or_404(
+        lead.program_interests.select_related("program"),
+        pk=interest_id,
+        source="agent",
+        converted_application__isnull=True,
+    )
+    program_name = interest.program.name_en
+    interest.delete()
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=LeadActivityType.PROGRAM_RESPONSE,
+        description=f"Program recommendation removed: {program_name}.",
+        metadata={"action": "recommendation_removed"},
+        is_customer_visible=True,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    messages.success(request, "Program recommendation removed.")
+    return redirect("agent-applicant-programs", lead_id=lead.pk)
 
 
 @login_required
