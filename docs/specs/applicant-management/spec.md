@@ -25,6 +25,11 @@ workflow.
 APL-006 — Applicant UI MUST expose focused Profile, Programs, Documents,
 Applications and Messages areas with Overview as a summary.
 
+APL-007 — Internal notes MUST be private Agent case-management data, MUST NOT be
+part of Applicant profile editing, MUST be visible to Agent users on Applicant
+Overview, and MUST be edited only through the dedicated internal-note workflow.
+Internal-note changes MUST be audited and MUST NOT be customer-visible.
+
 ## Acceptance policy
 
 Each requirement is accepted when its observable behavior is implemented and

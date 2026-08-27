@@ -131,25 +131,6 @@
           </div>
         </section>
 
-        <section class="applicant-edit-card applicant-edit-card-private">
-          <div class="applicant-edit-card-head">
-            <span class="applicant-edit-step">06</span>
-            <div>
-              <div class="applicant-edit-private-title">
-                <h2>{% trans "Internal notes" %}</h2>
-                <span class="private-badge">{% trans "Private" %}</span>
-              </div>
-              <p>{% trans "Visible only to Agent/staff users, never to the applicant." %}</p>
-            </div>
-          </div>
-          <div class="applicant-edit-fields">
-            {% for field in form %}
-              {% if field.name == "notes" %}
-                {% include "agents/includes/applicant_edit_field.html" %}
-              {% endif %}
-            {% endfor %}
-          </div>
-        </section>
       </main>
 
       <aside class="applicant-edit-side">

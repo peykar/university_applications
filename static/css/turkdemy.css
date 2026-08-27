@@ -5530,3 +5530,11 @@ a.entity-list-row:hover{
     border-left:0;
   }
 }
+
+.internal-notes-meta {
+  margin-top: 0.85rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--border, #e5e7eb);
+  font-size: 0.78rem;
+  color: var(--muted, #6b7280);
+}

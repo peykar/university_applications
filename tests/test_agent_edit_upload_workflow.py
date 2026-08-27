@@ -65,9 +65,9 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
             "Passport",
             "Education & language",
             "Family",
-            "Internal notes",
         ):
             self.assertIn(heading, self.edit_template)
+        self.assertNotIn("Internal notes", self.edit_template)
         self.assertIn("applicant-edit-page", self.edit_template)
         self.assertIn("applicant-edit-layout", self.edit_template)
         self.assertNotIn("edit-applicant-modal", self.template)

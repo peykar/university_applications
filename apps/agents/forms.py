@@ -67,7 +67,6 @@ class AgentLeadEditForm(forms.ModelForm):
             "high_school_gpa",
             "high_school_gpa_scale",
             "educational_background",
-            "notes",
         )
         widgets: ClassVar[dict[str, forms.Widget]] = {
             "birthdate": forms.DateInput(attrs={"type": "date"}),
@@ -75,7 +74,6 @@ class AgentLeadEditForm(forms.ModelForm):
             "passport_date_of_expiry": forms.DateInput(attrs={"type": "date"}),
             "address": forms.Textarea(attrs={"rows": 2}),
             "educational_background": forms.Textarea(attrs={"rows": 3}),
-            "notes": forms.Textarea(attrs={"rows": 3}),
         }
 
     def __init__(self, *args, **kwargs):

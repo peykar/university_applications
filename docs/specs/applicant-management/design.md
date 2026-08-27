@@ -32,3 +32,19 @@ Agent Applicant editing uses the dedicated
 invalid form errors in-page, and records successful changes through the shared
 Applicant activity service. It is intentionally not a modal because the form is
 a long structured workflow.
+
+## Internal notes boundary
+
+`Lead.notes` is the current private Agent case summary. It is operational
+case-management data, not Applicant/person profile data.
+
+- `AgentLeadEditForm` excludes `notes`.
+- Applicant Overview is the canonical visible home for the current internal
+  note and labels it Private.
+- Active, non-closed Lead notes are edited through the dedicated
+  `applicant_internal_notes` POST workflow/modal.
+- Note changes create `INTERNAL_NOTES_UPDATED` activity with
+  `is_customer_visible=False`.
+- Customer Applicant pages never render the internal note.
+- Finalized Lead notes remain visible as historical Agent context but are
+  read-only; ongoing person/case maintenance belongs to the Student workflow.

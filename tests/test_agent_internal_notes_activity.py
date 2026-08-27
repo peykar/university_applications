@@ -15,17 +15,45 @@ class AgentInternalNotesActivityTests(SimpleTestCase):
         self.activity_template = (
             root / "templates" / "agents" / "applicant_activity.html"
         ).read_text(encoding="utf-8")
+        self.forms = (root / "apps" / "agents" / "forms.py").read_text(encoding="utf-8")
+        self.edit_template = (root / "templates" / "agents" / "applicant_edit.html").read_text(
+            encoding="utf-8"
+        )
+        self.customer_detail = (root / "templates" / "leads" / "lead_detail.html").read_text(
+            encoding="utf-8"
+        )
+        self.customer_section = (root / "templates" / "leads" / "lead_section.html").read_text(
+            encoding="utf-8"
+        )
 
     def test_internal_notes_are_visible_in_agent_workspace(self):
         self.assertIn('id="internal-notes"', self.detail_template)
         self.assertIn('class="private-badge"', self.detail_template)
         self.assertIn("Visible only to agent/staff users.", self.detail_template)
         self.assertIn("lead.notes", self.detail_template)
+        self.assertIn("Applicant record last updated", self.detail_template)
+
+    def test_internal_notes_are_not_applicant_profile_fields(self):
+        form_block = self.forms.split(
+            "class AgentLeadEditForm(forms.ModelForm):",
+            1,
+        )[1].split("class AgentLeadDocumentUploadForm", 1)[0]
+        self.assertNotIn('"notes"', form_block)
+        self.assertNotIn("Internal notes", self.edit_template)
+
+    def test_internal_notes_never_render_in_customer_applicant_templates(self):
+        self.assertNotIn("lead.notes", self.customer_detail)
+        self.assertNotIn("lead.notes", self.customer_section)
 
     def test_internal_notes_have_dedicated_update_endpoint(self):
         self.assertIn("def applicant_internal_notes", self.views)
         self.assertIn('name="agent-applicant-internal-notes"', self.urls)
         self.assertIn("LeadActivityType.INTERNAL_NOTES_UPDATED", self.views)
+        note_block = self.views.split("def applicant_internal_notes", 1)[1].split(
+            "def applicant_edit",
+            1,
+        )[0]
+        self.assertIn("is_customer_visible=False", note_block)
 
     def test_activity_timeline_is_on_dedicated_page(self):
         self.assertNotIn('id="activity"', self.detail_template)

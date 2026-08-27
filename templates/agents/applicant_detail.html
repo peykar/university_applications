@@ -466,6 +466,13 @@ document.addEventListener("DOMContentLoaded", () => {
    <p class="empty-state">{% trans "No internal notes yet." %}</p>
   {% endif %}
  </div>
+ <div class="internal-notes-meta">
+  {% if lead.updated_by %}
+   {% blocktrans with person=lead.updated_by.get_full_name|default:lead.updated_by.username when=lead.updated_at|date:"M j, Y H:i" %}Applicant record last updated by {{ person }} · {{ when }}{% endblocktrans %}
+  {% else %}
+   {% blocktrans with when=lead.updated_at|date:"M j, Y H:i" %}Applicant record last updated · {{ when }}{% endblocktrans %}
+  {% endif %}
+ </div>
 </section>
 
 
