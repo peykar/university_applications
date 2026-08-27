@@ -44,6 +44,7 @@ Affected baseline requirements:
 
 - [x] Python syntax validation.
 - [x] Static regression assertions updated for full-page editor and field partial.
+- [x] Included field partial explicitly loads Django i18n tags.
 - [x] No domain/model migration.
 - [ ] `make format` — run in project environment.
 - [ ] `make check` — run in project environment.

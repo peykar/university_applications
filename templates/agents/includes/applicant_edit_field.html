@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="applicant-edit-field{% if field.errors %} has-error{% endif %}{% if field.name == 'address' or field.name == 'educational_background' or field.name == 'notes' %} field-wide{% endif %}">
   <label for="{{ field.id_for_label }}">
     {{ field.label }}

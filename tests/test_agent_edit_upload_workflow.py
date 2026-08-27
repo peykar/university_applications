@@ -46,6 +46,9 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
         self.assertIn('"form": form', self.views)
         self.assertIn("field.errors", self.edit_field_template)
 
+    def test_edit_field_partial_loads_i18n_tag_library(self):
+        self.assertIn("{% load i18n %}", self.edit_field_template)
+
     def test_section_actions_are_compact_and_applicant_update_is_auditable(self):
         self.assertIn(
             'class="section-action" href="{% url \'agent-applicant-edit\' lead.pk %}"',
