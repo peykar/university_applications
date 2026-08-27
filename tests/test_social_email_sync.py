@@ -75,3 +75,25 @@ class SocialEmailSyncTests(TestCase):
                 email="shared@example.com",
             ).exists()
         )
+
+    def test_new_google_socialaccount_does_not_precreate_emailaddress(self):
+        new_user = User.objects.create_user(
+            username="new-google-user",
+            email="new-google@example.com",
+        )
+        self.assertFalse(EmailAddress.objects.filter(user=new_user).exists())
+
+        SocialAccount.objects.create(
+            user=new_user,
+            provider="google",
+            uid="google-new-user",
+            extra_data={
+                "email": "new-google@example.com",
+                "email_verified": True,
+            },
+        )
+
+        # allauth itself must create the EmailAddress later in
+        # SocialLogin.save() -> setup_user_email(). The post_save signal must
+        # not create it first.
+        self.assertFalse(EmailAddress.objects.filter(user=new_user).exists())

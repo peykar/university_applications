@@ -261,3 +261,19 @@ chooser must preserve that value when the user continues with email-code, Google
 or Telegram authentication. django-allauth then returns the authenticated user
 to the originally requested protected URL. `LOGIN_REDIRECT_URL` is only the
 fallback when no `next` destination exists.
+
+
+## Google signup and EmailAddress synchronization
+
+For a brand-new Google signup, the `SocialAccount` post-save signal must **not**
+create an `allauth.account.EmailAddress`. django-allauth saves the SocialAccount
+before `setup_user_email()` and expects the new user to have no EmailAddress at
+that point.
+
+The signal therefore only verifies/normalizes a Google email when a matching
+EmailAddress already exists (for example, an existing local account being
+connected to Google). New social signups leave EmailAddress creation to
+django-allauth itself.
+
+This prevents the `setup_user_email()` assertion failure on the Google OAuth
+callback while preserving verified-email/password behavior for existing users.
