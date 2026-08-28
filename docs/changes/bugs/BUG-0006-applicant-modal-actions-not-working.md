@@ -1,6 +1,6 @@
 # BUG-0006 — Applicant modal actions did not open
 
-Status: VERIFYING
+Status: DONE
 Reported: 2026-08-28
 
 ## Classification
@@ -43,4 +43,5 @@ finalization interaction.
 ## Verification
 
 - Static validation: PASS.
-- Full local `make format` / `make check`: pending.
+- Full local `make format` / `make check`: PASS (project-owner verification).
+- Manual Finalize applicant modal verification: PASS on 2026-08-28.

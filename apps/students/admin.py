@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from apps.applications.models import Application
 from apps.core.admin import AuditAdminMixin
 
 from .models import Student, StudentDocument
@@ -16,15 +15,6 @@ class StudentDocumentInline(admin.TabularInline):
         "created_at",
     )
     readonly_fields = ("created_at",)
-
-
-class ApplicationInline(admin.TabularInline):
-    model = Application
-    extra = 0
-    fields = ("program_offering", "status", "agent", "tuition", "deposit", "created_at")
-    readonly_fields = ("created_at",)
-    autocomplete_fields = ("program_offering", "agent")
-    show_change_link = True
 
 
 @admin.register(Student)
@@ -63,7 +53,7 @@ class StudentAdmin(AuditAdminMixin, admin.ModelAdmin):
         "nationality",
         "country_of_residence",
     )
-    inlines = (StudentDocumentInline, ApplicationInline)
+    inlines = (StudentDocumentInline,)
 
     fieldsets = (
         (

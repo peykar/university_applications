@@ -1,6 +1,6 @@
 # FEAT-0001 — Agent TODOs and Communication Log
 
-Status: VERIFYING
+Status: DONE
 Requested: 2026-08-28
 
 ## Classification
@@ -30,8 +30,8 @@ contextual tabs.
 - [x] Add Agent dashboard TODO/communication summaries.
 - [x] Feed Applicant activity for resolvable subjects.
 - [x] Add regression coverage and traceability.
-- [ ] Generate the fresh migration set with `make makemigrations` in the normal development environment.
-- [ ] Run full `make check`.
+- [x] Generate the fresh migration set with `make makemigrations` in the normal development environment.
+- [x] Run full `make check`.
 
 ## Out of scope
 
@@ -42,3 +42,18 @@ cross-domain Activity persistence model.
 ## Follow-up bugs
 
 - `BUG-0005-todo-create-form-missing-agent` — active Agent must be bound before ModelForm model validation.
+
+## Verification evidence
+
+Completed by the project owner in the normal development environment on
+2026-08-28:
+
+- `make makemigrations operations` generated the Operations migration.
+- `make migrate` completed successfully.
+- `make format` completed successfully.
+- `make check` completed successfully.
+- Manual TODO verification passed, including global and Applicant-scoped use.
+- Manual Communication Log verification passed.
+- TODO create regression (`BUG-0005`) was manually re-tested successfully.
+
+Acceptance result: FEAT-0001 is accepted and DONE.

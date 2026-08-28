@@ -1,6 +1,6 @@
 # BUG-0005 — TODO create form validates before Agent is attached
 
-Status: VERIFYING
+Status: DONE
 Reported: 2026-08-28
 Parent feature: `FEAT-0001-agent-todos-communication-log`
 
@@ -55,7 +55,7 @@ dereference when validating a deliberately incomplete model instance.
 - [x] Form instance receives the active Agent before validation.
 - [x] Valid Agent assignee can pass ModelForm validation.
 - [x] Model validation does not dereference a missing Agent relation.
-- [ ] Full local suite confirmed after this patch.
+- [x] Full local suite confirmed after this patch.
 
 ## Spec/design impact
 
@@ -66,8 +66,9 @@ candidate model instance before `_post_clean()`.
 
 ## Verification
 
-- [ ] `make format`
-- [ ] `make check`
+- [x] `make format`
+- [x] `make check`
 
-Result: Python compilation and targeted static regression validation PASS. Full
-`make format` / `make check` remain pending in the normal development environment.
+Result: PASS. The project owner confirmed `make format` and `make check` both
+pass and manually verified TODO creation and the TODO/Communication Log workflows
+in the normal development environment on 2026-08-28.
