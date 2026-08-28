@@ -118,12 +118,20 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         models = (Path(settings.BASE_DIR) / "apps/leads/models.py").read_text(encoding="utf-8")
         self.assertNotIn("class Request(", models)
 
-    def test_request_detail_uses_main_and_context_sidebar_layout(self):
+    def test_request_detail_uses_parallel_main_and_context_sidebar_layout(self):
         self.assertIn('class="request-detail-layout"', self.request_detail)
         self.assertIn('class="request-detail-main"', self.request_detail)
         self.assertIn("includes/customer_request_context_sidebar.html", self.request_detail)
         self.assertIn("includes/customer_request_context_sidebar.html", self.request_section)
         self.assertIn("grid-template-columns:minmax(0,1fr) 310px", self.css)
+
+        detail_layout = self.request_detail.split('<div class="request-detail-layout">', 1)[1]
+        main = detail_layout.split('<main class="request-detail-main">', 1)[1]
+        main_before_close = main.split("</main>", 1)[0]
+        after_main = main.split("</main>", 1)[1]
+        self.assertIn("includes/applicant_entity_header.html", main_before_close)
+        self.assertNotIn("includes/customer_request_context_sidebar.html", main_before_close)
+        self.assertIn("includes/customer_request_context_sidebar.html", after_main)
 
     def test_request_navigation_stays_between_header_and_page_content(self):
         self.assertIn("includes/applicant_entity_nav.html", self.request_header)
@@ -146,11 +154,15 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn("preferred_languages", self.request_context_sidebar)
         self.assertIn("preferences.tuition_min", self.request_context_sidebar)
 
-    def test_overview_prioritizes_attention_programs_progress_and_messages(self):
-        self.assertIn('{% trans "Action required" %}', self.request_detail)
-        self.assertIn('{% trans "Applied for" %}', self.request_detail)
-        self.assertIn('{% trans "Request progress" %}', self.request_detail)
-        self.assertIn('{% trans "Recent messages" %}', self.request_detail)
+    def test_overview_prioritizes_attention_programs_progress_and_messages_in_one_flow(self):
+        attention = self.request_detail.index('{% trans "Action required" %}')
+        programs = self.request_detail.index('{% trans "Applied for" %}')
+        progress = self.request_detail.index('{% trans "Request progress" %}')
+        messages = self.request_detail.index('{% trans "Recent messages" %}')
+        self.assertLess(attention, programs)
+        self.assertLess(programs, progress)
+        self.assertLess(progress, messages)
+        self.assertIn(".request-overview-grid{display:grid;grid-template-columns:1fr;", self.css)
         self.assertIn('"attention_documents": attention_documents', self.views)
         self.assertIn('"recent_messages": message_qs.order_by("-created_at")[:3]', self.views)
 

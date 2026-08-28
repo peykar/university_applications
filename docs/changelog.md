@@ -1,3 +1,11 @@
+
+## 2026-08-29 — Request detail layout aligned with approved SDD
+
+- Corrected the customer Request desktop hierarchy so the right context sidebar is a peer of the entire central Request workspace and starts alongside the Request header instead of only below the Request navigation.
+- Kept the Request header and Overview/Profile/Programs/Documents/Messages navigation inside the central workspace only.
+- Changed Overview Progress and Recent messages from a nested two-column row to the agreed single central vertical flow.
+- Tightened CRQ-013 and CRQ-017 plus structural regression tests so this geometry is now explicit and protected by SDD.
+
 - Fixed the customer Request redesign regression-test fixture formatting so `make format` passes Ruff E501 line-length validation.
 - Restored customer Request document replacement/upload UI after the detail-page split and aligned legacy structural tests with the new overview/section template architecture.
 - Redesigned customer Request detail into a three-part workspace: global customer sidebar, central Request tabs/content, and a persistent right context sidebar with Uploaded documents and Program preferences. Overview now emphasizes action-required items, applied-for programs, customer-safe progress, and recent messages; unread messages remain unread until Request Messages is opened.

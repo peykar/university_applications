@@ -16,10 +16,10 @@ Status: IMPLEMENTED
 - [x] `CRQ-011` Render canonical program and university names in Applied for entries.
 - [x] `CRQ-012` Keep clickable request cards visually unchanged on hover.
 
-- [x] `CRQ-013` Add central Request workspace + persistent right context sidebar.
+- [x] `CRQ-013` Make the right context sidebar a peer of the whole central Request workspace, aligned from the Request header level.
 - [x] `CRQ-014` Keep Request navigation between Request header and tab content.
 - [x] `CRQ-015` Add uploaded-document summary/statuses to the context sidebar.
 - [x] `CRQ-016` Add existing program preferences and edit path to the context sidebar.
-- [x] `CRQ-017` Redesign Overview around attention, applied-for programs, progress and recent messages.
+- [x] `CRQ-017` Keep Overview as one central vertical flow: attention, applied-for programs, progress, then recent messages.
 - [x] `CRQ-018` Preserve unread state until the customer opens Request Messages.
 - [x] `CRQ-019` Present customer-friendly Request statuses without changing Lead lifecycle values.

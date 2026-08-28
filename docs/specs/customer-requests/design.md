@@ -60,20 +60,24 @@ so nested card content does not become visually noisy when the pointer enters it
 
 Customer Request detail pages use a nested workspace hierarchy. The global
 `templates/customer/base.html` sidebar remains the account-level navigation.
-Inside the main account column, the Request header and Request tabs are followed
-by `request-detail-layout`, which has a central page-content column and a
-persistent `customer_request_context_sidebar.html` right-hand aside.
+Inside the main account column, `request-detail-layout` is the top-level Request
+workspace grid. Its central `request-detail-main` contains the Request header,
+Request-local tabs, and page-specific content. Its sibling
+`customer_request_context_sidebar.html` is the persistent right-hand aside. This
+keeps the right context rail parallel to the whole Request workspace instead of
+starting only after the header and tabs.
 
 The Request context sidebar deliberately contains operational context rather than
 more navigation: a compact uploaded-document list/status summary and the existing
 `LeadPreference` study preferences. On smaller screens the aside stacks below the
 main content rather than competing for horizontal space.
 
-Request Overview is a dashboard, not a duplication of every tab. It surfaces
-attention items (unread incoming messages and replacement-requested documents),
-all applied-for/program-interest records, a customer-safe activity timeline, and
-recent conversation messages. Detailed editing and management continue through
-the Profile, Programs, Documents and Messages tabs.
+Request Overview is a dashboard, not a duplication of every tab. Its central
+content follows one vertical information flow: attention items (when present), all
+applied-for/program-interest records, the customer-safe activity timeline, then
+recent conversation messages. Progress and Recent messages are not split into a
+secondary two-column grid. Detailed editing and management continue through the
+Profile, Programs, Documents and Messages tabs.
 
 Unread state is calculated before optional read marking. Overview does not mark
 the conversation read; `lead_messages` remains the explicit Request-level read

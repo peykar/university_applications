@@ -3,10 +3,9 @@
 {% block title %}{{ lead }} — TurkDemy{% endblock %}
 {% block customer_content %}
 <div class="customer-applicant-page customer-request-detail">
-  {% include "includes/applicant_entity_header.html" %}
-
   <div class="request-detail-layout">
     <main class="request-detail-main">
+      {% include "includes/applicant_entity_header.html" %}
       {% if needs_attention %}
         <section class="lead-panel request-attention-panel" aria-labelledby="request-attention-title">
           <div class="section-heading">

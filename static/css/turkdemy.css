@@ -5725,6 +5725,7 @@ a.entity-list-row:hover{
 .customer-request-detail .entity-context-head{margin-bottom:22px}
 .request-detail-layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:26px;align-items:start}
 .request-detail-main{min-width:0}
+.request-detail-main>.entity-context-head{margin-bottom:22px}
 .request-context-sidebar{position:sticky;top:96px;display:grid;gap:16px;min-width:0}
 .request-context-card{padding:18px;border:1px solid #dbe4eb;border-radius:16px;background:#fff;box-shadow:0 8px 24px rgba(19,42,67,.03)}
 .request-context-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:13px}
@@ -5762,7 +5763,7 @@ a.entity-list-row:hover{
 .request-overview-program strong{color:#203b56;font-size:.84rem}
 .request-overview-program small{color:#758496;font-size:.71rem}
 .request-overview-program em{width:max-content;margin-top:3px;padding:2px 6px;border-radius:999px;background:#fff4db;color:#8a6200;font-size:.6rem;font-style:normal;font-weight:800}
-.request-overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.request-overview-grid{display:grid;grid-template-columns:1fr;gap:18px}
 .request-overview-grid .lead-panel{margin-bottom:0}
 .request-progress-list{display:grid;gap:0;margin:0;padding:0;list-style:none}
 .request-progress-list li{position:relative;display:grid;grid-template-columns:14px 1fr;gap:10px;padding:0 0 15px}

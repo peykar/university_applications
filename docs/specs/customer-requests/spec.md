@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.2
+Version: 1.3
 
 ## Goal
 
@@ -62,8 +62,10 @@ communicated by the card being a link/click target itself.
 
 CRQ-013 — Customer Request detail pages MUST use a three-part desktop hierarchy:
 the global Customer sidebar, a central Request workspace, and a right-side Request
-context sidebar. The context sidebar MAY stack below the main content on narrower
-layouts.
+context sidebar. The right context sidebar MUST be a peer of the entire central
+Request workspace and start at the same workspace level as the Request header; it
+MUST NOT begin only below the Request header/navigation. The context sidebar MAY
+stack below the main content on narrower layouts.
 
 CRQ-014 — Request navigation MUST remain inside the central Request workspace,
 after the Request header and before page-specific content, with **Overview**,
@@ -79,8 +81,11 @@ configured preferences) and MUST link to the existing preference-edit workflow
 when the Request remains editable.
 
 CRQ-017 — Request Overview MUST prioritize customer-relevant information in the
-main section: action-required items, applied-for programs, customer-safe progress,
-and recent messages. Agent-originated program interests MUST remain visibly marked.
+central main section in this order: action-required items when present, applied-for
+programs, customer-safe progress, and recent messages. These major Overview sections
+MUST remain one central vertical flow rather than splitting Progress and Recent
+messages into a nested two-column dashboard. Agent-originated program interests MUST
+remain visibly marked.
 
 CRQ-018 — Opening Request Overview MUST NOT mark incoming messages as read. The
 Request-specific Messages page is the read boundary for that conversation.
