@@ -283,6 +283,38 @@ document.addEventListener("DOMContentLoaded", () => {
   </a>
 </section>
 
+<section class="agent-panel internal-notes-panel" id="internal-notes">
+ <div class="agent-panel-head">
+  <div class="internal-notes-title">
+   <h2>{% trans "Internal notes" %}</h2>
+   <span
+    class="private-badge"
+    title="{% trans 'Visible only to agent/staff users.' %}"
+   >{% trans "Private" %}</span>
+  </div>
+  <div class="internal-notes-actions">
+   <a class="section-action" href="{% url 'agent-applicant-activity' lead.pk %}">{% trans "Activity" %}</a>
+   {% if lead.status != "finalized" %}
+    <button type="button" class="section-action button-reset modal-trigger" data-modal-target="internal-notes-modal">{% trans "Edit" %}</button>
+   {% endif %}
+  </div>
+ </div>
+ <div class="internal-notes-body">
+  {% if lead.notes %}
+   {{ lead.notes|linebreaksbr }}
+  {% else %}
+   <p class="empty-state">{% trans "No internal notes yet." %}</p>
+  {% endif %}
+ </div>
+ <div class="internal-notes-meta">
+  {% if lead.updated_by %}
+   {% blocktrans with person=lead.updated_by.get_full_name|default:lead.updated_by.username when=lead.updated_at|date:"M j, Y H:i" %}Applicant record last updated by {{ person }} · {{ when }}{% endblocktrans %}
+  {% else %}
+   {% blocktrans with when=lead.updated_at|date:"M j, Y H:i" %}Applicant record last updated · {{ when }}{% endblocktrans %}
+  {% endif %}
+ </div>
+</section>
+
 <section class="agent-panel" id="messages">
  <div class="agent-panel-head"><h2>{% trans "Conversation" %}</h2></div>
  <div class="agent-chat">
@@ -443,37 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
  </div>
 </section>
 
-<section class="agent-panel internal-notes-panel" id="internal-notes">
- <div class="agent-panel-head">
-  <div class="internal-notes-title">
-   <h2>{% trans "Internal notes" %}</h2>
-   <span
-    class="private-badge"
-    title="{% trans 'Visible only to agent/staff users.' %}"
-   >{% trans "Private" %}</span>
-  </div>
-  <div class="internal-notes-actions">
-   <a class="section-action" href="{% url 'agent-applicant-activity' lead.pk %}">{% trans "Activity" %}</a>
-   {% if lead.status != "finalized" %}
-    <button type="button" class="section-action button-reset modal-trigger" data-modal-target="internal-notes-modal">{% trans "Edit" %}</button>
-   {% endif %}
-  </div>
- </div>
- <div class="internal-notes-body">
-  {% if lead.notes %}
-   {{ lead.notes|linebreaksbr }}
-  {% else %}
-   <p class="empty-state">{% trans "No internal notes yet." %}</p>
-  {% endif %}
- </div>
- <div class="internal-notes-meta">
-  {% if lead.updated_by %}
-   {% blocktrans with person=lead.updated_by.get_full_name|default:lead.updated_by.username when=lead.updated_at|date:"M j, Y H:i" %}Applicant record last updated by {{ person }} · {{ when }}{% endblocktrans %}
-  {% else %}
-   {% blocktrans with when=lead.updated_at|date:"M j, Y H:i" %}Applicant record last updated · {{ when }}{% endblocktrans %}
-  {% endif %}
- </div>
-</section>
+
 
 
 

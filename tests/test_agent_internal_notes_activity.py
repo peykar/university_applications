@@ -33,6 +33,11 @@ class AgentInternalNotesActivityTests(SimpleTestCase):
         self.assertIn("lead.notes", self.detail_template)
         self.assertIn("Applicant record last updated", self.detail_template)
 
+        self.assertLess(
+            self.detail_template.index('id="internal-notes"'),
+            self.detail_template.index("<aside>"),
+        )
+
     def test_internal_notes_are_not_applicant_profile_fields(self):
         form_block = self.forms.split(
             "class AgentLeadEditForm(forms.ModelForm):",

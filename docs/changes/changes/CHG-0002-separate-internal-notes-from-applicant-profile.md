@@ -53,3 +53,7 @@ LeadActivity remains the audit history.
 3. Active notes are editable only through the dedicated internal-note endpoint.
 4. Note activity remains Agent-only.
 5. Customer Applicant UI does not expose `Lead.notes`.
+
+## Follow-up
+
+- `BUG-0004-internal-notes-hidden-on-agent-overview` fixes the rendered visibility regression discovered after this change.

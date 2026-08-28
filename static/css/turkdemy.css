@@ -5538,3 +5538,14 @@ a.entity-list-row:hover{
   font-size: 0.78rem;
   color: var(--muted, #6b7280);
 }
+
+
+/* Internal notes are a first-class Agent-only Applicant Overview summary. */
+.agent-applicant-overview>.internal-notes-panel{
+  display:block;
+  margin-top:16px;
+}
+.agent-applicant-overview>.internal-notes-panel .internal-notes-body{
+  min-height:72px;
+  white-space:normal;
+}
