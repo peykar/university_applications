@@ -77,7 +77,7 @@ Statuses:
 - qualified
 - converted
 
-Agent/system suggestions appear in the customer's Applicant workspace. The
+Agent/system suggestions appear in the customer's Request workspace. The
 customer can mark a suggestion as interested or decline it.
 
 A formal Application is created only from a **qualified** interest with a

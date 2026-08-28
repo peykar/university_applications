@@ -4,14 +4,14 @@
     {% if agent_context %}
       <a href="{% url 'agent-applicant-list' %}">{% trans "Applicants" %}</a>
     {% else %}
-      <a href="{% url 'lead-list' %}">{% trans "Applicants" %}</a>
+      <a href="{% url 'lead-list' %}">{% trans "My Requests" %}</a>
     {% endif %}
     <span aria-hidden="true">/</span>
     <span>{{ lead }}</span>
   </nav>
   <div class="entity-context-title">
     <div>
-      <p class="eyebrow">{% trans "Applicant" %}</p>
+      <p class="eyebrow">{% if agent_context %}{% trans "Applicant" %}{% else %}{% trans "Request" %}{% endif %}</p>
       <h1>{{ lead }}</h1>
       <div class="applicant-status-row">
         <span class="lead-status lead-status-{{ lead.status }}">{{ lead.get_status_display }}</span>

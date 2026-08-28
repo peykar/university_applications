@@ -27,10 +27,13 @@ class NavigationArchitectureTests(SimpleTestCase):
         )
 
     def test_customer_workspace_navigation_is_contextual(self):
-        self.assertIn('{% trans "Overview" %}', self.customer_nav)
-        self.assertIn('{% trans "Applicants" %}', self.customer_nav)
+        self.assertIn('{% trans "My Requests" %}', self.customer_nav)
         self.assertIn('{% trans "Messages" %}', self.customer_nav)
+        self.assertIn('{% trans "Get Help" %}', self.customer_nav)
+        self.assertIn('{% trans "Message us on WhatsApp" %}', self.customer_nav)
         self.assertIn("customer_unread_message_count", self.customer_nav)
+        self.assertNotIn('{% trans "Overview" %}', self.customer_nav)
+        self.assertNotIn('{% trans "Applicants" %}', self.customer_nav)
 
     def test_agent_navigation_has_consistent_order(self):
         overview = self.agent_base.index("'agent-dashboard'")

@@ -46,6 +46,7 @@ Prefixes are stable:
 | MAIL | Email/notifications |
 | PERM | Permissions |
 | NAV | Navigation/workspaces |
+| CRQ | Customer requests |
 
 Do not renumber an accepted requirement merely because another requirement is
 inserted. Retired IDs remain reserved.

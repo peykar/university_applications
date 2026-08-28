@@ -70,6 +70,7 @@ SUPPORT_EMAIL = os.getenv(
     "SUPPORT_EMAIL",
     "support@localhost",
 )
+WHATSAPP_NUMBER = os.getenv("WHATSAPP_NUMBER", "").strip()
 
 # Optional UUID of the Agent automatically assigned to newly created leads.
 # Leave empty to keep new leads unassigned unless an agent is supplied explicitly.
@@ -134,6 +135,7 @@ TEMPLATES = [
                 "apps.messaging.context_processors.message_badges",
                 "apps.accounts.context_processors.authentication_providers",
                 "apps.agents.context_processors.agent_workspace",
+                "apps.core.context_processors.customer_support_links",
             ],
         },
     }
@@ -188,7 +190,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 
 LOGIN_URL = "account_login"
-LOGIN_REDIRECT_URL = "dashboard"
+LOGIN_REDIRECT_URL = "lead-list"
 LOGOUT_REDIRECT_URL = "home"
 
 AUTHENTICATION_BACKENDS = [

@@ -48,3 +48,17 @@ SUPPORT_EMAIL=support@turkdemy.com
 ```
 
 See `docs/site-url-and-email.md`.
+
+## Customer support links
+
+The optional customer-sidebar WhatsApp action is configured through the
+environment. Use an international number including country code. Formatting
+characters are accepted; the rendered `wa.me` URL uses digits only.
+
+```dotenv
+WHATSAPP_NUMBER=31612345678
+```
+
+When empty or unset, **Message us on WhatsApp** is not rendered. The template
+never contains a hard-coded phone number.
+

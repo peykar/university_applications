@@ -154,8 +154,8 @@
       {% else %}
       <div class="customer-document-upload-row customer-document-upload-locked">
         <div>
-          <strong>{% trans "Applicant documents are read-only" %}</strong>
-          <span>{% trans "After finalization, document changes belong to the student record." %}</span>
+          <strong>{% trans "Request documents are read-only" %}</strong>
+          <span>{% trans "This request is finalized, so document changes are managed by TurkDemy." %}</span>
         </div>
       </div>
       {% endif %}
@@ -181,7 +181,7 @@
               {% endfor %}
             </article>
           {% empty %}
-            <div class="empty-chat">{% trans "No messages yet. You can ask TurkDemy about this applicant here." %}</div>
+            <div class="empty-chat">{% trans "No messages yet. You can ask TurkDemy about this request here." %}</div>
           {% endfor %}
         </div>
 
@@ -228,8 +228,8 @@
     {% if lead.converted_student %}
       <section class="sidebar-card converted-sidebar-card">
         <p class="eyebrow">{% trans "Validated" %}</p>
-        <h3>{% trans "Student record created" %}</h3>
-        <p>{% trans "This applicant has been finalized and converted." %}</p>
+        <h3>{% trans "Request finalized" %}</h3>
+        <p>{% trans "TurkDemy has finalized this request." %}</p>
       </section>
     {% endif %}
   </aside>

@@ -1,0 +1,14 @@
+# Customer requests — tasks
+
+Status: IMPLEMENTED
+
+- [x] `CRQ-001` Establish Request as the customer-facing case abstraction.
+- [x] `CRQ-002` Replace customer sidebar with menu-only Request navigation.
+- [x] `CRQ-003` Add environment-backed optional WhatsApp support and Contact link.
+- [x] `CRQ-004` Make My Requests the customer landing page and add Find Programs.
+- [x] `CRQ-005` Show request full name, email, and cell.
+- [x] `CRQ-006` Show all associated programs with Agent-suggestion tips.
+- [x] `CRQ-007` Surface unread-message/document-replacement attention state.
+- [x] `CRQ-008` Make the full request card clickable.
+- [x] `CRQ-009` Apply desktop action/RTL/mobile placement convention.
+- [x] `CRQ-010` Preserve internal lifecycle and Agent terminology.

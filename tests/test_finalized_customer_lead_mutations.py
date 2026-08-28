@@ -54,5 +54,5 @@ class FinalizedCustomerLeadMutationStructureTests(SimpleTestCase):
             'if lead.status != "finalized"',
             self.section,
         )
-        self.assertIn("Applicant documents are read-only", self.detail)
-        self.assertIn("Applicant documents are read-only", self.section)
+        self.assertIn("Request documents are read-only", self.detail)
+        self.assertIn("Request documents are read-only", self.section)

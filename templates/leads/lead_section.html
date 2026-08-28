@@ -6,7 +6,7 @@
 
 {% if entity_tab == "profile" %}
   <section class="lead-panel entity-section">
-    <div class="section-heading"><div><p class="eyebrow">{% trans "Profile" %}</p><h2>{% trans "Applicant profile" %}</h2></div></div>
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Profile" %}</p><h2>{% trans "Request profile" %}</h2></div></div>
     <dl class="entity-facts-grid">
       <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:"—" }}</dd></div>
       <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
@@ -44,7 +44,7 @@
 
 {% elif entity_tab == "documents" %}
   <section class="lead-panel entity-section">
-    <div class="section-heading"><div><p class="eyebrow">{% trans "Documents" %}</p><h2>{% trans "Applicant documents" %}</h2></div></div>
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Documents" %}</p><h2>{% trans "Request documents" %}</h2></div></div>
     <div class="lead-document-list">
       {% for document in documents %}
         <div class="lead-document-row lead-document-row-review-{{ document.review_status }}">
@@ -58,14 +58,14 @@
     </div>
     {% if lead.status != "finalized" %}
     <div class="customer-document-upload-row">
-      <div><strong>{% trans "Add another document" %}</strong><span>{% trans "Upload a file for this applicant." %}</span></div>
+      <div><strong>{% trans "Add another document" %}</strong><span>{% trans "Upload a file for this request." %}</span></div>
       <button type="button" class="button button-secondary modal-trigger" data-modal-target="customer-document-upload">{% trans "Upload document" %}</button>
     </div>
     {% else %}
     <div class="customer-document-upload-row customer-document-upload-locked">
       <div>
-        <strong>{% trans "Applicant documents are read-only" %}</strong>
-        <span>{% trans "After finalization, document changes belong to the student record." %}</span>
+        <strong>{% trans "Request documents are read-only" %}</strong>
+        <span>{% trans "This request is finalized, so document changes are managed by TurkDemy." %}</span>
       </div>
     </div>
     {% endif %}
@@ -102,7 +102,7 @@
 
 {% elif entity_tab == "messages" %}
   <section class="lead-panel entity-section">
-    <div class="section-heading"><div><p class="eyebrow">{% trans "Messages" %}</p><h2>{% trans "Messages about this applicant" %}</h2></div></div>
+    <div class="section-heading"><div><p class="eyebrow">{% trans "Messages" %}</p><h2>{% trans "Messages about this request" %}</h2></div></div>
     <div class="lead-chat">
       <div class="lead-chat-messages">
         {% for message in lead_messages %}

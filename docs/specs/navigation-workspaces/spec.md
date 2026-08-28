@@ -1,7 +1,7 @@
 # Navigation and workspace information architecture
 
 Status: BASELINED
-Version: 1.0
+Version: 1.1
 
 ## Goal
 
@@ -17,8 +17,9 @@ NAV-002 — My TurkDemy and Agent workspace MUST remain distinct workspace conte
 NAV-003 — Agent sidebar MUST expose Overview, Applicants, Applications, Messages
 and active organization identity.
 
-NAV-004 — Applicant entity navigation MUST expose Overview, Profile, Programs,
-Documents, Applications and Messages.
+NAV-004 — Agent Applicant entity navigation MUST expose Overview, Profile, Programs,
+Documents, Applications and Messages. Customer case navigation MUST follow the
+customer Request abstraction defined by the Customer Requests capability.
 
 NAV-005 — Application entity navigation MUST expose Overview, Requirements,
 Documents, Activity and Messages.

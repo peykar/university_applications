@@ -1,40 +1,70 @@
 {% extends "customer/base.html" %}
 {% load i18n %}
-{% block title %}{% trans "My applicants" %} — TurkDemy{% endblock %}
+{% block title %}{% trans "My Requests" %} — TurkDemy{% endblock %}
 {% block customer_content %}
-<div class="section-heading applicant-page-heading">
+<div class="section-heading request-page-heading">
   <div>
-    <p class="eyebrow">{% trans "Applications workspace" %}</p>
-    <h1>{% trans "My applicants" %}</h1>
-    <p class="muted">{% trans "Manage each applicant separately, including preferences, programs, documents and messages." %}</p>
+    <h1>{% trans "My Requests" %}</h1>
+    <p class="muted">{% trans "Track the people and programs you have asked TurkDemy to help with." %}</p>
   </div>
-  <a class="button" href="{% url 'lead-create' %}">{% trans "Add applicant" %}</a>
+  <a class="button" href="{% url 'program-list' %}">{% trans "Find Programs" %}</a>
 </div>
 
-<div class="applicant-card-grid">
-  {% for lead in leads %}
-    <article class="applicant-card">
-      <div class="applicant-card-head">
-        <div class="applicant-avatar">{{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}</div>
-        <div>
-          <h2><a href="{% url 'lead-detail' lead.id %}">{{ lead }}</a></h2>
-          <span class="lead-status lead-status-{{ lead.status }}">{{ lead.get_status_display }}</span>
+<div class="request-card-list">
+  {% for card in request_cards %}
+    {% with lead=card.lead %}
+    <a class="request-card{% if card.needs_attention %} request-card-attention{% endif %}" href="{% url 'lead-detail' lead.id %}">
+      <div class="request-card-main">
+        <div class="request-card-identity">
+          <div class="applicant-avatar">{{ lead.first_name|slice:":1" }}{{ lead.last_name|slice:":1" }}</div>
+          <div>
+            <h2>{{ lead }}</h2>
+            <div class="request-contact-lines">
+              {% if lead.email %}<span>{{ lead.email }}</span>{% endif %}
+              {% if lead.cell %}<span>{{ lead.cell }}</span>{% endif %}
+            </div>
+          </div>
         </div>
+
+        {% if card.needs_attention %}
+          <div class="request-attention" aria-label="{% trans 'Action required' %}">
+            <strong>{% trans "Action required" %}</strong>
+            {% if card.unread_message_count %}
+              <span>{% blocktrans count counter=card.unread_message_count %}{{ counter }} unread message{% plural %}{{ counter }} unread messages{% endblocktrans %}</span>
+            {% endif %}
+            {% if card.needs_document_action %}
+              <span>{% trans "A document needs replacement" %}</span>
+            {% endif %}
+          </div>
+        {% endif %}
       </div>
-      <dl class="applicant-mini-facts">
-        <div><dt>{% trans "Programs" %}</dt><dd>{{ lead.program_interests.count }}</dd></div>
-        <div><dt>{% trans "Recommendation help" %}</dt><dd>{% if lead.needs_program_recommendation %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</dd></div>
-      </dl>
-      {% if lead.converted_student %}
-        <p class="converted-note">{% trans "Converted to validated student record." %}</p>
-      {% endif %}
-      <a class="card-action" href="{% url 'lead-detail' lead.id %}">{% trans "Open applicant" %} →</a>
-    </article>
+
+      <div class="request-programs">
+        <span class="request-section-label">{% trans "Applied for" %}</span>
+        {% if card.programs %}
+          <div class="request-program-list">
+            {% for interest in card.programs %}
+              <span class="request-program-item">
+                <span>{{ interest.program.name }}{% if interest.program.university %} — {{ interest.program.university.name }}{% endif %}</span>
+                {% if interest.source == "agent" %}
+                  <small class="request-suggested-tip">{% trans "Suggested by your agent" %}</small>
+                {% endif %}
+              </span>
+            {% endfor %}
+          </div>
+        {% else %}
+          <span class="muted">{% trans "No programs added yet" %}</span>
+        {% endif %}
+      </div>
+
+      <span class="request-open-hint">{% trans "Open request" %} →</span>
+    </a>
+    {% endwith %}
   {% empty %}
     <div class="empty-state">
-      <h2>{% trans "No applicants yet" %}</h2>
-      <p>{% trans "Create an applicant when you are ready to start exploring or applying for programs." %}</p>
-      <a class="button" href="{% url 'lead-create' %}">{% trans "Add your first applicant" %}</a>
+      <h2>{% trans "No requests yet" %}</h2>
+      <p>{% trans "Find a program to start your first request." %}</p>
+      <a class="button" href="{% url 'program-list' %}">{% trans "Find Programs" %}</a>
     </div>
   {% endfor %}
 </div>

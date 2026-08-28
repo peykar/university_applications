@@ -31,40 +31,35 @@ Agent workspace side by side.
 
 ## 2. My TurkDemy workspace
 
-`My TurkDemy` is the customer-facing/private workspace.
+`My TurkDemy` is the customer-facing/private workspace. Customers see their
+end-to-end cases as **Requests**; internal Lead, Student and Application
+terminology is not used as customer navigation.
 
-Its navigation is:
+Its sidebar navigation is intentionally menu-only:
 
-1. **Overview** (`dashboard`)
-2. **Applicants**
-3. **Messages** with unread badge
+1. **My Requests**
+2. **Messages** with unread badge
+3. **Get Help** → existing Contact page
+4. **Message us on WhatsApp** when `WHATSAPP_NUMBER` is configured
 
-The same navigation appears in the global My TurkDemy dropdown and as a
-persistent **left sidebar on desktop** throughout customer/private pages. On
-small screens the sidebar collapses into a compact horizontal workspace bar.
+The customer sidebar does not render a “MY TURKDEMY” heading, “Student
+workspace” subtitle, section labels, or an Agent workspace switch. Workspace
+switching remains a global/account concern.
 
-The URL may continue to be `/dashboard/`; the UI label is **Overview** because
-it describes the page's purpose more clearly.
+**My Requests** is the authenticated customer landing page. The legacy
+`dashboard` route redirects there.
 
-### Applications
+## 3. Request context
 
-Formal applications currently belong to applicants/students and are summarized
-on Overview. There is not yet a standalone customer Applications route, so the
-workspace navigation intentionally does not contain a dead or misleading
-Applications item. Add it only when a dedicated customer application index
-exists.
+A Request is the customer-facing abstraction for the ongoing service case. It
+is currently rooted in a Lead internally and may later involve a Student and
+formal Applications, but those lifecycle terms remain Agent/internal concepts.
 
-## 3. Applicant context
-
-An Applicant is a business context inside My TurkDemy, not a global workspace.
-
-Applicant pages contain applicant-specific profile data, preferences, programs,
-documents, applications and messages. The global customer navigation remains
-visible so the user can return to Overview, Applicants or the general Messages
-inbox.
-
-Do not create duplicate global links named "Messages" for applicant and agent
-messages. Context determines which messages are being displayed.
+Request pages can expose profile, programs, documents and messages without
+requiring the customer to understand backend state transitions. The My Requests
+index summarizes the person's name/contact details, all associated program
+interests, and attention signals for unread messages or documents that need
+replacement.
 
 ## 4. Agent workspace
 
@@ -113,8 +108,8 @@ links into one list.
 When adding a new feature, first decide its scope:
 
 - **Discovery/public** → global Explore navigation if important enough.
-- **Customer-wide operation** → My TurkDemy navigation.
-- **Applicant-specific operation** → applicant context, not global header.
+- **Customer-wide operation** → My TurkDemy navigation using customer Request terminology.
+- **Request-specific customer operation** → Request context; Agent-side Applicant operations remain internal.
 - **Agent-wide operation** → Agent workspace.
 - **Identity/security** → Account menu.
 
@@ -129,8 +124,7 @@ Workspace navigation is intentionally rendered as a real sidebar on desktop.
 
 ### My TurkDemy
 
-The customer sidebar appears on Overview, Applicants, applicant detail/edit/
-preferences pages, and the customer messaging inbox/conversation pages.
+The customer sidebar appears on My Requests, request detail/edit/preferences pages, and the customer messaging inbox/conversation pages.
 
 ### Agent workspace
 
@@ -151,31 +145,22 @@ TurkDemy has a third navigation level for complex workflow entities. Workspace
 navigation answers **which area of TurkDemy am I in?** Entity navigation answers
 **which part of this specific record am I viewing?**
 
-### Applicant
+### Customer Request / Agent Applicant
 
-Both customer and Agent applicant pages use:
+Customer pages use Request terminology and expose focused Overview, Profile,
+Programs, Documents and Messages areas. The customer navigation does not expose
+a separate Applications tab; formal application lifecycle is an internal Agent
+concept.
 
-1. Overview
-2. Profile
-3. Programs
-4. Documents
-5. Applications
-6. Messages
-
-The Applicant navigation is shown below the applicant identity/header and
-inside the current workspace content area. The left workspace sidebar remains
-visible.
+Agent Applicant pages continue to use Applicant terminology and their full
+operational navigation, including Applications, Todos and Communication Log.
 
 Scope is important:
 
-- Workspace **Messages** = conversations across the workspace.
-- Applicant **Messages** = conversation about this applicant.
+- Workspace **Messages** = conversations across the customer workspace.
+- Request **Messages** = conversation about this request.
 - Agent workspace **Applications** = all applications managed by the Agent.
-- Applicant **Applications** = applications belonging to this applicant.
-
-The existing combined applicant detail remains the **Overview** page. Focused
-pages provide dedicated views of profile, programs, documents, applications and
-messages.
+- Agent Applicant **Applications** = applications belonging to this applicant.
 
 ### Application
 

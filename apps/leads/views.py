@@ -4,14 +4,23 @@ from pathlib import Path
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
 from apps.messaging.forms import MessageForm
-from apps.messaging.models import ConversationParticipantRole, MessageSenderRole
-from apps.messaging.services import mark_conversation_read, send_message
+from apps.messaging.models import (
+    Conversation,
+    ConversationParticipantRole,
+    MessageSenderRole,
+)
+from apps.messaging.services import (
+    mark_conversation_read,
+    send_message,
+    unread_count_for_conversation,
+)
 from apps.universities.models import Program
 
 from .forms import (
@@ -95,13 +104,53 @@ def _lead_entity_context(*, request, lead, mark_read=False):
 
 @login_required
 def lead_list(request):
-    leads = (
+    leads = list(
         Lead.objects.filter(user=request.user)
         .select_related("converted_student")
-        .prefetch_related("program_interests")
+        .prefetch_related(
+            "program_interests__program__university",
+            "documents",
+        )
         .order_by("-updated_at")
     )
-    return render(request, "leads/lead_list.html", {"leads": leads})
+
+    lead_content_type = ContentType.objects.get_for_model(Lead)
+    conversations = {
+        conversation.subject_object_id: conversation
+        for conversation in Conversation.objects.filter(
+            customer=request.user,
+            subject_content_type=lead_content_type,
+            subject_object_id__in=[lead.pk for lead in leads],
+        )
+    }
+    request_cards = []
+    for lead in leads:
+        programs = list(lead.program_interests.all())
+        needs_document_action = any(
+            document.review_status == LeadDocumentReviewStatus.REPLACEMENT_REQUESTED
+            for document in lead.documents.all()
+        )
+        conversation = conversations.get(lead.pk)
+        unread_message_count = (
+            unread_count_for_conversation(
+                conversation=conversation,
+                user=request.user,
+                participant_role=ConversationParticipantRole.CUSTOMER,
+            )
+            if conversation is not None
+            else 0
+        )
+        request_cards.append(
+            {
+                "lead": lead,
+                "programs": programs,
+                "needs_document_action": needs_document_action,
+                "unread_message_count": unread_message_count,
+                "needs_attention": bool(unread_message_count or needs_document_action),
+            }
+        )
+
+    return render(request, "leads/lead_list.html", {"request_cards": request_cards})
 
 
 @login_required

@@ -1,3 +1,7 @@
+- Replaced brittle Django-template branch parsing in the customer Request terminology test with explicit assertions for the customer navigation links.
+- Fixed the customer Request terminology regression test to use the existing `request_nav` fixture when isolating the customer navigation branch.
+- Corrected the remaining customer-redesign source-inspection tests: customer entity-navigation scoping and finalized Request document wording.\n- Aligned legacy customer workspace tests with the My Requests redesign: customer-only terminology scope, Request document wording, and the menu-only sidebar contract.\n- Redesigned the customer workspace around a single **Request** abstraction: menu-only sidebar, My Requests landing page, Find Programs action, request cards with contact/program details, Agent suggestion tips, and unread-message/document-replacement attention indicators.
+- Added optional `WHATSAPP_NUMBER` configuration for the customer sidebar and linked Get Help to the existing Contact page.
 - Fixed the final legacy internal-notes test so it scopes inspection to AgentLeadEditForm and excludes StudentRecordConversionForm.
 - Corrected the remaining legacy source-inspection tests after Create Student Record: Lead edit-form note isolation and Student full_clean phone-validation contract.
 - Fixed legacy source-inspection tests for the Create Student Record workflow after the finalization redesign.

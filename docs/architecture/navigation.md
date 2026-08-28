@@ -17,10 +17,10 @@ Public discovery and account/workspace entry:
 
 ### My TurkDemy
 
-- Overview
-- Applicants
+- My Requests
 - Messages
-- workspace switch
+- Get Help
+- Message us on WhatsApp (only when configured)
 
 ### Agent workspace
 
@@ -34,13 +34,23 @@ Public discovery and account/workspace entry:
 
 ## L3 — Entity context
 
-### Applicant
+### Customer Request
+
+- Overview
+- Profile
+- Programs
+- Documents
+- Messages
+
+### Agent Applicant
 
 - Overview
 - Profile
 - Programs
 - Documents
 - Applications
+- Todos
+- Communication Log
 - Messages
 
 Activity remains available to Agent users as an audit destination.
@@ -64,10 +74,10 @@ permanent navigation bar without a new information-architecture decision.
 Similar labels at different levels have different scopes:
 
 - Agent sidebar Applications = all Applications in active Agent.
-- Applicant → Applications = Applications for that Applicant/Student.
+- Agent Applicant → Applications = Applications for that Applicant/Student.
 - Application → Documents = documents for that one Application.
 - Global/workspace Messages = inbox.
-- Applicant/Application Messages = subject-scoped conversation.
+- Request/Applicant/Application Messages = subject-scoped conversation.
 
 Lead→Student conversion does not replace Applicant entity navigation with a
 separate permanent Student navigation identity.

@@ -12,9 +12,17 @@ class WorkspaceSidebarTests(SimpleTestCase):
         self.css = (root / "static/css/turkdemy.css").read_text(encoding="utf-8")
 
     def test_customer_sidebar_contains_workspace_links(self):
-        self.assertIn("'dashboard'", self.customer_base)
         self.assertIn("'lead-list'", self.customer_base)
+        self.assertIn('"My Requests"', self.customer_base)
         self.assertIn("'customer-message-inbox'", self.customer_base)
+        self.assertIn('"Messages"', self.customer_base)
+        self.assertIn("'contact'", self.customer_base)
+        self.assertIn('"Get Help"', self.customer_base)
+        self.assertIn("customer_whatsapp_url", self.customer_base)
+        self.assertIn('"Message us on WhatsApp"', self.customer_base)
+        self.assertNotIn("'dashboard'", self.customer_base)
+        self.assertNotIn('"MY TURKDEMY"', self.customer_base)
+        self.assertNotIn('"Student workspace"', self.customer_base)
 
     def test_agent_sidebar_contains_workspace_links(self):
         self.assertIn("'agent-dashboard'", self.agent_base)

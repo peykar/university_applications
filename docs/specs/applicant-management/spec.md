@@ -1,7 +1,7 @@
 # Applicant management
 
 Status: BASELINED
-Version: 1.0
+Version: 1.1
 
 ## Goal
 
@@ -22,8 +22,10 @@ channels; changes MUST be audited.
 APL-005 — Finalized Applicant data MUST NOT be edited through the Lead edit
 workflow.
 
-APL-006 — Applicant UI MUST expose focused Profile, Programs, Documents,
-Applications and Messages areas with Overview as a summary.
+APL-006 — Agent Applicant UI MUST expose focused Profile, Programs, Documents,
+Applications and Messages areas with Overview as a summary. Customer presentation
+MUST follow the Customer Requests capability and MUST NOT expose Application as a
+workspace/navigation concept.
 
 APL-007 — Internal notes MUST be private Agent case-management data, MUST NOT be
 part of Applicant profile editing, MUST be visible to Agent users on Applicant

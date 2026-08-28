@@ -9,10 +9,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from apps.applications.models import Application
 from apps.content.models import FAQ, FAQCategory
 from apps.geography.models import City
-from apps.students.models import Student
 from apps.universities.models import (
     AcademicYear,
     Currency,
@@ -607,26 +605,8 @@ def about(request):
 
 @login_required
 def dashboard(request):
-    students = Student.objects.filter(user=request.user).prefetch_related(
-        "applications__program_offering__program__university"
-    )
-    applications = Application.objects.filter(student__user=request.user).select_related(
-        "student",
-        "program_offering__program__university",
-        "program_offering__academic_year",
-        "program_offering__semester",
-    )
-    leads = request.user.leads.select_related("converted_student").order_by("-updated_at")[:8]
-
-    return render(
-        request,
-        "public/dashboard.html",
-        {
-            "students": students,
-            "applications": applications,
-            "leads": leads,
-        },
-    )
+    """Legacy customer dashboard entry; Requests are the customer workspace home."""
+    return redirect("lead-list")
 
 
 @login_required

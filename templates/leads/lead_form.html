@@ -7,7 +7,7 @@
 {% endif %}
 <section class="applicant-form-page">
   <header class="applicant-form-header">
-    <p class="eyebrow">{% trans "Applicant profile" %}</p>
+    <p class="eyebrow">{% trans "Request profile" %}</p>
     <h1>{{ title }}</h1>
     {% if next_program %}
       <p class="muted">{% trans "Start with whatever information you have. Most fields are optional; our admissions team can collect the rest later." %}</p>
@@ -47,7 +47,7 @@
     </section>
 
     <section class="applicant-form-section">
-      <div class="applicant-form-section-heading"><h2>{% trans "Residence" %}</h2><p>{% trans "Where the applicant currently lives." %}</p></div>
+      <div class="applicant-form-section-heading"><h2>{% trans "Residence" %}</h2><p>{% trans "Current residence details." %}</p></div>
       <div class="applicant-form-grid">
         <div class="applicant-form-field">{{ form.country_of_residence.label_tag }}{{ form.country_of_residence }}{{ form.country_of_residence.errors }}</div>
         <div class="applicant-form-field">{{ form.city_of_residence.label_tag }}{{ form.city_of_residence }}{{ form.city_of_residence.errors }}</div>
