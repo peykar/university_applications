@@ -1,3 +1,10 @@
+## 2026-08-29 — Customer Request status-only header
+
+- Removed `Next step — Program recommendations` from the customer Request header.
+- Kept the customer header focused on the canonical customer-facing Request status.
+- Clarified CRQ-021: customer actions belong in Action required, informational items in Needs your attention, and TurkDemy/Agent work in Request progress.
+- Preserved Agent-facing `Needs program recommendations` guidance.
+
 
 ## 2026-08-29 — Customer-safe recent-message identity fix
 

@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.5
+Version: 1.6
 
 ## Goal
 
@@ -102,9 +102,12 @@ heading. Customer document review labels in the context sidebar MUST use the
 canonical presentation vocabulary **Approved**, **Under review**, and **Needs
 replacement**.
 
-CRQ-021 — Request header MUST visually separate the canonical customer Request
-status from advisory workflow guidance. Program-recommendation guidance MUST be
-presented as a **Next step**, not as a second status badge.
+CRQ-021 — Customer Request header MUST show only the canonical customer-facing
+Request status and MUST NOT expose internal/advisory workflow guidance such as
+**Next step — Program recommendations**. Customer-required work belongs in
+**Action required**, informational items belong in **Needs your attention**, and
+TurkDemy/Agent work belongs in customer-safe **Request progress**. Agent-facing
+recommendation guidance remains unchanged.
 
 CRQ-022 — Unread messages alone MUST be presented as **Needs your attention**,
 not **Action required**. **Action required** is reserved for a concrete customer

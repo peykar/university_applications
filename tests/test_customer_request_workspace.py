@@ -194,10 +194,14 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             self.css,
         )
 
-    def test_header_separates_status_from_next_step(self):
-        self.assertIn('class="request-next-step"', self.request_header)
-        self.assertIn('{% trans "Next step" %}', self.request_header)
-        self.assertIn('{% trans "Program recommendations" %}', self.request_header)
+    def test_customer_header_is_status_only(self):
+        self.assertNotIn('class="request-next-step"', self.request_header)
+        self.assertNotIn('{% trans "Next step" %}', self.request_header)
+        self.assertNotIn('{% trans "Program recommendations" %}', self.request_header)
+        self.assertIn(
+            "agent_context and lead.needs_program_recommendation",
+            self.request_header,
+        )
 
     def test_unread_messages_are_attention_not_required_action(self):
         self.assertIn('"has_required_action": bool(attention_documents)', self.views)

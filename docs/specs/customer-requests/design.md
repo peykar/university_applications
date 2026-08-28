@@ -86,6 +86,10 @@ activity descriptions do not leak Applicant/finalization terminology.
 
 Customer status presentation maps Lead states to Received / In progress /
 Completed / Closed while Agent pages continue using the canonical Lead labels.
+The customer Request header deliberately contains status only: advisory/internal
+workflow hints such as program-recommendation next steps are not rendered there.
+Customer-required work is surfaced by Action required, informational attention by
+Needs your attention, and TurkDemy/Agent work by the customer-safe progress timeline.
 
 ## Overview density and action semantics
 

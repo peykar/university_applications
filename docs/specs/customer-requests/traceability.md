@@ -25,7 +25,7 @@ Status: IMPLEMENTED
 | `CRQ-019` | `templates/includes/applicant_entity_header.html` | `CustomerRequestWorkspaceTests.test_customer_request_header_uses_customer_friendly_statuses` | Named test |
 | `CRQ-020` | Request Overview/context templates and `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_request_overview_is_compact_and_uses_explicit_attention_and_document_statuses` | Named test |
 
-| `CRQ-021` | Request entity header | `CustomerRequestWorkspaceTests.test_header_separates_status_from_next_step` | Named test |
+| `CRQ-021` | Request entity header and Overview semantics | `CustomerRequestWorkspaceTests.test_customer_header_is_status_only` | Named test |
 | `CRQ-022` | Request Overview attention panel | `CustomerRequestWorkspaceTests.test_unread_messages_are_attention_not_required_action` | Named test |
 | `CRQ-023` | customer activity presentation in `apps/leads/views.py` | `CustomerRequestWorkspaceTests.test_progress_uses_customer_specific_subject_labels` | Named test |
 | `CRQ-024` | Request recent-message preview | `CustomerRequestWorkspaceTests.test_recent_messages_use_customer_safe_advisor_identity` | Named test |
