@@ -177,6 +177,23 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         ]
         self.assertIn("mark_read=True", messages_view)
 
+    def test_request_overview_is_compact_and_uses_explicit_attention_and_document_statuses(self):
+        self.assertNotIn('{% trans "You have something to review" %}', self.request_detail)
+        self.assertIn("You have {{ counter }} unread message", self.request_detail)
+        self.assertIn("{{ document_name }} needs to be replaced", self.request_detail)
+        self.assertIn('{% trans "Approved" %}', self.request_context_sidebar)
+        self.assertIn('{% trans "Under review" %}', self.request_context_sidebar)
+        self.assertIn('{% trans "Needs replacement" %}', self.request_context_sidebar)
+        self.assertIn(
+            ".request-detail-main>.lead-panel,.request-overview-grid>.lead-panel"
+            "{padding:18px;margin-bottom:14px}",
+            self.css,
+        )
+        self.assertIn(
+            ".request-overview-grid{display:grid;grid-template-columns:1fr;gap:14px}",
+            self.css,
+        )
+
     def test_customer_request_header_uses_customer_friendly_statuses(self):
         self.assertIn('{% trans "Received" %}', self.request_header)
         self.assertIn('{% trans "In progress" %}', self.request_header)

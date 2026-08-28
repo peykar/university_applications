@@ -1,4 +1,15 @@
 
+## 2026-08-29 — Customer Request overview density and semantics
+
+- Reduced Request Overview card padding and vertical spacing so progress and recent
+  messages size naturally to their content.
+- Replaced the generic “You have something to review” attention heading with
+  explicit unread-message counts and named document-replacement actions.
+- Normalized context-sidebar document states to Approved, Under review, and Needs
+  replacement.
+- Added `CRQ-020` and regression coverage for the polished Request Overview.
+
+
 ## 2026-08-29 — Request detail layout aligned with approved SDD
 
 - Corrected the customer Request desktop hierarchy so the right context sidebar is a peer of the entire central Request workspace and starts alongside the Request header instead of only below the Request navigation.

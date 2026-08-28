@@ -86,3 +86,18 @@ activity descriptions do not leak Applicant/finalization terminology.
 
 Customer status presentation maps Lead states to Received / In progress /
 Completed / Closed while Agent pages continue using the canonical Lead labels.
+
+## Overview density and action semantics
+
+Overview cards are content-sized and intentionally compact. The main flow keeps
+clear card boundaries, but padding, heading spacing, timeline spacing and message
+rows are reduced so short datasets do not create a long mostly-empty page.
+
+The attention panel does not use a vague summary such as “You have something to
+review”. Each attention row is self-describing: unread-message attention includes
+the actual unread count, while document attention names the document type that
+needs replacement and links to the relevant Request tab.
+
+The right-side document summary uses one customer-facing review vocabulary:
+**Approved**, **Under review**, and **Needs replacement**. These are presentation
+labels over the existing document review states and do not change model values.

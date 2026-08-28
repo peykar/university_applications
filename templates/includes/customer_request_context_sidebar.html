@@ -18,9 +18,9 @@
           {% if document.review_status == "approved" %}
             <b class="context-status context-status-success">{% trans "Approved" %}</b>
           {% elif document.review_status == "replacement_requested" %}
-            <b class="context-status context-status-danger">{% trans "Replace" %}</b>
+            <b class="context-status context-status-danger">{% trans "Needs replacement" %}</b>
           {% else %}
-            <b class="context-status">{% trans "Review" %}</b>
+            <b class="context-status">{% trans "Under review" %}</b>
           {% endif %}
         </a>
       {% empty %}

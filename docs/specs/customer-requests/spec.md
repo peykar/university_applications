@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.3
+Version: 1.4
 
 ## Goal
 
@@ -93,6 +93,14 @@ Request-specific Messages page is the read boundary for that conversation.
 CRQ-019 — Customer Request status labels MUST be customer-friendly presentation
 labels and MUST NOT change the underlying Lead status values or Agent-facing
 status labels.
+
+CRQ-020 — Request Overview MUST use compact, content-sized cards rather than
+excessive empty vertical space. Action-required rows MUST state the concrete
+customer action or condition (for example the unread-message count or the
+document that needs replacement) instead of a generic “something to review”
+heading. Customer document review labels in the context sidebar MUST use the
+canonical presentation vocabulary **Approved**, **Under review**, and **Needs
+replacement**.
 
 ## Acceptance policy
 

@@ -8,19 +8,19 @@
       {% include "includes/applicant_entity_header.html" %}
       {% if needs_attention %}
         <section class="lead-panel request-attention-panel" aria-labelledby="request-attention-title">
-          <div class="section-heading">
-            <div><p class="eyebrow">{% trans "Action required" %}</p><h2 id="request-attention-title">{% trans "You have something to review" %}</h2></div>
+          <div class="section-heading request-attention-heading">
+            <div><p class="eyebrow" id="request-attention-title">{% trans "Action required" %}</p></div>
           </div>
           <div class="request-attention-list">
             {% if unread_message_count %}
               <a href="{% url 'lead-messages' lead.pk %}">
-                <span><strong>{% trans "New message" %}</strong><small>{% blocktrans count counter=unread_message_count %}You have {{ counter }} unread message.{% plural %}You have {{ counter }} unread messages.{% endblocktrans %}</small></span>
+                <span><strong>{% blocktrans count counter=unread_message_count %}You have {{ counter }} unread message{% plural %}You have {{ counter }} unread messages{% endblocktrans %}</strong><small>{% trans "Open Messages to review and reply." %}</small></span>
                 <b>→</b>
               </a>
             {% endif %}
             {% for document in attention_documents %}
               <a href="{% url 'lead-documents' lead.pk %}">
-                <span><strong>{% trans "Replace a document" %}</strong><small>{{ document.get_document_type_display }} — {% trans "a replacement is required" %}</small></span>
+                <span><strong>{% blocktrans with document_name=document.get_document_type_display %}{{ document_name }} needs to be replaced{% endblocktrans %}</strong><small>{% trans "Open Documents to upload a replacement." %}</small></span>
                 <b>→</b>
               </a>
             {% endfor %}

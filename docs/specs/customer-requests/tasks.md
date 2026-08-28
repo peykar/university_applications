@@ -23,3 +23,7 @@ Status: IMPLEMENTED
 - [x] `CRQ-017` Keep Overview as one central vertical flow: attention, applied-for programs, progress, then recent messages.
 - [x] `CRQ-018` Preserve unread state until the customer opens Request Messages.
 - [x] `CRQ-019` Present customer-friendly Request statuses without changing Lead lifecycle values.
+
+- [x] `CRQ-020` Tighten Request Overview information density, replace generic
+  attention copy with explicit message/document actions, and normalize customer
+  document statuses to Approved / Under review / Needs replacement.

@@ -23,3 +23,4 @@ Status: IMPLEMENTED
 | `CRQ-017` | `apps/leads/views.py`, `templates/leads/lead_detail.html` | `CustomerRequestWorkspaceTests.test_overview_prioritizes_attention_programs_progress_and_messages_in_one_flow` | Named test |
 | `CRQ-018` | `apps/leads/views.py` | `CustomerRequestWorkspaceTests.test_overview_does_not_mark_unread_messages_read` | Named test |
 | `CRQ-019` | `templates/includes/applicant_entity_header.html` | `CustomerRequestWorkspaceTests.test_customer_request_header_uses_customer_friendly_statuses` | Named test |
+| `CRQ-020` | Request Overview/context templates and `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_request_overview_is_compact_and_uses_explicit_attention_and_document_statuses` | Named test |
