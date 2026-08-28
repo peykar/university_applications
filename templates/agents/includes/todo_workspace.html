@@ -1,0 +1,66 @@
+{% load i18n %}
+<section class="agent-panel operations-panel">
+  <div class="agent-panel-head">
+    <div>
+      <h2>{% trans "Todos" %}</h2>
+      <p>{% trans "Private work items shared by this Agent organization." %}</p>
+    </div>
+  </div>
+
+  <form method="post" action="{% url 'agent-todo-create' %}" class="operation-create-form">
+    {% csrf_token %}
+    {% if lead %}<input type="hidden" name="subject_kind" value="applicant"><input type="hidden" name="subject_id" value="{{ lead.pk }}">{% endif %}
+    {% if application %}<input type="hidden" name="subject_kind" value="application"><input type="hidden" name="subject_id" value="{{ application.pk }}">{% endif %}
+    <div class="operation-form-grid">{{ todo_form.as_p }}</div>
+    <button class="button" type="submit">{% trans "Add TODO" %}</button>
+  </form>
+
+  <div class="operation-list">
+    {% for todo in contextual_todos %}
+      <article class="operation-card {% if todo.due_date and todo.due_date < today and todo.status != 'done' and todo.status != 'cancelled' %}is-overdue{% endif %}">
+        <header>
+          <div>
+            <strong>{{ todo.title }}</strong>
+            <small>{{ todo.get_status_display }}{% if todo.due_date %} · {% trans "Due" %} {{ todo.due_date }}{% endif %}</small>
+          </div>
+          {% if todo.due_date and todo.due_date < today and todo.status != "done" and todo.status != "cancelled" %}<span class="status-pill warning">{% trans "Overdue" %}</span>{% endif %}
+        </header>
+        {% if todo.description %}<p>{{ todo.description|linebreaksbr }}</p>{% endif %}
+        <div class="operation-meta">
+          <span>{% trans "Assignee" %}: {{ todo.assignee|default:"—" }}</span>
+          {% if todo.subject %}<span>{% trans "Subject" %}: {{ todo.subject }}</span>{% endif %}
+          {% if todo.completed_at %}<span>{% trans "Completed" %}: {{ todo.completed_at|date:"M j, Y H:i" }} · {{ todo.completed_by }}</span>{% endif %}
+        </div>
+        <form method="post" action="{% url 'agent-todo-update' todo.pk %}" class="operation-inline-form">
+          {% csrf_token %}
+          <select name="status" aria-label="{% trans 'TODO status' %}">
+            <option value="created"{% if todo.status == "created" %} selected{% endif %}>{% trans "Created" %}</option>
+            <option value="in_progress"{% if todo.status == "in_progress" %} selected{% endif %}>{% trans "In progress" %}</option>
+            <option value="done"{% if todo.status == "done" %} selected{% endif %}>{% trans "Done" %}</option>
+            <option value="cancelled"{% if todo.status == "cancelled" %} selected{% endif %}>{% trans "Cancelled" %}</option>
+          </select>
+          <select name="assignee" aria-label="{% trans 'Assignee' %}">
+            <option value="">{% trans "Unassigned" %}</option>
+            {% for user in active_agent.users.all %}
+              <option value="{{ user.pk }}"{% if todo.assignee_id == user.pk %} selected{% endif %}>{{ user.get_full_name|default:user.email }}</option>
+            {% endfor %}
+          </select>
+          <button class="button button-secondary" type="submit">{% trans "Update" %}</button>
+        </form>
+        <details class="todo-comments">
+          <summary>{% blocktrans count count=todo.comments.count %}{{ count }} comment{% plural %}{{ count }} comments{% endblocktrans %}</summary>
+          {% for comment in todo.comments.all %}
+            <div class="todo-comment"><strong>{{ comment.author }}</strong><time>{{ comment.created_at|date:"M j, H:i" }}</time><p>{{ comment.body|linebreaksbr }}</p></div>
+          {% endfor %}
+          <form method="post" action="{% url 'agent-todo-comment' todo.pk %}" class="operation-inline-form">
+            {% csrf_token %}
+            <input type="text" name="body" required placeholder="{% trans 'Add immutable comment…' %}">
+            <button class="button button-secondary" type="submit">{% trans "Comment" %}</button>
+          </form>
+        </details>
+      </article>
+    {% empty %}
+      <div class="empty-state">{% trans "No TODOs in this scope." %}</div>
+    {% endfor %}
+  </div>
+</section>

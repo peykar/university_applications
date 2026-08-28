@@ -63,3 +63,8 @@ See also: [Agent workspace context](agent-workspace-context.md).
 
 
 See also: [Agent applicant workspace](agent-applicant-workspace.md).
+
+- `specs/todo-management/` — Agent-wide generic TODO work management.
+- `specs/communication-log/` — CRM-style external communication history.
+
+- `operations-workspace.md` — TODO and Communication Log workspace behavior/setup.

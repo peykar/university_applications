@@ -1,0 +1,7 @@
+{% extends "agents/base.html" %}
+{% load i18n %}
+{% block agent_title %}{% trans "Todos" %}{% endblock %}
+{% block agent_content %}
+<div class="operations-page-head"><div><span class="eyebrow">{% trans "Agent workspace" %}</span><h1>{% trans "Todos" %}</h1><p>{% trans "Shared operational work across this organization." %}</p></div></div>
+{% include "agents/includes/todo_workspace.html" %}
+{% endblock %}

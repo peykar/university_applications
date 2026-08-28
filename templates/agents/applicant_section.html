@@ -178,6 +178,10 @@
     {% endif %}
   </div>
 </section>
+{% elif entity_tab == "todos" %}
+{% include "agents/includes/todo_workspace.html" %}
+{% elif entity_tab == "communications" %}
+{% include "agents/includes/communication_workspace.html" %}
 {% endif %}
 
 <script>

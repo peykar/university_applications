@@ -1,0 +1,67 @@
+{% load i18n %}
+<section class="agent-panel operations-panel">
+  <div class="agent-panel-head">
+    <div>
+      <h2>{% trans "Communication Log" %}</h2>
+      <p>{% trans "CRM record of communication outside TurkDemy Messages." %}</p>
+    </div>
+  </div>
+
+  <form method="post" action="{% url 'agent-communication-create' %}" class="operation-create-form">
+    {% csrf_token %}
+    {% if lead %}<input type="hidden" name="subject_kind" value="applicant"><input type="hidden" name="subject_id" value="{{ lead.pk }}">{% endif %}
+    {% if application %}<input type="hidden" name="subject_kind" value="application"><input type="hidden" name="subject_id" value="{{ application.pk }}">{% endif %}
+    <div class="operation-form-grid">{{ communication_form.as_p }}</div>
+    <button class="button" type="submit">{% trans "Record communication" %}</button>
+  </form>
+
+  <div class="operation-list">
+    {% for communication in contextual_communications %}
+      <article class="operation-card communication-card">
+        <header>
+          <div>
+            <strong>{{ communication.get_channel_display }} · {{ communication.get_counterparty_type_display }}</strong>
+            <small>{{ communication.occurred_at|date:"M j, Y H:i" }} · {{ communication.performed_by }}</small>
+          </div>
+          {% if communication.counterparty_name %}<span class="status-pill">{{ communication.counterparty_name }}</span>{% endif %}
+        </header>
+        <p>{{ communication.summary|linebreaksbr }}</p>
+        <div class="operation-meta">
+          {% if communication.subject %}<span>{% trans "Subject" %}: {{ communication.subject }}</span>{% endif %}
+          <span>{% trans "Recorded" %}: {{ communication.created_at|date:"M j, Y H:i" }}</span>
+          {% if communication.revisions.count %}<span>{% blocktrans count count=communication.revisions.count %}{{ count }} revision{% plural %}{{ count }} revisions{% endblocktrans %}</span>{% endif %}
+        </div>
+        <div class="operation-actions">
+          <form method="post" action="{% url 'agent-communication-create-todo' communication.pk %}">
+            {% csrf_token %}
+            <button class="button button-secondary" type="submit">{% trans "Create TODO" %}</button>
+          </form>
+          {% if communication.created_by_id == request.user.pk %}
+            <details>
+              <summary>{% trans "Edit" %}</summary>
+              <form method="post" action="{% url 'agent-communication-edit' communication.pk %}" class="operation-edit-form">
+                {% csrf_token %}
+                <label>{% trans "Occurred at" %}<input type="datetime-local" name="occurred_at" value="{{ communication.occurred_at|date:'Y-m-d\\TH:i' }}" required></label>
+                <label>{% trans "Channel" %}
+                  <select name="channel">
+                    {% for value,label in communication_form.fields.channel.choices %}<option value="{{ value }}"{% if communication.channel == value %} selected{% endif %}>{{ label }}</option>{% endfor %}
+                  </select>
+                </label>
+                <label>{% trans "Counterparty type" %}
+                  <select name="counterparty_type">
+                    {% for value,label in communication_form.fields.counterparty_type.choices %}<option value="{{ value }}"{% if communication.counterparty_type == value %} selected{% endif %}>{{ label }}</option>{% endfor %}
+                  </select>
+                </label>
+                <label>{% trans "Counterparty name" %}<input name="counterparty_name" value="{{ communication.counterparty_name }}"></label>
+                <label>{% trans "Summary" %}<textarea name="summary" rows="3" required>{{ communication.summary }}</textarea></label>
+                <button class="button button-secondary" type="submit">{% trans "Save revision" %}</button>
+              </form>
+            </details>
+          {% endif %}
+        </div>
+      </article>
+    {% empty %}
+      <div class="empty-state">{% trans "No communication has been logged in this scope." %}</div>
+    {% endfor %}
+  </div>
+</section>

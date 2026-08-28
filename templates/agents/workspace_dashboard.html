@@ -10,6 +10,36 @@
   <a href="{% url 'agent-applicant-list' %}" class="agent-metric"><strong>{{ unverified_document_count }}</strong><span>{% trans "Unverified documents" %}</span></a>
 </section>
 
+<section class="operations-dashboard-strip">
+  <div class="agent-panel">
+    <div class="agent-panel-head"><h2>{% trans "My TODOs" %}</h2><a href="{% url 'agent-todo-list' %}">{% trans "View all" %}</a></div>
+    <div class="todo-summary-metrics">
+      <span><strong>{{ todo_overdue_count }}</strong>{% trans "Overdue" %}</span>
+      <span><strong>{{ todo_due_today_count }}</strong>{% trans "Due today" %}</span>
+      <span><strong>{{ todo_upcoming_count }}</strong>{% trans "Upcoming" %}</span>
+    </div>
+    <div class="agent-list">
+      {% for todo in my_todos %}
+        <a class="agent-list-row" href="{% url 'agent-todo-list' %}">
+          <span><strong>{{ todo.title }}</strong><small>{{ todo.due_date|default:"No due date" }}</small></span>
+          <span class="status-pill">{{ todo.get_status_display }}</span>
+        </a>
+      {% empty %}<p class="empty-state">{% trans "No active TODOs assigned to you." %}</p>{% endfor %}
+    </div>
+  </div>
+  <div class="agent-panel">
+    <div class="agent-panel-head"><h2>{% trans "Recent communication" %}</h2><a href="{% url 'agent-communication-list' %}">{% trans "View all" %}</a></div>
+    <div class="agent-list">
+      {% for communication in recent_communications %}
+        <a class="agent-list-row" href="{% url 'agent-communication-list' %}">
+          <span><strong>{{ communication.get_channel_display }} · {{ communication.get_counterparty_type_display }}</strong><small>{{ communication.summary|truncatechars:72 }}</small></span>
+          <time>{{ communication.occurred_at|date:"M j, H:i" }}</time>
+        </a>
+      {% empty %}<p class="empty-state">{% trans "No communication logged yet." %}</p>{% endfor %}
+    </div>
+  </div>
+</section>
+
 <div class="agent-dashboard-grid">
   <section class="agent-panel">
     <div class="agent-panel-head"><h2>{% trans "Recent applicants" %}</h2><a href="{% url 'agent-applicant-list' %}">{% trans "View all" %}</a></div>

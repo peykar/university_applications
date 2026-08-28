@@ -97,6 +97,7 @@ INSTALLED_APPS = [
     "apps.students",
     "apps.applications",
     "apps.messaging.apps.MessagingConfig",
+    "apps.operations.apps.OperationsConfig",
     "apps.leads.apps.LeadsConfig",
     "apps.content",
     "apps.public",

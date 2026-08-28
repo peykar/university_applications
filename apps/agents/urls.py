@@ -3,6 +3,38 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path("agent/todos/", views.todo_list, name="agent-todo-list"),
+    path("agent/todos/create/", views.todo_create, name="agent-todo-create"),
+    path(
+        "agent/todos/<uuid:todo_id>/update/",
+        views.todo_update,
+        name="agent-todo-update",
+    ),
+    path(
+        "agent/todos/<uuid:todo_id>/comments/",
+        views.todo_comment,
+        name="agent-todo-comment",
+    ),
+    path(
+        "agent/communications/",
+        views.communication_list,
+        name="agent-communication-list",
+    ),
+    path(
+        "agent/communications/create/",
+        views.communication_create,
+        name="agent-communication-create",
+    ),
+    path(
+        "agent/communications/<uuid:communication_id>/edit/",
+        views.communication_edit,
+        name="agent-communication-edit",
+    ),
+    path(
+        "agent/communications/<uuid:communication_id>/create-todo/",
+        views.communication_create_todo,
+        name="agent-communication-create-todo",
+    ),
     path("agent/choose/", views.choose_agent, name="agent-choose"),
     path("agent/switch/", views.switch_agent, name="agent-switch"),
     path("agent/", views.dashboard, name="agent-dashboard"),
@@ -51,6 +83,18 @@ urlpatterns = [
         views.applicant_section,
         {"section": "messages"},
         name="agent-applicant-messages",
+    ),
+    path(
+        "agent/applicants/<uuid:lead_id>/todos/",
+        views.applicant_section,
+        {"section": "todos"},
+        name="agent-applicant-todos",
+    ),
+    path(
+        "agent/applicants/<uuid:lead_id>/communications/",
+        views.applicant_section,
+        {"section": "communications"},
+        name="agent-applicant-communications",
     ),
     path(
         "agent/applicants/<uuid:lead_id>/edit/",
@@ -138,6 +182,18 @@ urlpatterns = [
         "agent/applications/<uuid:application_id>/",
         views.application_detail,
         name="agent-application-detail",
+    ),
+    path(
+        "agent/applications/<uuid:application_id>/todos/",
+        views.application_section,
+        {"section": "todos"},
+        name="agent-application-todos",
+    ),
+    path(
+        "agent/applications/<uuid:application_id>/communications/",
+        views.application_section,
+        {"section": "communications"},
+        name="agent-application-communications",
     ),
     path(
         "agent/applications/<uuid:application_id>/requirements/",

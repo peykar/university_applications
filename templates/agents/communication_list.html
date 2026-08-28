@@ -1,0 +1,7 @@
+{% extends "agents/base.html" %}
+{% load i18n %}
+{% block agent_title %}{% trans "Communications" %}{% endblock %}
+{% block agent_content %}
+<div class="operations-page-head"><div><span class="eyebrow">{% trans "Agent workspace" %}</span><h1>{% trans "Communication Log" %}</h1><p>{% trans "Shared CRM history of communication outside the platform." %}</p></div></div>
+{% include "agents/includes/communication_workspace.html" %}
+{% endblock %}

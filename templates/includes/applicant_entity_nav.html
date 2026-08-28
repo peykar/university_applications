@@ -6,6 +6,8 @@
     <a href="{% url 'agent-applicant-programs' lead.pk %}"{% if entity_tab == "programs" %} class="is-active"{% endif %}>{% trans "Programs" %}</a>
     <a href="{% url 'agent-applicant-documents' lead.pk %}"{% if entity_tab == "documents" %} class="is-active"{% endif %}>{% trans "Documents" %}</a>
     <a href="{% url 'agent-applicant-applications' lead.pk %}"{% if entity_tab == "applications" %} class="is-active"{% endif %}>{% trans "Applications" %}</a>
+    <a href="{% url 'agent-applicant-todos' lead.pk %}"{% if entity_tab == "todos" %} class="is-active"{% endif %}>{% trans "Todos" %}</a>
+    <a href="{% url 'agent-applicant-communications' lead.pk %}"{% if entity_tab == "communications" %} class="is-active"{% endif %}>{% trans "Communication Log" %}</a>
     <a href="{% url 'agent-applicant-messages' lead.pk %}"{% if entity_tab == "messages" %} class="is-active"{% endif %}>
       {% trans "Messages" %}
       {% if applicant_unread_count %}<b class="unread-badge">{{ applicant_unread_count }}</b>{% endif %}

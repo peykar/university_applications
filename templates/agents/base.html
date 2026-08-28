@@ -54,6 +54,12 @@
       <a href="{% url 'agent-application-list' %}"{% if "agent-application" in current_url or "agent-student" in current_url %} class="is-active"{% endif %}>
         <span>{% trans "Applications" %}</span>
       </a>
+      <a href="{% url 'agent-todo-list' %}"{% if "agent-todo" in current_url %} class="is-active"{% endif %}>
+        <span>{% trans "Todos" %}</span>
+      </a>
+      <a href="{% url 'agent-communication-list' %}"{% if "agent-communication" in current_url %} class="is-active"{% endif %}>
+        <span>{% trans "Communications" %}</span>
+      </a>
       <a href="{% url 'agent-message-inbox' %}"{% if current_url == "agent-message-inbox" %} class="is-active"{% endif %}>
         <span>{% trans "Messages" %}</span>
         {% if agent_unread_message_count %}

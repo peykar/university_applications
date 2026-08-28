@@ -43,6 +43,17 @@ from apps.messaging.services import (
     send_message,
     unread_count_for_conversation,
 )
+from apps.operations.forms import CommunicationLogForm, TodoForm
+from apps.operations.models import CommunicationLog, Todo, TodoStatus
+from apps.operations.services import (
+    add_todo_comment,
+    communications_for_subject_tree,
+    create_communication,
+    create_todo,
+    edit_communication,
+    todos_for_subject_tree,
+    update_todo,
+)
 from apps.students.models import Student
 from apps.universities.models import Program
 
@@ -165,7 +176,22 @@ def dashboard(request):
         source="user",
     )
 
+    today = timezone.localdate()
+    active_todos = Todo.objects.filter(agent=active_agent).exclude(
+        status__in=(TodoStatus.DONE, TodoStatus.CANCELLED)
+    )
+    recent_communications = CommunicationLog.objects.filter(agent=active_agent).select_related(
+        "performed_by", "subject_content_type"
+    )[:6]
+
     context = {
+        "todo_overdue_count": active_todos.filter(due_date__lt=today).count(),
+        "todo_due_today_count": active_todos.filter(due_date=today).count(),
+        "todo_upcoming_count": active_todos.filter(due_date__gt=today).count(),
+        "my_todos": active_todos.filter(assignee=request.user).order_by("due_date", "-created_at")[
+            :6
+        ],
+        "recent_communications": recent_communications,
         "lead_count": leads.count(),
         "new_lead_count": leads.filter(status=LeadStatus.NEW).count(),
         "assigned_lead_count": leads.filter(status=LeadStatus.ASSIGNED).count(),
@@ -277,7 +303,20 @@ def _agent_applicant_context(*, request, lead, mark_read=False):
             .order_by("-listing_priority", "university__name_en", "name_en")[:20]
         )
 
+    contextual_todos = todos_for_subject_tree(agent=lead.agent, subject=lead).select_related(
+        "assignee", "subject_content_type"
+    )
+    contextual_communications = communications_for_subject_tree(
+        agent=lead.agent,
+        subject=lead,
+    ).select_related("performed_by", "subject_content_type")
+
     return {
+        "contextual_todos": contextual_todos,
+        "contextual_communications": contextual_communications,
+        "today": timezone.localdate(),
+        "todo_form": TodoForm(agent=lead.agent),
+        "communication_form": CommunicationLogForm(),
         "lead": lead,
         "agent_users": agent_users,
         "lead_messages": lead_messages,
@@ -330,7 +369,15 @@ def applicant_detail(request, lead_id):
 
 @login_required
 def applicant_section(request, lead_id, section):
-    if section not in {"profile", "programs", "documents", "applications", "messages"}:
+    if section not in {
+        "profile",
+        "programs",
+        "documents",
+        "applications",
+        "messages",
+        "todos",
+        "communications",
+    }:
         raise PermissionDenied("Unknown applicant section.")
     lead = (
         _agent_leads(request)
@@ -1317,6 +1364,31 @@ def _agent_application_activity(application):
                 "detail": message.body[:120] if message.body else "Attachment",
             }
         )
+    application_agent = application.agent or application.student.agent
+    for todo in todos_for_subject_tree(
+        agent=application_agent,
+        subject=application,
+    ):
+        events.append(
+            {
+                "when": todo.updated_at,
+                "title": "TODO",
+                "detail": f"{todo.title} · {todo.get_status_display()}",
+            }
+        )
+    for communication in communications_for_subject_tree(
+        agent=application_agent,
+        subject=application,
+    ):
+        events.append(
+            {
+                "when": communication.occurred_at,
+                "title": "Communication Log",
+                "detail": (
+                    f"{communication.get_channel_display()} · {communication.summary[:120]}"
+                ),
+            }
+        )
     if application.updated_at != application.created_at:
         events.append(
             {
@@ -1336,7 +1408,22 @@ def _agent_application_context(*, request, application, tab, mark_read=False):
             user=request.user,
             participant_role=ConversationParticipantRole.AGENT,
         )
+    application_agent = application.agent or application.student.agent
+    contextual_todos = todos_for_subject_tree(
+        agent=application_agent,
+        subject=application,
+    ).select_related("assignee", "subject_content_type")
+    contextual_communications = communications_for_subject_tree(
+        agent=application_agent,
+        subject=application,
+    ).select_related("performed_by", "subject_content_type")
+
     return {
+        "contextual_todos": contextual_todos,
+        "contextual_communications": contextual_communications,
+        "today": timezone.localdate(),
+        "todo_form": TodoForm(agent=application_agent),
+        "communication_form": CommunicationLogForm(),
         "application": application,
         "source_lead": getattr(application.student, "source_lead", None),
         "status_choices": ApplicationStatus.choices,
@@ -1391,7 +1478,14 @@ def application_detail(request, application_id):
 
 @login_required
 def application_section(request, application_id, section):
-    if section not in {"requirements", "documents", "activity", "messages"}:
+    if section not in {
+        "requirements",
+        "documents",
+        "activity",
+        "messages",
+        "todos",
+        "communications",
+    }:
         raise PermissionDenied("Unknown application section.")
     application = (
         _agent_applications(request)
@@ -1494,3 +1588,218 @@ def application_status(request, application_id):
     application.save(update_fields=("status", "updated_by", "updated_at"))
     messages.success(request, "Application status updated.")
     return redirect("agent-application-detail", application_id=application.pk)
+
+
+def _operation_subject(request, subject_kind, subject_id):
+    if not subject_kind or not subject_id:
+        return None
+    if subject_kind == "applicant":
+        return get_object_or_404(_agent_leads(request), pk=subject_id)
+    if subject_kind == "application":
+        return get_object_or_404(
+            _agent_applications(request).select_related("student", "student__source_lead"),
+            pk=subject_id,
+        )
+    raise PermissionDenied("Unsupported operation subject.")
+
+
+def _operation_redirect(subject):
+    if isinstance(subject, Lead):
+        return redirect("agent-applicant-todos", lead_id=subject.pk)
+    if isinstance(subject, Application):
+        return redirect("agent-application-todos", application_id=subject.pk)
+    return redirect("agent-todo-list")
+
+
+def _communication_redirect(subject):
+    if isinstance(subject, Lead):
+        return redirect("agent-applicant-communications", lead_id=subject.pk)
+    if isinstance(subject, Application):
+        return redirect(
+            "agent-application-communications",
+            application_id=subject.pk,
+        )
+    return redirect("agent-communication-list")
+
+
+@login_required
+def todo_list(request):
+    agent = _active_agent(request)
+    todos = Todo.objects.filter(agent=agent).select_related(
+        "assignee", "created_by", "subject_content_type"
+    )
+    status = (request.GET.get("status") or "").strip()
+    if status in TodoStatus.values:
+        todos = todos.filter(status=status)
+    today = timezone.localdate()
+    return render(
+        request,
+        "agents/todo_list.html",
+        {
+            "todos": todos,
+            "contextual_todos": todos,
+            "todo_form": TodoForm(agent=agent),
+            "status_choices": TodoStatus.choices,
+            "selected_status": status,
+            "today": today,
+        },
+    )
+
+
+@login_required
+@require_POST
+def todo_create(request):
+    agent = _active_agent(request)
+    subject = _operation_subject(
+        request,
+        (request.POST.get("subject_kind") or "").strip(),
+        (request.POST.get("subject_id") or "").strip(),
+    )
+    form = TodoForm(request.POST, agent=agent)
+    if not form.is_valid():
+        messages.error(request, "Could not create TODO. Check the supplied fields.")
+        return _operation_redirect(subject)
+    todo = create_todo(
+        agent=agent,
+        actor=request.user,
+        title=form.cleaned_data["title"],
+        description=form.cleaned_data["description"],
+        due_date=form.cleaned_data["due_date"],
+        assignee=form.cleaned_data["assignee"],
+        subject=subject,
+    )
+    messages.success(request, f"TODO created: {todo.title}.")
+    return _operation_redirect(subject)
+
+
+@login_required
+@require_POST
+def todo_update(request, todo_id):
+    todo = get_object_or_404(
+        Todo.objects.select_related("subject_content_type"),
+        pk=todo_id,
+        agent=_active_agent(request),
+    )
+    status = (request.POST.get("status") or "").strip() or None
+    assignee_marker = "assignee" in request.POST
+    assignee = None
+    if assignee_marker and request.POST.get("assignee"):
+        assignee = get_object_or_404(
+            todo.agent.users.filter(is_active=True),
+            pk=request.POST["assignee"],
+        )
+    update_todo(
+        todo=todo,
+        actor=request.user,
+        status=status,
+        assignee_marker=assignee_marker,
+        assignee=assignee,
+    )
+    messages.success(request, "TODO updated.")
+    return _operation_redirect(todo.subject)
+
+
+@login_required
+@require_POST
+def todo_comment(request, todo_id):
+    todo = get_object_or_404(
+        Todo.objects.select_related("subject_content_type"),
+        pk=todo_id,
+        agent=_active_agent(request),
+    )
+    body = (request.POST.get("body") or "").strip()
+    if not body:
+        messages.error(request, "Comment cannot be empty.")
+    else:
+        add_todo_comment(todo=todo, actor=request.user, body=body)
+        messages.success(request, "Comment added.")
+    return _operation_redirect(todo.subject)
+
+
+@login_required
+def communication_list(request):
+    agent = _active_agent(request)
+    communications = CommunicationLog.objects.filter(agent=agent).select_related(
+        "performed_by", "created_by", "subject_content_type"
+    )
+    return render(
+        request,
+        "agents/communication_list.html",
+        {
+            "communications": communications,
+            "contextual_communications": communications,
+            "communication_form": CommunicationLogForm(),
+        },
+    )
+
+
+@login_required
+@require_POST
+def communication_create(request):
+    agent = _active_agent(request)
+    subject = _operation_subject(
+        request,
+        (request.POST.get("subject_kind") or "").strip(),
+        (request.POST.get("subject_id") or "").strip(),
+    )
+    form = CommunicationLogForm(request.POST)
+    if not form.is_valid():
+        messages.error(
+            request,
+            "Could not record communication. Check the supplied fields.",
+        )
+        return _communication_redirect(subject)
+    communication = create_communication(
+        agent=agent,
+        actor=request.user,
+        subject=subject,
+        **form.cleaned_data,
+    )
+    messages.success(
+        request,
+        f"{communication.get_channel_display()} communication recorded.",
+    )
+    return _communication_redirect(subject)
+
+
+@login_required
+@require_POST
+def communication_edit(request, communication_id):
+    communication = get_object_or_404(
+        CommunicationLog.objects.select_related("subject_content_type"),
+        pk=communication_id,
+        agent=_active_agent(request),
+    )
+    form = CommunicationLogForm(request.POST)
+    if not form.is_valid():
+        messages.error(request, "Could not update communication.")
+        return _communication_redirect(communication.subject)
+    edit_communication(
+        communication=communication,
+        actor=request.user,
+        values=form.cleaned_data,
+    )
+    messages.success(request, "Communication updated; previous version retained.")
+    return _communication_redirect(communication.subject)
+
+
+@login_required
+@require_POST
+def communication_create_todo(request, communication_id):
+    communication = get_object_or_404(
+        CommunicationLog.objects.select_related("subject_content_type"),
+        pk=communication_id,
+        agent=_active_agent(request),
+    )
+    title = (request.POST.get("title") or "").strip()
+    if not title:
+        title = f"Follow up: {communication.get_channel_display()} communication"
+    todo = create_todo(
+        agent=communication.agent,
+        actor=request.user,
+        title=title,
+        description=communication.summary,
+        subject=communication.subject,
+    )
+    messages.success(request, f"TODO created: {todo.title}.")
+    return _communication_redirect(communication.subject)
