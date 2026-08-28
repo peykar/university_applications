@@ -97,3 +97,5 @@ Suggested statuses:
 
 A BUG may move directly from `REPORTED` to `IN_PROGRESS` once it is confirmed to
 violate an existing requirement.
+
+Current discovery: `DISC-0001-finalization-offering-selection.md` blocks `CHG-0003-finalization-select-draft-applications.md` until resolved.
