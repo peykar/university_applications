@@ -3,6 +3,29 @@
 TurkDemy uses spec-driven development (SDD). The repository, not a chat prompt,
 is the source of truth for approved product behavior.
 
+This file is the standing development contract for ChatGPT and any other coding
+agent working on this repository. A user request tells the agent *what change is
+wanted*; this contract defines *how that change must be made*.
+
+## Source-of-truth precedence
+
+When sources disagree, use this order and do not silently choose the most
+convenient behavior:
+
+1. explicit product/domain rules and accepted business decisions;
+2. accepted ADRs and cross-cutting architecture constraints;
+3. the owning capability's approved/baselined `spec.md`;
+4. that capability's `design.md`;
+5. approved implementation tasks;
+6. tests;
+7. implementation code;
+8. UI behavior/copy and older flat documentation.
+
+Code and tests are evidence of current behavior, not authority to override an
+approved requirement. When an explicit user instruction intentionally changes
+approved behavior, process it as a CHANGE/FEATURE and update the higher-level
+artifacts before or together with implementation.
+
 ## Required reading order
 
 Before changing behavior:
@@ -43,6 +66,28 @@ while relevant decisions remain OPEN.
 Do not classify an information-architecture, permission, entity-scope, or
 workflow change as a cosmetic UI change.
 
+## ChatGPT request semantics
+
+ChatGPT is expected to execute complete repository changes, not merely propose
+patches, when the user asks to "do", "fix", "implement", "add", "change" or
+otherwise clearly requests implementation.
+
+- If the requested behavior is already defined by an approved/baselined spec,
+  implement it as a BUG or the appropriate implementation task.
+- If the user clearly requests new or changed behavior and there are no material
+  unresolved product decisions, the implementation request counts as approval
+  to update the required spec/design/tasks and implement them in the same work
+  session. Record the change and preserve traceability.
+- If materially different domain choices remain possible, create/record a
+  DISCOVERY or CONFLICT and do not invent the choice. Prefer implementing all
+  unblocked parts rather than changing unrelated behavior.
+- Never use existing code behavior alone as proof that a domain decision was
+  intended.
+
+The agent should therefore be able to accept business-level requests such as
+"allow completed todos to be reopened" without requiring the user to describe
+models, views, URLs, or tests.
+
 ## SDD workflow
 
 Every behavioral change follows:
@@ -59,6 +104,7 @@ Do not silently combine these stages for a new or ambiguous feature.
 - Do not encode accidental implementation behavior as a requirement.
 - Mark unresolved decisions `OPEN` and do not implement behavior that depends on
   them.
+- Use stable requirement IDs and never renumber accepted IDs.
 
 ### Design stage
 
@@ -92,6 +138,15 @@ make check
 
 Update the capability's `traceability.md` before declaring work complete.
 
+For each changed behavioral requirement, trace at least:
+
+`requirement ID -> design/task -> implementation -> automated test`
+
+When a UI action is part of the requirement, verification must cover the actual
+route/form/action wiring as well as the lower-level service behavior where
+practical. A service test alone is insufficient evidence that a visible button
+or modal works.
+
 ## Global invariants
 
 - A `LeadProgramInterest` is exploratory; it is not an `Application`.
@@ -113,6 +168,37 @@ behavioral impact may update only `design.md`/tasks. A cross-cutting architectur
 decision requires an ADR. Pure formatting/refactoring requires tests to remain
 green but does not require a new product requirement.
 
+## Repository documentation duties
+
+Documentation is part of the implementation, not optional follow-up work.
+
+- Keep `docs/` synchronized with every behavior, model, workflow, permission,
+  configuration, operational, or UI change that makes existing documentation
+  inaccurate.
+- Update the owning capability's spec/design/tasks/traceability as required by
+  the SDD classification.
+- Update relevant flat operational/user-flow documentation when it remains an
+  active entry point for developers or operators.
+- Add a concise entry to `docs/changelog.md` for completed user-visible or
+  architectural changes.
+- Do not create competing documentation for a concept that already has a
+  canonical home; link to the canonical document instead.
+
+## Delivery contract
+
+When working from an uploaded project archive, ChatGPT must return the complete
+updated project archive after every repository change.
+
+- Do not return only snippets or a patch as the final deliverable unless the
+  user explicitly asks for that instead.
+- Preserve the project directory structure and existing files.
+- Exclude local virtual environments, caches, build output and secrets from the
+  delivered archive.
+- Report which checks were actually run and whether they passed; never claim a
+  check passed when it was not executed.
+- If an environment/dependency problem prevents a check from running, report the
+  blocker and still run every independent check that can run safely.
+
 ## Completion definition
 
 A capability task is complete only when:
@@ -122,4 +208,7 @@ A capability task is complete only when:
 - authorization and negative paths are tested;
 - docs/design match the implementation;
 - traceability is updated;
-- `make check` passes.
+- relevant changelog/change records are updated;
+- `make check` passes, or any environment-only blocker is explicitly reported;
+- when the task started from an archive, the complete updated archive is
+  produced for delivery.

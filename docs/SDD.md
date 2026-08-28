@@ -1,5 +1,34 @@
 # Spec-driven development at TurkDemy
 
+The root [`AGENTS.md`](../AGENTS.md) is the executable development contract for
+ChatGPT/coding agents. This document explains the human-facing SDD workflow; the
+agent contract defines the mandatory behavior while modifying the repository.
+
+## One-request implementation mode
+
+The staged prompts below are useful when a product decision needs review, but a
+separate chat turn is not required for every SDD phase.
+
+When the user gives a clear implementation request (for example, "add reopening
+for completed todos") and there are no material `OPEN` decisions, the request
+authorizes the coding agent to perform the full synchronized cycle in one work
+session:
+
+```text
+request
+  -> classify/change record
+  -> update approved behavior/spec as needed
+  -> design/tasks
+  -> implementation
+  -> tests
+  -> traceability/docs
+  -> verification
+  -> complete updated archive
+```
+
+If the request exposes a genuine unresolved domain choice, record it as
+DISCOVERY/CONFLICT and do not silently invent product behavior.
+
 ## Start a feature
 
 Copy `docs/specs/_template/` to a capability directory or add requirements to an
@@ -56,7 +85,10 @@ Never silently rewrite the spec to justify current code.
 ## Definition of done
 
 A behavioral change is done when requirements, design, implementation, tests,
-traceability and documentation agree and `make check` passes.
+traceability and documentation agree and `make check` passes. When work begins
+from an uploaded project archive, completion also includes returning the full
+updated archive. See `AGENTS.md` for the precise delivery and verification
+contract.
 
 
 ## When a bug/change/feature arrives

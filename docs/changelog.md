@@ -806,3 +806,11 @@
 - Kept Assign to me as the fastest takeover action.
 - Clarified that assignment controls responsibility, not lead visibility.
 - Replaced the small Close applicant disclosure with a proper modal action.
+
+### ChatGPT SDD agent contract
+- Strengthened the root `AGENTS.md` as the standing contract for ChatGPT/coding agents.
+- Defined explicit source-of-truth precedence for domain rules, ADRs, specs, design, tasks, tests, code, and UI/legacy docs.
+- Added one-request implementation semantics so clear user requests can drive the full spec-to-code cycle without unnecessary separate approval turns.
+- Added requirement-to-test/UI verification expectations and repository documentation duties.
+- Added a delivery contract requiring the complete updated project archive after repository changes and truthful reporting of executed checks.
+- Linked the human-facing SDD workflow to the agent contract and documented full-cycle execution in `docs/SDD.md`.

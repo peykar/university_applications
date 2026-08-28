@@ -17,9 +17,11 @@ Start here:
 - [`architecture/decisions/`](architecture/decisions/) — accepted ADRs.
 - [`spec-code-gap-report.md`](spec-code-gap-report.md) — baseline gaps/debt.
 
-The root [`AGENTS.md`](../AGENTS.md) is the implementation contract for coding
-agents. Approved capability specs take precedence over older flat documentation
-when they conflict.
+The root [`AGENTS.md`](../AGENTS.md) is the mandatory implementation and delivery
+contract for ChatGPT/coding agents. It defines source-of-truth precedence,
+one-request implementation semantics, verification, documentation duties, and
+full-archive delivery. Approved capability specs take precedence over older flat
+documentation when they conflict.
 
 
 - `architecture.md`
