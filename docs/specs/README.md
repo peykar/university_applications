@@ -38,6 +38,8 @@ Prefixes are stable:
 | FIN | Applicant finalization |
 | STU | Student management |
 | APP | Applications |
+| COM | Communication log |
+| TODO | TODO management |
 | MSG | Messaging |
 | AUD | Activity/audit |
 | CAT | University/program catalogue |

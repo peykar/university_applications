@@ -814,3 +814,12 @@
 - Added requirement-to-test/UI verification expectations and repository documentation duties.
 - Added a delivery contract requiring the complete updated project archive after repository changes and truthful reporting of executed checks.
 - Linked the human-facing SDD workflow to the agent contract and documented full-cycle execution in `docs/SDD.md`.
+
+## 2026-08-28 — SDD Foundation v2
+
+- Added executable `tools/sdd/check.py` validation and `make sdd-check`.
+- Wired SDD validation into `make check`.
+- Upgraded active capability traceability to requirement-level rows while preserving explicit verified mappings where present.
+- Ensured every active capability has the four SDD artifacts, including baseline task files for communication-log and todo-management.
+- Added `docs/domain/invariants.md` and `docs/domain/lifecycle-map.md` without inventing unspecified transitions.
+- Added regression tests for the SDD contract.

@@ -82,6 +82,12 @@ Stop implementation. Record the conflict. Decide whether:
 
 Never silently rewrite the spec to justify current code.
 
+## Automated SDD validation
+
+Run `make sdd-check` to validate the repository-level SDD contract. The check verifies that every active capability has `spec.md`, `design.md`, `tasks.md`, and `traceability.md`; requirement IDs are unique; and every requirement has a requirement-level traceability row. `make check` runs this automatically before code-quality and test checks.
+
+Cross-capability lifecycle and invariant summaries live in `docs/domain/`. They point back to authoritative requirement IDs and MUST NOT invent behavior missing from a governing spec.
+
 ## Definition of done
 
 A behavioral change is done when requirements, design, implementation, tests,

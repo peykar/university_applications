@@ -1,10 +1,20 @@
 # Program interests and recommendations — traceability
 
-Status: BASELINE STARTED
+Status: BASELINED
 
-| Requirement family | Primary implementation area | Verification |
-|---|---|---|
-| `PRG-*` | See `design.md` | Existing project tests + requirement-specific tests |
+| Requirement | Primary implementation area | Verification | Coverage |
+|---|---|---|---|
+| `PRG-001` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `PRG-002` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `PRG-003` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `PRG-004` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `PRG-005` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `PRG-006` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `PRG-007` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `PRG-008` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `PRG-009` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+
+## Notes
 
 This baseline intentionally starts at capability level. When a requirement is
 changed or newly implemented, replace the family row with requirement-level

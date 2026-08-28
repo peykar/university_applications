@@ -1,6 +1,6 @@
 .PHONY: \
 	help setup bootstrap migrate makemigrations system-user countries run run-prod \
-	test coverage check ruff format format-check typecheck pre-commit pre-commit-install \
+	test coverage check sdd-check ruff format format-check typecheck pre-commit pre-commit-install \
 	rasa-download rasa-import rasa-import-catalogue rasa-import-content rasa-sync \
 	docker-up docker-prod
 
@@ -12,7 +12,8 @@ help:
 	@echo "  make rasa-download      Download RasaStudy data/assets"
 	@echo "  make rasa-import        Import all downloaded RasaStudy data"
 	@echo "  make rasa-sync          Download then import RasaStudy data"
-	@echo "  make check              Run backend quality checks"
+	@echo "  make sdd-check          Validate SDD requirement/traceability contract"
+	@echo "  make check              Run backend + SDD quality checks"
 	@echo "  make docker-up          Run development Docker Compose"
 	@echo "  make docker-prod        Run production Docker Compose"
 
@@ -58,7 +59,11 @@ test:
 coverage:
 	uv run pytest --cov=apps --cov=turkdemy --cov-report=term-missing
 
+sdd-check:
+	uv run python tools/sdd/check.py
+
 check:
+	uv run python tools/sdd/check.py
 	uv run ruff check .
 	uv run ruff format --check .
 	uv run mypy apps turkdemy
