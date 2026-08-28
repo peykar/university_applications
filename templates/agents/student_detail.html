@@ -72,11 +72,7 @@
        </small>
       </span>
 
-      {% if interest.converted_application %}
-       <a class="status-pill success" href="{% url 'agent-application-detail' interest.converted_application.pk %}">
-        {% trans "Application created" %}
-       </a>
-      {% elif interest.program_offering %}
+      {% if interest.program_offering %}
        <form method="post" action="{% url 'agent-student-start-discussed-application' student.pk interest.pk %}">
         {% csrf_token %}
         <button class="section-action" type="submit">{% trans "Start application" %}</button>
@@ -90,7 +86,7 @@
       {% endif %}
      </div>
 
-     {% if not interest.converted_application and not interest.program_offering %}
+     {% if not interest.program_offering %}
       <dialog class="agent-modal" id="interest-application-{{ interest.pk }}">
        <div class="agent-modal-card">
         <div class="agent-modal-head">

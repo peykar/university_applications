@@ -5653,3 +5653,46 @@ a.entity-list-row:hover{
   .operation-form-grid p:has(textarea),
   .operation-edit-form label:last-of-type{grid-column:auto}
 }
+
+/* Applicant -> Student conversion */
+.student-conversion-list{
+  display:grid;
+  gap:.8rem;
+}
+.student-conversion-row{
+  display:flex;
+  align-items:center;
+  gap:.85rem;
+  padding:.9rem 1rem;
+  border:1px solid var(--line, #dfe3e8);
+  border-radius:12px;
+  cursor:pointer;
+}
+.student-conversion-row input[type="checkbox"]{
+  width:1.15rem;
+  height:1.15rem;
+  flex:0 0 auto;
+}
+.student-conversion-row-main{
+  display:grid;
+  gap:.2rem;
+  flex:1;
+  min-width:0;
+}
+.student-conversion-row-main small,
+.student-conversion-offering span{
+  color:var(--muted, #667085);
+}
+.student-conversion-program{
+  display:grid;
+  gap:.65rem;
+}
+.student-conversion-offering{
+  display:grid;
+  gap:.35rem;
+  margin-left:2rem;
+  max-width:48rem;
+}
+.student-conversion-offering select{
+  width:100%;
+}

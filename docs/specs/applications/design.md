@@ -23,3 +23,12 @@ Status: BASELINED
 Consult the ADRs under `docs/architecture/decisions/` when this capability
 touches Lead→Student conversion, generic messaging, active Agent context,
 program-interest/Application boundaries, or document layers.
+
+## Initial applications at Lead finalization
+
+`create_student_application()` remains the canonical Application creation service.
+Lead finalization supplies the newly created/reused Student plus each explicitly
+selected source interest and concrete active offering. The service creates each
+record in DRAFT state, snapshots tuition/deposit, prevents active duplicates and
+links the source interest. Nested atomic blocks participate in the outer
+finalization transaction.

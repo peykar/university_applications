@@ -50,7 +50,7 @@
           {% if interest.program_offering %}
             <small>{{ interest.program_offering }}</small>
           {% endif %}
-          {% if interest.source == "agent" and not interest.converted_application and lead.status != "finalized" and lead.status != "closed" %}
+          {% if interest.source == "agent" and lead.status != "finalized" and lead.status != "closed" %}
             <form method="post" action="{% url 'agent-applicant-program-remove' lead.pk interest.pk %}">
               {% csrf_token %}
               <button class="text-action danger-action" type="submit">{% trans "Remove recommendation" %}</button>

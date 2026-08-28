@@ -27,7 +27,6 @@ class StudentApplicationWorkflowTests(SimpleTestCase):
             "def student_start_discussed_application",
             self.views,
         )
-        self.assertIn("source_interest=interest", self.views)
         self.assertIn("Start application", self.student_template)
 
     def test_new_application_can_be_created_directly(self):
@@ -42,11 +41,12 @@ class StudentApplicationWorkflowTests(SimpleTestCase):
         self.assertIn("tuition=offering.tuition", self.service)
         self.assertIn("deposit=offering.deposit", self.service)
 
-    def test_source_interest_is_traced_to_application(self):
-        self.assertIn(
-            "source_interest.converted_application = application",
-            self.service,
+    def test_application_service_does_not_persist_lead_interest_link(self):
+        self.assertNotIn("source_interest", self.service)
+        models_source = (Path(settings.BASE_DIR) / "apps/leads/models.py").read_text(
+            encoding="utf-8"
         )
+        self.assertNotIn("converted_application = models.OneToOneField", models_source)
 
     def test_finalized_lead_links_to_agent_student_workspace(self):
         self.assertIn("agent-student-detail", self.applicant_template)

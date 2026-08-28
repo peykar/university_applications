@@ -46,6 +46,11 @@ BR-FIN-002 — Successful finalization creates/reuses the Student, copies approv
 documents, links Lead→Student, records conversion time and marks the Lead
 `finalized`.
 
+BR-FIN-005 — Finalization allows the responsible Agent to select zero or more
+discussed Program interests. Selecting none MUST NOT block Student finalization.
+Each selected interest MUST resolve to a concrete active ProgramOffering and MUST
+create a DRAFT Application as part of the same atomic finalization operation.
+
 BR-FIN-003 — Failed finalization leaves the Lead active and reports validation
 errors.
 
@@ -74,8 +79,9 @@ for the same program-level interest.
 BR-APP-001 — Formal relationship:
 `Student -> Application -> ProgramOffering -> Program -> University`.
 
-BR-APP-002 — A formal Application is created only after Lead finalization and
-for a concrete ProgramOffering.
+BR-APP-002 — A formal Application belongs to the finalized Student and a concrete
+ProgramOffering. Finalization itself creates draft Applications for the discussed
+programs explicitly selected by the responsible Agent.
 
 BR-APP-003 — Application tuition/deposit are snapshots; later Offering price
 changes do not retroactively alter existing Application values.

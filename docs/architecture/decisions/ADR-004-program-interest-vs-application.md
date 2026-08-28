@@ -13,11 +13,17 @@ exists.
 recommendation. It may optionally identify a ProgramOffering but never itself
 means an Application exists.
 
-A formal `Application` requires a finalized Student and concrete
-ProgramOffering.
+A formal `Application` requires a Student and concrete ProgramOffering. During
+Lead finalization, the responsible Agent explicitly selects one or more discussed
+interests; those selections are converted into DRAFT Applications as part of the
+same atomic finalization operation. Program-level interests require an explicit
+active ProgramOffering selection.
 
 ## Consequences
 
-- Recommendations do not automatically create Applications.
-- An interest may later link to its converted Application.
-- Application creation remains an explicit Agent workflow.
+- Merely adding or recommending a Program does not create an Application.
+- Finalization is the explicit Agent decision point for selecting which discussed
+  programs become draft Applications.
+- A converted interest links to its created Application.
+- Unselected discussed interests remain historical/exploratory and may be converted
+  later through the Student workflow.

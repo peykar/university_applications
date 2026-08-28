@@ -97,11 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
      data-modal-target="close-applicant-modal"
    >{% trans "Close applicant" %}</button>
    {% if lead.assigned_to == request.user %}
-    <button
-     type="button"
-     class="button modal-trigger"
-     data-modal-target="finalize-applicant-modal"
-    >{% trans "Finalize applicant" %}</button>
+    <a class="button" href="{% url 'agent-applicant-finalize' lead.pk %}">{% trans "Create Student Record" %}</a>
    {% endif %}
   {% endif %}
  </div>
@@ -173,37 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
  </dialog>
  {% endif %}
 
- {% if lead.status != "finalized" and lead.status != "closed" and lead.assigned_to == request.user %}
- <dialog class="agent-modal" id="finalize-applicant-modal" aria-labelledby="finalize-applicant-title">
-  <div class="agent-modal-card">
-   <div class="agent-modal-head">
-    <div>
-     <span class="eyebrow">{% trans "Lead lifecycle" %}</span>
-     <h2 id="finalize-applicant-title">{% trans "Finalize applicant" %}</h2>
-     <p>{% trans "Review the minimum information required to create the student record." %}</p>
-    </div>
-    <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
-   </div>
-   <div class="finalize-review">
-    <div><span>{% trans "First name" %}</span><strong>{{ lead.first_name|default:"—" }}</strong></div>
-    <div><span>{% trans "Last name" %}</span><strong>{{ lead.last_name|default:"—" }}</strong></div>
-    <div><span>{% trans "Nationality" %}</span><strong>{{ lead.nationality|default:"—" }}</strong></div>
-    <div><span>{% trans "Gender" %}</span><strong>{{ lead.get_gender_display|default:"—" }}</strong></div>
-    <div><span>{% trans "Email" %}</span><strong>{{ lead.email|default:"—" }}</strong></div>
-    <div><span>{% trans "Responsible agent" %}</span><strong>{{ lead.assigned_to.get_full_name|default:lead.assigned_to.username }}</strong></div>
-   </div>
-   {% if not lead.first_name or not lead.last_name or not lead.nationality or not lead.gender %}
-    <p class="finalize-warning">{% trans "Some required information is missing. Finalization will stop and tell you what must be completed." %}</p>
-   {% endif %}
-   <p class="modal-help">{% trans "Finalizing creates the Student record, copies verified documents, and changes this lead to Finalized. Optional information can still be completed on the student later." %}</p>
-   <form method="post" action="{% url 'agent-applicant-finalize' lead.pk %}" class="agent-modal-actions">
-    {% csrf_token %}
-    <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
-    <button class="button" type="submit">{% trans "Finalize and create student" %}</button>
-   </form>
-  </div>
- </dialog>
- {% endif %}
 
  {% if lead.status != "finalized" %}
  <dialog class="agent-modal" id="upload-document-modal" aria-labelledby="upload-document-title">

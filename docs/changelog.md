@@ -1,4 +1,25 @@
+- Fixed the final legacy internal-notes test so it scopes inspection to AgentLeadEditForm and excludes StudentRecordConversionForm.
+- Corrected the remaining legacy source-inspection tests after Create Student Record: Lead edit-form note isolation and Student full_clean phone-validation contract.
+- Fixed legacy source-inspection tests for the Create Student Record workflow after the finalization redesign.
+- Aligned legacy finalization regression tests with the SDD-defined Create Student Record workflow: zero discussed programs are valid, Student notes are separate from Lead profile notes, and Student model validation owns phone validation.\n
+## 2026-08-28 — Create Student Record conversion workflow
+
+- Fixed static typing in the conversion view by explicitly narrowing nullable offerings and preserving `LeadProgramInterest` types during program selection.
+- Replaced the Agent finalization modal with a dedicated **Create Student Record** page.
+- Student fields are prefilled from the Lead and editable before conversion.
+- All Lead documents are selectable; verified documents default on, selected unverified documents are approved and transferred, and unchecked verified documents remain verified but are not copied.
+- Zero or more discussed programs may be selected; every selected program requires an active offering and creates a DRAFT Application.
+- Removed persistent `LeadProgramInterest` → `Application` coupling while preserving the existing LeadDocument → StudentDocument conversion bridge.
+- Expanded applicant-finalization SDD through `FIN-017` and kept conversion database changes atomic.
 # Changelog
+
+## Applicant finalization creates optional initial draft applications
+- The responsible Agent may select zero or more discussed programs during finalization.
+- Selecting no program still creates/reuses the Student and finalizes the Lead without creating Applications.
+- Customer-added and Agent-suggested program interests are both eligible.
+- Program-level interests require an active intake/offering selection.
+- Selected interests become linked DRAFT Applications in the same atomic Student finalization operation.
+- Removed Django admin bulk finalization because it cannot collect the required per-program choices.
 
 ## Current baseline
 

@@ -14,7 +14,8 @@ class FinalizePhoneValidationTests(SimpleTestCase):
     def test_finalization_validates_phone_before_student_creation(self):
         root = Path(settings.BASE_DIR)
         conversion = (root / "apps/leads/services/conversion.py").read_text(encoding="utf-8")
-        self.assertIn("if lead.cell:", conversion)
-        self.assertIn("normalize_phone_number(lead.cell)", conversion)
-        self.assertIn('errors["cell"]', conversion)
-        self.assertIn("international phone number", conversion)
+        self.assertIn("student.full_clean(", conversion)
+        self.assertLess(
+            conversion.index("student.full_clean("),
+            conversion.index("student.save()"),
+        )

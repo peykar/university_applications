@@ -5,11 +5,11 @@ Status: BASELINED
 | Requirement | Primary implementation area | Verification | Coverage |
 |---|---|---|---|
 | `APP-001` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
-| `APP-002` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
-| `APP-003` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `APP-002` | `apps/leads/services/conversion.py::finalize_lead`, `templates/agents/student_record_create.html` | `tests/test_lead_workflow.py`, `tests/test_agent_finalize_workflow.py` | Covered |
+| `APP-003` | `apps/agents/views.py::applicant_finalize`, `apps/leads/services/conversion.py::_validate_application_selections` | `tests/test_lead_workflow.py` | Covered |
 | `APP-004` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `APP-005` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
-| `APP-006` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `APP-006` | `apps/leads/models.py::LeadProgramInterest`, `apps/applications/services.py::create_student_application` | `tests/test_student_application_workflow.py`, `tests/test_student_record_conversion_structure.py` | Covered |
 | `APP-007` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `APP-008` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 

@@ -6,7 +6,7 @@ This file records lifecycle vocabulary that is already present in the baselined 
 
 Implementation states: `NEW`, `ASSIGNED`, `FINALIZED`, `CLOSED`.
 
-The finalization capability governs conversion to Student. `FIN-001`–`FIN-006` define authorization, validation, atomicity, audit effects and duplicate safety. A detailed transition matrix should only be added when transition permissions are explicitly specified.
+The finalization capability governs conversion to Student and creation of the initial draft Applications. `FIN-001`–`FIN-017` define authorization, the full-page Create Student Record review, editable Student data, document selection, program selection, atomicity, audit effects and duplicate safety. Conversion may proceed with zero discussed programs. Any selected discussed program must have an active concrete offering and becomes a DRAFT Application. Selected Lead documents transfer to StudentDocument records; selected unverified documents are approved as part of successful conversion.
 
 ## TODO
 

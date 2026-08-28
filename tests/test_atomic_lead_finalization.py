@@ -11,10 +11,8 @@ class AtomicLeadFinalizationTests(SimpleTestCase):
         self.views = (root / "apps/agents/views.py").read_text(encoding="utf-8")
 
     def test_agent_finalize_is_one_business_operation(self):
-        self.assertIn(
-            "student = finalize_lead(lead, performed_by=request.user)",
-            self.views,
-        )
+        self.assertIn("student = finalize_lead(", self.views)
+        self.assertIn("application_selections=selections", self.views)
         self.assertNotIn(
             "student = convert_lead_to_student(lead, performed_by=request.user)",
             self.views,
@@ -22,10 +20,14 @@ class AtomicLeadFinalizationTests(SimpleTestCase):
 
     def test_finalization_service_is_atomic(self):
         self.assertIn("@transaction.atomic\ndef finalize_lead(", self.conversion)
-        self.assertIn("_validate_for_finalization(lead)", self.conversion)
-        self.assertIn("student = Student.objects.create(", self.conversion)
-        self.assertIn("_copy_verified_documents(", self.conversion)
+        self.assertIn(
+            "_validate_application_selections(lead, application_selections)",
+            self.conversion,
+        )
+        self.assertIn("student = Student(", self.conversion)
+        self.assertIn("_copy_selected_documents(", self.conversion)
         self.assertIn("lead.status = LeadStatus.FINALIZED", self.conversion)
+        self.assertIn("create_student_application(", self.conversion)
 
     def test_no_intermediate_validated_activity_or_message(self):
         self.assertNotIn(

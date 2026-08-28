@@ -1,7 +1,7 @@
 # Formal applications
 
 Status: BASELINED
-Version: 1.0
+Version: 1.2
 
 ## Goal
 
@@ -12,8 +12,10 @@ Define the established TurkDemy behavior for formal applications.
 APP-001 — A formal Application MUST belong to a Student and concrete
 ProgramOffering.
 
-APP-002 — Agents MAY start an Application from a discussed interest after Lead
-finalization or start one for a new ProgramOffering.
+APP-002 — During Lead finalization, the responsible Agent MAY select zero or more
+discussed interests to create as DRAFT Applications. Finalization with zero selected
+interests creates no Application. After finalization, Agents MAY still start an
+additional Application from discussion history or start one for a new ProgramOffering.
 
 APP-003 — Program-level interests without an Offering MUST require selection of
 a concrete active Offering before Application creation.
@@ -23,8 +25,9 @@ and ProgramOffering.
 
 APP-005 — Creation MUST snapshot Offering tuition and deposit.
 
-APP-006 — When created from a LeadProgramInterest, the interest MAY link to the
-created Application and MUST belong to the same Student/Program context.
+APP-006 — Application creation MUST NOT require or persist a direct
+LeadProgramInterest → Application relation. Discussion history and formal
+Application records remain separate lifecycle concepts.
 
 APP-007 — Application entity navigation MUST provide Overview, Requirements,
 Documents, Activity and Messages scoped to that Application.

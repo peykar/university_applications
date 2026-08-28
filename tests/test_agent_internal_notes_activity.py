@@ -42,7 +42,7 @@ class AgentInternalNotesActivityTests(SimpleTestCase):
         form_block = self.forms.split(
             "class AgentLeadEditForm(forms.ModelForm):",
             1,
-        )[1].split("class AgentLeadDocumentUploadForm", 1)[0]
+        )[1].split("class StudentRecordConversionForm", 1)[0]
         self.assertNotIn('"notes"', form_block)
         self.assertNotIn("Internal notes", self.edit_template)
 

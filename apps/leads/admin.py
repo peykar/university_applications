@@ -1,5 +1,4 @@
-from django.contrib import admin, messages
-from django.core.exceptions import ValidationError
+from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 
@@ -13,7 +12,6 @@ from .models import (
     LeadProgramInterest,
     LeadProgramInterestSource,
 )
-from .services.conversion import convert_lead_to_student, finalize_lead
 
 
 class LeadPreferenceInline(admin.StackedInline):
@@ -42,9 +40,7 @@ class LeadProgramInterestInline(admin.TabularInline):
         "source",
         "suggested_by",
         "suggestion_reason",
-        "converted_application",
     )
-    readonly_fields = ("converted_application",)
 
 
 class LeadDocumentInline(admin.TabularInline):
@@ -137,10 +133,6 @@ class LeadAdmin(AuditAdminMixin, admin.ModelAdmin):
         LeadProgramInterestInline,
         LeadDocumentInline,
         LeadActivityInline,
-    )
-    actions = (
-        "finalize_selected",
-        "convert_selected",
     )
 
     fieldsets = (
@@ -252,46 +244,6 @@ class LeadAdmin(AuditAdminMixin, admin.ModelAdmin):
             url,
             obj.pk,
         )
-
-    @admin.action(description="Validate selected leads")
-    def finalize_selected(self, request, queryset):
-        success = 0
-        for lead in queryset:
-            try:
-                finalize_lead(lead, performed_by=request.user)
-                success += 1
-            except ValidationError as exc:
-                self.message_user(
-                    request,
-                    f"{lead}: {exc}",
-                    level=messages.ERROR,
-                )
-        if success:
-            self.message_user(
-                request,
-                f"{success} lead(s) validated.",
-                level=messages.SUCCESS,
-            )
-
-    @admin.action(description="Convert validated leads to students")
-    def convert_selected(self, request, queryset):
-        success = 0
-        for lead in queryset:
-            try:
-                convert_lead_to_student(lead, performed_by=request.user)
-                success += 1
-            except ValidationError as exc:
-                self.message_user(
-                    request,
-                    f"{lead}: {exc}",
-                    level=messages.ERROR,
-                )
-        if success:
-            self.message_user(
-                request,
-                f"{success} lead(s) converted.",
-                level=messages.SUCCESS,
-            )
 
 
 @admin.register(LeadProgramInterest)

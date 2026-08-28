@@ -55,7 +55,7 @@ from apps.operations.services import (
     update_todo,
 )
 from apps.students.models import Student
-from apps.universities.models import Program
+from apps.universities.models import Program, ProgramOffering
 
 from .forms import (
     AgentLeadDocumentUploadForm,
@@ -66,6 +66,7 @@ from .forms import (
     PromoteChatAttachmentForm,
     StudentApplicationOfferingForm,
     StudentDocumentUploadForm,
+    StudentRecordConversionForm,
 )
 from .services.context import available_agents, resolve_active_agent, switch_active_agent
 
@@ -505,7 +506,6 @@ def applicant_remove_recommendation(request, lead_id, interest_id):
         lead.program_interests.select_related("program"),
         pk=interest_id,
         source="agent",
-        converted_application__isnull=True,
     )
     program_name = interest.program.name_en
     interest.delete()
@@ -901,46 +901,164 @@ def applicant_assign(request, lead_id):
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 
-@login_required
-@require_POST
-def applicant_finalize(request, lead_id):
-    lead = get_object_or_404(_agent_leads(request), pk=lead_id)
+def _student_conversion_initial(lead: Lead) -> dict[str, object]:
+    fields = StudentRecordConversionForm.Meta.fields
+    return {field: getattr(lead, field) for field in fields}
 
+
+def _student_conversion_programs(lead: Lead, request) -> list[dict[str, object]]:
+    selected_ids = (
+        set(request.POST.getlist("program_interest")) if request.method == "POST" else set()
+    )
+    rows: list[dict[str, object]] = []
+    interests = lead.program_interests.select_related(
+        "program",
+        "program__university",
+        "program_offering",
+    ).order_by("-created_at")
+    for interest in interests:
+        offerings = list(
+            ProgramOffering.objects.filter(program=interest.program, is_active=True)
+            .select_related("academic_year", "semester")
+            .order_by("academic_year__name_en", "semester__name_en")
+        )
+        selected_offering_id = ""
+        if request.method == "POST":
+            selected_offering_id = request.POST.get(f"offering_{interest.pk}", "")
+        elif interest.program_offering is not None and interest.program_offering.is_active:
+            selected_offering_id = str(interest.program_offering_id)
+        rows.append(
+            {
+                "interest": interest,
+                "offerings": offerings,
+                "selected": str(interest.pk) in selected_ids,
+                "selected_offering_id": str(selected_offering_id),
+            }
+        )
+    return rows
+
+
+@login_required
+def applicant_finalize(request, lead_id):
+    lead = (
+        _agent_leads(request)
+        .select_related("agent", "user", "assigned_to", "converted_student")
+        .filter(pk=lead_id)
+        .first()
+    )
+    if lead is None:
+        return _render_agent_not_found(
+            request,
+            resource_name="applicant",
+            list_url_name="agent-applicant-list",
+        )
     if lead.status == LeadStatus.CLOSED:
-        messages.error(request, "Reopen this applicant before finalizing it.")
+        messages.error(request, "Reopen this applicant before creating a Student record.")
         return redirect("agent-applicant-detail", lead_id=lead.pk)
     if lead.status == LeadStatus.FINALIZED:
-        messages.info(request, "This applicant is already finalized.")
+        messages.info(request, "This applicant already has a Student record.")
         return redirect("agent-applicant-detail", lead_id=lead.pk)
     if lead.assigned_to_id != request.user.pk:
         messages.error(
             request,
-            "Assign this applicant to yourself before finalizing it.",
+            "Assign this applicant to yourself before creating a Student record.",
         )
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
-    try:
-        student = finalize_lead(lead, performed_by=request.user)
-    except ValidationError as exc:
-        if hasattr(exc, "message_dict"):
-            detail = " ".join(
-                message
-                for field_messages in exc.message_dict.values()
-                for message in field_messages
-            )
-        else:
-            detail = " ".join(exc.messages)
-        messages.error(
-            request,
-            f"Applicant cannot be finalized yet. {detail}",
-        )
-        return redirect("agent-applicant-detail", lead_id=lead.pk)
-
-    messages.success(
-        request,
-        f"Applicant finalized and converted to student {student}.",
+    form = StudentRecordConversionForm(
+        request.POST if request.method == "POST" else None,
+        initial=_student_conversion_initial(lead),
     )
-    return redirect("agent-applicant-detail", lead_id=lead.pk)
+    documents = list(lead.documents.select_related("reviewed_by").order_by("-created_at"))
+    selected_document_ids = (
+        set(request.POST.getlist("document"))
+        if request.method == "POST"
+        else {str(document.pk) for document in documents if document.is_verified}
+    )
+    program_rows = _student_conversion_programs(lead, request)
+
+    if request.method == "POST" and form.is_valid():
+        errors: list[str] = []
+        selections: list[tuple[LeadProgramInterest, ProgramOffering]] = []
+        selected_interest_ids = set(request.POST.getlist("program_interest"))
+        selected_interests = lead.program_interests.select_related("program").filter(
+            pk__in=selected_interest_ids
+        )
+        interests_by_id: dict[str, LeadProgramInterest] = {
+            str(interest.pk): interest for interest in selected_interests
+        }
+
+        for interest_id in selected_interest_ids:
+            interest = interests_by_id.get(interest_id)
+            if interest is None:
+                errors.append("One or more selected discussed programs are invalid.")
+                continue
+            offering_id = request.POST.get(f"offering_{interest.pk}")
+            if not offering_id:
+                errors.append(f"Choose an offering for {interest.program}.")
+                continue
+            offering = ProgramOffering.objects.filter(
+                pk=offering_id,
+                program=interest.program,
+                is_active=True,
+            ).first()
+            if offering is None:
+                errors.append(f"Choose a valid active offering for {interest.program}.")
+                continue
+            selections.append((interest, offering))
+
+        valid_document_ids = {str(document.pk) for document in documents}
+        if not selected_document_ids.issubset(valid_document_ids):
+            errors.append("One or more selected documents are invalid.")
+
+        if not errors:
+            try:
+                student = finalize_lead(
+                    lead,
+                    student_data=form.cleaned_data,
+                    selected_document_ids=list(selected_document_ids),
+                    application_selections=selections,
+                    performed_by=request.user,
+                )
+            except ValidationError as exc:
+                if hasattr(exc, "message_dict"):
+                    for field, field_messages in exc.message_dict.items():
+                        if field in form.fields:
+                            for message in field_messages:
+                                form.add_error(field, message)
+                        else:
+                            for message in field_messages:
+                                form.add_error(None, message)
+                else:
+                    for message in exc.messages:
+                        form.add_error(None, message)
+            else:
+                messages.success(
+                    request,
+                    (
+                        f"Student record created for {student}. "
+                        f"Transferred {len(selected_document_ids)} document(s) and "
+                        f"created {len(selections)} draft application(s)."
+                    ),
+                )
+                return redirect("agent-student-detail", student_id=student.pk)
+        else:
+            for error in errors:
+                form.add_error(None, error)
+
+    return render(
+        request,
+        "agents/student_record_create.html",
+        {
+            "lead": lead,
+            "form": form,
+            "documents": documents,
+            "selected_document_ids": selected_document_ids,
+            "program_rows": program_rows,
+            "selected_document_count": len(selected_document_ids),
+            "agent_context": True,
+        },
+    )
 
 
 @login_required
@@ -1141,7 +1259,6 @@ def student_detail(request, student_id):
             "program_offering",
             "program_offering__academic_year",
             "program_offering__semester",
-            "converted_application",
         ).order_by("-created_at")
         if source_lead is not None
         else []
@@ -1257,7 +1374,6 @@ def student_start_discussed_application(request, student_id, interest_id):
             student=student,
             offering=offering,
             performed_by=request.user,
-            source_interest=interest,
         )
     except ValidationError as exc:
         messages.error(request, " ".join(exc.messages))

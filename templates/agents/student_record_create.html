@@ -1,0 +1,147 @@
+{% extends "agents/base.html" %}
+{% load i18n %}
+{% block agent_title %}{% trans "Create Student Record" %}{% endblock %}
+{% block agent_page_header %}{% endblock %}
+{% block agent_content %}
+<div class="applicant-edit-page student-record-create-page">
+  <nav class="entity-breadcrumbs applicant-edit-breadcrumbs" aria-label="{% trans 'Breadcrumb' %}">
+    <a href="{% url 'agent-applicant-list' %}">{% trans "Applicants" %}</a>
+    <span aria-hidden="true">/</span>
+    <a href="{% url 'agent-applicant-profile' lead.pk %}">{{ lead }}</a>
+    <span aria-hidden="true">/</span>
+    <span>{% trans "Create Student Record" %}</span>
+  </nav>
+
+  <header class="applicant-edit-hero">
+    <div class="applicant-edit-hero-copy">
+      <span class="eyebrow">{% trans "Applicant conversion" %}</span>
+      <h1>{% trans "Create Student Record" %}</h1>
+      <p>{% trans "Review the student information, choose which applicant documents to transfer, and optionally create draft applications from discussed programs." %}</p>
+    </div>
+    <div class="applicant-edit-hero-meta">
+      <span class="lead-status lead-status-{{ lead.status }}">{{ lead.get_status_display }}</span>
+      <span><small>{% trans "Applicant" %}</small><strong>{{ lead }}</strong></span>
+    </div>
+  </header>
+
+  {% if form.errors %}
+    <div class="applicant-edit-alert" role="alert">
+      <strong>{% trans "The Student record was not created." %}</strong>
+      <p>{% trans "Correct the highlighted fields or selections and submit again. No conversion changes have been committed." %}</p>
+      {{ form.non_field_errors }}
+    </div>
+  {% endif %}
+
+  <form method="post" class="applicant-edit-form">
+    {% csrf_token %}
+    <div class="applicant-edit-layout">
+      <main class="applicant-edit-sections">
+        <section class="applicant-edit-card">
+          <div class="applicant-edit-card-head">
+            <span class="applicant-edit-step">01</span>
+            <div><h2>{% trans "Student information" %}</h2><p>{% trans "Values are prefilled from the applicant and can be corrected before conversion." %}</p></div>
+          </div>
+          <div class="applicant-edit-fields applicant-edit-fields-three">
+            {% for field in form %}
+              {% if field.name == "first_name" or field.name == "middle_name" or field.name == "last_name" or field.name == "birthdate" or field.name == "gender" or field.name == "nationality" or field.name == "country_of_birth" %}
+                {% include "agents/includes/applicant_edit_field.html" %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="applicant-edit-fields">
+            {% for field in form %}
+              {% if field.name == "email" or field.name == "cell" or field.name == "country_of_residence" or field.name == "city_of_residence" or field.name == "address" %}
+                {% include "agents/includes/applicant_edit_field.html" %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="applicant-edit-fields">
+            {% for field in form %}
+              {% if field.name == "passport_no" or field.name == "passport_issuing_authority" or field.name == "passport_date_of_issue" or field.name == "passport_date_of_expiry" %}
+                {% include "agents/includes/applicant_edit_field.html" %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="applicant-edit-fields">
+            {% for field in form %}
+              {% if field.name == "english_test_type" or field.name == "english_language_test_score" or field.name == "high_school_gpa" or field.name == "high_school_gpa_scale" or field.name == "educational_background" or field.name == "father_name" or field.name == "mother_name" or field.name == "notes" %}
+                {% include "agents/includes/applicant_edit_field.html" %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="applicant-edit-card">
+          <div class="applicant-edit-card-head">
+            <span class="applicant-edit-step">02</span>
+            <div><h2>{% trans "Documents" %}</h2><p>{% trans "Verified documents are selected by default. You may select or deselect any document." %}</p></div>
+          </div>
+          <div class="student-conversion-list">
+            {% for document in documents %}
+              <label class="student-conversion-row">
+                <input type="checkbox" name="document" value="{{ document.pk }}"{% if document.pk|stringformat:"s" in selected_document_ids %} checked{% endif %}>
+                <span class="student-conversion-row-main">
+                  <strong>{{ document.name|default:document.get_document_type_display }}</strong>
+                  <small>{{ document.get_document_type_display }} · {{ document.get_review_status_display }}</small>
+                </span>
+                {% if document.is_verified %}<span class="lead-status lead-status-finalized">{% trans "Verified" %}</span>{% else %}<span class="lead-status lead-status-new">{% trans "Not verified" %}</span>{% endif %}
+              </label>
+            {% empty %}
+              <p class="modal-help">{% trans "No applicant documents have been uploaded." %}</p>
+            {% endfor %}
+          </div>
+          <p class="modal-help">{% trans "If you select a document that is not verified, it will be approved as part of the successful conversion and copied to the Student document library. Unchecking an already verified document does not change its verification status." %}</p>
+        </section>
+
+        <section class="applicant-edit-card">
+          <div class="applicant-edit-card-head">
+            <span class="applicant-edit-step">03</span>
+            <div><h2>{% trans "Draft applications" %}</h2><p>{% trans "Select zero or more discussed programs. Every selected program requires an active offering." %}</p></div>
+          </div>
+          <div class="student-conversion-list">
+            {% for row in program_rows %}
+              {% with interest=row.interest %}
+                <div class="student-conversion-program">
+                  <label class="student-conversion-row">
+                    <input type="checkbox" name="program_interest" value="{{ interest.pk }}"{% if row.selected %} checked{% endif %}{% if not row.offerings %} disabled{% endif %}>
+                    <span class="student-conversion-row-main">
+                      <strong>{{ interest.program }}</strong>
+                      <small>{% if interest.source == "user" %}{% trans "Customer-added" %}{% else %}{% trans "Agent-suggested" %}{% endif %}</small>
+                    </span>
+                  </label>
+                  {% if row.offerings %}
+                    <label class="student-conversion-offering">
+                      <span>{% trans "Offering" %}</span>
+                      <select name="offering_{{ interest.pk }}">
+                        <option value="">{% trans "Choose an offering" %}</option>
+                        {% for offering in row.offerings %}
+                          <option value="{{ offering.pk }}"{% if offering.pk|stringformat:"s" == row.selected_offering_id %} selected{% endif %}>{{ offering }}</option>
+                        {% endfor %}
+                      </select>
+                    </label>
+                  {% else %}
+                    <p class="finalize-warning">{% trans "No active offering is available for this discussed program, so it cannot be selected for a draft application." %}</p>
+                  {% endif %}
+                </div>
+              {% endwith %}
+            {% empty %}
+              <p class="modal-help">{% trans "No programs have been discussed. You can still create the Student record." %}</p>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="applicant-edit-card">
+          <div class="applicant-edit-card-head">
+            <span class="applicant-edit-step">04</span>
+            <div><h2>{% trans "Review & create" %}</h2><p>{% trans "The Student, selected document transfers, draft applications, and applicant finalization are committed as one conversion workflow." %}</p></div>
+          </div>
+          <div class="applicant-edit-actions">
+            <a class="button button-secondary" href="{% url 'agent-applicant-detail' lead.pk %}">{% trans "Cancel" %}</a>
+            <button class="button" type="submit">{% trans "Create Student Record" %}</button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </form>
+</div>
+{% endblock %}

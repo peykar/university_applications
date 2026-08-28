@@ -345,14 +345,6 @@ class LeadProgramInterest(BaseModel):
     suggestion_reason = models.TextField(blank=True)
     notes = models.TextField(blank=True)
 
-    converted_application = models.OneToOneField(
-        "applications.Application",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="source_lead_interest",
-    )
-
     class Meta:
         ordering = ("-created_at",)
         constraints = (

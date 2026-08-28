@@ -149,7 +149,8 @@ or modal works.
 
 ## Global invariants
 
-- A `LeadProgramInterest` is exploratory; it is not an `Application`.
+- A `LeadProgramInterest` is exploratory; it is not an `Application` until an Agent explicitly selects it for conversion.
+- Lead finalization requires at least one selected discussed interest and creates linked DRAFT Applications atomically with the Student transition.
 - Formal applications are created for a `Student` and a concrete
   `ProgramOffering`.
 - Lead finalization must not leave a partially converted Student workflow.

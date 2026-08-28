@@ -19,7 +19,7 @@ application** creates a Draft Application for that offering.
 
 If the Lead interest is program-level only, the agent must first choose one of
 that Program's active offerings. The created Application is linked back through
-`LeadProgramInterest.converted_application`.
+Discussion history is intentionally not persistently linked to an Application.
 
 ## Creating a new application
 
@@ -37,7 +37,7 @@ ProgramOffering and the Application starts as Draft.
 - copies tuition and deposit from the offering;
 - sets the Student's Agent;
 - creates the Application as Draft;
-- links a source LeadProgramInterest when applicable.
+- does not persist a source LeadProgramInterest link.
 
 Rejected, Withdrawn, and Cancelled Applications are considered inactive for the
 duplicate check.

@@ -167,6 +167,24 @@ class LeadWorkflowTests(TestCase):
             updated_by=self.user,
         )
 
+    def make_application_selection(
+        self,
+        lead,
+        *,
+        source=LeadProgramInterestSource.USER,
+        offering=None,
+    ):
+        interest = LeadProgramInterest.objects.create(
+            lead=lead,
+            program=self.program,
+            program_offering=offering or self.offering,
+            source=source,
+            suggested_by=(self.staff if source == LeadProgramInterestSource.AGENT else None),
+            created_by=self.staff,
+            updated_by=self.staff,
+        )
+        return [(interest, offering or self.offering)]
+
     def test_user_can_have_multiple_leads(self):
         self.make_lead("Sara")
         self.make_lead("Amir")
@@ -217,32 +235,72 @@ class LeadWorkflowTests(TestCase):
         self.assertEqual(message.sender, self.user)
         self.assertEqual(message.sender_role, MessageSenderRole.CUSTOMER)
 
-    def test_finalizing_lead_creates_student_without_application(self):
+    def test_finalizing_lead_creates_student_and_selected_draft_application(self):
         lead = self.make_lead()
-        LeadProgramInterest.objects.create(
-            lead=lead,
-            program=self.program,
-            program_offering=self.offering,
+        selections = self.make_application_selection(
+            lead,
             source=LeadProgramInterestSource.AGENT,
-            suggested_by=self.staff,
-            created_by=self.staff,
-            updated_by=self.staff,
         )
 
-        student = finalize_lead(lead, performed_by=self.staff)
+        student = finalize_lead(
+            lead,
+            application_selections=selections,
+            performed_by=self.staff,
+        )
 
         self.assertIsInstance(student, Student)
         self.assertEqual(student.user, self.user)
-        self.assertEqual(student.applications.count(), 0)
+        self.assertEqual(student.applications.count(), 1)
+        application = student.applications.get()
+        self.assertEqual(application.status, "draft")
+        self.assertEqual(application.program_offering, self.offering)
 
         lead.refresh_from_db()
         self.assertIsNotNone(lead.validated_at)
         self.assertEqual(lead.status, LeadStatus.FINALIZED)
         self.assertEqual(lead.converted_student, student)
 
+    def test_finalization_allows_zero_discussed_programs(self):
+        lead = self.make_lead()
+
+        student = finalize_lead(
+            lead,
+            application_selections=[],
+            performed_by=self.staff,
+        )
+
+        lead.refresh_from_db()
+        self.assertEqual(lead.converted_student, student)
+        self.assertEqual(lead.status, LeadStatus.FINALIZED)
+        self.assertEqual(student.applications.count(), 0)
+        self.assertEqual(lead.status, LeadStatus.FINALIZED)
+
+    def test_program_level_interest_requires_concrete_active_offering(self):
+        lead = self.make_lead()
+        interest = LeadProgramInterest.objects.create(
+            lead=lead,
+            program=self.program,
+            source=LeadProgramInterestSource.USER,
+            created_by=self.user,
+            updated_by=self.user,
+        )
+
+        student = finalize_lead(
+            lead,
+            application_selections=[(interest, self.offering)],
+            performed_by=self.staff,
+        )
+
+        application = student.applications.get()
+        self.assertEqual(application.program_offering, self.offering)
+
     def test_finalized_customer_cannot_edit_historical_lead(self):
         lead = self.make_lead()
-        finalize_lead(lead, performed_by=self.staff)
+        finalize_lead(
+            lead,
+            application_selections=self.make_application_selection(lead),
+            performed_by=self.staff,
+        )
         lead.refresh_from_db()
         self.client.force_login(self.user)
 
@@ -261,7 +319,11 @@ class LeadWorkflowTests(TestCase):
 
     def test_finalized_customer_cannot_upload_historical_lead_document(self):
         lead = self.make_lead()
-        finalize_lead(lead, performed_by=self.staff)
+        finalize_lead(
+            lead,
+            application_selections=self.make_application_selection(lead),
+            performed_by=self.staff,
+        )
         lead.refresh_from_db()
         self.client.force_login(self.user)
 
@@ -287,7 +349,11 @@ class LeadWorkflowTests(TestCase):
             created_by=self.user,
             updated_by=self.user,
         )
-        finalize_lead(lead, performed_by=self.staff)
+        finalize_lead(
+            lead,
+            application_selections=self.make_application_selection(lead),
+            performed_by=self.staff,
+        )
         lead.refresh_from_db()
         self.client.force_login(self.user)
 
@@ -313,7 +379,11 @@ class LeadWorkflowTests(TestCase):
     def test_finalization_records_single_finalized_activity_and_validation_metadata(self):
         lead = self.make_lead()
 
-        finalize_lead(lead, performed_by=self.staff)
+        finalize_lead(
+            lead,
+            application_selections=self.make_application_selection(lead),
+            performed_by=self.staff,
+        )
 
         lead.refresh_from_db()
         self.assertEqual(lead.validated_by, self.staff)
@@ -334,17 +404,30 @@ class LeadWorkflowTests(TestCase):
 
     def test_finalization_is_idempotent_after_student_exists(self):
         lead = self.make_lead()
-        first_student = finalize_lead(lead, performed_by=self.staff)
+        selections = self.make_application_selection(lead)
+        first_student = finalize_lead(
+            lead,
+            application_selections=selections,
+            performed_by=self.staff,
+        )
         lead.refresh_from_db()
 
-        second_student = finalize_lead(lead, performed_by=self.staff)
+        second_student = finalize_lead(
+            lead,
+            application_selections=[],
+            performed_by=self.staff,
+        )
 
         self.assertEqual(second_student.pk, first_student.pk)
 
     def test_finalization_rejects_invalid_lead(self):
         lead = self.make_lead(first_name="")
         with self.assertRaises(ValidationError):
-            finalize_lead(lead, performed_by=self.staff)
+            finalize_lead(
+                lead,
+                application_selections=self.make_application_selection(lead),
+                performed_by=self.staff,
+            )
 
         lead.refresh_from_db()
         self.assertNotEqual(lead.status, LeadStatus.FINALIZED)
