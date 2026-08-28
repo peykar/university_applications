@@ -14,3 +14,5 @@ Status: IMPLEMENTED
 | `CRQ-008` | `templates/leads/lead_list.html` | `CustomerRequestWorkspaceTests.test_entire_request_card_is_clickable` | Named test |
 | `CRQ-009` | `templates/leads/lead_list.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_request_actions_have_responsive_rtl_contract` | Named test |
 | `CRQ-010` | presentation-only implementation; existing Lead/Student/Application services | existing SDD/domain tests plus `CustomerRequestWorkspaceTests.test_customer_abstraction_does_not_add_request_model` | Named + regression |
+| `CRQ-011` | `templates/leads/lead_list.html` | `CustomerRequestWorkspaceTests.test_request_card_renders_program_and_university_names` | Named test |
+| `CRQ-012` | `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_request_card_has_no_hover_visual_effect` | Named test |

@@ -5700,8 +5700,8 @@ a.entity-list-row:hover{
 /* Customer Requests workspace */
 .request-page-heading{align-items:flex-start}
 .request-card-list{display:grid;gap:14px}
-.request-card{position:relative;display:block;padding:20px 22px;border:1px solid var(--border);border-radius:16px;background:#fff;color:inherit;text-decoration:none;box-shadow:0 8px 24px rgba(20,35,60,.045);transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
-.request-card:hover{border-color:#aebed0;box-shadow:0 12px 28px rgba(20,35,60,.08);transform:translateY(-1px)}
+.request-card{position:relative;display:block;padding:20px 22px;border:1px solid var(--border);border-radius:16px;background:#fff;color:inherit;text-decoration:none;box-shadow:0 8px 24px rgba(20,35,60,.045)}
+.request-card:hover{color:inherit;text-decoration:none}
 .request-card:focus-visible{outline:3px solid rgba(11,58,103,.18);outline-offset:2px}
 .request-card-attention{border-inline-start:4px solid #b7791f}
 .request-card-main{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}

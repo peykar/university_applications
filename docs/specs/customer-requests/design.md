@@ -45,3 +45,13 @@ responsive mobile stacking, and logical/RTL-safe alignment.
 
 Django route names and backend model/service names remain internal and stable.
 Agent pages continue to use Applicant/Student/Application terminology.
+
+## Request-card display details
+
+Applied-for entries render the canonical `Program.name_en` and
+`University.name_en` fields used by the existing catalogue templates. This avoids
+Django silently rendering nonexistent `.name` attributes as empty strings.
+
+The entire request card remains an anchor, but its hover state intentionally has
+no visual transformation. The card overrides the site's global `a:hover` underline
+so nested card content does not become visually noisy when the pointer enters it.

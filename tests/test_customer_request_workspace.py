@@ -73,6 +73,18 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn('interest.source == "agent"', self.request_list)
         self.assertIn('{% trans "Suggested by your agent" %}', self.request_list)
 
+    def test_request_card_renders_program_and_university_names(self):
+        self.assertIn("{{ interest.program.name_en }}", self.request_list)
+        self.assertIn("{{ interest.program.university.name_en }}", self.request_list)
+        self.assertNotIn("{{ interest.program.name }}", self.request_list)
+        self.assertNotIn("{{ interest.program.university.name }}", self.request_list)
+
+    def test_request_card_has_no_hover_visual_effect(self):
+        self.assertIn(".request-card:hover{color:inherit;text-decoration:none}", self.css)
+        self.assertNotIn(".request-card:hover{border-color:", self.css)
+        self.assertNotIn(".request-card:hover{transform:", self.css)
+        self.assertNotIn(".request-card:hover{box-shadow:", self.css)
+
     def test_request_attention_combines_messages_and_document_replacement(self):
         self.assertIn("unread_count_for_conversation(", self.views)
         self.assertIn("LeadDocumentReviewStatus.REPLACEMENT_REQUESTED", self.views)

@@ -12,3 +12,6 @@ Status: IMPLEMENTED
 - [x] `CRQ-008` Make the full request card clickable.
 - [x] `CRQ-009` Apply desktop action/RTL/mobile placement convention.
 - [x] `CRQ-010` Preserve internal lifecycle and Agent terminology.
+
+- [x] `CRQ-011` Render canonical program and university names in Applied for entries.
+- [x] `CRQ-012` Keep clickable request cards visually unchanged on hover.

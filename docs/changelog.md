@@ -1,3 +1,5 @@
+- Scoped the Request-card no-hover regression test to Request-card selectors; unrelated catalogue hover animations remain valid.
+- Fixed My Requests program labels and removed request-card hover visual effects.
 - Replaced brittle Django-template branch parsing in the customer Request terminology test with explicit assertions for the customer navigation links.
 - Fixed the customer Request terminology regression test to use the existing `request_nav` fixture when isolating the customer navigation branch.
 - Corrected the remaining customer-redesign source-inspection tests: customer entity-navigation scoping and finalized Request document wording.\n- Aligned legacy customer workspace tests with the My Requests redesign: customer-only terminology scope, Request document wording, and the menu-only sidebar contract.\n- Redesigned the customer workspace around a single **Request** abstraction: menu-only sidebar, My Requests landing page, Find Programs action, request cards with contact/program details, Agent suggestion tips, and unread-message/document-replacement attention indicators.

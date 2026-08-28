@@ -26,3 +26,6 @@ remains unchanged for Agent/domain workflows.
 ## SDD
 
 See `docs/specs/customer-requests/` (`CRQ-001`–`CRQ-010`).
+
+- Fixed Applied for entries to render the actual program and university names instead of separator-only boxes caused by nonexistent `.name` template attributes.
+- Removed request-card hover movement, border/shadow changes, and inherited link underlining.

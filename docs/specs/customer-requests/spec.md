@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.0
+Version: 1.1
 
 ## Goal
 
@@ -50,6 +50,15 @@ to the most usable responsive layout.
 
 CRQ-010 — The customer Request abstraction MUST NOT change the canonical
 Lead→Student→Application backend lifecycle or Agent-facing terminology.
+
+CRQ-011 — Each program entry in **Applied for** MUST render a non-empty program
+name and university name from the canonical Program/University display fields;
+missing/nonexistent template attributes MUST NOT produce placeholder separator-only
+boxes.
+
+CRQ-012 — Request cards MUST remain visually stable on pointer hover. Hover MUST
+NOT add underline, movement, border changes, or shadow changes; clickability is
+communicated by the card being a link/click target itself.
 
 ## Acceptance policy
 
