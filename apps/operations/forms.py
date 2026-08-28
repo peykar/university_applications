@@ -1,9 +1,7 @@
-from typing import ClassVar
+from typing import ClassVar, cast
 
 from django import forms
 from django.utils import timezone
-
-from apps.accounts.models import User
 
 from .models import (
     CommunicationLog,
@@ -22,18 +20,17 @@ class TodoForm(forms.ModelForm):
 
     def __init__(self, *args, agent=None, **kwargs):
         super().__init__(*args, **kwargs)
-        assignee_field = self.fields["assignee"]
-        if not isinstance(assignee_field, forms.ModelChoiceField):
-            raise TypeError("TodoForm.assignee must be a ModelChoiceField")
+        if agent is not None:
+            self.instance.agent = agent
+        assignee_field = cast(forms.ModelChoiceField, self.fields["assignee"])
         if agent is not None:
             assignee_field.queryset = agent.users.filter(is_active=True).order_by(
                 "first_name", "last_name", "email"
             )
         else:
             queryset = assignee_field.queryset
-            assignee_field.queryset = (
-                queryset.none() if queryset is not None else User.objects.none()
-            )
+            assert queryset is not None
+            assignee_field.queryset = queryset.none()
 
 
 class CommunicationLogForm(forms.ModelForm):

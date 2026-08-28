@@ -77,7 +77,11 @@ class Todo(BaseModel):
 
     def clean(self):
         super().clean()
-        if self.assignee_id and not self.agent.users.filter(pk=self.assignee_id).exists():
+        if (
+            self.assignee_id
+            and self.agent_id
+            and not self.agent.users.filter(pk=self.assignee_id).exists()
+        ):
             raise ValidationError(
                 {"assignee": _("Assignee must belong to the owning Agent organization.")}
             )

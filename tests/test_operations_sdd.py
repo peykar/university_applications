@@ -15,6 +15,7 @@ class OperationsSDDTests(SimpleTestCase):
         self.root = Path(settings.BASE_DIR)
         self.models = (self.root / "apps/operations/models.py").read_text(encoding="utf-8")
         self.services = (self.root / "apps/operations/services.py").read_text(encoding="utf-8")
+        self.forms = (self.root / "apps/operations/forms.py").read_text(encoding="utf-8")
         self.views = (self.root / "apps/agents/views.py").read_text(encoding="utf-8")
         self.urls = (self.root / "apps/agents/urls.py").read_text(encoding="utf-8")
 
@@ -25,6 +26,16 @@ class OperationsSDDTests(SimpleTestCase):
         )
         self.assertIn("completed_by", self.models)
         self.assertIn("completed_at", self.models)
+
+    def test_todo_form_binds_active_agent_before_model_validation(self):
+        todo_form_block = self.forms.split("class TodoForm", 1)[1].split(
+            "class CommunicationLogForm", 1
+        )[0]
+        self.assertIn("self.instance.agent = agent", todo_form_block)
+        todo_model_block = self.models.split("class Todo(BaseModel):", 1)[1].split(
+            "class TodoComment", 1
+        )[0]
+        self.assertIn("self.agent_id", todo_model_block)
 
     def test_todo_has_optional_generic_subject_and_single_assignee(self):
         self.assertIn("subject_content_type", self.models)

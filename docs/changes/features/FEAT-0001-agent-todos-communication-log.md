@@ -38,3 +38,7 @@ contextual tabs.
 TODO reminders, attachments, multi-assignee TODOs, structured University
 counterparties, merging Messages with Communication Log, and a new generic
 cross-domain Activity persistence model.
+
+## Follow-up bugs
+
+- `BUG-0005-todo-create-form-missing-agent` — active Agent must be bound before ModelForm model validation.
