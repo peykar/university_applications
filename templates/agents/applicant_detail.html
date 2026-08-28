@@ -1,5 +1,7 @@
 {% extends "agents/base.html" %}{% load i18n %}
-{% block agent_title %}{{ lead }}
+{% block agent_title %}{{ lead }}{% endblock %}
+{% block extra_scripts %}
+{{ block.super }}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const closeModal = (dialog) => {
@@ -30,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
 {% endblock %}
 {% block agent_page_header %}{% endblock %}
 {% block agent_content %}

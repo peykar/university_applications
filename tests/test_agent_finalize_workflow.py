@@ -28,6 +28,23 @@ class AgentFinalizeWorkflowTests(SimpleTestCase):
         self.assertIn("lead.assigned_to == request.user", self.template)
         self.assertIn('data-modal-target="finalize-applicant-modal"', self.template)
 
+    def test_applicant_modal_script_is_rendered_in_extra_scripts(self):
+        title_block = self.template.split("{% block agent_title %}", 1)[1].split(
+            "{% endblock %}",
+            1,
+        )[0]
+        scripts_block = self.template.split("{% block extra_scripts %}", 1)[1].split(
+            "{% endblock %}",
+            1,
+        )[0]
+        self.assertNotIn("<script>", title_block)
+        self.assertIn("{{ block.super }}", scripts_block)
+        self.assertIn(
+            "document.getElementById(trigger.dataset.modalTarget)",
+            scripts_block,
+        )
+        self.assertIn("dialog.showModal()", scripts_block)
+
     def test_finalize_modal_reviews_required_student_data(self):
         for field in ("First name", "Last name", "Nationality", "Gender"):
             self.assertIn(field, self.template)
