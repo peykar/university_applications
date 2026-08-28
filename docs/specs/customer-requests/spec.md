@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.4
+Version: 1.5
 
 ## Goal
 
@@ -101,6 +101,23 @@ document that needs replacement) instead of a generic “something to review”
 heading. Customer document review labels in the context sidebar MUST use the
 canonical presentation vocabulary **Approved**, **Under review**, and **Needs
 replacement**.
+
+CRQ-021 — Request header MUST visually separate the canonical customer Request
+status from advisory workflow guidance. Program-recommendation guidance MUST be
+presented as a **Next step**, not as a second status badge.
+
+CRQ-022 — Unread messages alone MUST be presented as **Needs your attention**,
+not **Action required**. **Action required** is reserved for a concrete customer
+action represented by the Request workspace, such as replacing a rejected
+document.
+
+CRQ-023 — Customer progress entries MUST add useful subject context when the
+recorded customer-visible activity contains it, such as the uploaded document
+name or program name, instead of showing only generic event types.
+
+CRQ-024 — Recent-message previews MUST NOT expose an Agent's login/email as the
+customer-facing sender identity. They MUST prefer the Agent user's full display
+name and otherwise use **Your advisor**; system messages remain **TurkDemy**.
 
 ## Acceptance policy
 

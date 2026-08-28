@@ -9,7 +9,7 @@
       {% if needs_attention %}
         <section class="lead-panel request-attention-panel" aria-labelledby="request-attention-title">
           <div class="section-heading request-attention-heading">
-            <div><p class="eyebrow" id="request-attention-title">{% trans "Action required" %}</p></div>
+            <div><p class="eyebrow" id="request-attention-title">{% if has_required_action %}{% trans "Action required" %}{% else %}{% trans "Needs your attention" %}{% endif %}</p></div>
           </div>
           <div class="request-attention-list">
             {% if unread_message_count %}
@@ -73,7 +73,7 @@
             {% for message in recent_messages %}
               <a href="{% url 'lead-messages' lead.pk %}" class="request-message-preview">
                 <span class="request-message-preview-meta">
-                  <strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong>
+                  <strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender_role == "agent" %}{% if message.sender and message.sender.get_full_name %}{{ message.sender.get_full_name }}{% else %}{% trans "Your advisor" %}{% endif %}{% elif message.sender_role == "customer" %}{% trans "You" %}{% else %}TurkDemy{% endif %}</strong>
                   <time>{{ message.created_at|date:"M j, H:i" }}</time>
                 </span>
                 <span class="request-message-preview-body">{% if message.body %}{{ message.body|truncatechars:110 }}{% else %}{% trans "Attachment" %}{% endif %}</span>

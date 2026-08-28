@@ -59,7 +59,9 @@ def _customer_lead(user, lead_id):
     )
 
 
-def _customer_activity_label(activity_type: str) -> str:
+def _customer_activity_label(activity: LeadActivity) -> str:
+    activity_type = activity.activity_type
+    detail = activity.description.partition(":")[2].strip().rstrip(".")
     labels: dict[str, str] = {
         LeadActivityType.CREATED: _("Request created"),
         LeadActivityType.APPLICANT_UPDATED: _("Profile updated"),
@@ -69,10 +71,22 @@ def _customer_activity_label(activity_type: str) -> str:
         LeadActivityType.CLOSED: _("Request closed"),
         LeadActivityType.REOPENED: _("Request reopened"),
         LeadActivityType.VALIDATED: _("Request reviewed"),
-        LeadActivityType.DOCUMENT_UPLOADED: _("Document uploaded"),
-        LeadActivityType.DOCUMENT_REVIEWED: _("Document reviewed"),
-        LeadActivityType.PROGRAM_ADDED: _("Program added"),
-        LeadActivityType.PROGRAM_SUGGESTED: _("Program suggested"),
+        LeadActivityType.DOCUMENT_UPLOADED: (
+            _("%(document)s uploaded") % {"document": detail} if detail else _("Document uploaded")
+        ),
+        LeadActivityType.DOCUMENT_REVIEWED: (
+            _("%(document)s reviewed") % {"document": detail} if detail else _("Document reviewed")
+        ),
+        LeadActivityType.PROGRAM_ADDED: (
+            _("%(program)s added to your request") % {"program": detail}
+            if detail
+            else _("Program added to your request")
+        ),
+        LeadActivityType.PROGRAM_SUGGESTED: (
+            _("Your advisor suggested %(program)s") % {"program": detail}
+            if detail
+            else _("Your advisor suggested a program")
+        ),
         LeadActivityType.PROGRAM_RESPONSE: _("Program response updated"),
         LeadActivityType.RECOMMENDATIONS_GENERATED: _("Program recommendations updated"),
         LeadActivityType.FINALIZED: _("Request completed"),
@@ -124,7 +138,7 @@ def _lead_entity_context(*, request, lead, mark_read=False):
     activity_qs = lead.activities.filter(is_customer_visible=True).order_by("-created_at")[:20]
     customer_activities = [
         {
-            "label": _customer_activity_label(activity.activity_type),
+            "label": _customer_activity_label(activity),
             "created_at": activity.created_at,
         }
         for activity in activity_qs
@@ -146,6 +160,7 @@ def _lead_entity_context(*, request, lead, mark_read=False):
         "documents": documents,
         "attention_documents": attention_documents,
         "needs_attention": bool(unread_message_count or attention_documents),
+        "has_required_action": bool(attention_documents),
         "unread_message_count": unread_message_count,
         "conversation": conversation,
         "lead_messages": message_qs,

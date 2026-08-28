@@ -1,4 +1,17 @@
 
+## 2026-08-29 — Customer-safe recent-message identity fix
+
+- Removed the remaining username/email fallback from the customer Request Overview recent-message preview.
+- Customer-authored messages are now labelled `You`; agent messages use the agent full name or `Your advisor`; system/unknown senders use `TurkDemy`.
+- This aligns the implementation with CRQ-024 and its regression test.
+## Customer Request semantic polish
+
+- Separated customer Request status from the program-recommendation next step.
+- Treat unread messages as attention unless a concrete required action also exists.
+- Enriched progress events with recorded document/program names.
+- Prevented Agent login/email fallback in recent-message previews.
+
+
 ## 2026-08-29 — Customer Request overview density and semantics
 
 - Reduced Request Overview card padding and vertical spacing so progress and recent

@@ -194,6 +194,28 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             self.css,
         )
 
+    def test_header_separates_status_from_next_step(self):
+        self.assertIn('class="request-next-step"', self.request_header)
+        self.assertIn('{% trans "Next step" %}', self.request_header)
+        self.assertIn('{% trans "Program recommendations" %}', self.request_header)
+
+    def test_unread_messages_are_attention_not_required_action(self):
+        self.assertIn('"has_required_action": bool(attention_documents)', self.views)
+        self.assertIn('{% trans "Needs your attention" %}', self.request_detail)
+        self.assertIn("{% if has_required_action %}", self.request_detail)
+
+    def test_progress_uses_customer_specific_subject_labels(self):
+        self.assertIn('activity.description.partition(":")[2]', self.views)
+        self.assertIn("%(document)s uploaded", self.views)
+        self.assertIn("%(program)s added to your request", self.views)
+        self.assertIn("Your advisor suggested %(program)s", self.views)
+
+    def test_recent_messages_use_customer_safe_advisor_identity(self):
+        self.assertIn('message.sender_role == "agent"', self.request_detail)
+        self.assertIn('{% trans "Your advisor" %}', self.request_detail)
+        recent = self.request_detail.split('class="request-message-preview-meta"', 1)[1]
+        self.assertNotIn("message.sender.username }}{% else %}TurkDemy", recent)
+
     def test_customer_request_header_uses_customer_friendly_statuses(self):
         self.assertIn('{% trans "Received" %}', self.request_header)
         self.assertIn('{% trans "In progress" %}', self.request_header)

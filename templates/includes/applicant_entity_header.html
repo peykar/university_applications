@@ -27,7 +27,9 @@
             {% trans "Closed" %}
           {% endif %}
         </span>
-        {% if lead.needs_program_recommendation %}
+        {% if not agent_context and lead.needs_program_recommendation %}
+          <span class="request-next-step"><small>{% trans "Next step" %}</small><strong>{% trans "Program recommendations" %}</strong></span>
+        {% elif agent_context and lead.needs_program_recommendation %}
           <span class="badge">{% trans "Needs program recommendations" %}</span>
         {% endif %}
       </div>

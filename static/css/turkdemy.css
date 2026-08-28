@@ -5800,3 +5800,6 @@ a.entity-list-row:hover{
   .request-context-document small{max-width:220px}
   .request-attention-list>a,.request-overview-program{padding:12px}
 }
+.request-next-step{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-left:2px solid var(--accent);font-size:.78rem;color:var(--muted)}
+.request-next-step small{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.request-next-step strong{color:var(--ink);font-size:.78rem}

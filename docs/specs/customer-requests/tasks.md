@@ -27,3 +27,8 @@ Status: IMPLEMENTED
 - [x] `CRQ-020` Tighten Request Overview information density, replace generic
   attention copy with explicit message/document actions, and normalize customer
   document statuses to Approved / Under review / Needs replacement.
+
+- [x] `CRQ-021` Separate Request status from program-recommendation next-step guidance.
+- [x] `CRQ-022` Distinguish unread-message attention from concrete required actions.
+- [x] `CRQ-023` Enrich customer progress labels with recorded document/program context.
+- [x] `CRQ-024` Use customer-safe advisor identity in recent-message previews.
