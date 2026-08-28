@@ -1,268 +1,91 @@
 {% extends "customer/base.html" %}
 {% load i18n %}
-{% block title %}{{ lead }} — TurkDemy
-{% endblock %}
+{% block title %}{{ lead }} — TurkDemy{% endblock %}
 {% block customer_content %}
-<div class="customer-applicant-page">
-{% include "includes/applicant_entity_header.html" %}
+<div class="customer-applicant-page customer-request-detail">
+  {% include "includes/applicant_entity_header.html" %}
 
-<div class="applicant-workspace">
-  <main>
-    <section class="lead-panel">
-      <div class="section-heading">
-        <div><p class="eyebrow">{% trans "Programs" %}</p><h2>{% trans "Programs" %}</h2></div>
-        <a class="section-link" href="{% url 'program-list' %}">{% trans "Find programs" %} →</a>
-      </div>
-
-      <div class="lead-interest-list">
-        {% for interest in interests %}
-          <article class="lead-interest-card">
-            <div>
-              <div class="interest-source-line">
-                {% if interest.source == "agent" %}
-                  <span class="interest-source interest-source-agent">{% trans "Suggested by your advisor" %}</span>
-                {% else %}
-                  <span class="interest-source interest-source-user">{% trans "Added by you" %}</span>
-                {% endif %}
-              </div>
-              <h3><a href="{% url 'program-detail' interest.program.slug_en %}">{{ interest.program.name_en }}</a></h3>
-              <p>{{ interest.program.university.name_en }} · {{ interest.program.get_degree_display }} · {{ interest.program.program_language.name_en }}</p>
-              <div class="interest-intake">
-                <span>{% trans "Intake" %}</span>
-                {% if interest.program_offering %}
-                  <strong>
-                    {{ interest.program_offering.semester.name_en }}
-                    {{ interest.program_offering.academic_year.name_en }}
-                  </strong>
-                {% else %}
-                  <strong>{% trans "Any intake / decide later" %}</strong>
-                {% endif %}
-              </div>
-              {% if interest.source == "agent" and interest.suggestion_reason %}
-                <p class="suggestion-reason">{{ interest.suggestion_reason }}</p>
-              {% endif %}
-            </div>
-          </article>
-        {% empty %}
-          <div class="empty-state">
-            {% if lead.needs_program_recommendation %}
-              <p>{% trans "No recommendations yet. TurkDemy staff/system can review your preferences and suggest programs." %}</p>
-            {% else %}
-              <p>{% trans "No programs selected yet." %}</p>
+  <div class="request-detail-layout">
+    <main class="request-detail-main">
+      {% if needs_attention %}
+        <section class="lead-panel request-attention-panel" aria-labelledby="request-attention-title">
+          <div class="section-heading">
+            <div><p class="eyebrow">{% trans "Action required" %}</p><h2 id="request-attention-title">{% trans "You have something to review" %}</h2></div>
+          </div>
+          <div class="request-attention-list">
+            {% if unread_message_count %}
+              <a href="{% url 'lead-messages' lead.pk %}">
+                <span><strong>{% trans "New message" %}</strong><small>{% blocktrans count counter=unread_message_count %}You have {{ counter }} unread message.{% plural %}You have {{ counter }} unread messages.{% endblocktrans %}</small></span>
+                <b>→</b>
+              </a>
             {% endif %}
-            <a class="button button-secondary" href="{% url 'program-list' %}">{% trans "Browse programs" %}</a>
+            {% for document in attention_documents %}
+              <a href="{% url 'lead-documents' lead.pk %}">
+                <span><strong>{% trans "Replace a document" %}</strong><small>{{ document.get_document_type_display }} — {% trans "a replacement is required" %}</small></span>
+                <b>→</b>
+              </a>
+            {% endfor %}
           </div>
-        {% endfor %}
-      </div>
-    </section>
-
-    <section class="lead-panel">
-      <div class="section-heading"><div><p class="eyebrow">{% trans "Files" %}</p><h2>{% trans "Documents" %}</h2></div></div>
-      <div class="lead-document-list">
-        {% for document in documents %}
-          <div class="lead-document-row lead-document-row-review-{{ document.review_status }}">
-            <div class="lead-document-copy">
-              <strong>{{ document.get_document_type_display }}</strong>
-              <span>{{ document.name }}</span>
-              {% if document.review_status == "replacement_requested" and document.review_note %}
-                <p class="document-replacement-reason">
-                  <strong>{% trans "Why a replacement is needed:" %}</strong>
-                  {{ document.review_note }}
-                </p>
-              {% endif %}
-            </div>
-            <div class="lead-document-actions">
-              {% if document.review_status == "approved" %}
-                <span class="badge badge-success">{% trans "Approved" %}</span>
-              {% elif document.review_status == "replacement_requested" %}
-                <span class="badge badge-danger">{% trans "Replacement requested" %}</span>
-              {% else %}
-                <span class="badge">{% trans "Pending review" %}</span>
-              {% endif %}
-              <a href="{{ document.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
-              {% if document.review_status == "replacement_requested" and lead.status != "finalized" %}
-                <details class="document-replace-panel">
-                  <summary>{% trans "Replace document" %}</summary>
-                  <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-replace' lead.id document.id %}" class="document-replace-form">
-                    {% csrf_token %}
-                    <label>
-                      <span>{% trans "Choose replacement file" %}</span>
-                      <input type="file" name="file" required>
-                    </label>
-                    <button class="button small-button" type="submit">{% trans "Upload replacement" %}</button>
-                  </form>
-                </details>
-              {% endif %}
-            </div>
-          </div>
-        {% empty %}
-          <p class="muted">{% trans "No documents uploaded yet." %}</p>
-        {% endfor %}
-      </div>
-
-      {% if lead.status != "finalized" %}
-      <div class="customer-document-upload-row">
-        <div>
-          <strong>{% trans "Add another document" %}</strong>
-          <span>{% trans "Upload a file and choose what type of document it is." %}</span>
-        </div>
-        <button type="button" class="button button-secondary modal-trigger" data-modal-target="customer-document-upload">
-          {% trans "Upload document" %}
-        </button>
-      </div>
-
-      <dialog class="customer-document-modal" id="customer-document-upload" aria-labelledby="customer-upload-title">
-        <div class="customer-document-modal-card">
-          <div class="customer-document-modal-head">
-            <div>
-              <span class="eyebrow">{% trans "Documents" %}</span>
-              <h2 id="customer-upload-title">{% trans "Upload document" %}</h2>
-              <p>{% trans "Choose the document type and file. Description is optional." %}</p>
-            </div>
-            <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
-          </div>
-
-          <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-upload' lead.id %}" class="customer-document-modal-form">
-            {% csrf_token %}
-
-            <label>
-              <span>{% trans "Document type" %}</span>
-              {{ document_form.document_type }}
-            </label>
-
-            <label>
-              <span>{% trans "File" %}</span>
-              {{ document_form.file }}
-            </label>
-
-            <label>
-              <span>{% trans "Description" %} <small>{% trans "(optional)" %}</small></span>
-              {{ document_form.description }}
-            </label>
-
-            <p class="modal-help">
-              {% trans "The filename is kept automatically, so you do not need to enter a separate document name." %}
-            </p>
-
-            <div class="customer-document-modal-actions">
-              <button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button>
-              <button class="button" type="submit">{% trans "Upload document" %}</button>
-            </div>
-          </form>
-        </div>
-      </dialog>
-      {% else %}
-      <div class="customer-document-upload-row customer-document-upload-locked">
-        <div>
-          <strong>{% trans "Request documents are read-only" %}</strong>
-          <span>{% trans "This request is finalized, so document changes are managed by TurkDemy." %}</span>
-        </div>
-      </div>
+        </section>
       {% endif %}
-    </section>
 
-    <section class="lead-panel">
-      <div class="section-heading">
-        <div><p class="eyebrow">{% trans "Conversation" %}</p><h2>{% trans "Messages with TurkDemy" %}</h2></div>
-      </div>
-      <div class="lead-chat">
-        <div class="lead-chat-messages">
-          {% for message in lead_messages %}
-            <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
-              <div class="chat-message-meta">
-                <strong>
-                  {% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}
-                </strong>
-                <time>{{ message.created_at|date:"Y-m-d H:i" }}</time>
-              </div>
-              {% if message.body %}<div class="chat-message-body">{{ message.body|linebreaksbr }}</div>{% endif %}
-              {% for attachment in message.attachments.all %}
-                <a class="chat-attachment" href="{{ attachment.file.url }}">📎 {{ attachment.original_name }}</a>
-              {% endfor %}
-            </article>
+      <section class="lead-panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">{% trans "Applied for" %}</p><h2>{% trans "Programs" %}</h2></div>
+          <a class="section-link" href="{% url 'lead-programs' lead.pk %}">{% trans "View programs" %} →</a>
+        </div>
+        <div class="request-overview-programs">
+          {% for interest in interests %}
+            <a class="request-overview-program" href="{% url 'program-detail' interest.program.slug_en %}">
+              <span>
+                <strong>{{ interest.program.name_en }}</strong>
+                <small>{{ interest.program.university.name_en }}</small>
+                {% if interest.source == "agent" %}<em>{% trans "Suggested by your agent" %}</em>{% endif %}
+              </span>
+              <b>→</b>
+            </a>
           {% empty %}
-            <div class="empty-chat">{% trans "No messages yet. You can ask TurkDemy about this request here." %}</div>
+            <div class="empty-state">
+              <p>{% trans "No programs are attached to this request yet." %}</p>
+              <a class="button button-secondary" href="{% url 'program-list' %}">{% trans "Find programs" %}</a>
+            </div>
           {% endfor %}
         </div>
-
-        {% if not conversation.is_closed %}
-          <form method="post" enctype="multipart/form-data" action="{% url 'lead-send-message' lead.id %}" class="chat-compose">
-            {% csrf_token %}
-            {{ message_form.body }}
-            <div class="chat-compose-actions">
-              <div class="chat-file-control">{{ message_form.attachment }}</div>
-              <button class="button" type="submit">{% trans "Send" %}</button>
-            </div>
-          </form>
-        {% else %}
-          <div class="empty-state">{% trans "This conversation is closed." %}</div>
-        {% endif %}
-      </div>
-    </section>
-  </main>
-
-  <aside class="applicant-sidebar">
-    <section class="sidebar-card">
-      <p class="eyebrow">{% trans "Profile" %}</p>
-      <dl class="sidebar-facts">
-        <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:"—" }}</dd></div>
-        <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
-        <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
-        <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }}{% if lead.city_of_residence %}, {{ lead.city_of_residence }}{% endif %}</dd></div>
-      </dl>
-    </section>
-
-    <section class="sidebar-card">
-      <p class="eyebrow">{% trans "Study preferences" %}</p>
-      {% with pref=lead.preferences %}
-        {% if pref.tuition_min or pref.tuition_max %}
-          <p><strong>{% trans "Tuition:" %}</strong> {{ pref.tuition_currency }} {{ pref.tuition_min|default:"0" }} – {{ pref.tuition_max|default:"∞" }}</p>
-        {% endif %}
-        {% if pref.preferred_degrees %}<p><strong>{% trans "Degrees:" %}</strong> {{ pref.preferred_degrees|join:", " }}</p>{% endif %}
-        <p><strong>{% trans "Languages:" %}</strong> {% for item in pref.preferred_languages.all %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</p>
-        <p><strong>{% trans "Cities:" %}</strong> {% for item in pref.preferred_cities.all %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</p>
-      {% endwith %}
-      <a href="{% url 'lead-preferences' lead.id %}">{% trans "Edit preferences" %} →</a>
-    </section>
-
-    {% if lead.converted_student %}
-      <section class="sidebar-card converted-sidebar-card">
-        <p class="eyebrow">{% trans "Validated" %}</p>
-        <h3>{% trans "Request finalized" %}</h3>
-        <p>{% trans "TurkDemy has finalized this request." %}</p>
       </section>
-    {% endif %}
-  </aside>
+
+      <section class="request-overview-grid">
+        <div class="lead-panel request-progress-panel">
+          <div class="section-heading"><div><p class="eyebrow">{% trans "Progress" %}</p><h2>{% trans "Request progress" %}</h2></div></div>
+          <ol class="request-progress-list">
+            {% for activity in activities|slice:":6" %}
+              <li><span></span><div><strong>{{ activity.label }}</strong><time>{{ activity.created_at|date:"M j, Y · H:i" }}</time></div></li>
+            {% empty %}
+              <li><span></span><div><strong>{% trans "Request received" %}</strong></div></li>
+            {% endfor %}
+          </ol>
+        </div>
+
+        <div class="lead-panel request-recent-messages">
+          <div class="section-heading">
+            <div><p class="eyebrow">{% trans "Messages" %}</p><h2>{% trans "Recent messages" %}</h2></div>
+            <a class="section-link" href="{% url 'lead-messages' lead.pk %}">{% trans "View messages" %} →</a>
+          </div>
+          <div class="request-message-preview-list">
+            {% for message in recent_messages %}
+              <a href="{% url 'lead-messages' lead.pk %}" class="request-message-preview">
+                <span class="request-message-preview-meta">
+                  <strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong>
+                  <time>{{ message.created_at|date:"M j, H:i" }}</time>
+                </span>
+                <span class="request-message-preview-body">{% if message.body %}{{ message.body|truncatechars:110 }}{% else %}{% trans "Attachment" %}{% endif %}</span>
+              </a>
+            {% empty %}<p class="muted">{% trans "No messages yet." %}</p>{% endfor %}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    {% include "includes/customer_request_context_sidebar.html" %}
+  </div>
 </div>
-</div>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const closeDialog = (dialog) => {
-    if (dialog && dialog.open) {
-      dialog.close();
-    }
-  };
-
-  document.querySelectorAll(".modal-trigger").forEach((trigger) => {
-    trigger.addEventListener("click", () => {
-      const dialog = document.getElementById(trigger.dataset.modalTarget);
-      if (dialog) {
-        dialog.showModal();
-      }
-    });
-  });
-
-  document.querySelectorAll(".customer-document-modal").forEach((dialog) => {
-    dialog.querySelectorAll(".modal-close").forEach((button) => {
-      button.addEventListener("click", () => closeDialog(dialog));
-    });
-
-    dialog.addEventListener("click", (event) => {
-      if (event.target === dialog) {
-        closeDialog(dialog);
-      }
-    });
-  });
-});
-</script>
 {% endblock %}

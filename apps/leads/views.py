@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from apps.messaging.forms import MessageForm
@@ -21,7 +22,7 @@ from apps.messaging.services import (
     send_message,
     unread_count_for_conversation,
 )
-from apps.universities.models import Program
+from apps.universities.models import DegreeType, Program, UniversityType
 
 from .forms import (
     ApplyProgramForm,
@@ -58,8 +59,34 @@ def _customer_lead(user, lead_id):
     )
 
 
+def _customer_activity_label(activity_type: str) -> str:
+    labels: dict[str, str] = {
+        LeadActivityType.CREATED: _("Request created"),
+        LeadActivityType.APPLICANT_UPDATED: _("Profile updated"),
+        LeadActivityType.STATUS_CHANGED: _("Request status updated"),
+        LeadActivityType.ASSIGNED: _("Advisor assigned"),
+        LeadActivityType.REASSIGNED: _("Advisor changed"),
+        LeadActivityType.CLOSED: _("Request closed"),
+        LeadActivityType.REOPENED: _("Request reopened"),
+        LeadActivityType.VALIDATED: _("Request reviewed"),
+        LeadActivityType.DOCUMENT_UPLOADED: _("Document uploaded"),
+        LeadActivityType.DOCUMENT_REVIEWED: _("Document reviewed"),
+        LeadActivityType.PROGRAM_ADDED: _("Program added"),
+        LeadActivityType.PROGRAM_SUGGESTED: _("Program suggested"),
+        LeadActivityType.PROGRAM_RESPONSE: _("Program response updated"),
+        LeadActivityType.RECOMMENDATIONS_GENERATED: _("Program recommendations updated"),
+        LeadActivityType.FINALIZED: _("Request completed"),
+    }
+    return labels.get(activity_type, _("Request updated"))
+
+
 def _lead_entity_context(*, request, lead, mark_read=False):
     conversation = ensure_conversation(lead)
+    unread_message_count = unread_count_for_conversation(
+        conversation=conversation,
+        user=request.user,
+        participant_role=ConversationParticipantRole.CUSTOMER,
+    )
     message_qs = conversation.messages.select_related("sender").prefetch_related("attachments")
     if mark_read:
         mark_conversation_read(
@@ -76,6 +103,32 @@ def _lead_entity_context(*, request, lead, mark_read=False):
         "program_offering__academic_year",
         "program_offering__semester",
     ).order_by("-created_at")
+    documents = list(lead.documents.order_by("-created_at"))
+    attention_documents = [
+        document
+        for document in documents
+        if document.review_status == LeadDocumentReviewStatus.REPLACEMENT_REQUESTED
+    ]
+
+    preferences = lead.preferences
+    degree_labels = dict(DegreeType.choices)
+    university_type_labels = dict(UniversityType.choices)
+    preferred_degrees = [
+        degree_labels.get(code, code) for code in preferences.preferred_degrees or []
+    ]
+    preferred_university_types = [
+        university_type_labels.get(code, code)
+        for code in preferences.preferred_university_types or []
+    ]
+
+    activity_qs = lead.activities.filter(is_customer_visible=True).order_by("-created_at")[:20]
+    customer_activities = [
+        {
+            "label": _customer_activity_label(activity.activity_type),
+            "created_at": activity.created_at,
+        }
+        for activity in activity_qs
+    ]
 
     student = lead.converted_student
     applications = (
@@ -90,14 +143,25 @@ def _lead_entity_context(*, request, lead, mark_read=False):
     return {
         "lead": lead,
         "interests": interests,
-        "documents": lead.documents.order_by("-created_at"),
+        "documents": documents,
+        "attention_documents": attention_documents,
+        "needs_attention": bool(unread_message_count or attention_documents),
+        "unread_message_count": unread_message_count,
         "conversation": conversation,
         "lead_messages": message_qs,
+        "recent_messages": message_qs.order_by("-created_at")[:3],
         "message_form": MessageForm(),
         "document_form": LeadDocumentForm(),
         "replacement_form": LeadDocumentReplacementForm(),
-        "activities": lead.activities.filter(is_customer_visible=True).order_by("-created_at")[:20],
+        "activities": customer_activities,
         "applications": applications,
+        "preferences": preferences,
+        "preferred_degrees": preferred_degrees,
+        "preferred_university_types": preferred_university_types,
+        "preferred_languages": preferences.preferred_languages.all(),
+        "preferred_cities": preferences.preferred_cities.all(),
+        "preferred_universities": preferences.preferred_universities.all(),
+        "preferred_departments": preferences.preferred_departments.all(),
         "agent_context": False,
     }
 
@@ -294,7 +358,7 @@ def lead_preferences(request, lead_id):
 @login_required
 def lead_detail(request, lead_id):
     lead = _customer_lead(request.user, lead_id)
-    context = _lead_entity_context(request=request, lead=lead, mark_read=True)
+    context = _lead_entity_context(request=request, lead=lead)
     context["entity_tab"] = "overview"
     return render(request, "leads/lead_detail.html", context)
 

@@ -12,7 +12,7 @@ class DocumentReplacementWorkflowStructureTests(SimpleTestCase):
         self.agent_views = (root / "apps" / "agents" / "views.py").read_text(encoding="utf-8")
         self.customer_template = (root / "templates" / "leads" / "lead_detail.html").read_text(
             encoding="utf-8"
-        )
+        ) + (root / "templates" / "leads" / "lead_section.html").read_text(encoding="utf-8")
 
     def test_rejected_is_replacement_requested(self):
         review_status_block = self.models.split(

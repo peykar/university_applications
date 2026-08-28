@@ -25,7 +25,14 @@ remains unchanged for Agent/domain workflows.
 
 ## SDD
 
-See `docs/specs/customer-requests/` (`CRQ-001`–`CRQ-010`).
+See `docs/specs/customer-requests/` (`CRQ-001`–`CRQ-019`).
 
 - Fixed Applied for entries to render the actual program and university names instead of separator-only boxes caused by nonexistent `.name` template attributes.
 - Removed request-card hover movement, border/shadow changes, and inherited link underlining.
+
+- Redesigned Request detail into a central workspace plus persistent right context sidebar.
+- Kept Request tabs (Overview, Profile, Programs, Documents, Messages) between the Request header and active content.
+- Added Uploaded documents and Program preferences to the right context sidebar across Request tabs.
+- Rebuilt Overview around action-required items, applied-for programs, customer-safe progress and recent messages.
+- Opening Overview no longer consumes unread-message state; Request Messages remains the read boundary.
+- Customer status labels now present Received / In progress / Completed / Closed while internal Lead states remain unchanged.

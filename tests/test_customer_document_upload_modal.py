@@ -10,7 +10,7 @@ class CustomerDocumentUploadModalTests(SimpleTestCase):
         self.form_source = (root / "apps" / "leads" / "forms.py").read_text(encoding="utf-8")
         self.template = (root / "templates" / "leads" / "lead_detail.html").read_text(
             encoding="utf-8"
-        )
+        ) + (root / "templates" / "leads" / "lead_section.html").read_text(encoding="utf-8")
 
     def test_customer_upload_form_does_not_ask_for_document_name(self):
         form_block = self.form_source.split(

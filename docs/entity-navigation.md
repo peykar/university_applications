@@ -66,3 +66,11 @@ Agent equivalents live below `/agent/`.
 
 POST message endpoints use `/messages/send/` so GET navigation URLs remain
 readable and bookmarkable.
+
+## Customer Request detail layout
+
+Customer Request detail pages use three visual areas on desktop: the global
+Customer sidebar, the central Request workspace (header + Request tabs + active
+content), and a right-hand context sidebar. The context sidebar contains Uploaded
+documents and Program preferences. It is contextual information, not another
+navigation level, and stacks below the main content responsively.

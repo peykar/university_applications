@@ -6,12 +6,14 @@ from django.test import SimpleTestCase
 class ApplicantDetailDesignTests(SimpleTestCase):
     def setUp(self):
         root = Path(__file__).resolve().parents[1]
-        self.template = (root / "templates/leads/lead_detail.html").read_text()
+        self.template = (root / "templates/leads/lead_detail.html").read_text() + (
+            root / "templates/leads/lead_section.html"
+        ).read_text()
         self.css = (root / "static/css/turkdemy.css").read_text()
 
     def test_customer_workspace_has_scoped_design_wrapper(self):
-        self.assertIn('class="customer-applicant-page"', self.template)
-        self.assertIn(".customer-applicant-page .applicant-workspace", self.css)
+        self.assertIn('class="customer-applicant-page customer-request-detail"', self.template)
+        self.assertIn(".request-detail-layout", self.css)
 
     def test_document_upload_uses_styled_modal(self):
         self.assertIn("customer-document-upload-row", self.template)
@@ -42,6 +44,6 @@ class ApplicantDetailDesignTests(SimpleTestCase):
         )[0]
         self.assertNotIn("<script>", title_block)
         self.assertIn(
-            'document.querySelectorAll(".customer-document-modal")',
+            'document.querySelectorAll("dialog")',
             self.template,
         )

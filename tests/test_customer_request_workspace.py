@@ -15,6 +15,15 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.request_nav = (root / "templates/includes/applicant_entity_nav.html").read_text(
             encoding="utf-8"
         )
+        self.request_detail = (root / "templates/leads/lead_detail.html").read_text(
+            encoding="utf-8"
+        )
+        self.request_section = (root / "templates/leads/lead_section.html").read_text(
+            encoding="utf-8"
+        )
+        self.request_context_sidebar = (
+            root / "templates/includes/customer_request_context_sidebar.html"
+        ).read_text(encoding="utf-8")
         self.views = (root / "apps/leads/views.py").read_text(encoding="utf-8")
         self.settings_source = (root / "turkdemy/settings/base.py").read_text(encoding="utf-8")
         self.support_context = (root / "apps/core/context_processors.py").read_text(
@@ -108,3 +117,56 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
     def test_customer_abstraction_does_not_add_request_model(self):
         models = (Path(settings.BASE_DIR) / "apps/leads/models.py").read_text(encoding="utf-8")
         self.assertNotIn("class Request(", models)
+
+    def test_request_detail_uses_main_and_context_sidebar_layout(self):
+        self.assertIn('class="request-detail-layout"', self.request_detail)
+        self.assertIn('class="request-detail-main"', self.request_detail)
+        self.assertIn("includes/customer_request_context_sidebar.html", self.request_detail)
+        self.assertIn("includes/customer_request_context_sidebar.html", self.request_section)
+        self.assertIn("grid-template-columns:minmax(0,1fr) 310px", self.css)
+
+    def test_request_navigation_stays_between_header_and_page_content(self):
+        self.assertIn("includes/applicant_entity_nav.html", self.request_header)
+        self.assertIn('{% trans "Overview" %}', self.request_nav)
+        self.assertIn('{% trans "Profile" %}', self.request_nav)
+        self.assertIn('{% trans "Programs" %}', self.request_nav)
+        self.assertIn('{% trans "Documents" %}', self.request_nav)
+        self.assertIn('{% trans "Messages" %}', self.request_nav)
+
+    def test_context_sidebar_contains_documents_and_program_preferences(self):
+        self.assertIn('{% trans "Uploaded documents" %}', self.request_context_sidebar)
+        self.assertIn(
+            'document.review_status == "replacement_requested"',
+            self.request_context_sidebar,
+        )
+        self.assertIn("{% url 'lead-documents' lead.pk %}", self.request_context_sidebar)
+        self.assertIn('{% trans "Program preferences" %}', self.request_context_sidebar)
+        self.assertIn("{% url 'lead-preferences' lead.pk %}", self.request_context_sidebar)
+        self.assertIn("preferred_degrees", self.request_context_sidebar)
+        self.assertIn("preferred_languages", self.request_context_sidebar)
+        self.assertIn("preferences.tuition_min", self.request_context_sidebar)
+
+    def test_overview_prioritizes_attention_programs_progress_and_messages(self):
+        self.assertIn('{% trans "Action required" %}', self.request_detail)
+        self.assertIn('{% trans "Applied for" %}', self.request_detail)
+        self.assertIn('{% trans "Request progress" %}', self.request_detail)
+        self.assertIn('{% trans "Recent messages" %}', self.request_detail)
+        self.assertIn('"attention_documents": attention_documents', self.views)
+        self.assertIn('"recent_messages": message_qs.order_by("-created_at")[:3]', self.views)
+
+    def test_overview_does_not_mark_unread_messages_read(self):
+        overview = self.views[
+            self.views.index("def lead_detail") : self.views.index("def lead_profile")
+        ]
+        self.assertIn("_lead_entity_context(request=request, lead=lead)", overview)
+        self.assertNotIn("mark_read=True", overview)
+        messages_view = self.views[
+            self.views.index("def lead_messages") : self.views.index("def lead_document_upload")
+        ]
+        self.assertIn("mark_read=True", messages_view)
+
+    def test_customer_request_header_uses_customer_friendly_statuses(self):
+        self.assertIn('{% trans "Received" %}', self.request_header)
+        self.assertIn('{% trans "In progress" %}', self.request_header)
+        self.assertIn('{% trans "Completed" %}', self.request_header)
+        self.assertIn("{{ lead.get_status_display }}", self.request_header)

@@ -13,7 +13,7 @@ class FinalizedCustomerLeadMutationStructureTests(SimpleTestCase):
         )
         self.detail = (root / "templates" / "leads" / "lead_detail.html").read_text(
             encoding="utf-8"
-        )
+        ) + (root / "templates" / "leads" / "lead_section.html").read_text(encoding="utf-8")
         self.section = (root / "templates" / "leads" / "lead_section.html").read_text(
             encoding="utf-8"
         )
@@ -44,15 +44,15 @@ class FinalizedCustomerLeadMutationStructureTests(SimpleTestCase):
     def test_finalized_document_ui_is_read_only(self):
         self.assertIn(
             'document.review_status == "replacement_requested" and lead.status != "finalized"',
-            self.detail,
-        )
-        self.assertIn(
-            'if lead.status != "finalized"',
-            self.detail,
+            self.section,
         )
         self.assertIn(
             'if lead.status != "finalized"',
             self.section,
         )
-        self.assertIn("Request documents are read-only", self.detail)
+        self.assertIn(
+            'if lead.status != "finalized"',
+            self.section,
+        )
+        self.assertIn("Request documents are read-only", self.section)
         self.assertIn("Request documents are read-only", self.section)

@@ -55,3 +55,30 @@ Django silently rendering nonexistent `.name` attributes as empty strings.
 The entire request card remains an anchor, but its hover state intentionally has
 no visual transformation. The card overrides the site's global `a:hover` underline
 so nested card content does not become visually noisy when the pointer enters it.
+
+## Request detail workspace
+
+Customer Request detail pages use a nested workspace hierarchy. The global
+`templates/customer/base.html` sidebar remains the account-level navigation.
+Inside the main account column, the Request header and Request tabs are followed
+by `request-detail-layout`, which has a central page-content column and a
+persistent `customer_request_context_sidebar.html` right-hand aside.
+
+The Request context sidebar deliberately contains operational context rather than
+more navigation: a compact uploaded-document list/status summary and the existing
+`LeadPreference` study preferences. On smaller screens the aside stacks below the
+main content rather than competing for horizontal space.
+
+Request Overview is a dashboard, not a duplication of every tab. It surfaces
+attention items (unread incoming messages and replacement-requested documents),
+all applied-for/program-interest records, a customer-safe activity timeline, and
+recent conversation messages. Detailed editing and management continue through
+the Profile, Programs, Documents and Messages tabs.
+
+Unread state is calculated before optional read marking. Overview does not mark
+the conversation read; `lead_messages` remains the explicit Request-level read
+boundary. Customer activity labels are presentation mappings so internal Lead
+activity descriptions do not leak Applicant/finalization terminology.
+
+Customer status presentation maps Lead states to Received / In progress /
+Completed / Closed while Agent pages continue using the canonical Lead labels.

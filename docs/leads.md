@@ -180,3 +180,11 @@ Model-choice values such as countries are resolved to their display value
 instead of storing UUIDs. Submitting the form without a meaningful change does
 not create an Activity row. The `created_by`/`updated_by` actor identifies
 whether the change was made by the customer or an Agent user.
+
+## Customer Request presentation
+
+The customer-facing presentation treats a Lead as a Request. Request detail uses
+a central tabbed workspace plus a right context sidebar with the Lead's uploaded
+documents and LeadPreference summary. Overview surfaces action-required items,
+program interests, customer-safe progress activity and recent messages. Opening
+Overview does not mark conversation messages read; the Request Messages tab does.

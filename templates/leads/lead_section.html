@@ -2,8 +2,11 @@
 {% load i18n %}
 {% block title %}{{ lead }} · {{ entity_tab|title }} — TurkDemy{% endblock %}
 {% block customer_content %}
+<div class="customer-applicant-page customer-request-detail">
 {% include "includes/applicant_entity_header.html" %}
 
+<div class="request-detail-layout">
+<main class="request-detail-main">
 {% if entity_tab == "profile" %}
   <section class="lead-panel entity-section">
     <div class="section-heading"><div><p class="eyebrow">{% trans "Profile" %}</p><h2>{% trans "Request profile" %}</h2></div></div>
@@ -34,7 +37,7 @@
           </div>
           <h3><a href="{% url 'program-detail' interest.program.slug_en %}">{{ interest.program.name_en }}</a></h3>
           <p>{{ interest.program.university.name_en }} · {{ interest.program.get_degree_display }}</p>
-          {% if interest.program_offering %}<p><strong>{% trans "Intake:" %}</strong> {{ interest.program_offering.semester.name_en }} {{ interest.program_offering.academic_year.name_en }}</p>{% endif %}
+          {% if interest.program_offering %}<p><strong>{% trans "Intake:" %}</strong> {{ interest.program_offering.semester.name_en }} {{ interest.program_offering.academic_year.name_en }}</p>{% else %}<p><strong>{% trans "Any intake / decide later" %}</strong></p>{% endif %}
         </article>
       {% empty %}
         <div class="empty-state"><p>{% trans "No programs selected yet." %}</p><a class="button button-secondary" href="{% url 'program-list' %}">{% trans "Browse programs" %}</a></div>
@@ -48,10 +51,16 @@
     <div class="lead-document-list">
       {% for document in documents %}
         <div class="lead-document-row lead-document-row-review-{{ document.review_status }}">
-          <div class="lead-document-copy"><strong>{{ document.get_document_type_display }}</strong><span>{{ document.name }}</span></div>
+          <div class="lead-document-copy">
+            <strong>{{ document.get_document_type_display }}</strong><span>{{ document.name }}</span>
+            {% if document.review_status == "replacement_requested" and document.review_note %}<p class="document-replacement-reason"><strong>{% trans "Why a replacement is needed:" %}</strong> {{ document.review_note }}</p>{% endif %}
+          </div>
           <div class="lead-document-actions">
-            <span class="badge">{{ document.get_review_status_display }}</span>
+            {% if document.review_status == "approved" %}<span class="badge badge-success">{% trans "Approved" %}</span>{% elif document.review_status == "replacement_requested" %}<span class="badge badge-danger">{% trans "Replacement requested" %}</span>{% else %}<span class="badge">{% trans "Pending review" %}</span>{% endif %}
             <a href="{{ document.file.url }}" target="_blank" rel="noopener">{% trans "Open" %}</a>
+            {% if document.review_status == "replacement_requested" and lead.status != "finalized" %}
+              <details class="document-replace-panel"><summary>{% trans "Replace document" %}</summary><form method="post" enctype="multipart/form-data" action="{% url 'lead-document-replace' lead.id document.id %}" class="document-replace-form">{% csrf_token %}<label><span>{% trans "Choose replacement file" %}</span><input type="file" name="file" required></label><button class="button small-button" type="submit">{% trans "Upload replacement" %}</button></form></details>
+            {% endif %}
           </div>
         </div>
       {% empty %}<div class="empty-state">{% trans "No documents uploaded yet." %}</div>{% endfor %}
@@ -76,7 +85,11 @@
     <div class="customer-document-modal-card">
       <div class="customer-document-modal-head"><div><span class="eyebrow">{% trans "Documents" %}</span><h2>{% trans "Upload document" %}</h2></div><button type="button" class="modal-close button-reset">×</button></div>
       <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-upload' lead.pk %}" class="customer-document-modal-form">
-        {% csrf_token %}{{ document_form.as_p }}
+        {% csrf_token %}
+        <label><span>{% trans "Document type" %}</span>{{ document_form.document_type }}</label>
+        <label><span>{% trans "File" %}</span>{{ document_form.file }}</label>
+        <label><span>{% trans "Description" %} <small>{% trans "(optional)" %}</small></span>{{ document_form.description }}</label>
+        <p class="modal-help">{% trans "The filename is kept automatically, so you do not need to enter a separate document name." %}</p>
         <div class="customer-document-modal-actions"><button type="button" class="button button-secondary modal-close">{% trans "Cancel" %}</button><button class="button" type="submit">{% trans "Upload document" %}</button></div>
       </form>
     </div>
@@ -123,6 +136,10 @@
   </section>
 {% endif %}
 
+</main>
+{% include "includes/customer_request_context_sidebar.html" %}
+</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".modal-trigger").forEach((trigger) => {
@@ -136,4 +153,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+</div>
 {% endblock %}

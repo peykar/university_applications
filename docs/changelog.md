@@ -1,3 +1,6 @@
+- Fixed the customer Request redesign regression-test fixture formatting so `make format` passes Ruff E501 line-length validation.
+- Restored customer Request document replacement/upload UI after the detail-page split and aligned legacy structural tests with the new overview/section template architecture.
+- Redesigned customer Request detail into a three-part workspace: global customer sidebar, central Request tabs/content, and a persistent right context sidebar with Uploaded documents and Program preferences. Overview now emphasizes action-required items, applied-for programs, customer-safe progress, and recent messages; unread messages remain unread until Request Messages is opened.
 - Scoped the Request-card no-hover regression test to Request-card selectors; unrelated catalogue hover animations remain valid.
 - Fixed My Requests program labels and removed request-card hover visual effects.
 - Replaced brittle Django-template branch parsing in the customer Request terminology test with explicit assertions for the customer navigation links.

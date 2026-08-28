@@ -208,3 +208,10 @@ See also: [Agent workspace context](agent-workspace-context.md).
 
 
 See also: [Agent applicant workspace](agent-applicant-workspace.md).
+
+### Request-local navigation
+
+Within a selected customer Request, the central workspace owns the Request tabs:
+Overview, Profile, Programs, Documents and Messages. A separate right context
+sidebar persists alongside these tabs and shows Uploaded documents and Program
+preferences; it does not replace Request-local navigation.

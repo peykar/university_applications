@@ -9,7 +9,7 @@ class ApplicantProgramSourceUITests(SimpleTestCase):
         root = Path(settings.BASE_DIR)
         self.template = (root / "templates" / "leads" / "lead_detail.html").read_text(
             encoding="utf-8"
-        )
+        ) + (root / "templates" / "leads" / "lead_section.html").read_text(encoding="utf-8")
         self.models = (root / "apps" / "leads" / "models.py").read_text(encoding="utf-8")
 
     def test_only_user_and_agent_program_sources_exist(self):
