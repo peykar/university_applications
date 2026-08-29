@@ -215,3 +215,7 @@ Within a selected customer Request, the central workspace owns the Request tabs:
 Overview, Profile, Programs, Documents and Messages. A separate right context
 sidebar persists alongside these tabs and shows Uploaded documents and Program
 preferences; it does not replace Request-local navigation.
+
+## 7. Shared footer
+
+The footer uses the same customer-facing workspace language as the rest of TurkDemy. The private-workspace group is **My TurkDemy**, not the legacy **Students** group. Authenticated users receive **My Requests** and **Messages** links; signed-out visitors receive **Login**. Legacy **Dashboard / Profile** footer links are intentionally removed because the customer landing page and navigation are Request-based.

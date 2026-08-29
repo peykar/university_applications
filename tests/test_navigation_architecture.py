@@ -44,6 +44,20 @@ class NavigationArchitectureTests(SimpleTestCase):
         self.assertLess(applicants, applications)
         self.assertLess(applications, messages)
 
+    def test_footer_uses_current_customer_workspace_terminology(self):
+        footer_start = self.base.index('<footer class="site-footer">')
+        footer_end = self.base.index("</footer>", footer_start)
+        footer = self.base[footer_start:footer_end]
+        self.assertIn('{% trans "My TurkDemy" %}', footer)
+        self.assertIn("{% url 'lead-list' %}", footer)
+        self.assertIn('{% trans "My Requests" %}', footer)
+        self.assertIn("{% url 'customer-message-inbox' %}", footer)
+        self.assertIn('{% trans "Messages" %}', footer)
+        self.assertIn("{% url 'account_login' %}", footer)
+        self.assertNotIn('{% trans "Students" %}', footer)
+        self.assertNotIn("{% url 'dashboard' %}", footer)
+        self.assertNotIn("{% url 'profile' %}", footer)
+
     def test_navigation_architecture_is_documented(self):
         self.assertIn("workspace-first", self.docs)
         self.assertIn("My TurkDemy workspace", self.docs)

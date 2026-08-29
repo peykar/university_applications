@@ -480,6 +480,21 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn('{% trans "Added by you" %}', programs)
         self.assertIn("request-program-source", programs)
 
+    def test_agent_suggestion_reason_is_separate_bidi_aware_note(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        self.assertIn('<p class="request-program-suggestion-reason" dir="auto">', programs)
+        self.assertIn("{{ interest.suggestion_reason }}", programs)
+        self.assertIn(".request-program-source{display:grid;gap:5px;", self.css)
+        self.assertIn("unicode-bidi:plaintext", self.css)
+        self.assertNotIn(
+            '<span class="interest-source interest-source-agent">'
+            '{% trans "Suggested by your advisor" %}</span>'
+            "{{ interest.suggestion_reason }}",
+            programs,
+        )
+
     def test_program_intake_copy_is_customer_friendly(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
             '{% elif entity_tab == "documents" %}', 1
@@ -585,10 +600,11 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn("color:#8a97a3", self.css)
 
     def test_program_cards_fill_programs_column(self):
-        self.assertIn(
-            ".request-program-list{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;width:100%}",
-            self.css,
+        program_list_css = (
+            ".request-program-list{display:grid;"
+            "grid-template-columns:minmax(0,1fr);gap:8px;width:100%}"
         )
+        self.assertIn(program_list_css, self.css)
         self.assertIn(
             ".request-program-card{position:relative;width:100%;box-sizing:border-box}",
             self.css,

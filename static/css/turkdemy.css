@@ -5865,7 +5865,7 @@ a.entity-list-row:hover{
 .request-program-card h3{margin:0;color:#102d4d;font-size:1rem;line-height:1.3}
 .request-program-university{margin:.35rem 0 0!important;color:#52677b!important;font-weight:700}
 .request-program-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:.4rem 0 0!important;color:#758494!important;font-size:.78rem!important}
-.request-program-source{margin-top:10px}
+.request-program-source{display:grid;gap:5px;margin-top:10px}
 .request-program-source .interest-source{font-size:.64rem;color:#738295}
 .request-program-source .interest-source-agent{color:#87621d}
 .request-program-chevron{flex:0 0 auto;color:#6d7f91;font-size:1.05rem;font-weight:800}
@@ -5889,7 +5889,7 @@ a.entity-list-row:hover{
 .request-program-list{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;width:100%}
 .request-program-card{position:relative;width:100%;box-sizing:border-box}
 .request-program-detail-link{padding-inline-end:30px}
-.request-program-suggestion-reason{margin:.4rem 0 0!important;color:#5f7183!important;font-size:.76rem!important;line-height:1.45}
+.request-program-suggestion-reason{margin:0!important;color:#53697d!important;font-size:.78rem!important;font-weight:500;line-height:1.5;unicode-bidi:plaintext}
 .request-program-management{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid #e8edf1}
 .request-program-intake-summary{display:grid;gap:2px}
 .request-program-intake-summary span{color:#84919d;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}

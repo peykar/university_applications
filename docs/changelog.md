@@ -1,3 +1,10 @@
+## 2026-08-29 — Advisor-note and footer terminology alignment
+
+- Advanced Customer Requests SDD to v1.14 with CRQ-060 for separate, readable, bidi-aware advisor recommendation notes.
+- Advanced Navigation & Workspaces SDD to v1.2 with NAV-009.
+- Advisor `suggestion_reason` now renders on its own line beneath **Suggested by your advisor** with automatic text direction; internal `notes` remains hidden.
+- Replaced the legacy footer **Students / Dashboard / Profile** group with **My TurkDemy / My Requests / Messages** for authenticated users while preserving Login for signed-out visitors.
+
 ## 2026-08-29 — Customer Programs card-width and remove-icon polish
 
 - Made every card in the dedicated customer Programs workspace fill the full available Programs-column width, independent of its content length.

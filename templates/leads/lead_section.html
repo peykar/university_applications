@@ -99,7 +99,9 @@
               <div class="interest-source-line request-program-source">
                 {% if interest.source == "agent" %}
                   <span class="interest-source interest-source-agent">{% trans "Suggested by your advisor" %}</span>
-                  {% if interest.suggestion_reason %}<p class="request-program-suggestion-reason">{{ interest.suggestion_reason }}</p>{% endif %}
+                  {% if interest.suggestion_reason %}
+                    <p class="request-program-suggestion-reason" dir="auto">{{ interest.suggestion_reason }}</p>
+                  {% endif %}
                 {% else %}<span class="interest-source interest-source-user">{% trans "Added by you" %}</span>{% endif %}
               </div>
             </div>

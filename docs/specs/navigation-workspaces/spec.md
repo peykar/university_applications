@@ -1,7 +1,7 @@
 # Navigation and workspace information architecture
 
 Status: BASELINED
-Version: 1.1
+Version: 1.2
 
 ## Goal
 
@@ -32,6 +32,8 @@ than duplicate full Messages/Documents/Programs panels.
 
 NAV-008 — Workspace/entity navigation MUST remain usable on mobile through the
 established responsive behavior.
+
+NAV-009 — The shared site footer MUST use the customer-facing **My TurkDemy** workspace concept rather than obsolete **Students / Dashboard / Profile** terminology. For authenticated users it MUST link to **My Requests** and customer **Messages**; for unauthenticated users the same footer group MAY provide the Login entry.
 
 ## Acceptance policy
 

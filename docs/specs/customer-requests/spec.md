@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.13
+Version: 1.14
 
 ## Goal
 
@@ -198,3 +198,5 @@ CRQ-057 — For Agent-originated program interests, the Programs workspace MUST 
 CRQ-058 — Finalized Requests MUST keep program management read-only: intake controls and removal controls MUST not render, while the selected intake (or **Not selected**) MAY be shown as read-only context.
 
 CRQ-059 — Program cards in the dedicated Programs workspace MUST fill the available width of their holding Programs column rather than shrink to content width. Card widths MUST remain consistent regardless of program title, metadata, recommendation note, or intake state.
+
+CRQ-060 — When an Agent recommendation has a customer-visible `suggestion_reason`, the Programs workspace MUST render the advisor provenance label and the recommendation explanation as separate visual lines. The explanation MUST use normal readable body styling and automatic bidirectional text direction so Persian, Arabic, English, and other note content renders naturally.

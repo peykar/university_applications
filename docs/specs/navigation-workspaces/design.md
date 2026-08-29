@@ -21,3 +21,7 @@ Status: BASELINED
 Consult the ADRs under `docs/architecture/decisions/` when this capability
 touches Lead→Student conversion, generic messaging, active Agent context,
 program-interest/Application boundaries, or document layers.
+
+## Shared footer workspace links
+
+The footer mirrors the current customer workspace vocabulary instead of legacy student-dashboard terminology. Its workspace group is **My TurkDemy**. Authenticated users enter **My Requests** or **Messages** directly; signed-out visitors receive the Login entry. This keeps global footer navigation consistent with the customer sidebar and login redirect without exposing internal Lead/Student/Application lifecycle language.

@@ -77,3 +77,7 @@ For customers, Request-stage program interests are presented as **Programs**, no
 ### Customer program intake interaction
 
 In an editable Request, each program uses one intake dropdown. The selected offering is preselected; otherwise the control shows **Select intake**. Choosing an option immediately submits and returns to the Programs tab, so there is no separate Select/Save/Change button. Program removal is a separate card-level trash action. Agent-suggested programs show the Agent's `suggestion_reason` when provided; generic internal notes are not exposed to the customer.
+
+### Customer program recommendation notes
+
+On the customer Request Programs workspace, an Agent recommendation may include `suggestion_reason`. When present it is shown directly below **Suggested by your advisor** as readable customer context with automatic text direction (`dir="auto"`). The generic LeadProgramInterest `notes` field remains internal and is not exposed.

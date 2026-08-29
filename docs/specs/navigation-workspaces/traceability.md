@@ -12,6 +12,7 @@ Status: BASELINED
 | `NAV-006` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `NAV-007` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `NAV-008` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `NAV-009` | `templates/base.html`, `docs/navigation.md` | `NavigationArchitectureTests.test_footer_uses_current_customer_workspace_terminology` | Named test |
 
 ## Notes
 

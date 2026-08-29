@@ -170,3 +170,7 @@ column width. Content length must not determine card width.
 Program removal remains a separate card-level control, but the trash icon is visually
 neutral rather than styled as a boxed/destructive button. It uses a gray borderless
 icon at rest, a darker gray hover state, and a focus-visible outline for keyboard users.
+
+## Advisor recommendation-note presentation
+
+Agent recommendation provenance and explanation are deliberately distinct. The compact **Suggested by your advisor** label identifies origin; when `suggestion_reason` is present, it renders below that label as ordinary readable note text rather than inline badge copy. The note uses `dir="auto"` plus bidi-safe styling so its direction follows its actual content without changing the surrounding page direction. Generic `notes` remains internal.
