@@ -1,3 +1,12 @@
+## 2026-08-29 — Customer Programs borderless separated actions
+
+- Advanced Customer Requests SDD to v1.18 with CRQ-064 and revised CRQ-062/CRQ-063 action semantics.
+- Reverted the paired circular/outlined Program Detail and Remove controls.
+- Restored a lightweight borderless Program Detail SVG arrow at the card top/end position.
+- Moved the neutral-gray borderless trash + **Remove** action to the bottom/end of each editable program card, below intake management.
+- Preserved the existing confirmed POST removal workflow, accessibility labels, keyboard focus behavior, and RTL-safe logical alignment.
+- Updated regression coverage for the revised placement and borderless treatment.
+
 ## 2026-08-29 — Customer Programs circular action controls
 
 - Advanced Customer Requests SDD to v1.17 with CRQ-063.

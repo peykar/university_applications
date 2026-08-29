@@ -179,10 +179,6 @@ Agent recommendation provenance and explanation are deliberately distinct. The c
 A Lead may legitimately exist without an Agent when `DEFAULT_LEAD_AGENT_ID` is empty, invalid, inactive, or when an older record predates assignment. Customer Request rendering therefore does not call `ensure_conversation()` for an Agent-less Lead. The Request context uses an empty `Message` queryset, zero unread count, and no recent messages until an Agent organization exists. The Request Messages tab renders an assignment-pending explanation instead of a compose form. A direct message POST is also guarded and redirects safely with customer-facing feedback. Once an Agent is assigned, the existing generic conversation service creates/loads the canonical Agent + customer + subject conversation normally.
 
 
-## Programs card action spacing
+## Programs card action placement
 
-The program-detail arrow and removal icon are separate actions and must read as separate controls. The detail link reserves an inline-end action lane while the removal form remains absolutely positioned at the card edge. Using logical `padding-inline-end` preserves the separation in both LTR and RTL layouts without changing the neutral gray, borderless removal treatment.
-
-## Program card action controls
-
-Editable Program cards use a paired circular action treatment at the logical card edge. The Program Detail affordance remains part of the detail link but renders a stroked SVG arrow inside a blue-toned outlined circle. Program removal remains a separate POST form and renders its trash SVG inside an equally sized destructive outlined circle. Matching dimensions make the two actions read as one deliberate action group while distinct color semantics preserve navigation-versus-destruction meaning. Logical positioning/padding keeps the pair usable in both LTR and RTL.
+Program navigation and removal are deliberately separated by role and location. Program Detail remains part of the main detail link and uses a lightweight borderless SVG arrow at the card's logical top/end edge. Remove remains a separate confirmed POST form, but it is placed in a bottom/end footer action row beneath intake management. The removal affordance is borderless and neutral gray, combining the trash icon with a visible **Remove** label while retaining accessible labeling and keyboard focus treatment. This avoids visually grouping navigation and destructive actions and uses logical alignment so LTR and RTL layouts remain correct.

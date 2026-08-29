@@ -78,5 +78,6 @@ Status: IMPLEMENTED
 - [x] `CRQ-060` Render advisor recommendation reasons on a separate bidi-aware readable line beneath provenance.
 - [x] `CRQ-061` Keep Agent-less customer Requests renderable and make Request messaging safely unavailable until assignment.
 
-- [x] `CRQ-062` Reserve a distinct inline action lane so the Program Detail arrow and gray trash action remain visually separated in LTR and RTL.
-- [x] `CRQ-063` Render Program Detail and Remove as matched circular vector-icon controls with distinct navigation/destructive semantics and RTL-safe separation.
+- [x] `CRQ-062` Keep Program Detail and Remove in visually distinct locations in LTR and RTL.
+- [x] `CRQ-063` Use borderless vector affordances: lightweight Program Detail arrow and neutral-gray trash + Remove action.
+- [x] `CRQ-064` Keep the Program Detail arrow at the card top/end and move Remove to a bottom/end footer row beneath intake management.

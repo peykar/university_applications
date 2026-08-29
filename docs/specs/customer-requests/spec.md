@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.17
+Version: 1.18
 
 ## Goal
 
@@ -204,6 +204,8 @@ CRQ-060 — When an Agent recommendation has a customer-visible `suggestion_reas
 CRQ-061 — A customer Request MUST remain viewable when its Lead has no Agent organization assigned. Request Overview/Profile/Programs/Documents MUST render without creating an invalid Conversation; unread/recent-message summaries MUST behave as empty until an Agent is assigned. The Request Messages tab MUST explain that messaging becomes available after advisor assignment and MUST NOT render a compose form while no Agent is available.
 
 
-CRQ-062 — In editable Programs-workspace cards, the program-detail directional affordance and the program-removal trash action MUST occupy visually distinct space at the card edge. The detail link MUST reserve enough inline-end room that the arrow does not crowd or visually merge with the separate trash control in either LTR or RTL layouts.
+CRQ-062 — In editable Programs-workspace cards, the program-detail directional affordance and the program-removal action MUST occupy visually distinct locations so navigation and removal cannot be mistaken for one another in either LTR or RTL layouts.
 
-CRQ-063 — Editable Programs-workspace card actions MUST use two visually balanced circular icon controls at the card edge: a blue-toned outlined Program Detail arrow affordance and a distinct outlined destructive trash affordance. Both controls MUST share the same dimensions and circular geometry, use vector icons rather than a raw text arrow, retain clear hover/focus states, and remain visually separated in both LTR and RTL layouts.
+CRQ-063 — Program-card navigation and removal affordances MUST be borderless. Program Detail MUST use a lightweight vector arrow rather than a boxed/circular control, and Remove MUST use a neutral-gray borderless trash affordance with accessible text and focus behavior.
+
+CRQ-064 — The Program Detail arrow MUST occupy the card's top inline-end action position. The Remove action MUST be moved out of that top action position and rendered at the bottom inline-end of the card, below intake management, so destructive action is visually separated from primary navigation.

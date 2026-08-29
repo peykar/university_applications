@@ -597,8 +597,8 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         )
         self.assertIn('<svg viewBox="0 0 24 24"', programs)
         self.assertIn('class="button-reset request-program-remove"', programs)
-        self.assertIn("border:1px solid #ead7d7", self.css)
-        self.assertIn("border-radius:50%;color:#c95b5b", self.css)
+        self.assertIn('<span>{% trans "Remove" %}</span>', programs)
+        self.assertIn("border:0;background:transparent;color:#7c8994", self.css)
 
     def test_program_cards_fill_programs_column(self):
         program_list_css = (
@@ -613,27 +613,27 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_program_card_actions_have_distinct_spacing(self):
         self.assertIn(
-            ".request-program-detail-link{padding-inline-end:52px}",
+            ".request-program-detail-link{padding-inline-end:0}",
             self.css,
         )
         self.assertIn(
-            ".request-program-remove-form{position:absolute;"
-            "inset-block-start:12px;inset-inline-end:12px;z-index:2}",
+            ".request-program-footer-actions{display:flex;"
+            "justify-content:flex-end;margin-top:10px}",
             self.css,
         )
 
-    def test_program_card_actions_use_balanced_circular_icon_controls(self):
+    def test_program_card_actions_are_borderless_and_separated_by_role(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
             '{% elif entity_tab == "documents" %}', 1
         )[0]
         self.assertIn('class="request-program-chevron" aria-hidden="true"', programs)
         self.assertIn("M5 12h12m-5-5 5 5-5 5", programs)
         self.assertNotIn('request-program-chevron" aria-hidden="true">→', programs)
-        self.assertIn("flex:0 0 34px;width:34px;height:34px", self.css)
-        self.assertIn("border:1px solid #cfdce8;border-radius:50%", self.css)
-        self.assertIn("width:34px;height:34px", self.css)
-        self.assertIn("border:1px solid #ead7d7", self.css)
-        self.assertIn("border-radius:50%;color:#c95b5b", self.css)
+        self.assertIn("border:0;background:transparent;color:#587b98", self.css)
+        self.assertIn('class="request-program-footer-actions"', programs)
+        self.assertIn('<span>{% trans "Remove" %}</span>', programs)
+        self.assertIn(".request-program-remove-form{position:static;margin:0}", self.css)
+        self.assertIn("border:0;background:transparent;color:#7c8994", self.css)
 
     def test_agent_suggestion_reason_is_customer_visible_without_internal_notes(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(

@@ -25,7 +25,7 @@ remains unchanged for Agent/domain workflows.
 
 ## SDD
 
-See `docs/specs/customer-requests/` (`CRQ-001`–`CRQ-019`).
+See `docs/specs/customer-requests/` (`CRQ-001`–`CRQ-064`).
 
 - Fixed Applied for entries to render the actual program and university names instead of separator-only boxes caused by nonexistent `.name` template attributes.
 - Removed request-card hover movement, border/shadow changes, and inherited link underlining.
@@ -37,5 +37,6 @@ See `docs/specs/customer-requests/` (`CRQ-001`–`CRQ-019`).
 - Opening Overview no longer consumes unread-message state; Request Messages remains the read boundary.
 - Customer status labels now present Received / In progress / Completed / Closed while internal Lead states remain unchanged.
 
-- Reserved a distinct logical inline action lane on Programs cards so the Program Detail arrow and gray trash action no longer crowd each other in LTR or RTL.
-- Replaced the Programs-card raw arrow and underspecified trash action with matched circular SVG icon controls: blue-toned Program Detail navigation and a distinct destructive Remove action.
+- Kept Program Detail and Remove visually separated on Programs cards in both LTR and RTL.
+- Program Detail now uses a lightweight borderless SVG arrow at the card top/end position.
+- Remove now uses a neutral-gray borderless trash + text action at the card bottom/end, beneath intake management, while preserving confirmed POST behavior.
