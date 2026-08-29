@@ -1117,3 +1117,12 @@
 - Added `/preferences/edit/` with the shared **Edit preferences →** page action, Preferences return flow, and finalized-Request guard.
 - Kept Program preferences as a compact context summary/shortcut on other Request tabs while removing the context sidebar from Preferences itself.
 - Replaced the five-column mobile Request-tab layout with a six-tab single-line horizontal scroll strip so labels remain readable and tappable.
+
+## 2026-08-29 — Catalogue v2 SDD
+
+- Approved Catalogue v2 (`CAT-007`–`CAT-024`) based on university-supplied
+  programme/tuition-sheet structures.
+- Added ADR-006 for Program vs ProgramOffering boundaries, AcademicUnit,
+  multi-language instruction, source provenance, duration and pricing semantics.
+- Added FEAT-0006 and an implementation/migration task plan; no v2 code has been
+  implemented in this change.

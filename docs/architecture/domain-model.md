@@ -76,15 +76,26 @@ Document attachment and document requirement are separate concepts.
 
 ## Catalogue
 
+Catalogue v2 is approved but not yet implemented. The target domain is:
+
 ```text
 University
+ ├── AcademicUnit*
  ├── Department*
+ ├── UniversityCatalogueSource*
  └── Program*
-      ├── ProgramLanguage
+      ├── AcademicUnit?
+      ├── Department?
+      ├── ProgramInstructionLanguage* -> ProgramLanguage
+      ├── study mode / duration
       └── ProgramOffering*
-           ├── AcademicYear
-           ├── Semester
-           ├── tuition/deposit
-           ├── quota
-           └── deadline
+           ├── AcademicYear / Semester
+           ├── standard / offered / cash tuition / deposit
+           ├── preparatory tuition / preparation included
+           ├── quota / deadline / validity / notes
+           └── source? -> UniversityCatalogueSource
 ```
+
+Until Catalogue v2 tasks are implemented, the legacy single ProgramLanguage and
+duration/pre-school-fee fields remain executable compatibility structures. See
+`docs/specs/catalogue/` and ADR-006.

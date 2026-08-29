@@ -29,10 +29,20 @@ with a recommendation reason and suggesting Agent user.
 
 **Student** — validated/finalized admissions person created from a Lead.
 
-**Program** — academic program belonging to one University.
+**Academic unit** — University-owned faculty, school, institute, vocational
+school, conservatory, college, graduate school, or equivalent organisational
+unit. It is distinct from Department.
+
+**Program** — stable academic program identity belonging to one University.
+Programme-level data includes academic unit/department where applicable, degree,
+thesis type, study mode, duration, and instruction-language composition.
 
 **ProgramOffering** — intake-specific instance of a Program with academic year,
-semester, tuition, quota/deadline and related commercial data.
+semester/intake, tuition variants, deposit, preparation terms, quota/deadline,
+validity and related commercial data.
+
+**University catalogue source** — University-owned provenance record for a
+programme/tuition sheet or equivalent source received by TurkDemy.
 
 **Application** — formal Student application to a concrete ProgramOffering.
 

@@ -144,3 +144,15 @@ Program.
 
 BR-CAT-002 — University/Program listing priority is an internal ordering input,
 not a claim of quality, popularity, sponsorship or academic rank.
+
+BR-CAT-003 — Program is stable academic identity; intake/version-specific tuition,
+deposit, deadline and commercial terms belong to ProgramOffering.
+
+BR-CAT-004 — AcademicUnit and Department are distinct concepts and any unit or
+department attached to a Program must belong to the same University.
+
+BR-CAT-005 — University-supplied pricing must retain source provenance; ambiguous
+source terminology must not be normalized by guessing.
+
+BR-CAT-006 — Cash/advance-payment tuition is not a deposit, and preparatory
+tuition is not preschool tuition.
