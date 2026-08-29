@@ -14,3 +14,5 @@ baseline subject to the gap report.
 - [ ] Run `make format` and `make check`.
 
 - [x] `NAV-009` Align shared footer workspace terminology and authenticated links with My TurkDemy / My Requests / Messages.
+
+- [x] `NAV-010` Make all configured customer workspace actions visible on mobile without horizontal clipping.

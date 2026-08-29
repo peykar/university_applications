@@ -758,6 +758,15 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             self.css,
         )
 
+    def test_documents_title_action_stay_same_row_at_narrow_mobile(self):
+        self.assertIn(
+            ".customer-applicant-page .lead-panel .request-documents-heading{",
+            self.css,
+        )
+        self.assertIn("display:flex;", self.css)
+        self.assertIn("justify-content:space-between;", self.css)
+        self.assertIn("font-size:.7rem;", self.css)
+
     def test_customer_request_mobile_tabs_fit_without_clipping(self):
         self.assertIn(
             "customer-request-entity-nav",

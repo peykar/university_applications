@@ -93,3 +93,5 @@ Status: IMPLEMENTED
 - [x] `CRQ-073` Make all five customer Request tabs fit the mobile row without clipping.
 
 - [x] `CRQ-074` Keep **Documents** and the primary **+ Upload document** page action on opposite logical sides of the same title row across desktop/mobile/RTL.
+
+- [x] `CRQ-075` Keep Documents and **+ Upload document** on one row even at the narrowest supported customer mobile widths.

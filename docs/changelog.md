@@ -1059,3 +1059,11 @@
 - Kept **Documents** and **+ Upload document** on one page-title row across desktop and mobile, aligned to opposite logical sides for LTR/RTL.
 - Restored the stronger dark-blue primary treatment for the upload action.
 - Delivery packaging excludes `.venv` and other local virtual-environment content as required by the repository delivery contract.
+
+
+## 2026-08-29 — Documents narrow-mobile action row and customer navigation
+
+- Advanced Customer Requests SDD to v1.22 with CRQ-075 and Navigation Workspaces to v1.3 with NAV-010.
+- Added a narrow-mobile override so **Documents** and **+ Upload document** remain on the same title/action row at widths at or below 430px.
+- Kept the upload action dark-blue and primary while reducing only its narrow-screen spacing.
+- Reworked the customer workspace mobile navigation into an adaptive grid so My Requests, Messages, Get Help, and the optional WhatsApp action remain visible without clipping; long support labels may wrap.

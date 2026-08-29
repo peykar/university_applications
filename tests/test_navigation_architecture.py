@@ -11,6 +11,7 @@ class NavigationArchitectureTests(SimpleTestCase):
         self.customer_nav = (root / "templates/customer/base.html").read_text(encoding="utf-8")
         self.agent_base = (root / "templates/agents/base.html").read_text(encoding="utf-8")
         self.docs = (root / "docs/navigation.md").read_text(encoding="utf-8")
+        self.css = (root / "static/css/turkdemy.css").read_text(encoding="utf-8")
 
     def test_header_has_single_my_turkdemy_entry(self):
         self.assertIn('class="workspace-menu"', self.base)
@@ -34,6 +35,17 @@ class NavigationArchitectureTests(SimpleTestCase):
         self.assertIn("customer_unread_message_count", self.customer_nav)
         self.assertNotIn('{% trans "Overview" %}', self.customer_nav)
         self.assertNotIn('{% trans "Applicants" %}', self.customer_nav)
+
+    def test_customer_workspace_mobile_actions_do_not_clip(self):
+        self.assertIn(
+            ".customer-workspace-sidebar .workspace-sidebar-nav{",
+            self.css,
+        )
+        self.assertIn(
+            "grid-template-columns:repeat(auto-fit,minmax(72px,1fr));",
+            self.css,
+        )
+        self.assertIn("overflow-wrap:anywhere;", self.css)
 
     def test_agent_navigation_has_consistent_order(self):
         overview = self.agent_base.index("'agent-dashboard'")

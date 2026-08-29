@@ -25,3 +25,7 @@ program-interest/Application boundaries, or document layers.
 ## Shared footer workspace links
 
 The footer mirrors the current customer workspace vocabulary instead of legacy student-dashboard terminology. Its workspace group is **My TurkDemy**. Authenticated users enter **My Requests** or **Messages** directly; signed-out visitors receive the Login entry. This keeps global footer navigation consistent with the customer sidebar and login redirect without exposing internal Lead/Student/Application lifecycle language.
+
+## Mobile customer workspace navigation
+
+`NAV-010` replaces the narrow-screen max-content horizontal strip for the customer sidebar with an adaptive grid. `repeat(auto-fit, minmax(...))` keeps all configured actions visible, allows long support labels to wrap, preserves the unread badge, and automatically redistributes space when WhatsApp is not configured.

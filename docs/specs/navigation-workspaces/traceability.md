@@ -14,6 +14,8 @@ Status: BASELINED
 | `NAV-008` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `NAV-009` | `templates/base.html`, `docs/navigation.md` | `NavigationArchitectureTests.test_footer_uses_current_customer_workspace_terminology` | Named test |
 
+| `NAV-010` | `templates/customer/base.html`, `static/css/turkdemy.css`, `docs/navigation.md` | `NavigationArchitectureTests.test_customer_workspace_mobile_actions_do_not_clip` | Named style/structural test |
+
 ## Notes
 
 This baseline intentionally starts at capability level. When a requirement is

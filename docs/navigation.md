@@ -219,3 +219,7 @@ preferences; it does not replace Request-local navigation.
 ## 7. Shared footer
 
 The footer uses the same customer-facing workspace language as the rest of TurkDemy. The private-workspace group is **My TurkDemy**, not the legacy **Students** group. Authenticated users receive **My Requests** and **Messages** links; signed-out visitors receive **Login**. Legacy **Dashboard / Profile** footer links are intentionally removed because the customer landing page and navigation are Request-based.
+
+### Mobile customer workspace actions
+
+The customer workspace navigation uses an adaptive narrow-screen grid so My Requests, Messages, Get Help, and the optional WhatsApp action remain visible without horizontal clipping. Long support labels may wrap inside their cell; if WhatsApp is not configured, the remaining actions redistribute automatically.

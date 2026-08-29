@@ -87,3 +87,5 @@ Status: IMPLEMENTED
 | `CRQ-073` | `static/css/turkdemy.css`, `templates/includes/applicant_entity_nav.html` | `CustomerRequestWorkspaceTests.test_customer_request_mobile_tabs_fit_without_clipping` | Named style/structural test |
 
 | `CRQ-074` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_documents_page_action_is_primary_and_opposite_title` | Named structural/style test |
+
+| `CRQ-075` | `static/css/turkdemy.css`, `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_documents_title_action_stay_same_row_at_narrow_mobile` | Named style/structural test |

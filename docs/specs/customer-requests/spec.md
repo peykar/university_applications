@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.21
+Version: 1.22
 
 ## Goal
 
@@ -231,3 +231,5 @@ CRQ-073 — Customer Request tab navigation on mobile MUST present Overview, Pro
 
 
 CRQ-074 — The Documents workspace MUST place its page-level action on the opposite logical side of the **Documents** title on desktop and mobile. The action MUST use the primary dark-blue button treatment and MUST be labelled **+ Upload document**. Logical start/end alignment MUST preserve the same title/action relationship in RTL.
+
+CRQ-075 — On narrow mobile widths, the **Documents** title and **+ Upload document** page action MUST remain on the same title row rather than stacking. The action MAY use reduced mobile padding/text size, but MUST retain the primary dark-blue treatment and opposite logical-side alignment.

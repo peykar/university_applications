@@ -197,3 +197,7 @@ The Request context sidebar is contextual. It is useful on Overview/Profile/Prog
 On the Documents tab, document type is both the semantic identity and a direct file link; the stored filename remains implementation detail. The separate borderless arrow remains as a secondary open affordance. On desktop and small screens, the Documents heading and the single page-level upload action share one title row. The title occupies logical start and the **+ Upload document** primary dark-blue action occupies logical end; logical alignment lets RTL reverse the row naturally. Ordinary cards reduce vertical padding and center the open arrow against the card; replacement-required cards may keep the arrow near the top because their review note/replacement workflow makes the card intentionally taller.
 
 The customer Request tab bar uses a five-column mobile layout for Overview, Profile, Programs, Documents, and Messages. This avoids the final tab being visually clipped while keeping all Request-local navigation available without a hidden horizontal-scroll dependency.
+
+## Narrow mobile Documents action row
+
+`CRQ-075` adds a narrow-screen override after the legacy generic `section-heading` mobile rule so the Documents page-action contract remains authoritative at widths at or below 430px. The title/action row stays flex-based with logical start/end alignment and a compact primary action.
