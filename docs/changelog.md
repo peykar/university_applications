@@ -1,3 +1,11 @@
+## 2026-08-30 — Program internal notes
+
+- Advanced Catalogue SDD to v2.2 with `CAT-031`.
+- Added `Program.internal_notes` for staff/import provenance and normalization commentary.
+- Added optional schema-v1 JSON import support for Program `internal_notes`.
+- Excluded the field from public/customer templates and the public Program API serializer.
+- Added staff admin maintenance, regression coverage, and `FEAT-0008`.
+
 ## 2026-08-30 — Unicode catalogue slug routing fix
 
 - Fixed `NoReverseMatch` on Program Detail pages when Similar Programs contain persisted non-ASCII slugs such as `birûni-üniversite-dentistry-turkish`.

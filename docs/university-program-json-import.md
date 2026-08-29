@@ -75,6 +75,7 @@ have `unit_type`.
   "description_fa": "",
   "description_tr": "",
   "description_ar": "",
+  "internal_notes": "Internal normalization/provenance note; never customer-facing.",
   "degree": "bachelor",
   "thesis_type": null,
   "academic_unit": "faculty-of-medicine",
@@ -103,6 +104,14 @@ Allowed `study_mode` values: `on_campus`, `distance`, `online`, `hybrid`.
 
 `duration_months` is a positive integer or `null`. Fractional-year programmes
 are represented exactly in months, for example 18 months for 1.5 years.
+
+`internal_notes` is optional staff/import-only text. Use it for normalization
+decisions, source interpretation, matching remarks, or other operational context
+that must not appear in customer-facing programme descriptions. It is imported
+onto `Program.internal_notes` and is intentionally excluded from public/customer
+templates and the public Program API serializer. If the key is omitted on a
+re-import, the existing internal note is preserved; use an empty string or `null`
+when the import should explicitly clear it.
 
 `academic_unit` and `department` are either `null` or the `slug_en` of an item
 defined in the corresponding top-level array.

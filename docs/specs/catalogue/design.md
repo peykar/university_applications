@@ -1,7 +1,7 @@
 # University and program catalogue — technical design
 
 Status: APPROVED
-Version: 2.1
+Version: 2.2
 
 ## Domain shape
 
@@ -16,6 +16,7 @@ University
       ├── Department?   -> same University
       ├── study_mode
       ├── duration (unambiguous/fraction-safe)
+      ├── internal_notes (staff/import only)
       ├── ProgramInstructionLanguage*
       │    ├── ProgramLanguage
       │    ├── percentage?
@@ -59,6 +60,17 @@ share", not zero.
 The legacy `program_language` field is a migration bridge only: populate the
 through table first, update all readers/importers, then remove the legacy field
 in a later migration after compatibility tests pass.
+
+### Program internal notes
+
+Add an optional `Program.internal_notes` text field for provenance, normalization,
+and staff/import commentary that does not belong in customer-facing programme
+descriptions. The Django admin may expose it to staff, but public/customer
+templates and the public Program API serializer must not expose it. The
+normalized JSON importer accepts optional `internal_notes` and treats it as an
+updatable Program attribute under the existing Program upsert key. This is
+distinct from `ProgramOffering.notes`, which remains source/commercial context
+for an Offering and may have its own presentation semantics.
 
 ### Study mode
 

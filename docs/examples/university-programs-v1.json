@@ -18,6 +18,7 @@
       "department": null,
       "study_mode": "on_campus",
       "duration_months": 48,
+      "internal_notes": "Normalized from the official university programme sheet.",
       "instruction_languages": [
         {
           "slug": "english",

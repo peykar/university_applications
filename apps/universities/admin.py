@@ -444,6 +444,14 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
                 ),
             },
         ),
+        (
+            "Internal",
+            {
+                "classes": ("collapse",),
+                "fields": ("internal_notes",),
+                "description": ("Staff/import notes only. This content is never customer-facing."),
+            },
+        ),
     )
 
     @admin.display(description="Instruction languages")

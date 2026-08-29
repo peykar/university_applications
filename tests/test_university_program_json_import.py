@@ -93,6 +93,7 @@ class UniversityProgramJsonImportTests(TestCase):
                     "department": None,
                     "study_mode": "on_campus",
                     "duration_months": 48,
+                    "internal_notes": "Normalized from the university tuition sheet.",
                     "instruction_languages": [
                         {
                             "slug": "english",
@@ -148,6 +149,10 @@ class UniversityProgramJsonImportTests(TestCase):
 
         self.assertEqual(program.academic_unit, unit)
         self.assertEqual(program.duration_months, 48)
+        self.assertEqual(
+            program.internal_notes,
+            "Normalized from the university tuition sheet.",
+        )
         self.assertEqual(program.program_language.slug_en, "english")
         self.assertEqual(program.instruction_language_display, "100% English")
         self.assertEqual(offering.tuition, 18000)
@@ -161,6 +166,7 @@ class UniversityProgramJsonImportTests(TestCase):
         payload = self._payload()
         self._run(payload)
         payload["programs"][0]["name_en"] = "Software Engineering Updated"
+        payload["programs"][0]["internal_notes"] = "Updated internal import note."
         payload["programs"][0]["offerings"][0]["tuition"] = "19000.00"
         self._run(payload)
 
@@ -170,9 +176,26 @@ class UniversityProgramJsonImportTests(TestCase):
         self.assertEqual(programs.count(), 1)
         program = programs.get()
         self.assertEqual(program.name_en, "Software Engineering Updated")
+        self.assertEqual(program.internal_notes, "Updated internal import note.")
         offerings = ProgramOffering.objects.filter(program=program, source=self.source)
         self.assertEqual(offerings.count(), 1)
         self.assertEqual(offerings.get().tuition, 19000)
+
+    def test_reimport_without_internal_notes_preserves_existing_internal_notes(self):
+        payload = self._payload()
+        self._run(payload)
+
+        payload["programs"][0].pop("internal_notes")
+        payload["programs"][0]["name_en"] = "Software Engineering Renamed"
+        self._run(payload)
+
+        program = Program.objects.get(
+            university=self.university, slug_en="software-engineering-english"
+        )
+        self.assertEqual(
+            program.internal_notes,
+            "Normalized from the university tuition sheet.",
+        )
 
     def test_source_must_belong_to_university_before_any_import_writes(self):
         with self.assertRaises(CommandError):
@@ -210,3 +233,12 @@ class UniversityProgramJsonImportTests(TestCase):
 
         with self.assertRaises(CommandError):
             self._run(payload)
+
+    def test_program_internal_notes_must_be_text_or_null(self):
+        payload = self._payload()
+        payload["programs"][0]["internal_notes"] = {"unexpected": "object"}
+
+        with self.assertRaises(CommandError):
+            self._run(payload)
+
+        self.assertFalse(Program.objects.filter(university=self.university).exists())

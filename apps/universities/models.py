@@ -210,6 +210,13 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
     description_fa = models.TextField(blank=True)
     description_tr = models.TextField(blank=True)
     description_ar = models.TextField(blank=True)
+    internal_notes = models.TextField(
+        blank=True,
+        help_text=_(
+            "Internal staff/import notes. Never expose this field on public or "
+            "customer-facing surfaces."
+        ),
+    )
 
     degree = models.CharField(max_length=20, choices=DegreeType.choices)
     thesis_type = models.CharField(

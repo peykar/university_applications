@@ -1,7 +1,7 @@
 # University and program catalogue — traceability
 
 Status: IMPLEMENTED / LOCAL VERIFICATION REQUIRED
-Version: 2.1
+Version: 2.2
 
 | Requirement | Design | Tasks | Implementation | Verification |
 |---|---|---|---|---|
@@ -35,6 +35,7 @@ Version: 2.1
 | `CAT-028` | Authoritative languages/source provenance | `CAT-T17` | `_sync_languages`; `_upsert_offering` source binding | `UniversityProgramJsonImportTests.test_import_creates_program_academic_unit_languages_and_source_bound_offering` |
 | `CAT-029` | Atomic validation/no deletion | `CAT-T16`, `CAT-T17` | `transaction.atomic`; schema/reference validation; duplicate-match guards | source mismatch + invalid percentage rollback tests |
 | `CAT-030` | Docs/example/tests | `CAT-T18` | importer docs/example + `tests/test_university_program_json_import.py` | named importer tests |
+| `CAT-031` | Program internal notes | `CAT-T19` | `Program.internal_notes`; Program admin; normalized JSON importer | `UniversityProgramJsonImportTests`; `ProgramInternalNotesVisibilityTests` |
 
 ## Verification status
 

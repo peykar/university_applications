@@ -161,6 +161,7 @@ class Command(BaseCommand):
             listing_priority = program.get("listing_priority", 0)
             if isinstance(listing_priority, bool) or not isinstance(listing_priority, int):
                 raise CommandError(f"{path}.listing_priority must be an integer.")
+            self._validate_optional_text(program, "internal_notes", path=path)
             self._validate_optional_bool(program, "is_active", path=path)
 
             unit_slug = program.get("academic_unit")
@@ -416,6 +417,9 @@ class Command(BaseCommand):
                 "is_active": bool(row.get("is_active", True)),
             }
         )
+        if "internal_notes" in row:
+            defaults["internal_notes"] = str(row.get("internal_notes") or "")
+
         return self._upsert(
             Program,
             lookup={"university": university, "slug_en": row["slug_en"]},
@@ -628,6 +632,10 @@ class Command(BaseCommand):
         value = obj.get(key, default)
         if value not in allowed:
             raise CommandError(f"{path}.{key} must be one of {sorted(allowed)}.")
+
+    def _validate_optional_text(self, obj: dict[str, Any], key: str, *, path: str) -> None:
+        if key in obj and obj[key] is not None and not isinstance(obj[key], str):
+            raise CommandError(f"{path}.{key} must be a JSON string or null.")
 
     def _validate_optional_bool(self, obj: dict[str, Any], key: str, *, path: str) -> None:
         if key in obj and not isinstance(obj[key], bool):

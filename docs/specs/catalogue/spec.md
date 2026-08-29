@@ -1,7 +1,7 @@
 # University and program catalogue
 
 Status: APPROVED
-Version: 2.1
+Version: 2.2
 
 ## Goal
 
@@ -140,6 +140,13 @@ CAT-030 — The normalized JSON contract and management-command usage MUST be
 documented with a complete example file and covered by tests for creation,
 idempotent update, source ownership, validation rollback, and duplicate-key
 rejection.
+
+CAT-031 — Program MUST provide an optional `internal_notes` field for staff/import
+context that is distinct from localized customer-facing descriptions.
+`internal_notes` MUST NOT be exposed on public or customer-facing templates or
+through the public Program API serializer. Schema-v1 normalized programme JSON
+MAY provide `internal_notes`, and the importer MUST create/update that field when
+present.
 
 ## Pricing vocabulary
 

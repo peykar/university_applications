@@ -55,3 +55,9 @@ Two related-program sections are shown:
 2. **More programs at this university**.
 
 Minimum active tuition is included where available.
+
+## Internal catalogue notes
+
+`Program.internal_notes` is operational staff/import context and must never be
+rendered on the public Program Detail page. Public descriptive copy continues to
+come from the localized `description_*` fields.

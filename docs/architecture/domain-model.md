@@ -88,6 +88,7 @@ University
       ├── Department?
       ├── ProgramInstructionLanguage* -> ProgramLanguage
       ├── study mode / duration
+      ├── internal_notes (staff/import only)
       └── ProgramOffering*
            ├── AcademicYear / Semester
            ├── standard / offered / cash tuition / deposit
