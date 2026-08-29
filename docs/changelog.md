@@ -1,3 +1,9 @@
+## 2026-08-30 — Unicode catalogue slug routing fix
+
+- Fixed `NoReverseMatch` on Program Detail pages when Similar Programs contain persisted non-ASCII slugs such as `birûni-üniversite-dentistry-turkish`.
+- Made public, customer-apply, and API University/Program detail routes accept existing Unicode slug path segments without rewriting database values.
+- Added regression coverage and `BUG-0013`.
+
 - Fixed BUG-0012: avoid mypy local-variable redefinition in the university program JSON importer by using distinct academic-unit and department defaults variables.
 
 ## 2026-08-30 — University program JSON importer mypy defaults fix

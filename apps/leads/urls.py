@@ -51,5 +51,5 @@ urlpatterns = [
         views.lead_send_message,
         name="lead-send-message",
     ),
-    path("programs/<slug:slug>/apply/", views.apply_program, name="apply-program"),
+    path("programs/<str:slug>/apply/", views.apply_program, name="apply-program"),
 ]
