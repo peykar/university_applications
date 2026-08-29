@@ -2,10 +2,7 @@
 <aside class="request-context-sidebar" aria-label="{% trans 'Request context' %}">
   <section class="request-context-card">
     <div class="request-context-card-head">
-      <div>
-        <p class="eyebrow">{% trans "Files" %}</p>
-        <h2>{% trans "Uploaded documents" %}</h2>
-      </div>
+      <div><h2>{% trans "Uploaded documents" %}</h2></div>
       <a href="{% url 'lead-documents' lead.pk %}">{% trans "View all" %} →</a>
     </div>
     <div class="request-context-documents">
@@ -34,10 +31,7 @@
 
   <section class="request-context-card">
     <div class="request-context-card-head">
-      <div>
-        <p class="eyebrow">{% trans "Study" %}</p>
-        <h2>{% trans "Program preferences" %}</h2>
-      </div>
+      <div><h2>{% trans "Program preferences" %}</h2></div>
       {% if lead.status != "finalized" %}<a href="{% url 'lead-preferences' lead.pk %}">{% trans "Edit" %} →</a>{% endif %}
     </div>
     <dl class="request-preference-list">
@@ -65,9 +59,6 @@
     </dl>
     {% if not preferred_degrees and not preferred_departments and not preferred_languages and not preferences.tuition_min and not preferences.tuition_max and not preferred_cities and not preferred_universities and not preferred_university_types %}
       <p class="request-context-empty">{% trans "No program preferences added yet." %}</p>
-    {% endif %}
-    {% if lead.status != "finalized" %}
-      <a class="request-context-action" href="{% url 'lead-preferences' lead.pk %}">{% trans "Edit preferences" %} →</a>
     {% endif %}
   </section>
 </aside>

@@ -1,3 +1,16 @@
+## Customer Request terminology regression test alignment
+
+- Updated the customer Request terminology regression test for CRQ-026: the customer header now proves the `My Requests` back-link and absence of the removed `Request` eyebrow instead of requiring that obsolete label.
+- No production UI behavior changed in this follow-up.
+
+## Customer Request label/action simplification
+
+- Implemented Customer Requests SDD v1.7 (CRQ-025–CRQ-031).
+- Removed duplicate customer Request identity/breadcrumb labeling and decorative section eyebrows.
+- Simplified Overview headings to Applied programs, Progress, and Recent messages.
+- Removed redundant View programs and duplicate Edit preferences actions; Recent messages now uses View all.
+- Preserved Agent-facing Applicant breadcrumbs/terminology and distinct document View all/Upload actions.
+
 ## 2026-08-29 — Customer Request status-only header
 
 - Removed `Next step — Program recommendations` from the customer Request header.

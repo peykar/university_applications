@@ -29,3 +29,11 @@ Status: IMPLEMENTED
 | `CRQ-022` | Request Overview attention panel | `CustomerRequestWorkspaceTests.test_unread_messages_are_attention_not_required_action` | Named test |
 | `CRQ-023` | customer activity presentation in `apps/leads/views.py` | `CustomerRequestWorkspaceTests.test_progress_uses_customer_specific_subject_labels` | Named test |
 | `CRQ-024` | Request recent-message preview | `CustomerRequestWorkspaceTests.test_recent_messages_use_customer_safe_advisor_identity` | Named test |
+
+| `CRQ-025` | customer Request header, Overview, context sidebar | `CustomerRequestWorkspaceTests.test_request_ui_uses_one_concept_one_label` | Named test |
+| `CRQ-026` | `templates/includes/applicant_entity_header.html` | `CustomerRequestWorkspaceTests.test_customer_request_identity_is_not_repeated` | Named test |
+| `CRQ-027` | `templates/leads/lead_detail.html` | `CustomerRequestWorkspaceTests.test_applied_programs_summary_has_no_redundant_labels_or_action` | Named test |
+| `CRQ-028` | `templates/leads/lead_detail.html` | `CustomerRequestWorkspaceTests.test_progress_has_single_heading` | Named test |
+| `CRQ-029` | `templates/leads/lead_detail.html` | `CustomerRequestWorkspaceTests.test_recent_messages_has_single_heading_and_view_all` | Named test |
+| `CRQ-030` | `templates/includes/customer_request_context_sidebar.html` | `CustomerRequestWorkspaceTests.test_uploaded_documents_has_single_heading` | Named test |
+| `CRQ-031` | `templates/includes/customer_request_context_sidebar.html` | `CustomerRequestWorkspaceTests.test_program_preferences_has_single_heading_and_edit_action` | Named test |

@@ -5800,3 +5800,19 @@ a.entity-list-row:hover{
   .request-context-document small{max-width:220px}
   .request-attention-list>a,.request-overview-program{padding:12px}
 }
+.request-back-link{
+  display:inline-flex;
+  align-items:center;
+  margin-bottom:10px;
+  color:#536b82;
+  font-size:.7rem;
+  font-weight:700;
+}
+.request-back-link{
+  display:inline-flex;
+  align-items:center;
+  margin-bottom:10px;
+  color:#536b82;
+  font-size:.7rem;
+  font-weight:700;
+}

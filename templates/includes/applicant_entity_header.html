@@ -1,17 +1,17 @@
 {% load i18n %}
 <div class="entity-context-head">
-  <nav class="entity-breadcrumbs" aria-label="{% trans 'Breadcrumb' %}">
-    {% if agent_context %}
+  {% if agent_context %}
+    <nav class="entity-breadcrumbs" aria-label="{% trans 'Breadcrumb' %}">
       <a href="{% url 'agent-applicant-list' %}">{% trans "Applicants" %}</a>
-    {% else %}
-      <a href="{% url 'lead-list' %}">{% trans "My Requests" %}</a>
-    {% endif %}
-    <span aria-hidden="true">/</span>
-    <span>{{ lead }}</span>
-  </nav>
+      <span aria-hidden="true">/</span>
+      <span>{{ lead }}</span>
+    </nav>
+  {% else %}
+    <a class="request-back-link" href="{% url 'lead-list' %}">← {% trans "My Requests" %}</a>
+  {% endif %}
   <div class="entity-context-title">
     <div>
-      <p class="eyebrow">{% if agent_context %}{% trans "Applicant" %}{% else %}{% trans "Request" %}{% endif %}</p>
+      {% if agent_context %}<p class="eyebrow">{% trans "Applicant" %}</p>{% endif %}
       <h1>{{ lead }}</h1>
       <div class="applicant-status-row">
         <span class="lead-status lead-status-{{ lead.status }}">

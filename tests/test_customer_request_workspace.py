@@ -34,7 +34,9 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_customer_uses_request_terminology(self):
         self.assertIn('{% trans "My Requests" %}', self.customer_base)
-        self.assertIn('{% trans "Request" %}', self.request_header)
+        self.assertIn('{% trans "My Requests" %}', self.request_header)
+        self.assertIn('class="request-back-link"', self.request_header)
+        self.assertNotIn('<p class="eyebrow">{% trans "Request" %}</p>', self.request_header)
 
         # Customer links in the shared entity nav intentionally omit the
         # agent-only Applications tab.
@@ -156,8 +158,8 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_overview_prioritizes_attention_programs_progress_and_messages_in_one_flow(self):
         attention = self.request_detail.index('{% trans "Action required" %}')
-        programs = self.request_detail.index('{% trans "Applied for" %}')
-        progress = self.request_detail.index('{% trans "Request progress" %}')
+        programs = self.request_detail.index('{% trans "Applied programs" %}')
+        progress = self.request_detail.index('{% trans "Progress" %}')
         messages = self.request_detail.index('{% trans "Recent messages" %}')
         self.assertLess(attention, programs)
         self.assertLess(programs, progress)
@@ -219,6 +221,43 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn('{% trans "Your advisor" %}', self.request_detail)
         recent = self.request_detail.split('class="request-message-preview-meta"', 1)[1]
         self.assertNotIn("message.sender.username }}{% else %}TurkDemy", recent)
+
+    def test_request_ui_uses_one_concept_one_label(self):
+        self.assertNotIn('{% trans "Applied for" %}', self.request_detail)
+        self.assertNotIn('{% trans "Request progress" %}', self.request_detail)
+        self.assertNotIn('{% trans "Files" %}', self.request_context_sidebar)
+        self.assertNotIn('{% trans "Study" %}', self.request_context_sidebar)
+
+    def test_customer_request_identity_is_not_repeated(self):
+        customer = self.request_header.split("{% else %}", 1)[1]
+        self.assertIn('class="request-back-link"', customer)
+        self.assertIn('← {% trans "My Requests" %}', customer)
+        self.assertNotIn("<span>{{ lead }}</span>", customer)
+        self.assertNotIn('{% trans "Request" %}', customer)
+
+    def test_applied_programs_summary_has_no_redundant_labels_or_action(self):
+        self.assertIn('{% trans "Applied programs" %}', self.request_detail)
+        self.assertNotIn('{% trans "View programs" %}', self.request_detail)
+        self.assertIn("{% url 'program-detail' interest.program.slug_en %}", self.request_detail)
+
+    def test_progress_has_single_heading(self):
+        self.assertIn('<h2>{% trans "Progress" %}</h2>', self.request_detail)
+        self.assertNotIn('{% trans "Request progress" %}', self.request_detail)
+
+    def test_recent_messages_has_single_heading_and_view_all(self):
+        self.assertIn('<h2>{% trans "Recent messages" %}</h2>', self.request_detail)
+        self.assertIn('{% trans "View all" %} →', self.request_detail)
+        self.assertNotIn('{% trans "View messages" %}', self.request_detail)
+
+    def test_uploaded_documents_has_single_heading(self):
+        self.assertIn('<h2>{% trans "Uploaded documents" %}</h2>', self.request_context_sidebar)
+        self.assertNotIn('{% trans "Files" %}', self.request_context_sidebar)
+
+    def test_program_preferences_has_single_heading_and_edit_action(self):
+        self.assertIn('<h2>{% trans "Program preferences" %}</h2>', self.request_context_sidebar)
+        self.assertNotIn('{% trans "Study" %}', self.request_context_sidebar)
+        self.assertEqual(self.request_context_sidebar.count('{% trans "Edit" %} →'), 1)
+        self.assertNotIn('{% trans "Edit preferences" %}', self.request_context_sidebar)
 
     def test_customer_request_header_uses_customer_friendly_statuses(self):
         self.assertIn('{% trans "Received" %}', self.request_header)

@@ -32,3 +32,11 @@ Status: IMPLEMENTED
 - [x] `CRQ-022` Distinguish unread-message attention from concrete required actions.
 - [x] `CRQ-023` Enrich customer progress labels with recorded document/program context.
 - [x] `CRQ-024` Use customer-safe advisor identity in recent-message previews.
+
+- [x] `CRQ-025` Apply one-concept/one-label/one-primary-action presentation economy.
+- [x] `CRQ-026` Show customer Request identity once with a simple My Requests back link.
+- [x] `CRQ-027` Simplify the Overview program summary to Applied programs with direct program rows.
+- [x] `CRQ-028` Simplify the timeline heading to Progress.
+- [x] `CRQ-029` Simplify the message summary to Recent messages with View all.
+- [x] `CRQ-030` Remove the redundant Files eyebrow from Uploaded documents.
+- [x] `CRQ-031` Remove Study and the duplicate preference edit action.

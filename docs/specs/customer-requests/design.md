@@ -105,3 +105,12 @@ needs replacement and links to the relevant Request tab.
 The right-side document summary uses one customer-facing review vocabulary:
 **Approved**, **Under review**, and **Needs replacement**. These are presentation
 labels over the existing document review states and do not change model values.
+
+
+## Label and action economy
+
+Customer Request presentation follows **one concept, one label, one primary action**. The customer header uses a single back link (`← My Requests`) plus the Request person's name once and the customer-facing status; the customer does not receive a duplicated name breadcrumb or decorative Request eyebrow. Agent breadcrumbs remain operationally unchanged.
+
+Overview summary cards use single semantic headings: **Applied programs**, **Progress**, and **Recent messages**. Applied program rows themselves open program details, so the Overview does not duplicate that affordance with a View programs link. Recent messages uses the concise **View all** action to open the Request Messages tab.
+
+The context rail likewise uses only **Uploaded documents** and **Program preferences** as card headings. Document View all and Upload document are both retained because they are distinct operations. Program preferences has one header-level Edit action and no repeated footer edit action.

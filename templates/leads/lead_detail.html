@@ -30,8 +30,7 @@
 
       <section class="lead-panel">
         <div class="section-heading">
-          <div><p class="eyebrow">{% trans "Applied for" %}</p><h2>{% trans "Programs" %}</h2></div>
-          <a class="section-link" href="{% url 'lead-programs' lead.pk %}">{% trans "View programs" %} →</a>
+          <div><h2>{% trans "Applied programs" %}</h2></div>
         </div>
         <div class="request-overview-programs">
           {% for interest in interests %}
@@ -54,7 +53,7 @@
 
       <section class="request-overview-grid">
         <div class="lead-panel request-progress-panel">
-          <div class="section-heading"><div><p class="eyebrow">{% trans "Progress" %}</p><h2>{% trans "Request progress" %}</h2></div></div>
+          <div class="section-heading"><div><h2>{% trans "Progress" %}</h2></div></div>
           <ol class="request-progress-list">
             {% for activity in activities|slice:":6" %}
               <li><span></span><div><strong>{{ activity.label }}</strong><time>{{ activity.created_at|date:"M j, Y · H:i" }}</time></div></li>
@@ -66,8 +65,8 @@
 
         <div class="lead-panel request-recent-messages">
           <div class="section-heading">
-            <div><p class="eyebrow">{% trans "Messages" %}</p><h2>{% trans "Recent messages" %}</h2></div>
-            <a class="section-link" href="{% url 'lead-messages' lead.pk %}">{% trans "View messages" %} →</a>
+            <div><h2>{% trans "Recent messages" %}</h2></div>
+            <a class="section-link" href="{% url 'lead-messages' lead.pk %}">{% trans "View all" %} →</a>
           </div>
           <div class="request-message-preview-list">
             {% for message in recent_messages %}
