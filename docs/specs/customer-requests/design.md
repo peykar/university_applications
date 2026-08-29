@@ -114,3 +114,13 @@ Customer Request presentation follows **one concept, one label, one primary acti
 Overview summary cards use single semantic headings: **Applied programs**, **Progress**, and **Recent messages**. Applied program rows themselves open program details, so the Overview does not duplicate that affordance with a View programs link. Recent messages uses the concise **View all** action to open the Request Messages tab.
 
 The context rail likewise uses only **Uploaded documents** and **Program preferences** as card headings. Document View all and Upload document are both retained because they are distinct operations. Program preferences has one header-level Edit action and no repeated footer edit action.
+
+## Profile information architecture
+
+The customer Profile tab treats the active **Profile** navigation state as sufficient page identity. It therefore does not add a second Profile eyebrow or a generic Request profile title. The Request person's name remains owned by the shared Request header and is not repeated in the tab body.
+
+Profile content is one compact primary panel divided into semantic groups: **Personal information** for email, phone, birthdate and gender; **Location & nationality** for nationality and residence; **Passport** for passport number; and **Education** for educational background. Section boundaries provide scanability without turning each group into another dashboard card.
+
+The single customer **Edit profile** action is placed beside the first Profile content heading and keeps the existing editability rule: finalized Requests do not expose customer editing. The shared Request header no longer changes its customer actions merely because Profile is selected. Agent-facing Edit applicant remains in the shared Agent header.
+
+Program preferences and uploaded-document summaries remain exclusively in the persistent Request context sidebar. They are intentionally not copied into Profile because Profile describes the person while the context rail describes Request-level study and document context.

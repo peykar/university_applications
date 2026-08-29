@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.7
+Version: 1.8
 
 ## Goal
 
@@ -135,6 +135,16 @@ CRQ-029 — Request Overview MUST use **Recent messages** as the single message-
 CRQ-030 — The Request context document card MUST use **Uploaded documents** as its single heading and MUST NOT show a decorative **Files** eyebrow. **View all** and **Upload document** MAY coexist because they perform distinct actions.
 
 CRQ-031 — The Request context preference card MUST use **Program preferences** as its single heading, MUST NOT show a decorative **Study** eyebrow, and MUST expose at most one edit action. When editable, that action MUST be the header-level **Edit** action; the duplicate bottom **Edit preferences** action MUST NOT render.
+
+CRQ-032 — The customer Request **Profile** tab MUST rely on the active Request navigation tab for page identity and MUST NOT repeat that identity with decorative **Profile** or **Request profile** headings inside the tab content. The content MUST begin with meaningful person-information sections.
+
+CRQ-033 — Customer Profile information MUST be grouped by meaning: **Personal information** (email, phone, birthdate, gender), **Location & nationality** (nationality, residence), **Passport** (passport number), and **Education** (educational background). The Request person's name MUST remain in the shared Request header and MUST NOT be repeated inside Profile content.
+
+CRQ-034 — Customer Profile MUST expose at most one **Edit profile** action. When the Request is editable, that action MUST live with the Profile content rather than appearing in the shared Request header. Finalized Requests MUST NOT expose the customer edit action. Agent-facing **Edit applicant** behavior remains unchanged.
+
+CRQ-035 — The customer Profile tab MUST remain person-focused and MUST NOT duplicate **Program preferences** or uploaded-document context already owned by the persistent Request context sidebar. The context sidebar MUST continue to render beside Profile using the same Request detail layout.
+
+CRQ-036 — Profile groups MUST use a compact, scan-friendly presentation inside one primary Profile panel, with clear section boundaries and responsive fact grids rather than separate decorative cards or repeated page-level headings.
 
 ## Acceptance policy
 

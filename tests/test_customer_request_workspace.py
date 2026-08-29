@@ -259,6 +259,70 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertEqual(self.request_context_sidebar.count('{% trans "Edit" %} →'), 1)
         self.assertNotIn('{% trans "Edit preferences" %}', self.request_context_sidebar)
 
+    def test_profile_starts_with_meaningful_sections_without_duplicate_identity(self):
+        profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
+            '{% elif entity_tab == "programs" %}', 1
+        )[0]
+        self.assertNotIn('{% trans "Request profile" %}', profile)
+        self.assertNotIn('<p class="eyebrow">{% trans "Profile" %}</p>', profile)
+        self.assertIn('<h2>{% trans "Personal information" %}</h2>', profile)
+        self.assertNotIn("<h1>{{ lead }}</h1>", profile)
+
+    def test_profile_groups_person_information_semantically(self):
+        profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
+            '{% elif entity_tab == "programs" %}', 1
+        )[0]
+        for heading in (
+            "Personal information",
+            "Location & nationality",
+            "Passport",
+            "Education",
+        ):
+            self.assertIn(f'{{% trans "{heading}" %}}', profile)
+        for field in (
+            "Email",
+            "Phone",
+            "Birthdate",
+            "Gender",
+            "Nationality",
+            "Residence",
+            "Passport number",
+            "Educational background",
+        ):
+            self.assertIn(f'{{% trans "{field}" %}}', profile)
+
+    def test_profile_has_one_contextual_customer_edit_action(self):
+        profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
+            '{% elif entity_tab == "programs" %}', 1
+        )[0]
+        self.assertEqual(profile.count('{% trans "Edit profile" %}'), 1)
+        self.assertIn("{% url 'lead-edit' lead.pk %}", profile)
+        self.assertIn('{% if lead.status != "finalized" %}', profile)
+        self.assertNotIn('{% trans "Edit profile" %}', self.request_header)
+        self.assertIn('{% trans "Edit applicant" %}', self.request_header)
+
+    def test_profile_keeps_request_context_out_of_profile_body(self):
+        profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
+            '{% elif entity_tab == "programs" %}', 1
+        )[0]
+        self.assertNotIn('{% trans "Program preferences" %}', profile)
+        self.assertNotIn('{% trans "Uploaded documents" %}', profile)
+        self.assertIn("includes/customer_request_context_sidebar.html", self.request_section)
+
+    def test_profile_uses_compact_grouped_panel_contract(self):
+        profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
+            '{% elif entity_tab == "programs" %}', 1
+        )[0]
+        self.assertEqual(
+            profile.count('class="lead-panel entity-section request-profile-panel"'),
+            1,
+        )
+        self.assertIn('class="request-profile-section', profile)
+        self.assertIn(".request-profile-section{", self.css)
+        self.assertIn(".request-profile-section-heading{", self.css)
+        self.assertIn(".request-profile-facts-single{", self.css)
+        self.assertIn("grid-template-columns:1fr;", self.css)
+
     def test_customer_request_header_uses_customer_friendly_statuses(self):
         self.assertIn('{% trans "Received" %}', self.request_header)
         self.assertIn('{% trans "In progress" %}', self.request_header)

@@ -36,14 +36,8 @@
       {% if agent_context and entity_tab == "overview" and lead.status != "finalized" and lead.status != "closed" %}
         <a class="button" href="{% url 'agent-applicant-programs' lead.pk %}#recommend-program">{% trans "Recommend program" %}</a>
       {% endif %}
-      {% if entity_tab == "profile" %}
-        {% if agent_context %}
-          <a class="button button-secondary" href="{% url 'agent-applicant-edit' lead.pk %}">{% trans "Edit applicant" %}</a>
-        {% else %}
-          {% if lead.status != "finalized" %}
-            <a class="button button-secondary" href="{% url 'lead-edit' lead.pk %}">{% trans "Edit profile" %}</a>
-          {% endif %}
-        {% endif %}
+      {% if entity_tab == "profile" and agent_context %}
+        <a class="button button-secondary" href="{% url 'agent-applicant-edit' lead.pk %}">{% trans "Edit applicant" %}</a>
       {% endif %}
     </div>
   </div>

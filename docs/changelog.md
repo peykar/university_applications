@@ -1,3 +1,18 @@
+## 2026-08-29 — Customer Profile finalized-guard test alignment
+
+- Updated the finalized-customer mutation structure test to verify the Profile edit guard in `lead_section.html`, where CRQ-034 intentionally moved the customer Edit profile action.
+- Kept the existing view-level finalized mutation guard assertion and added an assertion that the guarded Profile section contains the customer edit route.
+- No production behavior changed in this follow-up.
+
+## 2026-08-29 — Customer Request Profile simplification
+
+- Advanced Customer Requests SDD to v1.8 with CRQ-032 through CRQ-036.
+- Removed the duplicate Profile / Request profile hierarchy from the customer Profile tab.
+- Grouped person data into Personal information, Location & nationality, Passport, and Education.
+- Moved the single customer Edit profile action from the shared Request header into Profile content while preserving finalized read-only behavior and Agent Edit applicant behavior.
+- Kept Program preferences and Uploaded documents in the persistent Request context sidebar instead of duplicating them in Profile.
+- Added compact grouped Profile styling and regression coverage.
+
 ## Customer Request terminology regression test alignment
 
 - Updated the customer Request terminology regression test for CRQ-026: the customer header now proves the `My Requests` back-link and absence of the removed `Request` eyebrow instead of requiring that obsolete label.

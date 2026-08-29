@@ -26,7 +26,11 @@ class FinalizedCustomerLeadMutationStructureTests(SimpleTestCase):
         self.assertIn("lead.status == LeadStatus.FINALIZED", edit_block)
         self.assertIn(
             'if lead.status != "finalized"',
-            self.header,
+            self.section,
+        )
+        self.assertIn(
+            "{% url 'lead-edit' lead.pk %}",
+            self.section,
         )
 
     def test_customer_document_mutations_have_finalized_guards(self):

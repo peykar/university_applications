@@ -37,3 +37,9 @@ Status: IMPLEMENTED
 | `CRQ-029` | `templates/leads/lead_detail.html` | `CustomerRequestWorkspaceTests.test_recent_messages_has_single_heading_and_view_all` | Named test |
 | `CRQ-030` | `templates/includes/customer_request_context_sidebar.html` | `CustomerRequestWorkspaceTests.test_uploaded_documents_has_single_heading` | Named test |
 | `CRQ-031` | `templates/includes/customer_request_context_sidebar.html` | `CustomerRequestWorkspaceTests.test_program_preferences_has_single_heading_and_edit_action` | Named test |
+| `CRQ-032` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_profile_starts_with_meaningful_sections_without_duplicate_identity` | Named test |
+| `CRQ-033` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_profile_groups_person_information_semantically` | Named test |
+| `CRQ-034` | shared Request header and customer Profile section | `CustomerRequestWorkspaceTests.test_profile_has_one_contextual_customer_edit_action` | Named test |
+| `CRQ-035` | `templates/leads/lead_section.html`, persistent context sidebar include | `CustomerRequestWorkspaceTests.test_profile_keeps_request_context_out_of_profile_body` | Named test |
+| `CRQ-036` | Profile markup and `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_profile_uses_compact_grouped_panel_contract` | Named test |
+

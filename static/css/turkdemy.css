@@ -4775,6 +4775,37 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
   font-weight:650;
   overflow-wrap:anywhere;
 }
+
+.request-profile-panel{
+  display:grid;
+  gap:0;
+}
+.request-profile-section{
+  padding:18px 0;
+  border-top:1px solid #edf1f4;
+}
+.request-profile-section:first-child{
+  padding-top:0;
+  border-top:0;
+}
+.request-profile-section:last-child{
+  padding-bottom:0;
+}
+.request-profile-section-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:12px;
+}
+.request-profile-section-heading h2{
+  margin:0;
+  color:#243a50;
+  font-size:.95rem;
+}
+.request-profile-facts-single{
+  grid-template-columns:minmax(0,1fr);
+}
 .entity-list{
   display:grid;
 }

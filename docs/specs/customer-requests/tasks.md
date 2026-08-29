@@ -40,3 +40,10 @@ Status: IMPLEMENTED
 - [x] `CRQ-029` Simplify the message summary to Recent messages with View all.
 - [x] `CRQ-030` Remove the redundant Files eyebrow from Uploaded documents.
 - [x] `CRQ-031` Remove Study and the duplicate preference edit action.
+
+- [x] `CRQ-032` Remove duplicate Profile / Request profile identity from customer Profile content.
+- [x] `CRQ-033` Group customer Profile facts into personal, location/nationality, passport, and education sections.
+- [x] `CRQ-034` Move the single customer Edit profile action into Profile content while preserving finalized and Agent behavior.
+- [x] `CRQ-035` Keep Profile person-focused and leave preferences/documents in the persistent context sidebar.
+- [x] `CRQ-036` Present Profile as one compact grouped panel with responsive fact grids.
+

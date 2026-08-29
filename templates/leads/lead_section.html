@@ -7,18 +7,49 @@
 <main class="request-detail-main">
 {% include "includes/applicant_entity_header.html" %}
 {% if entity_tab == "profile" %}
-  <section class="lead-panel entity-section">
-    <div class="section-heading"><div><p class="eyebrow">{% trans "Profile" %}</p><h2>{% trans "Request profile" %}</h2></div></div>
-    <dl class="entity-facts-grid">
-      <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:"—" }}</dd></div>
-      <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
-      <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
-      <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }}{% if lead.city_of_residence %}, {{ lead.city_of_residence }}{% endif %}</dd></div>
-      <div><dt>{% trans "Birthdate" %}</dt><dd>{{ lead.birthdate|default:"—" }}</dd></div>
-      <div><dt>{% trans "Gender" %}</dt><dd>{{ lead.get_gender_display|default:"—" }}</dd></div>
-      <div><dt>{% trans "Passport number" %}</dt><dd>{{ lead.passport_no|default:"—" }}</dd></div>
-      <div><dt>{% trans "Educational background" %}</dt><dd>{{ lead.educational_background|default:"—"|linebreaksbr }}</dd></div>
-    </dl>
+  <section class="lead-panel entity-section request-profile-panel">
+    <section class="request-profile-section request-profile-section-primary">
+      <div class="request-profile-section-heading">
+        <h2>{% trans "Personal information" %}</h2>
+        {% if lead.status != "finalized" %}
+          <a class="section-link" href="{% url 'lead-edit' lead.pk %}">{% trans "Edit profile" %} →</a>
+        {% endif %}
+      </div>
+      <dl class="entity-facts-grid request-profile-facts">
+        <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:"—" }}</dd></div>
+        <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
+        <div><dt>{% trans "Birthdate" %}</dt><dd>{{ lead.birthdate|default:"—" }}</dd></div>
+        <div><dt>{% trans "Gender" %}</dt><dd>{{ lead.get_gender_display|default:"—" }}</dd></div>
+      </dl>
+    </section>
+
+    <section class="request-profile-section">
+      <div class="request-profile-section-heading">
+        <h2>{% trans "Location & nationality" %}</h2>
+      </div>
+      <dl class="entity-facts-grid request-profile-facts">
+        <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
+        <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }}{% if lead.city_of_residence %}, {{ lead.city_of_residence }}{% endif %}</dd></div>
+      </dl>
+    </section>
+
+    <section class="request-profile-section">
+      <div class="request-profile-section-heading">
+        <h2>{% trans "Passport" %}</h2>
+      </div>
+      <dl class="entity-facts-grid request-profile-facts request-profile-facts-single">
+        <div><dt>{% trans "Passport number" %}</dt><dd>{{ lead.passport_no|default:"—" }}</dd></div>
+      </dl>
+    </section>
+
+    <section class="request-profile-section">
+      <div class="request-profile-section-heading">
+        <h2>{% trans "Education" %}</h2>
+      </div>
+      <dl class="entity-facts-grid request-profile-facts request-profile-facts-single">
+        <div><dt>{% trans "Educational background" %}</dt><dd>{{ lead.educational_background|default:"—"|linebreaksbr }}</dd></div>
+      </dl>
+    </section>
   </section>
 
 {% elif entity_tab == "programs" %}
