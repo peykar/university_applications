@@ -3,7 +3,7 @@
 {% block title %}{{ lead }} · {{ entity_tab|title }} — TurkDemy{% endblock %}
 {% block customer_content %}
 <div class="customer-applicant-page customer-request-detail">
-<div class="request-detail-layout{% if entity_tab == 'documents' %} request-detail-layout-documents{% endif %}">
+<div class="request-detail-layout{% if entity_tab == 'documents' %} request-detail-layout-documents{% elif entity_tab == 'messages' %} request-detail-layout-messages{% endif %}">
 <main class="request-detail-main">
 {% include "includes/applicant_entity_header.html" %}
 {% if entity_tab == "profile" %}
@@ -240,27 +240,64 @@
   </section>
 
 {% elif entity_tab == "messages" %}
-  <section class="lead-panel entity-section">
-    <div class="section-heading"><div><p class="eyebrow">{% trans "Messages" %}</p><h2>{% trans "Messages about this request" %}</h2></div></div>
-    <div class="lead-chat">
+  <section class="lead-panel entity-section request-messages-panel">
+    <div class="section-heading request-messages-heading">
+      <h2>{% trans "Messages" %}</h2>
+    </div>
+    <div class="lead-chat request-message-workspace">
       {% if conversation %}
         <div class="lead-chat-messages">
           {% for message in lead_messages %}
-            <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
-              <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|date:"Y-m-d H:i" }}</time></div>
-              {% if message.body %}<div class="chat-message-body">{{ message.body|linebreaksbr }}</div>{% endif %}
-              {% for attachment in message.attachments.all %}<a class="chat-attachment" href="{{ attachment.file.url }}">📎 {{ attachment.original_name }}</a>{% endfor %}
+            <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender_role == 'customer' %} chat-message-own{% endif %}">
+              <div class="chat-message-meta">
+                <strong>
+                  {% if message.sender_role == "system" %}
+                    TurkDemy
+                  {% elif message.sender_role == "customer" %}
+                    {% trans "You" %}
+                  {% elif message.sender and message.sender.get_full_name %}
+                    {{ message.sender.get_full_name }}
+                  {% else %}
+                    {% trans "Your advisor" %}
+                  {% endif %}
+                </strong>
+                <time datetime="{{ message.created_at|date:'c' }}">{{ message.created_at|date:"M j, Y · H:i" }}</time>
+              </div>
+              {% if message.body %}<div class="chat-message-body" dir="auto">{{ message.body|linebreaksbr }}</div>{% endif %}
+              {% for attachment in message.attachments.all %}
+                <a class="chat-attachment" href="{{ attachment.file.url }}" target="_blank" rel="noopener">
+                  <span aria-hidden="true">📎</span> {{ attachment.original_name }}
+                </a>
+              {% endfor %}
             </article>
-          {% empty %}<div class="empty-chat">{% trans "No messages yet." %}</div>{% endfor %}
+          {% empty %}
+            <div class="empty-chat request-message-empty">
+              <strong>{% trans "No messages yet." %}</strong>
+              <span>{% trans "Send a message to your advisor about this Request." %}</span>
+            </div>
+          {% endfor %}
         </div>
         {% if not conversation.is_closed %}
-          <form method="post" enctype="multipart/form-data" action="{% url 'lead-send-message' lead.pk %}" class="chat-compose">
-            {% csrf_token %}{{ message_form.body }}
-            <div class="chat-compose-actions"><div class="chat-file-control">{{ message_form.attachment }}</div><button class="button" type="submit">{% trans "Send" %}</button></div>
+          <form method="post" enctype="multipart/form-data" action="{% url 'lead-send-message' lead.pk %}" class="chat-compose request-message-compose">
+            {% csrf_token %}
+            {{ message_form.body }}
+            <div class="chat-compose-actions">
+              <div class="chat-file-control">
+                {{ message_form.attachment }}
+                <label class="chat-attach-label" for="{{ message_form.attachment.id_for_label }}">
+                  <span aria-hidden="true">📎</span> {% trans "Attach file" %}
+                </label>
+                <span class="chat-attachment-selection" aria-live="polite"></span>
+              </div>
+              <button class="button request-message-send" type="submit">{% trans "Send" %}</button>
+            </div>
           </form>
         {% endif %}
       {% else %}
-        <div class="empty-chat">{% trans "Messaging will be available once an advisor is assigned." %}</div>
+        <div class="empty-chat request-message-unavailable">
+          <strong>{% trans "Your advisor has not been assigned yet." %}</strong>
+          <span>{% trans "Messaging will become available once TurkDemy assigns an advisor to this Request." %}</span>
+        </div>
       {% endif %}
     </div>
   </section>
@@ -282,6 +319,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.querySelectorAll("dialog").forEach((dialog) => {
     dialog.querySelectorAll(".modal-close").forEach((button) => button.addEventListener("click", () => dialog.close()));
+  });
+  document.querySelectorAll(".chat-file-control input[type=file]").forEach((input) => {
+    input.addEventListener("change", () => {
+      const selection = input.closest(".chat-file-control")?.querySelector(".chat-attachment-selection");
+      if (selection) selection.textContent = input.files?.[0]?.name || "";
+    });
   });
 });
 </script>

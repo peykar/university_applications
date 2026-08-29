@@ -217,3 +217,34 @@ Request page-level primary actions use `request-page-primary-action` in addition
 ## Profile page action alignment (CRQ-079)
 
 Profile now follows the same Request workspace header contract as Programs and Documents. `request-profile-heading` is a logical start/end flex row containing the single **Profile** title and the editable-state **Edit profile →** action. The action reuses `request-page-primary-action`; profile-specific CSS controls placement and narrow-screen spacing only. Finalized Requests omit the action, and subsection headings such as Personal information no longer own page-level actions.
+
+## Messages workspace information architecture
+
+The customer Messages tab uses one **Messages** page title and no duplicate eyebrow or
+"Messages about this request" heading. The conversation remains inside the central
+Request workspace. Desktop retains the Request context sidebar because uploaded
+documents and program preferences can be useful while discussing the Request; at
+customer mobile widths the sidebar is hidden so the conversation and composer own the
+available width.
+
+Human messages use restrained professional bubbles rather than a consumer-chat visual
+language. Customer messages align to logical end and are labeled **You**. Agent messages
+align to logical start and prefer the sender's full name, falling back to **Your advisor**.
+System events are labeled **TurkDemy** and render as a centered neutral event rather than
+a human speech bubble. Message body text uses bidi-safe presentation so Persian/Arabic
+and English content can coexist without changing the surrounding page direction.
+
+Every message timestamp uses one semantic desktop/mobile representation containing both
+date and time (`M j, Y · H:i`). Responsive CSS may wrap the timestamp but never hides
+calendar date or clock time.
+
+The composer is one integrated unit beneath the thread. It keeps the existing
+`MessageForm` and POST route, but the raw browser file input is visually replaced by an
+accessible **Attach file** label. Selecting a file displays its filename as local
+selection feedback before submission. The **Send** button remains a normal form submit;
+no separate "start conversation" action exists. Sent attachments render as compact
+clickable rows opening the uploaded file in a new tab.
+
+An assigned Request with no messages shows a concise **No messages yet** state while the
+composer remains present. An Agent-less Request shows the assignment-pending explanation
+and no composer, preserving the generic Conversation invariant.

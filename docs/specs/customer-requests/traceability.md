@@ -95,3 +95,11 @@ Status: IMPLEMENTED
 | `CRQ-078` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_request_page_primary_actions_share_one_visual_component` | Named structural/style test |
 
 | `CRQ-079` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_profile_uses_shared_page_title_action_convention` | Named structural/style test |
+
+| `CRQ-080` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_messages_workspace_has_single_page_identity` | Named structural/style test |
+| `CRQ-081` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_messages_use_customer_safe_sender_roles_and_alignment` | Named structural/style test |
+| `CRQ-082` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_message_timestamps_keep_date_and_time_on_mobile` | Named structural/style test |
+| `CRQ-083` | `templates/leads/lead_section.html`, `apps/messaging/forms.py`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_messages_use_integrated_composer_with_attachment_feedback` | Named structural/style test + existing send route |
+| `CRQ-084` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_messages_keep_desktop_context_and_hide_it_on_mobile` | Named structural/style test |
+| `CRQ-085` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_message_attachments_are_compact_clickable_files` | Named structural test |
+| `CRQ-086` | `templates/leads/lead_section.html`, `apps/leads/views.py` | `CustomerRequestWorkspaceTests.test_messages_distinguish_empty_and_unassigned_states`, `UnassignedCustomerRequestTests` | Named structural + runtime tests |

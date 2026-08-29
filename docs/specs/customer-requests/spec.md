@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.25
+Version: 1.26
 
 ## Goal
 
@@ -65,15 +65,17 @@ the global Customer sidebar, a central Request workspace, and a right-side Reque
 context sidebar. The right context sidebar MUST be a peer of the entire central
 Request workspace and start at the same workspace level as the Request header; it
 MUST NOT begin only below the Request header/navigation. The context sidebar MAY
-stack below the main content on narrower layouts.
+stack below the main content on narrower layouts, and later tab-specific requirements MAY
+remove it when the active task benefits from a focused mobile/full-width workspace.
 
 CRQ-014 — Request navigation MUST remain inside the central Request workspace,
 after the Request header and before page-specific content, with **Overview**,
 **Profile**, **Programs**, **Documents**, and **Messages** as customer tabs.
 
-CRQ-015 — The Request context sidebar MUST persist across Request detail tabs and
-MUST include a compact **Uploaded documents** summary with review state and access
-to document management/upload.
+CRQ-015 — The Request context sidebar MUST persist across Request detail tabs except
+where a later tab-specific requirement explicitly removes it, and MUST include a
+compact **Uploaded documents** summary with review state and access to document
+management/upload when the sidebar is present.
 
 CRQ-016 — The Request context sidebar MUST include **Program preferences**, using
 the existing LeadPreference data (degree, field, language, tuition and other
@@ -243,3 +245,37 @@ CRQ-078 — All customer Request page-level primary actions MUST use one shared 
 
 
 CRQ-079 — The customer Profile workspace MUST apply the shared Request page-title/action convention: **Profile** at logical start and **Edit profile →** at logical end on the same row across desktop/mobile/RTL. **Edit profile →** MUST use the shared `request-page-primary-action` visual component used by Programs and Documents.
+
+CRQ-080 — The customer **Messages** tab MUST use **Messages** as its single page
+identity and MUST NOT repeat that identity with a decorative Messages eyebrow or
+**Messages about this request** heading.
+
+CRQ-081 — Customer Request messages MUST distinguish participant roles clearly:
+customer-authored messages MUST be labeled **You** and align to logical end; Agent
+messages MUST align to logical start and use the Agent user's full name when
+available, otherwise **Your advisor**; system messages MUST be labeled **TurkDemy**
+and use a visually distinct neutral centered treatment.
+
+CRQ-082 — Every customer-visible Request message timestamp MUST expose both calendar
+date and time on desktop and mobile. Responsive layouts MAY reposition or wrap the
+timestamp but MUST NOT remove either date or time.
+
+CRQ-083 — When a Request conversation is open, Messages MUST provide one integrated
+composer containing the message textarea, an accessible **Attach file** affordance,
+selected-file feedback, and **Send**. The empty-conversation state MUST use that
+same composer rather than introducing a separate start-conversation action.
+
+CRQ-084 — On desktop, the Messages tab MUST retain the Request context sidebar. At
+customer mobile widths, Messages MUST hide the context sidebar so the conversation
+and composer use the available width.
+
+CRQ-085 — Message attachments MUST render as compact clickable file affordances that
+open the uploaded attachment without replacing the surrounding conversation
+workflow.
+
+CRQ-086 — If an advisor has not yet been assigned, Messages MUST show a customer-safe
+unavailable state explaining that messaging becomes available after advisor
+assignment and MUST NOT render the composer. If an advisor/conversation exists but
+contains no messages, Messages MUST show a concise **No messages yet** state while
+keeping the composer available.
+

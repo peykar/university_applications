@@ -46,7 +46,7 @@ class UnassignedCustomerRequestTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(
             response,
-            "Messaging will be available once an advisor is assigned.",
+            "Messaging will become available once TurkDemy assigns an advisor to this Request.",
         )
         self.assertNotContains(response, 'class="chat-compose"')
 

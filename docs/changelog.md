@@ -1090,3 +1090,20 @@
 - Added a single **Profile** workspace title row and moved **Edit profile →** out of the Personal information subsection.
 - Reused the shared `request-page-primary-action` component so Profile, Programs, and Documents page-level actions share the same visual contract.
 - Preserved finalized Request edit restrictions and Agent-side Edit applicant behavior.
+
+## 2026-08-29 — Customer Request Messages workspace
+
+- Advanced Customer Requests SDD to v1.26 with CRQ-080 through CRQ-086.
+- Simplified the Request Messages tab to one **Messages** page identity.
+- Added professional role-aware message presentation: **You**, advisor full-name/**Your advisor**, and centered **TurkDemy** system events.
+- Standardized message timestamps to include both date and time on desktop and mobile.
+- Reworked the composer into one textarea + **Attach file** + selected-file feedback + **Send** workflow while preserving the existing POST/service behavior.
+- Kept Request context beside Messages on desktop and removed it from mobile Messages for a focused full-width conversation.
+- Added distinct assigned-empty and advisor-unassigned states and compact clickable message attachments.
+
+## 2026-08-29 — Messages workspace regression-test alignment
+
+- Fixed two stale tests revealed by full local `make check` after the v1.26 Messages redesign.
+- Updated the unassigned-advisor assertion to the approved customer-safe Messages copy from CRQ-086.
+- Corrected the composer structural test to inspect `apps/messaging/forms.py`, where `MessageForm` and its attachment widget are actually defined, instead of `apps/leads/forms.py`.
+- No product behavior or SDD requirement changed.

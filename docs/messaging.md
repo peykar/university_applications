@@ -54,3 +54,16 @@ Legacy Lead messaging has been removed. Generate fresh migrations with `uv run p
 
 A customer Request can exist before an Agent organization is assigned. Such a Request remains fully viewable, but no generic Conversation is created because Conversation requires both an Agent and customer. The Request Messages tab explains that messaging becomes available after advisor assignment and does not show a compose form. Direct send attempts are redirected safely. Once an Agent is assigned, normal subject-scoped messaging becomes available.
 
+
+## Customer Request Messages presentation
+
+The Request Messages tab is the focused customer conversation workspace. It uses one
+**Messages** title. Customer messages render as **You** at logical end; Agent messages use
+the Agent user's full name or **Your advisor** at logical start; system events render as
+centered **TurkDemy** notices. Every message shows both date and time on all responsive
+layouts.
+
+Desktop retains the Request context sidebar. At customer mobile widths the sidebar is
+hidden so the thread and composer use the available width. The composer preserves the
+existing `MessageForm`/send service while presenting an accessible **Attach file**
+affordance and selected-file feedback instead of the browser file-input chrome.

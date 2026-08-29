@@ -26,6 +26,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         ).read_text(encoding="utf-8")
         self.request_form = (root / "templates/leads/lead_form.html").read_text(encoding="utf-8")
         self.forms = (root / "apps/leads/forms.py").read_text(encoding="utf-8")
+        self.messaging_forms = (root / "apps/messaging/forms.py").read_text(encoding="utf-8")
         self.views = (root / "apps/leads/views.py").read_text(encoding="utf-8")
         self.settings_source = (root / "turkdemy/settings/base.py").read_text(encoding="utf-8")
         self.support_context = (root / "apps/core/context_processors.py").read_text(
@@ -844,4 +845,83 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn(
             "font-size:clamp(.64rem,2.7vw,.72rem)",
             self.css,
+        )
+
+    def test_messages_workspace_has_single_page_identity(self):
+        messages = self.request_section.split('{% elif entity_tab == "messages" %}', 1)[1].split(
+            "{% endif %}", 1
+        )[0]
+        self.assertEqual(messages.count('{% trans "Messages" %}'), 1)
+        self.assertNotIn("Messages about this request", messages)
+        self.assertNotIn('<p class="eyebrow">{% trans "Messages" %}</p>', messages)
+        self.assertIn("request-messages-heading", messages)
+
+    def test_messages_use_customer_safe_sender_roles_and_alignment(self):
+        self.assertIn('{% trans "You" %}', self.request_section)
+        self.assertIn('{% trans "Your advisor" %}', self.request_section)
+        self.assertIn("message.sender.get_full_name", self.request_section)
+        self.assertIn("chat-message-{{ message.sender_role }}", self.request_section)
+        self.assertIn(
+            ".request-message-workspace .chat-message-customer{",
+            self.css,
+        )
+        self.assertIn(
+            ".request-message-workspace .chat-message-system{",
+            self.css,
+        )
+
+    def test_message_timestamps_keep_date_and_time_on_mobile(self):
+        self.assertIn(
+            'message.created_at|date:"M j, Y · H:i"',
+            self.request_section,
+        )
+        self.assertNotIn('message.created_at|date:"H:i"', self.request_section)
+        self.assertIn(
+            ".request-message-workspace .chat-message-meta time{",
+            self.css,
+        )
+        self.assertIn("white-space:normal;", self.css)
+
+    def test_messages_use_integrated_composer_with_attachment_feedback(self):
+        self.assertIn("request-message-compose", self.request_section)
+        self.assertIn('{% trans "Attach file" %}', self.request_section)
+        self.assertIn("chat-attachment-selection", self.request_section)
+        self.assertIn('aria-live="polite"', self.request_section)
+        self.assertIn('{% trans "Send" %}', self.request_section)
+        self.assertIn("chat-attachment-input", self.messaging_forms)
+        self.assertIn("input.files?.[0]?.name", self.request_section)
+
+    def test_messages_keep_desktop_context_and_hide_it_on_mobile(self):
+        self.assertIn(
+            "{% elif entity_tab == 'messages' %} request-detail-layout-messages",
+            self.request_section,
+        )
+        self.assertIn(
+            ".request-detail-layout-messages>.request-context-sidebar{display:none}",
+            self.css,
+        )
+        self.assertIn(
+            '{% include "includes/customer_request_context_sidebar.html" %}',
+            self.request_section,
+        )
+
+    def test_message_attachments_are_compact_clickable_files(self):
+        self.assertIn('class="chat-attachment"', self.request_section)
+        self.assertIn('href="{{ attachment.file.url }}"', self.request_section)
+        self.assertIn('target="_blank" rel="noopener"', self.request_section)
+        self.assertIn("{{ attachment.original_name }}", self.request_section)
+
+    def test_messages_distinguish_empty_and_unassigned_states(self):
+        self.assertIn('{% trans "No messages yet." %}', self.request_section)
+        self.assertIn(
+            '{% trans "Send a message to your advisor about this Request." %}',
+            self.request_section,
+        )
+        self.assertIn(
+            '{% trans "Your advisor has not been assigned yet." %}',
+            self.request_section,
+        )
+        self.assertIn(
+            "Messaging will become available once TurkDemy assigns an advisor",
+            self.request_section,
         )

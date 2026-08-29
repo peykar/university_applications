@@ -6,7 +6,10 @@ class MessageForm(forms.Form):
         required=False,
         widget=forms.Textarea(attrs={"rows": 3, "placeholder": "Write a message…"}),
     )
-    attachment = forms.FileField(required=False)
+    attachment = forms.FileField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={"class": "chat-attachment-input"}),
+    )
 
     def clean(self):
         cleaned = super().clean() or {}

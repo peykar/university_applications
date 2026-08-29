@@ -102,3 +102,11 @@ Status: IMPLEMENTED
 - [x] `CRQ-078` Unify Request page-level primary actions behind one shared visual class while keeping content-driven widths and page-specific placement.
 
 - [x] `CRQ-079` Move **Edit profile →** to a Profile page-title/action row and reuse the shared Request page primary-action component across desktop/mobile/RTL.
+
+- [x] `CRQ-080` Collapse the Messages tab to one Messages page identity.
+- [x] `CRQ-081` Present customer, advisor, and system messages with distinct customer-safe sender identity/alignment.
+- [x] `CRQ-082` Keep full date + time timestamps on desktop and mobile.
+- [x] `CRQ-083` Rework the customer composer into textarea + accessible Attach file + selected-file feedback + Send.
+- [x] `CRQ-084` Preserve Request context on desktop Messages and hide it on customer mobile widths.
+- [x] `CRQ-085` Render message attachments as compact clickable file affordances.
+- [x] `CRQ-086` Differentiate assigned-empty and advisor-unassigned messaging states without inventing a start action.
