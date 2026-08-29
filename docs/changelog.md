@@ -1051,3 +1051,11 @@
 - Kept the single Upload document action on the Documents heading row on mobile and gave it a lighter secondary treatment.
 - Reduced ordinary mobile document-card height and vertically centered the open arrow; replacement-required cards retain expanded workflow space.
 - Reworked the five customer Request tabs into a narrow-screen five-column layout so Messages is no longer clipped off-screen.
+
+
+## 2026-08-29 — Documents page-action alignment
+
+- Advanced Customer Requests SDD to v1.21 with CRQ-074 and refined CRQ-072.
+- Kept **Documents** and **+ Upload document** on one page-title row across desktop and mobile, aligned to opposite logical sides for LTR/RTL.
+- Restored the stronger dark-blue primary treatment for the upload action.
+- Delivery packaging excludes `.venv` and other local virtual-environment content as required by the repository delivery contract.

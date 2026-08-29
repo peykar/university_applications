@@ -742,6 +742,22 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn("inset-block-start:50%", self.css)
         self.assertIn("transform:translateY(-50%)", self.css)
 
+    def test_documents_page_action_is_primary_and_opposite_title(self):
+        documents = self.request_section.split('{% elif entity_tab == "documents" %}', 1)[1].split(
+            '{% elif entity_tab == "applications" %}', 1
+        )[0]
+        self.assertIn('class="section-heading request-documents-heading"', documents)
+        self.assertIn('+ {% trans "Upload document" %}</button>', documents)
+        self.assertIn(
+            ".request-documents-heading{display:flex;align-items:center;"
+            "justify-content:space-between;",
+            self.css,
+        )
+        self.assertIn(
+            ".request-documents-heading .button{flex:0 0 auto;background:#173b61;color:#fff;",
+            self.css,
+        )
+
     def test_customer_request_mobile_tabs_fit_without_clipping(self):
         self.assertIn(
             "customer-request-entity-nav",

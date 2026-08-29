@@ -5918,8 +5918,10 @@ a.entity-list-row:hover{
 
 /* Customer Request documents workspace */
 .request-documents-panel{min-width:0}
-.request-documents-heading{align-items:center}
+.request-documents-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:nowrap}
 .request-documents-heading h2{margin:0}
+.request-documents-heading .button{flex:0 0 auto;background:#173b61;color:#fff;border:1px solid #173b61;box-shadow:none}
+.request-documents-heading .button:hover{background:#0f3150;color:#fff;border-color:#0f3150}
 .request-document-list{display:grid;gap:10px}
 .customer-applicant-page .request-document-card{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 18px;align-items:center;width:100%;box-sizing:border-box;padding:16px 52px 16px 16px;border:1px solid #dbe5ec;border-radius:12px;background:#fff}
 .customer-applicant-page .request-document-card:hover{border-color:#dbe5ec;box-shadow:none;transform:none}
@@ -5944,9 +5946,8 @@ a.entity-list-row:hover{
 @media(max-width:700px){
  .customer-request-entity-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin-inline:0;padding-inline:0;overflow:visible;scrollbar-width:none}
  .customer-request-entity-nav>a{justify-content:center;min-width:0;padding:8px 3px;font-size:clamp(.64rem,2.7vw,.72rem)}
- .request-documents-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:nowrap}
- .request-documents-heading .button{flex:0 0 auto;padding:9px 12px;background:#fff;color:#173b61;border:1px solid #cfdbe5;box-shadow:none;font-size:.75rem}
- .request-documents-heading .button:hover{background:#f6f9fb;color:#0b3a67}
+ .request-documents-heading{gap:10px}
+ .request-documents-heading .button{padding:9px 12px;font-size:.75rem;white-space:nowrap}
  .customer-applicant-page .request-document-card{grid-template-columns:1fr;padding:12px 46px 12px 14px;min-height:82px}
  .request-document-copy{gap:5px!important}
  .request-document-replace{justify-self:stretch}

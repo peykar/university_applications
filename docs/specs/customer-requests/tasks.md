@@ -91,3 +91,5 @@ Status: IMPLEMENTED
 - [x] `CRQ-071` Make document type itself open the uploaded file while keeping filenames hidden.
 - [x] `CRQ-072` Refine mobile Documents heading/upload placement, card density, and ordinary-card arrow alignment.
 - [x] `CRQ-073` Make all five customer Request tabs fit the mobile row without clipping.
+
+- [x] `CRQ-074` Keep **Documents** and the primary **+ Upload document** page action on opposite logical sides of the same title row across desktop/mobile/RTL.
