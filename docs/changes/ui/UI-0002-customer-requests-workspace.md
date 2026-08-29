@@ -38,3 +38,4 @@ See `docs/specs/customer-requests/` (`CRQ-001`–`CRQ-019`).
 - Customer status labels now present Received / In progress / Completed / Closed while internal Lead states remain unchanged.
 
 - Reserved a distinct logical inline action lane on Programs cards so the Program Detail arrow and gray trash action no longer crowd each other in LTR or RTL.
+- Replaced the Programs-card raw arrow and underspecified trash action with matched circular SVG icon controls: blue-toned Program Detail navigation and a distinct destructive Remove action.

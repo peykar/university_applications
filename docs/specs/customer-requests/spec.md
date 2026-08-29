@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.16
+Version: 1.17
 
 ## Goal
 
@@ -205,3 +205,5 @@ CRQ-061 — A customer Request MUST remain viewable when its Lead has no Agent o
 
 
 CRQ-062 — In editable Programs-workspace cards, the program-detail directional affordance and the program-removal trash action MUST occupy visually distinct space at the card edge. The detail link MUST reserve enough inline-end room that the arrow does not crowd or visually merge with the separate trash control in either LTR or RTL layouts.
+
+CRQ-063 — Editable Programs-workspace card actions MUST use two visually balanced circular icon controls at the card edge: a blue-toned outlined Program Detail arrow affordance and a distinct outlined destructive trash affordance. Both controls MUST share the same dimensions and circular geometry, use vector icons rather than a raw text arrow, retain clear hover/focus states, and remain visually separated in both LTR and RTL layouts.

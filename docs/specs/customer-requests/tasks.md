@@ -79,3 +79,4 @@ Status: IMPLEMENTED
 - [x] `CRQ-061` Keep Agent-less customer Requests renderable and make Request messaging safely unavailable until assignment.
 
 - [x] `CRQ-062` Reserve a distinct inline action lane so the Program Detail arrow and gray trash action remain visually separated in LTR and RTL.
+- [x] `CRQ-063` Render Program Detail and Remove as matched circular vector-icon controls with distinct navigation/destructive semantics and RTL-safe separation.

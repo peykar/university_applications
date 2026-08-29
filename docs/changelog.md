@@ -1,3 +1,11 @@
+## 2026-08-29 — Customer Programs circular action controls
+
+- Advanced Customer Requests SDD to v1.17 with CRQ-063.
+- Replaced the raw Program Detail text arrow with a consistent stroked SVG arrow.
+- Rendered Program Detail and Remove as matched circular 34px controls at the program-card edge.
+- Applied blue-toned navigation styling to Program Detail and a restrained destructive treatment to Remove, with hover/focus states and RTL-safe spacing preserved.
+- Added regression coverage for the paired circular action-control contract.
+
 ## 2026-08-29 — Customer Programs card action spacing
 
 - Advanced Customer Requests SDD to v1.16 with CRQ-062.

@@ -73,3 +73,4 @@ Status: IMPLEMENTED
 | `CRQ-061` | `apps/leads/views.py`, `templates/leads/lead_section.html` | `UnassignedCustomerRequestTests` | Named runtime tests |
 
 | `CRQ-062` | `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_card_actions_have_distinct_spacing` | Named structural/style test |
+| `CRQ-063` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_card_actions_use_balanced_circular_icon_controls` | Named structural/style test |

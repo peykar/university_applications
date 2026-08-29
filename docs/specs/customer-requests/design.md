@@ -182,3 +182,7 @@ A Lead may legitimately exist without an Agent when `DEFAULT_LEAD_AGENT_ID` is e
 ## Programs card action spacing
 
 The program-detail arrow and removal icon are separate actions and must read as separate controls. The detail link reserves an inline-end action lane while the removal form remains absolutely positioned at the card edge. Using logical `padding-inline-end` preserves the separation in both LTR and RTL layouts without changing the neutral gray, borderless removal treatment.
+
+## Program card action controls
+
+Editable Program cards use a paired circular action treatment at the logical card edge. The Program Detail affordance remains part of the detail link but renders a stroked SVG arrow inside a blue-toned outlined circle. Program removal remains a separate POST form and renders its trash SVG inside an equally sized destructive outlined circle. Matching dimensions make the two actions read as one deliberate action group while distinct color semantics preserve navigation-versus-destruction meaning. Logical positioning/padding keeps the pair usable in both LTR and RTL.

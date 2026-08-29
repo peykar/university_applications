@@ -105,7 +105,9 @@
                 {% else %}<span class="interest-source interest-source-user">{% trans "Added by you" %}</span>{% endif %}
               </div>
             </div>
-            <span class="request-program-chevron" aria-hidden="true">→</span>
+            <span class="request-program-chevron" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h12m-5-5 5 5-5 5"/></svg>
+            </span>
           </a>
           {% if lead.status != "finalized" %}
             <form method="post" action="{% url 'lead-program-remove' lead.pk interest.pk %}" class="request-program-remove-form" onsubmit="return confirm('{% trans "Remove this program from your Request?" %}')">
