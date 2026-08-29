@@ -75,3 +75,9 @@ Status: IMPLEMENTED
 | `CRQ-062` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_card_actions_have_distinct_spacing` | Named structural/style test |
 | `CRQ-063` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_card_actions_are_borderless_and_separated_by_role` | Named structural/style test |
 | `CRQ-064` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_card_actions_are_borderless_and_separated_by_role` | Named structural/style test |
+| `CRQ-065` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_documents_workspace_has_single_page_identity` | Named structural test |
+| `CRQ-066` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_documents_workspace_uses_document_type_not_filename` | Named structural test |
+| `CRQ-067` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_document_cards_show_customer_status_and_open_affordance` | Named structural/style test |
+| `CRQ-068` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_replacement_document_card_exposes_reason_and_replace_action` | Named structural test |
+| `CRQ-069` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_documents_workspace_has_one_contextual_upload_action` | Named structural test |
+| `CRQ-070` | `templates/includes/customer_request_context_sidebar.html` | `CustomerRequestWorkspaceTests.test_documents_tab_suppresses_duplicate_document_context` | Named structural test |

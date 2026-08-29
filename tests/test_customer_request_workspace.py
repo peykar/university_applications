@@ -668,3 +668,43 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertNotIn("Accept", programs)
         self.assertNotIn("Reject", programs)
         self.assertNotIn("Add to my request", programs)
+
+    def test_documents_workspace_has_single_page_identity(self):
+        documents = self.request_section.split('{% elif entity_tab == "documents" %}', 1)[1].split(
+            '{% elif entity_tab == "applications" %}', 1
+        )[0]
+        self.assertIn('<h2>{% trans "Documents" %}</h2>', documents)
+        self.assertNotIn('{% trans "Request documents" %}', documents)
+        self.assertNotIn('<p class="eyebrow">{% trans "Documents" %}</p>', documents)
+
+    def test_documents_workspace_uses_document_type_not_filename(self):
+        documents = self.request_section.split('{% elif entity_tab == "documents" %}', 1)[1].split(
+            '{% elif entity_tab == "applications" %}', 1
+        )[0]
+        self.assertIn("{{ document.get_document_type_display }}", documents)
+        self.assertNotIn("{{ document.name }}", documents)
+
+    def test_document_cards_show_customer_status_and_open_affordance(self):
+        self.assertIn('{% trans "Approved" %}', self.request_section)
+        self.assertIn('{% trans "Under review" %}', self.request_section)
+        self.assertIn('{% trans "Needs replacement" %}', self.request_section)
+        self.assertIn('class="request-document-open"', self.request_section)
+        self.assertIn(".request-document-open svg", self.css)
+
+    def test_replacement_document_card_exposes_reason_and_replace_action(self):
+        self.assertIn("{{ document.review_note }}", self.request_section)
+        self.assertIn('{% trans "Replace document" %}', self.request_section)
+        self.assertIn("request-document-replace", self.request_section)
+
+    def test_documents_workspace_has_one_contextual_upload_action(self):
+        documents = self.request_section.split('{% elif entity_tab == "documents" %}', 1)[1].split(
+            '{% elif entity_tab == "applications" %}', 1
+        )[0]
+        self.assertIn('{% if documents and lead.status != "finalized" %}', documents)
+        self.assertIn("empty-state request-document-empty", documents)
+        self.assertNotIn('{% trans "Add another document" %}', documents)
+
+    def test_documents_tab_suppresses_duplicate_document_context(self):
+        self.assertIn('{% if entity_tab != "documents" %}', self.request_context_sidebar)
+        self.assertIn('{% trans "Uploaded documents" %}', self.request_context_sidebar)
+        self.assertIn('{% trans "Program preferences" %}', self.request_context_sidebar)

@@ -1026,3 +1026,18 @@
 - Ensured every active capability has the four SDD artifacts, including baseline task files for communication-log and todo-management.
 - Added `docs/domain/invariants.md` and `docs/domain/lifecycle-map.md` without inventing unspecified transitions.
 - Added regression tests for the SDD contract.
+
+## 2026-08-29 — Customer Documents workspace simplification
+
+- Advanced Customer Requests SDD to v1.19 with CRQ-065 through CRQ-070.
+- Reworked the customer Documents tab into a single Documents workspace with full-width status cards.
+- Removed uploaded filenames from the Documents workspace; document type is now the customer-visible identity.
+- Standardized customer document states to Approved, Under review, and Needs replacement.
+- Kept replacement reasons/actions directly on replacement-required cards while ordinary cards remain compact.
+- Reduced upload entry points to one contextual primary action and retained the existing upload modal.
+- Suppressed the redundant Uploaded documents context card while the Documents tab is active; Program preferences remain visible.
+### Customer Documents regression-test alignment
+- Updated stale upload-modal coverage to match CRQ-066: document type is the customer-visible identity and filename explanatory copy is no longer required.
+- Updated replacement-workflow coverage to assert the CRQ-067 customer-facing label **Needs replacement** instead of the previous **Replacement requested** wording.
+- No production behavior changed; this aligns legacy tests with the already-approved Customer Documents v1.19 contract.
+

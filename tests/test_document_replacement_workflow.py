@@ -35,7 +35,7 @@ class DocumentReplacementWorkflowStructureTests(SimpleTestCase):
     def test_customer_can_replace_requested_document(self):
         self.assertIn("def lead_document_replace", self.lead_views)
         self.assertIn("LeadDocumentVersion(", self.lead_views)
-        self.assertIn("Replacement requested", self.customer_template)
+        self.assertIn("Needs replacement", self.customer_template)
         self.assertIn("Replace document", self.customer_template)
 
     def test_replacement_resets_review(self):

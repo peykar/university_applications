@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.18
+Version: 1.19
 
 ## Goal
 
@@ -209,3 +209,15 @@ CRQ-062 — In editable Programs-workspace cards, the program-detail directional
 CRQ-063 — Program-card navigation and removal affordances MUST be borderless. Program Detail MUST use a lightweight vector arrow rather than a boxed/circular control, and Remove MUST use a neutral-gray borderless trash affordance with accessible text and focus behavior.
 
 CRQ-064 — The Program Detail arrow MUST occupy the card's top inline-end action position. The Remove action MUST be moved out of that top action position and rendered at the bottom inline-end of the card, below intake management, so destructive action is visually separated from primary navigation.
+
+CRQ-065 — The customer Documents tab MUST use one page identity, **Documents**, without a decorative Documents eyebrow or duplicate **Request documents** heading.
+
+CRQ-066 — Customer document cards MUST use the document type as the customer-visible document name and MUST NOT expose the stored/uploaded filename in the Documents workspace.
+
+CRQ-067 — Each customer document card MUST show a clear review state using **Approved**, **Under review**, or **Needs replacement**, and MUST provide a lightweight document-open affordance without relying on the filename as the link label.
+
+CRQ-068 — When replacement is requested, the customer document card MUST show the Agent review note when present and MUST expose the replacement action on that card; ordinary approved/under-review cards MUST remain compact.
+
+CRQ-069 — The Documents workspace MUST expose only one primary Upload document action when documents exist. When no documents exist, that action MUST move into the empty state rather than being duplicated in the page heading and empty state.
+
+CRQ-070 — While the Documents tab is active, the Request context sidebar MUST suppress its Uploaded documents summary because the main workspace already owns the complete document list; Program preferences MUST remain available as Request context.

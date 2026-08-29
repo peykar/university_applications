@@ -28,11 +28,12 @@ class CustomerDocumentUploadModalTests(SimpleTestCase):
         self.assertIn('data-modal-target="customer-document-upload"', self.template)
         self.assertNotIn('<details class="lead-upload-panel">', self.template)
 
-    def test_modal_explains_name_is_automatic(self):
-        self.assertIn(
+    def test_modal_does_not_expose_filename_as_document_identity(self):
+        self.assertNotIn(
             "The filename is kept automatically",
             self.template,
         )
+        self.assertIn('{% trans "Document type" %}', self.template)
 
     def test_modal_trigger_script_is_rendered_in_content(self):
         title_block = self.template.split("{% block title %}", 1)[1].split(

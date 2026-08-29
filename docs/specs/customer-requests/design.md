@@ -182,3 +182,11 @@ A Lead may legitimately exist without an Agent when `DEFAULT_LEAD_AGENT_ID` is e
 ## Programs card action placement
 
 Program navigation and removal are deliberately separated by role and location. Program Detail remains part of the main detail link and uses a lightweight borderless SVG arrow at the card's logical top/end edge. Remove remains a separate confirmed POST form, but it is placed in a bottom/end footer action row beneath intake management. The removal affordance is borderless and neutral gray, combining the trash icon with a visible **Remove** label while retaining accessible labeling and keyboard focus treatment. This avoids visually grouping navigation and destructive actions and uses logical alignment so LTR and RTL layouts remain correct.
+
+## Customer Documents workspace
+
+The Documents tab is the complete customer document-management workspace. It uses one **Documents** heading and presents each `LeadDocument` by semantic document type rather than storage filename. Review state is explicit customer copy: **Approved**, **Under review**, or **Needs replacement**. A lightweight borderless vector arrow opens the file without promoting the filename into the UI.
+
+Cards stay compact unless action is required. A replacement-requested card expands to show `review_note` when available and the existing replacement upload disclosure/form. The normal upload flow remains the existing modal, but only one primary Upload document trigger is rendered: in the heading when documents exist, or inside the empty state when none exist.
+
+The Request context sidebar is contextual. Its Uploaded documents summary is useful on Overview/Profile/Programs/Messages but redundant on Documents, so that card is suppressed while `entity_tab == "documents"`. Program preferences remain visible as cross-cutting Request context.

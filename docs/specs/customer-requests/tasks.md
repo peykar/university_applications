@@ -81,3 +81,9 @@ Status: IMPLEMENTED
 - [x] `CRQ-062` Keep Program Detail and Remove in visually distinct locations in LTR and RTL.
 - [x] `CRQ-063` Use borderless vector affordances: lightweight Program Detail arrow and neutral-gray trash + Remove action.
 - [x] `CRQ-064` Keep the Program Detail arrow at the card top/end and move Remove to a bottom/end footer row beneath intake management.
+- [x] `CRQ-065` Collapse Documents/Request documents duplicate page identity to one Documents heading.
+- [x] `CRQ-066` Use document type as the customer-visible name and suppress stored filenames in the Documents workspace.
+- [x] `CRQ-067` Present customer-safe review states and a lightweight file-open affordance on every document card.
+- [x] `CRQ-068` Expand only replacement-required cards with review reason and replacement workflow.
+- [x] `CRQ-069` Keep one Upload document primary action, moving it into the empty state when no documents exist.
+- [x] `CRQ-070` Hide Uploaded documents context while Documents is active and retain Program preferences.
