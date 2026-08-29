@@ -68,3 +68,8 @@ and applicant decide which programs to proceed with.
 Agent Workspace program names link to the public program detail page in a new
 tab so advisors can inspect the catalogue entry without losing their place in
 the applicant workspace.
+
+
+## Customer Request program workspace
+
+For customers, Request-stage program interests are presented as **Programs**, not as formal applications. Overview gives a compact comparison with university, degree, language, tuition, and provenance. The dedicated Programs tab adds duration, selected intake, and management. Customers can select/change an active intake belonging to that program or remove the program while the Request is editable. Advisor suggestions use the same management behavior as customer-added programs; no accept/reject step is introduced. Formal Application terminology remains reserved for post-finalization university applications.

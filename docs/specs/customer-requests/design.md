@@ -142,3 +142,12 @@ Provenance remains customer-visible: Agent-originated rows use **Suggested by yo
 
 Program preferences remain Request context rather than Programs-tab body content. The existing persistent right sidebar continues to own preference summary/edit behavior, preventing the Programs tab from becoming a duplicate preference editor.
 
+
+
+## Program summary versus workspace
+
+Request Overview treats Programs as a compact summary, not as formal applications. Each row carries enough comparison context to be useful at a glance: degree, language, and offering-backed tuition. The dedicated Programs tab is the management workspace and adds duration, intake selection, removal, and fuller pricing context. Long-form programme content remains owned by the public Program Detail page.
+
+Tuition is never synthesized from the Program itself because pricing belongs to ProgramOffering. A selected offering is authoritative; without one, the first active offering may provide a clearly labelled From price. Customer intake updates validate that the offering is active and belongs to the interest's program. Program removal and intake mutation are ownership-scoped and disabled/rejected after Request finalization. Advisor/customer provenance remains informational; there is deliberately no accept/reject state.
+
+Because the richer card contains POST controls, valid HTML requires the program-detail anchor to wrap only the informational content rather than the entire card.

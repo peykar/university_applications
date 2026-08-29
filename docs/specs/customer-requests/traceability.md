@@ -55,3 +55,11 @@ Status: IMPLEMENTED
 | `CRQ-046` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_programs_empty_state_does_not_duplicate_browse_action` | Named test |
 | `CRQ-047` | `templates/leads/lead_section.html`, `templates/includes/customer_request_context_sidebar.html` | `CustomerRequestWorkspaceTests.test_programs_tab_does_not_duplicate_program_preferences` | Named test |
 
+
+| `CRQ-048` | `templates/leads/lead_detail.html`, `apps/leads/views.py` | `CustomerRequestWorkspaceTests.test_overview_programs_show_compact_comparison_data` | Named test |
+| `CRQ-049` | Request program templates, active-offering prefetch | `CustomerRequestWorkspaceTests.test_program_tuition_is_offering_backed` | Named test |
+| `CRQ-050` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_programs_tab_is_detailed_comparison_workspace` | Named test |
+| `CRQ-051` | `apps/leads/views.py`, `apps/leads/urls.py`, Programs template | `CustomerRequestWorkspaceTests.test_programs_tab_exposes_intake_management_contract` | Named structural test + runtime validation path |
+| `CRQ-052` | `apps/leads/views.py`, `apps/leads/urls.py`, Programs template | `CustomerRequestWorkspaceTests.test_programs_tab_exposes_remove_contract_with_guards` | Named structural test + runtime validation path |
+| `CRQ-053` | Programs template/domain unchanged | `CustomerRequestWorkspaceTests.test_program_management_has_no_accept_reject_workflow` | Named test |
+| `CRQ-054` | Programs card markup | `CustomerRequestWorkspaceTests.test_program_card_uses_detail_link_beside_management_controls` | Named test |

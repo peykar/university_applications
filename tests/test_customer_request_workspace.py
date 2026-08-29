@@ -160,7 +160,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_overview_prioritizes_attention_programs_progress_and_messages_in_one_flow(self):
         attention = self.request_detail.index('{% trans "Action required" %}')
-        programs = self.request_detail.index('{% trans "Applied programs" %}')
+        programs = self.request_detail.index('<h2>{% trans "Programs" %}</h2>')
         progress = self.request_detail.index('{% trans "Progress" %}')
         messages = self.request_detail.index('{% trans "Recent messages" %}')
         self.assertLess(attention, programs)
@@ -238,7 +238,8 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertNotIn('{% trans "Request" %}', customer)
 
     def test_applied_programs_summary_has_no_redundant_labels_or_action(self):
-        self.assertIn('{% trans "Applied programs" %}', self.request_detail)
+        self.assertIn('<h2>{% trans "Programs" %}</h2>', self.request_detail)
+        self.assertNotIn('{% trans "Applied programs" %}', self.request_detail)
         self.assertNotIn('{% trans "View programs" %}', self.request_detail)
         self.assertIn("{% url 'program-detail' interest.program.slug_en %}", self.request_detail)
 
@@ -452,21 +453,21 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertEqual(programs.count('{% trans "Find programs" %}'), 1)
         self.assertIn("{% url 'program-list' %}", programs)
 
-    def test_program_cards_are_whole_click_targets_with_program_first_hierarchy(self):
+    def test_program_card_uses_detail_link_beside_management_controls(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
             '{% elif entity_tab == "documents" %}', 1
         )[0]
-        self.assertIn(
-            '<a class="lead-interest-card request-program-card" '
-            "href=\"{% url 'program-detail' interest.program.slug_en %}\">",
-            programs,
+        self.assertIn('<article class="lead-interest-card request-program-card">', programs)
+        detail_link = (
+            '<a class="request-program-detail-link" '
+            "href=\"{% url 'program-detail' interest.program.slug_en %}\">"
         )
+        self.assertIn(detail_link, programs)
         self.assertIn("<h3>{{ interest.program.name_en }}</h3>", programs)
         self.assertIn('class="request-program-university"', programs)
         self.assertIn('class="request-program-meta"', programs)
-        self.assertNotIn("<h3><a href=", programs)
-        self.assertNotIn('{% trans "View details" %}', programs)
-        self.assertIn(".request-program-card{", self.css)
+        self.assertIn('class="request-program-management"', programs)
+        self.assertIn(".request-program-detail-link{", self.css)
 
     def test_program_cards_keep_source_as_secondary_context(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
@@ -514,3 +515,58 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn('{% trans "In progress" %}', self.request_header)
         self.assertIn('{% trans "Completed" %}', self.request_header)
         self.assertIn("{{ lead.get_status_display }}", self.request_header)
+
+    def test_overview_programs_show_compact_comparison_data(self):
+        self.assertIn("interest.program.get_degree_display", self.request_detail)
+        self.assertIn("interest.program.program_language.name_en", self.request_detail)
+        self.assertIn("currency_amount:interest.program_offering.currency", self.request_detail)
+        self.assertIn('{% trans "From" %}', self.request_detail)
+
+    def test_program_tuition_is_offering_backed(self):
+        self.assertIn('Prefetch("program__offerings"', self.views)
+        self.assertIn("ProgramOffering.objects.filter(is_active=True)", self.views)
+        self.assertIn("interest.program_offering.tuition_discounted", self.request_section)
+        self.assertNotIn("interest.program.tuition", self.request_section)
+
+    def test_programs_tab_is_detailed_comparison_workspace(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        for token in (
+            "program.get_degree_display",
+            "program.program_language.name_en",
+            "program.duration",
+            "request-program-tuition",
+            '{% trans "Intake" %}',
+        ):
+            self.assertIn(token, programs)
+
+    def test_programs_tab_exposes_intake_management_contract(self):
+        urls = (Path(settings.BASE_DIR) / "apps/leads/urls.py").read_text(encoding="utf-8")
+        self.assertIn('name="lead-program-intake-update"', urls)
+        self.assertIn("def lead_program_intake_update(", self.views)
+        self.assertIn("program=interest.program", self.views)
+        self.assertIn("is_active=True", self.views)
+        self.assertIn("lead.status == LeadStatus.FINALIZED", self.views)
+        self.assertIn(
+            "{% url 'lead-program-intake-update' lead.pk interest.pk %}",
+            self.request_section,
+        )
+
+    def test_programs_tab_exposes_remove_contract_with_guards(self):
+        urls = (Path(settings.BASE_DIR) / "apps/leads/urls.py").read_text(encoding="utf-8")
+        self.assertIn('name="lead-program-remove"', urls)
+        self.assertIn("def lead_program_remove(", self.views)
+        self.assertIn("pk=interest_id, lead=lead", self.views)
+        self.assertIn(
+            "{% url 'lead-program-remove' lead.pk interest.pk %}",
+            self.request_section,
+        )
+
+    def test_program_management_has_no_accept_reject_workflow(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        self.assertNotIn("Accept", programs)
+        self.assertNotIn("Reject", programs)
+        self.assertNotIn("Add to my request", programs)

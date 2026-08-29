@@ -1,3 +1,17 @@
+## 2026-08-29 — Customer Request program comparison and management
+
+### Customer program workspace format regression fix
+
+- Wrapped the long program-detail-link regression-test fixture so `make format` / Ruff E501 passes.
+- No production UI, business logic, or SDD behavior changed.
+
+- Advanced Customer Requests SDD to v1.11 with CRQ-048 through CRQ-054 and refined CRQ-027 to use Programs rather than Applied programs on Overview.
+- Added degree, language, and offering-backed tuition to compact Overview program rows.
+- Expanded the Programs workspace with degree, language, tuition, duration when known, intake, and provenance.
+- Added customer select/change-intake and remove-program actions with ownership, same-program active-offering, and finalized-Request guards.
+- Kept advisor suggestions free of accept/reject/add-to-request workflow states.
+- Replaced whole-card anchors with a primary program-detail content link so management forms remain valid HTML.
+
 
 ## 2026-08-29 — Programs cleanup regression-test alignment
 

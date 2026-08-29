@@ -1,5 +1,5 @@
 {% extends "customer/base.html" %}
-{% load i18n %}
+{% load i18n currency %}
 {% block title %}{{ lead }} — TurkDemy{% endblock %}
 {% block customer_content %}
 <div class="customer-applicant-page customer-request-detail">
@@ -30,7 +30,7 @@
 
       <section class="lead-panel">
         <div class="section-heading">
-          <div><h2>{% trans "Applied programs" %}</h2></div>
+          <div><h2>{% trans "Programs" %}</h2></div>
         </div>
         <div class="request-overview-programs">
           {% for interest in interests %}
@@ -38,7 +38,15 @@
               <span>
                 <strong>{{ interest.program.name_en }}</strong>
                 <small>{{ interest.program.university.name_en }}</small>
-                {% if interest.source == "agent" %}<em>{% trans "Suggested by your agent" %}</em>{% endif %}
+                <small class="request-overview-program-meta">
+                  {{ interest.program.get_degree_display }} · {{ interest.program.program_language.name_en }}
+                  {% if interest.program_offering %}
+                    · {{ interest.program_offering.tuition_discounted|default:interest.program_offering.tuition|currency_amount:interest.program_offering.currency }} / {{ interest.program_offering.get_fee_basis_display }}
+                  {% elif interest.program.customer_offerings %}
+                    {% with offering=interest.program.customer_offerings.0 %}· {% trans "From" %} {{ offering.tuition_discounted|default:offering.tuition|currency_amount:offering.currency }} / {{ offering.get_fee_basis_display }}{% endwith %}
+                  {% endif %}
+                </small>
+                {% if interest.source == "agent" %}<em>{% trans "Suggested by your advisor" %}</em>{% else %}<em class="request-overview-program-source-user">{% trans "Added by you" %}</em>{% endif %}
               </span>
               <b>→</b>
             </a>

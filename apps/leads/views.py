@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.base import ContentFile
 from django.db import transaction
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
@@ -22,7 +23,7 @@ from apps.messaging.services import (
     send_message,
     unread_count_for_conversation,
 )
-from apps.universities.models import DegreeType, Program, UniversityType
+from apps.universities.models import DegreeType, Program, ProgramOffering, UniversityType
 
 from .forms import (
     ApplyProgramForm,
@@ -111,14 +112,25 @@ def _lead_entity_context(*, request, lead, mark_read=False):
             participant_role=ConversationParticipantRole.CUSTOMER,
         )
 
-    interests = lead.program_interests.select_related(
-        "program",
-        "program__university",
-        "program__program_language",
-        "program_offering",
-        "program_offering__academic_year",
-        "program_offering__semester",
-    ).order_by("-created_at")
+    active_offerings = (
+        ProgramOffering.objects.filter(is_active=True)
+        .select_related("academic_year", "semester")
+        .order_by("academic_year__name_en", "semester__name_en")
+    )
+    interests = (
+        lead.program_interests.select_related(
+            "program",
+            "program__university",
+            "program__program_language",
+            "program_offering",
+            "program_offering__academic_year",
+            "program_offering__semester",
+        )
+        .prefetch_related(
+            Prefetch("program__offerings", queryset=active_offerings, to_attr="customer_offerings")
+        )
+        .order_by("-created_at")
+    )
     documents = list(lead.documents.order_by("-created_at"))
     attention_documents = [
         document
@@ -394,6 +406,67 @@ def lead_programs(request, lead_id):
     context = _lead_entity_context(request=request, lead=lead)
     context["entity_tab"] = "programs"
     return render(request, "leads/lead_section.html", context)
+
+
+@login_required
+@require_POST
+def lead_program_intake_update(request, lead_id, interest_id):
+    lead = _customer_lead(request.user, lead_id)
+    if lead.status == LeadStatus.FINALIZED:
+        messages.error(request, _("This Request can no longer be changed."))
+        return redirect("lead-programs", lead_id=lead.pk)
+
+    interest = get_object_or_404(
+        LeadProgramInterest.objects.select_related("program"),
+        pk=interest_id,
+        lead=lead,
+    )
+    offering_id = request.POST.get("program_offering", "").strip()
+    if not offering_id:
+        interest.program_offering = None
+    else:
+        offering = get_object_or_404(
+            ProgramOffering,
+            pk=offering_id,
+            program=interest.program,
+            is_active=True,
+        )
+        interest.program_offering = offering
+    interest.updated_by = request.user
+    interest.save(update_fields=("program_offering", "updated_by", "updated_at"))
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=LeadActivityType.PROGRAM_RESPONSE,
+        description=f"Program intake updated: {interest.program.name_en}.",
+        is_customer_visible=True,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    messages.success(request, _("Program intake updated."))
+    return redirect("lead-programs", lead_id=lead.pk)
+
+
+@login_required
+@require_POST
+def lead_program_remove(request, lead_id, interest_id):
+    lead = _customer_lead(request.user, lead_id)
+    if lead.status == LeadStatus.FINALIZED:
+        messages.error(request, _("This Request can no longer be changed."))
+        return redirect("lead-programs", lead_id=lead.pk)
+
+    interest = get_object_or_404(LeadProgramInterest, pk=interest_id, lead=lead)
+    program_name = interest.program.name_en
+    interest.delete()
+    LeadActivity.objects.create(
+        lead=lead,
+        activity_type=LeadActivityType.PROGRAM_RESPONSE,
+        description=f"Program removed: {program_name}.",
+        is_customer_visible=True,
+        created_by=request.user,
+        updated_by=request.user,
+    )
+    messages.success(request, _("Program removed from this Request."))
+    return redirect("lead-programs", lead_id=lead.pk)
 
 
 @login_required

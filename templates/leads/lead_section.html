@@ -1,5 +1,5 @@
 {% extends "customer/base.html" %}
-{% load i18n %}
+{% load i18n currency %}
 {% block title %}{{ lead }} · {{ entity_tab|title }} — TurkDemy{% endblock %}
 {% block customer_content %}
 <div class="customer-applicant-page customer-request-detail">
@@ -78,26 +78,54 @@
     </div>
     <div class="lead-interest-list request-program-list">
       {% for interest in interests %}
-        <a class="lead-interest-card request-program-card" href="{% url 'program-detail' interest.program.slug_en %}">
-          <div class="request-program-copy">
-            <h3>{{ interest.program.name_en }}</h3>
-            <p class="request-program-university">{{ interest.program.university.name_en }}</p>
-            <p class="request-program-meta">
-              <span>{{ interest.program.get_degree_display }}</span>
-              <span aria-hidden="true">·</span>
-              {% if interest.program_offering %}
-                <span>{{ interest.program_offering.semester.name_en }} {{ interest.program_offering.academic_year.name_en }}</span>
-              {% else %}
-                <span>{% trans "Intake to be decided" %}</span>
-              {% endif %}
-            </p>
-            <div class="interest-source-line request-program-source">
-              {% if interest.source == "agent" %}<span class="interest-source interest-source-agent">{% trans "Suggested by your advisor" %}</span>
-              {% else %}<span class="interest-source interest-source-user">{% trans "Added by you" %}</span>{% endif %}
+        <article class="lead-interest-card request-program-card">
+          <a class="request-program-detail-link" href="{% url 'program-detail' interest.program.slug_en %}">
+            <div class="request-program-copy">
+              <h3>{{ interest.program.name_en }}</h3>
+              <p class="request-program-university">{{ interest.program.university.name_en }}</p>
+              <p class="request-program-meta">
+                <span>{{ interest.program.get_degree_display }}</span><span aria-hidden="true">·</span>
+                <span>{{ interest.program.program_language.name_en }}</span>
+                {% if interest.program.duration %}<span aria-hidden="true">·</span><span>{% blocktrans with years=interest.program.duration %}{{ years }} years{% endblocktrans %}</span>{% endif %}
+              </p>
+              <p class="request-program-tuition">
+                {% if interest.program_offering %}
+                  <strong>{{ interest.program_offering.tuition_discounted|default:interest.program_offering.tuition|currency_amount:interest.program_offering.currency }}</strong>
+                  <span>/ {{ interest.program_offering.get_fee_basis_display }}</span>
+                {% elif interest.program.customer_offerings %}
+                  {% with offering=interest.program.customer_offerings.0 %}<span>{% trans "From" %}</span> <strong>{{ offering.tuition_discounted|default:offering.tuition|currency_amount:offering.currency }}</strong> <span>/ {{ offering.get_fee_basis_display }}</span>{% endwith %}
+                {% else %}<span>{% trans "Tuition not available" %}</span>{% endif %}
+              </p>
+              <div class="interest-source-line request-program-source">
+                {% if interest.source == "agent" %}<span class="interest-source interest-source-agent">{% trans "Suggested by your advisor" %}</span>
+                {% else %}<span class="interest-source interest-source-user">{% trans "Added by you" %}</span>{% endif %}
+              </div>
             </div>
+            <span class="request-program-chevron" aria-hidden="true">→</span>
+          </a>
+          <div class="request-program-management">
+            <div class="request-program-intake-summary">
+              <span>{% trans "Intake" %}</span>
+              <strong>{% if interest.program_offering %}{{ interest.program_offering.semester.name_en }} {{ interest.program_offering.academic_year.name_en }}{% else %}{% trans "Intake to be decided" %}{% endif %}</strong>
+            </div>
+            {% if lead.status != "finalized" %}
+              <form method="post" action="{% url 'lead-program-intake-update' lead.pk interest.pk %}" class="request-program-intake-form">
+                {% csrf_token %}
+                <label class="sr-only" for="offering-{{ interest.pk }}">{% trans "Select intake" %}</label>
+                <select id="offering-{{ interest.pk }}" name="program_offering">
+                  <option value="">{% trans "Intake to be decided" %}</option>
+                  {% for offering in interest.program.customer_offerings %}
+                    <option value="{{ offering.pk }}"{% if interest.program_offering_id == offering.pk %} selected{% endif %}>{{ offering.semester.name_en }} {{ offering.academic_year.name_en }} — {{ offering.tuition_discounted|default:offering.tuition|currency_amount:offering.currency }}</option>
+                  {% endfor %}
+                </select>
+                <button class="button button-secondary small-button" type="submit">{% if interest.program_offering %}{% trans "Change intake" %}{% else %}{% trans "Select intake" %}{% endif %}</button>
+              </form>
+              <form method="post" action="{% url 'lead-program-remove' lead.pk interest.pk %}" class="request-program-remove-form">
+                {% csrf_token %}<button class="button-reset request-program-remove" type="submit">{% trans "Remove" %}</button>
+              </form>
+            {% endif %}
           </div>
-          <span class="request-program-chevron" aria-hidden="true">→</span>
-        </a>
+        </article>
       {% empty %}
         <div class="empty-state request-program-empty"><p>{% trans "No programs have been added to this request yet." %}</p></div>
       {% endfor %}

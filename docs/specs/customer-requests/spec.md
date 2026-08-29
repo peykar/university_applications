@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.10
+Version: 1.11
 
 ## Goal
 
@@ -126,7 +126,7 @@ CRQ-025 — Customer Request pages MUST follow the presentation principle **one 
 
 CRQ-026 — The customer Request identity MUST show the Request person's name exactly once. Customer detail pages MUST use **← My Requests** as the back-navigation affordance, MUST NOT repeat the name in a breadcrumb, and MUST NOT show a decorative **Request** eyebrow above the title. Agent-facing breadcrumbs and Applicant labeling remain unchanged.
 
-CRQ-027 — Request Overview MUST use **Applied programs** as the single program-summary heading. It MUST NOT additionally show **Applied for**, **Programs**, or a redundant **View programs** action. Each visible program row remains the direct link to that program's detail page, and the Request-level Programs tab remains available for the complete program workflow.
+CRQ-027 — Request Overview MUST use **Programs** as the single program-summary heading because Request-stage program interests are not necessarily formal university applications. It MUST NOT additionally show **Applied for**, **Applied programs**, or a redundant **View programs** action. Each visible program row remains the direct link to that program's detail page, and the Request-level Programs tab remains available for the complete program workflow.
 
 CRQ-028 — Request Overview MUST use **Progress** as the single timeline heading and MUST NOT pair a decorative **Progress** eyebrow with **Request progress**.
 
@@ -172,3 +172,18 @@ CRQ-047 — The customer Programs tab MUST remain focused on programs associated
 
 Each requirement is accepted when its observable behavior is implemented and
 covered by named tests or repository checks in traceability.
+
+
+CRQ-048 — Request Overview program rows MUST remain compact but MUST add the program's degree level, language, and tuition when tuition data is available, while preserving program name, university, provenance, and direct program-detail navigation.
+
+CRQ-049 — Tuition displayed for a Request program MUST come from ProgramOffering data. When a specific offering is selected, its discounted tuition when available (otherwise standard tuition), currency, and fee basis MUST be shown. When no offering is selected, the UI MAY show a clearly labelled **From** price from an active offering and MUST NOT imply that this is a selected intake price.
+
+CRQ-050 — The Programs tab MUST function as the detailed program-comparison workspace and MUST show degree, language, tuition, duration when known, intake, and provenance without duplicating long-form catalogue content already available on Program Detail.
+
+CRQ-051 — While a Request is editable, the customer MUST be able to select or change the ProgramOffering/intake for an existing Request program. The selected offering MUST belong to that same program and be active; an empty selection MUST represent **Intake to be decided**.
+
+CRQ-052 — While a Request is editable, the customer MUST be able to remove a program interest from the Request. Intake changes and removal MUST be scoped to a Request owned by the authenticated customer, and finalized Requests MUST reject these mutations.
+
+CRQ-053 — The Programs workspace MUST NOT introduce accept/reject or add-to-request approval states for advisor suggestions. Once a program interest exists on the Request, provenance is informational and both customer-added and advisor-suggested interests use the same intake/removal management model.
+
+CRQ-054 — Because program cards now contain management controls, the Programs workspace MUST use a clear program-detail link as the primary informational click target rather than nesting forms inside a whole-card anchor. The program name/content area and directional affordance MUST remain visibly navigable to Program Detail.

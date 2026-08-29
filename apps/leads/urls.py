@@ -8,6 +8,16 @@ urlpatterns = [
     path("applicants/<uuid:lead_id>/", views.lead_detail, name="lead-detail"),
     path("applicants/<uuid:lead_id>/profile/", views.lead_profile, name="lead-profile"),
     path("applicants/<uuid:lead_id>/programs/", views.lead_programs, name="lead-programs"),
+    path(
+        "applicants/<uuid:lead_id>/programs/<uuid:interest_id>/intake/",
+        views.lead_program_intake_update,
+        name="lead-program-intake-update",
+    ),
+    path(
+        "applicants/<uuid:lead_id>/programs/<uuid:interest_id>/remove/",
+        views.lead_program_remove,
+        name="lead-program-remove",
+    ),
     path("applicants/<uuid:lead_id>/documents/", views.lead_documents, name="lead-documents"),
     path(
         "applicants/<uuid:lead_id>/applications/",

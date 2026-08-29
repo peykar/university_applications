@@ -60,3 +60,11 @@ Status: IMPLEMENTED
 - [x] `CRQ-046` Remove the duplicate Browse programs empty-state action.
 - [x] `CRQ-047` Keep Program preferences exclusively in the persistent Request context sidebar.
 
+
+- [x] `CRQ-048` Enrich compact Overview program rows with degree, language, and offering-backed tuition.
+- [x] `CRQ-049` Keep tuition grounded in selected/active ProgramOffering data and label fallback pricing as From.
+- [x] `CRQ-050` Make Programs the detailed comparison workspace with level, language, tuition, duration, intake, and provenance.
+- [x] `CRQ-051` Add customer select/change-intake workflow constrained to active offerings of the same program.
+- [x] `CRQ-052` Add customer program removal with ownership/finalized guards.
+- [x] `CRQ-053` Keep advisor provenance informational; do not add accept/reject/add-to-request states.
+- [x] `CRQ-054` Replace whole-card anchors with a primary detail link so management forms remain valid interactive markup.
