@@ -33,6 +33,20 @@ class FinalizedCustomerLeadMutationStructureTests(SimpleTestCase):
             self.section,
         )
 
+    def test_customer_preferences_edit_has_finalized_guard(self):
+        edit_block = self.views.split("def lead_preferences_edit", 1)[1].split(
+            "def lead_detail",
+            1,
+        )[0]
+        self.assertIn("lead.status == LeadStatus.FINALIZED", edit_block)
+        self.assertIn('return redirect("lead-preferences", lead_id=lead.pk)', edit_block)
+        self.assertIn(
+            'if lead.status != "finalized"',
+            self.section.split('{% elif entity_tab == "preferences" %}', 1)[1].split(
+                '{% elif entity_tab == "programs" %}', 1
+            )[0],
+        )
+
     def test_customer_document_mutations_have_finalized_guards(self):
         upload_block = self.views.split("def lead_document_upload", 1)[1].split(
             "def lead_document_replace",

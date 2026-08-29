@@ -32,6 +32,11 @@ urlpatterns = [
         name="lead-preferences",
     ),
     path(
+        "applicants/<uuid:lead_id>/preferences/edit/",
+        views.lead_preferences_edit,
+        name="lead-preferences-edit",
+    ),
+    path(
         "applicants/<uuid:lead_id>/documents/upload/",
         views.lead_document_upload,
         name="lead-document-upload",

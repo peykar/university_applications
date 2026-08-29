@@ -140,7 +140,7 @@ Each associated `LeadProgramInterest` provides a large primary content link to t
 
 Provenance remains customer-visible: Agent-originated rows use **Suggested by your advisor** and customer-originated rows use **Added by you**. When an Agent supplied `suggestion_reason`, that explanation is shown beneath the provenance label; the generic `notes` field remains internal. Intake is always represented by one dropdown on editable Requests, with the current offering selected or **Select intake** as the no-selection placeholder.
 
-Program preferences remain Request context rather than Programs-tab body content. The existing persistent right sidebar continues to own preference summary/edit behavior, preventing the Programs tab from becoming a duplicate preference editor.
+Program preferences are now a first-class **Preferences** Request tab rather than being owned only by the sidebar. Programs still does not duplicate preference content: the persistent right sidebar provides only a compact Program preferences summary/shortcut while the dedicated Preferences tab owns the complete read-only preference view and edit entry point.
 
 
 
@@ -189,14 +189,14 @@ The Documents tab is the complete customer document-management workspace. It use
 
 Cards stay compact unless action is required. A replacement-requested card expands to show `review_note` when available and the existing replacement upload disclosure/form. The normal upload flow remains the existing modal, but only one primary Upload document trigger is rendered: in the heading when documents exist, or inside the empty state when none exist.
 
-The Request context sidebar is contextual. It is useful on Overview/Profile/Programs/Messages, but the Documents tab is a focused document-management workspace and renders no Request context sidebar at all. The Documents layout therefore expands into the available Request-detail width and does not repeat either Uploaded documents or Program preferences.
+The Request context sidebar is contextual. It is useful on Overview/Profile/Programs/Messages, but Documents and Preferences each own their complete task/content and render no Request context sidebar. Those focused layouts expand into the available Request-detail width instead of repeating their own Uploaded documents or Program preferences content beside the main workspace.
 
 
 ## Documents mobile refinement
 
 On the Documents tab, document type is both the semantic identity and a direct file link; the stored filename remains implementation detail. The separate borderless arrow remains as a secondary open affordance. On desktop and small screens, the Documents heading and the single page-level upload action share one title row. The title occupies logical start and the **+ Upload document** primary dark-blue action occupies logical end; logical alignment lets RTL reverse the row naturally. Ordinary cards reduce vertical padding and center the open arrow against the card; replacement-required cards may keep the arrow near the top because their review note/replacement workflow makes the card intentionally taller.
 
-The customer Request tab bar uses a five-column mobile layout for Overview, Profile, Programs, Documents, and Messages. This avoids the final tab being visually clipped while keeping all Request-local navigation available without a hidden horizontal-scroll dependency.
+The customer Request tab bar now contains six items: Overview, Profile, Preferences, Programs, Documents, and Messages. At mobile widths it becomes a single-line horizontal scroll strip rather than squeezing six labels into equal columns. Tabs keep content-sized tap targets, no label wraps or truncates, and the active tab remains visually explicit.
 
 ## Narrow mobile Documents action row
 
@@ -248,3 +248,12 @@ clickable rows opening the uploaded file in a new tab.
 An assigned Request with no messages shows a concise **No messages yet** state while the
 composer remains present. An Agent-less Request shows the assignment-pending explanation
 and no composer, preserving the generic Conversation invariant.
+
+
+## Preferences first-class Request workspace
+
+Customer Request navigation places **Preferences** between Profile and Programs because it answers a different question from Programs: Preferences describes *what the customer is looking for*, while Programs contains concrete programs being considered for the Request. `/applicants/<lead>/preferences/` is the read-only tab route; `/preferences/edit/` owns the edit form.
+
+The read-only workspace groups the complete `LeadPreference` surface into Study preferences, University preferences, Budget, and Other preferences. It reuses the Request page-title/action convention with **Edit preferences →** at logical end and the shared `request-page-primary-action` component. Finalized Requests are read-only both in markup and direct edit routing. Saving and cancelling return to Preferences rather than jumping to Programs.
+
+The Program preferences context card remains valuable as a compact summary on other Request tabs, but it links to the Preferences tab. Preferences itself suppresses the context sidebar and uses full width to avoid presenting the same data twice.

@@ -25,6 +25,10 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             root / "templates/includes/customer_request_context_sidebar.html"
         ).read_text(encoding="utf-8")
         self.request_form = (root / "templates/leads/lead_form.html").read_text(encoding="utf-8")
+        self.preference_form = (root / "templates/leads/lead_preferences.html").read_text(
+            encoding="utf-8"
+        )
+        self.urls = (root / "apps/leads/urls.py").read_text(encoding="utf-8")
         self.forms = (root / "apps/leads/forms.py").read_text(encoding="utf-8")
         self.messaging_forms = (root / "apps/messaging/forms.py").read_text(encoding="utf-8")
         self.views = (root / "apps/leads/views.py").read_text(encoding="utf-8")
@@ -45,6 +49,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         # agent-only Applications tab.
         self.assertIn("{% url 'lead-detail' lead.pk %}", self.request_nav)
         self.assertIn("{% url 'lead-profile' lead.pk %}", self.request_nav)
+        self.assertIn("{% url 'lead-preferences' lead.pk %}", self.request_nav)
         self.assertIn("{% url 'lead-programs' lead.pk %}", self.request_nav)
         self.assertIn("{% url 'lead-documents' lead.pk %}", self.request_nav)
         self.assertIn("{% url 'lead-messages' lead.pk %}", self.request_nav)
@@ -142,6 +147,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn("includes/applicant_entity_nav.html", self.request_header)
         self.assertIn('{% trans "Overview" %}', self.request_nav)
         self.assertIn('{% trans "Profile" %}', self.request_nav)
+        self.assertIn('{% trans "Preferences" %}', self.request_nav)
         self.assertIn('{% trans "Programs" %}', self.request_nav)
         self.assertIn('{% trans "Documents" %}', self.request_nav)
         self.assertIn('{% trans "Messages" %}', self.request_nav)
@@ -265,7 +271,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_profile_starts_with_single_workspace_title_and_person_sections(self):
         profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
-            '{% elif entity_tab == "programs" %}', 1
+            '{% elif entity_tab == "preferences" %}', 1
         )[0]
         self.assertNotIn('{% trans "Request profile" %}', profile)
         self.assertNotIn('<p class="eyebrow">{% trans "Profile" %}</p>', profile)
@@ -275,7 +281,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_profile_groups_person_information_semantically(self):
         profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
-            '{% elif entity_tab == "programs" %}', 1
+            '{% elif entity_tab == "preferences" %}', 1
         )[0]
         for heading in (
             "Personal information",
@@ -309,7 +315,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_profile_has_one_contextual_customer_edit_action(self):
         profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
-            '{% elif entity_tab == "programs" %}', 1
+            '{% elif entity_tab == "preferences" %}', 1
         )[0]
         self.assertEqual(profile.count('{% trans "Edit profile" %}'), 1)
         self.assertIn("{% url 'lead-edit' lead.pk %}", profile)
@@ -318,7 +324,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_profile_uses_shared_page_title_action_convention(self):
         profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
-            '{% elif entity_tab == "programs" %}', 1
+            '{% elif entity_tab == "preferences" %}', 1
         )[0]
         self.assertIn('class="section-heading request-profile-heading"', profile)
         self.assertIn('<h2>{% trans "Profile" %}</h2>', profile)
@@ -333,7 +339,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_profile_keeps_request_context_out_of_profile_body(self):
         profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
-            '{% elif entity_tab == "programs" %}', 1
+            '{% elif entity_tab == "preferences" %}', 1
         )[0]
         self.assertNotIn('{% trans "Program preferences" %}', profile)
         self.assertNotIn('{% trans "Uploaded documents" %}', profile)
@@ -341,7 +347,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_profile_uses_compact_grouped_panel_contract(self):
         profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
-            '{% elif entity_tab == "programs" %}', 1
+            '{% elif entity_tab == "preferences" %}', 1
         )[0]
         self.assertEqual(
             profile.count('class="lead-panel entity-section request-profile-panel"'),
@@ -355,7 +361,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_profile_displays_all_customer_editable_data(self):
         profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
-            '{% elif entity_tab == "programs" %}', 1
+            '{% elif entity_tab == "preferences" %}', 1
         )[0]
         for field in (
             "Email",
@@ -447,7 +453,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_profile_view_and_edit_share_semantic_sections(self):
         profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
-            '{% elif entity_tab == "programs" %}', 1
+            '{% elif entity_tab == "preferences" %}', 1
         )[0]
         for heading in (
             "Personal information",
@@ -459,6 +465,81 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn('{% trans "Identity & nationality" %}', profile)
         self.assertIn('{% trans "Residence" %}', profile)
         self.assertIn('{% trans "Residence" %}', self.request_form)
+
+    def test_preferences_is_first_class_request_tab(self):
+        self.assertIn(
+            "<a href=\"{% url 'lead-preferences' lead.pk %}\""
+            '{% if entity_tab == "preferences" %} class="is-active"{% endif %}>',
+            self.request_nav,
+        )
+        self.assertIn('{% trans "Preferences" %}</a>', self.request_nav)
+        self.assertIn('context["entity_tab"] = "preferences"', self.views)
+        self.assertIn('return render(request, "leads/lead_section.html", context)', self.views)
+
+    def test_preferences_tab_is_read_only_grouped_workspace(self):
+        preferences = self.request_section.split('{% elif entity_tab == "preferences" %}', 1)[
+            1
+        ].split('{% elif entity_tab == "programs" %}', 1)[0]
+        self.assertEqual(preferences.count('<h2>{% trans "Preferences" %}</h2>'), 1)
+        for heading in (
+            "Study preferences",
+            "University preferences",
+            "Budget",
+            "Other preferences",
+        ):
+            self.assertIn(f'{{% trans "{heading}" %}}', preferences)
+        for field in (
+            "Degree",
+            "Study field",
+            "Language",
+            "Cities",
+            "Universities",
+            "University type",
+            "Tuition",
+            "Dormitory",
+            "Erasmus",
+            "Notes",
+        ):
+            self.assertIn(f'{{% trans "{field}" %}}', preferences)
+
+    def test_preferences_uses_shared_page_action_and_dedicated_edit_route(self):
+        preferences = self.request_section.split('{% elif entity_tab == "preferences" %}', 1)[
+            1
+        ].split('{% elif entity_tab == "programs" %}', 1)[0]
+        self.assertIn(
+            'class="button request-page-primary-action request-preferences-action"',
+            preferences,
+        )
+        self.assertIn("{% url 'lead-preferences-edit' lead.pk %}", preferences)
+        self.assertIn('{% trans "Edit preferences" %} →', preferences)
+        self.assertIn('name="lead-preferences-edit"', self.urls)
+        self.assertIn("def lead_preferences_edit(request, lead_id):", self.views)
+        self.assertIn('{% trans "Edit preferences" %}', self.preference_form)
+        self.assertIn("{% url 'lead-preferences' lead.id %}", self.preference_form)
+
+    def test_preferences_tab_owns_full_width_without_duplicate_context_sidebar(self):
+        self.assertIn(
+            "entity_tab == 'documents' or entity_tab == 'preferences'",
+            self.request_section,
+        )
+        self.assertIn(
+            '{% if entity_tab != "documents" and entity_tab != "preferences" %}',
+            self.request_section,
+        )
+        self.assertIn(
+            ".request-detail-layout-documents,.request-detail-layout-full"
+            "{grid-template-columns:minmax(0,1fr)}",
+            self.css,
+        )
+        self.assertIn("{% url 'lead-preferences' lead.pk %}", self.request_context_sidebar)
+
+    def test_preferences_edit_redirects_back_to_preferences_and_respects_finalized(self):
+        edit = self.views.split("def lead_preferences_edit(request, lead_id):", 1)[1].split(
+            "@login_required\ndef lead_detail", 1
+        )[0]
+        self.assertIn("lead.status == LeadStatus.FINALIZED", edit)
+        self.assertIn('return redirect("lead-preferences", lead_id=lead.pk)', edit)
+        self.assertIn('"entity_tab": "preferences"', edit)
 
     def test_programs_tab_has_single_heading_and_primary_action(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
@@ -771,7 +852,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_documents_tab_has_no_request_context_sidebar(self):
         self.assertIn(
-            '{% if entity_tab != "documents" %}',
+            '{% if entity_tab != "documents" and entity_tab != "preferences" %}',
             self.request_section,
         )
         self.assertIn(
@@ -779,11 +860,12 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             self.request_section,
         )
         self.assertIn(
-            "request-detail-layout-documents",
+            "entity_tab == 'documents' or entity_tab == 'preferences'",
             self.request_section,
         )
         self.assertIn(
-            ".request-detail-layout-documents{grid-template-columns:minmax(0,1fr)}",
+            ".request-detail-layout-documents,.request-detail-layout-full"
+            "{grid-template-columns:minmax(0,1fr)}",
             self.css,
         )
         self.assertIn('{% trans "Program preferences" %}', self.request_context_sidebar)
@@ -832,20 +914,20 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn("justify-content:space-between;", self.css)
         self.assertIn("font-size:.7rem;", self.css)
 
-    def test_customer_request_mobile_tabs_fit_without_clipping(self):
+    def test_customer_request_mobile_tabs_scroll_without_clipping(self):
+        for label in ("Overview", "Profile", "Preferences", "Programs", "Documents", "Messages"):
+            self.assertIn(f'{{% trans "{label}" %}}', self.request_nav)
         self.assertIn(
-            "customer-request-entity-nav",
-            self.request_nav,
-        )
-        self.assertIn(
-            ".customer-request-entity-nav{display:grid;"
-            "grid-template-columns:repeat(5,minmax(0,1fr));",
+            ".customer-request-entity-nav{display:flex;",
             self.css,
         )
+        self.assertIn("overflow-x:auto;overflow-y:hidden;", self.css)
+        self.assertIn("scrollbar-width:none;", self.css)
         self.assertIn(
-            "font-size:clamp(.64rem,2.7vw,.72rem)",
+            ".customer-request-entity-nav>a{flex:0 0 auto;",
             self.css,
         )
+        self.assertIn("white-space:nowrap", self.css)
 
     def test_messages_workspace_has_single_page_identity(self):
         messages = self.request_section.split('{% elif entity_tab == "messages" %}', 1)[1].split(

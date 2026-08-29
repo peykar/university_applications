@@ -3,7 +3,7 @@
 {% block title %}{{ lead }} · {{ entity_tab|title }} — TurkDemy{% endblock %}
 {% block customer_content %}
 <div class="customer-applicant-page customer-request-detail">
-<div class="request-detail-layout{% if entity_tab == 'documents' %} request-detail-layout-documents{% elif entity_tab == 'messages' %} request-detail-layout-messages{% endif %}">
+<div class="request-detail-layout{% if entity_tab == 'documents' or entity_tab == 'preferences' %} request-detail-layout-full{% elif entity_tab == 'messages' %} request-detail-layout-messages{% endif %}">
 <main class="request-detail-main">
 {% include "includes/applicant_entity_header.html" %}
 {% if entity_tab == "profile" %}
@@ -69,6 +69,50 @@
         <div><dt>{% trans "High school GPA" %}</dt><dd>{{ lead.high_school_gpa|default_if_none:"—" }}</dd></div>
         <div><dt>{% trans "High school GPA scale" %}</dt><dd>{{ lead.high_school_gpa_scale|default_if_none:"—" }}</dd></div>
         <div class="request-profile-fact-wide"><dt>{% trans "Educational background" %}</dt><dd>{{ lead.educational_background|default:"—"|linebreaksbr }}</dd></div>
+      </dl>
+    </section>
+  </section>
+
+{% elif entity_tab == "preferences" %}
+  <section class="lead-panel entity-section request-preferences-panel">
+    <div class="section-heading request-preferences-heading">
+      <h2>{% trans "Preferences" %}</h2>
+      {% if lead.status != "finalized" %}
+        <a class="button request-page-primary-action request-preferences-action" href="{% url 'lead-preferences-edit' lead.pk %}">{% trans "Edit preferences" %} →</a>
+      {% endif %}
+    </div>
+
+    <section class="request-preferences-section request-preferences-section-primary">
+      <div class="request-preferences-section-heading"><h2>{% trans "Study preferences" %}</h2></div>
+      <dl class="entity-facts-grid request-preferences-facts">
+        <div><dt>{% trans "Degree" %}</dt><dd>{% if preferred_degrees %}{% for item in preferred_degrees %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
+        <div><dt>{% trans "Study field" %}</dt><dd>{% if preferred_departments %}{% for item in preferred_departments %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
+        <div><dt>{% trans "Language" %}</dt><dd>{% if preferred_languages %}{% for item in preferred_languages %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
+      </dl>
+    </section>
+
+    <section class="request-preferences-section">
+      <div class="request-preferences-section-heading"><h2>{% trans "University preferences" %}</h2></div>
+      <dl class="entity-facts-grid request-preferences-facts">
+        <div><dt>{% trans "Cities" %}</dt><dd>{% if preferred_cities %}{% for item in preferred_cities %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
+        <div><dt>{% trans "Universities" %}</dt><dd>{% if preferred_universities %}{% for item in preferred_universities %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
+        <div><dt>{% trans "University type" %}</dt><dd>{% if preferred_university_types %}{% for item in preferred_university_types %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
+      </dl>
+    </section>
+
+    <section class="request-preferences-section">
+      <div class="request-preferences-section-heading"><h2>{% trans "Budget" %}</h2></div>
+      <dl class="entity-facts-grid request-preferences-facts">
+        <div class="request-preferences-fact-wide"><dt>{% trans "Tuition" %}</dt><dd>{% if preferences.tuition_min or preferences.tuition_max %}{% if preferences.tuition_min %}{{ preferences.tuition_min|floatformat:0 }}{% else %}0{% endif %}–{% if preferences.tuition_max %}{{ preferences.tuition_max|floatformat:0 }}{% else %}∞{% endif %} {{ preferences.tuition_currency }}{% else %}—{% endif %}</dd></div>
+      </dl>
+    </section>
+
+    <section class="request-preferences-section">
+      <div class="request-preferences-section-heading"><h2>{% trans "Other preferences" %}</h2></div>
+      <dl class="entity-facts-grid request-preferences-facts">
+        <div><dt>{% trans "Dormitory" %}</dt><dd>{% if preferences.requires_dormitory == True %}{% trans "Required" %}{% elif preferences.requires_dormitory == False %}{% trans "Not required" %}{% else %}{% trans "No preference" %}{% endif %}</dd></div>
+        <div><dt>{% trans "Erasmus" %}</dt><dd>{% if preferences.requires_erasmus == True %}{% trans "Required" %}{% elif preferences.requires_erasmus == False %}{% trans "Not required" %}{% else %}{% trans "No preference" %}{% endif %}</dd></div>
+        <div class="request-preferences-fact-wide"><dt>{% trans "Notes" %}</dt><dd>{{ preferences.notes|default:"—"|linebreaksbr }}</dd></div>
       </dl>
     </section>
   </section>
@@ -304,7 +348,7 @@
 {% endif %}
 
 </main>
-{% if entity_tab != "documents" %}
+{% if entity_tab != "documents" and entity_tab != "preferences" %}
   {% include "includes/customer_request_context_sidebar.html" %}
 {% endif %}
 </div>

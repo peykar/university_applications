@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.26
+Version: 1.27
 
 ## Goal
 
@@ -229,7 +229,7 @@ CRQ-071 — The document type label on each customer Documents card MUST itself 
 
 CRQ-072 — On customer mobile Documents pages, the Documents heading and its upload action MUST remain on one header row when upload is available. Ordinary document cards MUST remain compact, and the open arrow MUST be vertically centered for ordinary cards while replacement-required cards MAY keep top-aligned navigation to preserve expanded content readability.
 
-CRQ-073 — Customer Request tab navigation on mobile MUST present Overview, Profile, Programs, Documents, and Messages without clipping a tab label off-screen. The five customer tabs MUST fit the available row at narrow widths while retaining an unambiguous active state and usable tap targets.
+CRQ-073 — Customer Request tab navigation on mobile MUST present Overview, Profile, Preferences, Programs, Documents, and Messages without clipping or truncating a tab label. At narrow widths, the six-tab navigation MUST use a single-line horizontally scrollable strip with usable tap targets, an unambiguous active state, and no forced label wrapping.
 
 
 CRQ-074 — The Documents workspace MUST place its page-level action on the opposite logical side of the **Documents** title on desktop and mobile. The action MUST use the primary dark-blue button treatment and MUST be labelled **+ Upload document**. Logical start/end alignment MUST preserve the same title/action relationship in RTL.
@@ -279,3 +279,12 @@ assignment and MUST NOT render the composer. If an advisor/conversation exists b
 contains no messages, Messages MUST show a concise **No messages yet** state while
 keeping the composer available.
 
+
+
+CRQ-087 — **Preferences** MUST be a first-class customer Request tab positioned between Profile and Programs. The tab MUST use the existing `/preferences/` Request-local URL and MUST render as active when the Preferences workspace is open.
+
+CRQ-088 — The Preferences tab MUST be a read-only customer workspace with one **Preferences** page identity. It MUST present all customer-editable `LeadPreference` data in semantic groups: **Study preferences**, **University preferences**, **Budget**, and **Other preferences**, using stable empty/no-preference presentation where values are absent.
+
+CRQ-089 — Editable Requests MUST expose one **Edit preferences →** page-level action on the Preferences tab. The action MUST reuse the shared `request-page-primary-action` component and open a dedicated preferences edit route. Saving or cancelling MUST return to the Preferences tab; finalized Requests MUST not render the action and direct edit access MUST be rejected safely.
+
+CRQ-090 — The Program preferences card in Request context MUST remain a compact summary/shortcut on Overview, Profile, Programs, and desktop Messages, linking to the Preferences tab. The Preferences workspace itself MUST suppress the Request context sidebar and use the available Request-detail width so the same preferences are not duplicated beside their own page.

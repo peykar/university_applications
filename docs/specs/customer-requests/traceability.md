@@ -84,7 +84,7 @@ Status: IMPLEMENTED
 
 | `CRQ-071` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_document_type_is_a_direct_file_link` | Named structural/style test |
 | `CRQ-072` | `static/css/turkdemy.css`, `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_documents_mobile_layout_is_compact_and_upload_stays_in_heading` | Named style/structural test |
-| `CRQ-073` | `static/css/turkdemy.css`, `templates/includes/applicant_entity_nav.html` | `CustomerRequestWorkspaceTests.test_customer_request_mobile_tabs_fit_without_clipping` | Named style/structural test |
+| `CRQ-073` | `static/css/turkdemy.css`, `templates/includes/applicant_entity_nav.html` | `CustomerRequestWorkspaceTests.test_customer_request_mobile_tabs_scroll_without_clipping` | Named style/structural test |
 
 | `CRQ-074` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_documents_page_action_is_primary_and_opposite_title` | Named structural/style test |
 
@@ -103,3 +103,8 @@ Status: IMPLEMENTED
 | `CRQ-084` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_messages_keep_desktop_context_and_hide_it_on_mobile` | Named structural/style test |
 | `CRQ-085` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_message_attachments_are_compact_clickable_files` | Named structural test |
 | `CRQ-086` | `templates/leads/lead_section.html`, `apps/leads/views.py` | `CustomerRequestWorkspaceTests.test_messages_distinguish_empty_and_unassigned_states`, `UnassignedCustomerRequestTests` | Named structural + runtime tests |
+
+| `CRQ-087` | `templates/includes/applicant_entity_nav.html`, `apps/leads/views.py`, `apps/leads/urls.py` | `CustomerRequestWorkspaceTests.test_preferences_is_first_class_request_tab` | Named structural test |
+| `CRQ-088` | `templates/leads/lead_section.html`, `apps/leads/views.py` | `CustomerRequestWorkspaceTests.test_preferences_tab_is_read_only_grouped_workspace` | Named structural test |
+| `CRQ-089` | `templates/leads/lead_section.html`, `templates/leads/lead_preferences.html`, `apps/leads/views.py`, `apps/leads/urls.py`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_preferences_uses_shared_page_action_and_dedicated_edit_route`, `CustomerRequestWorkspaceTests.test_preferences_edit_redirects_back_to_preferences_and_respects_finalized`, `FinalizedCustomerLeadMutationStructureTests.test_customer_preferences_edit_has_finalized_guard` | Named structural/style/guard tests |
+| `CRQ-090` | `templates/includes/customer_request_context_sidebar.html`, `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_preferences_tab_owns_full_width_without_duplicate_context_sidebar` | Named structural/style test |

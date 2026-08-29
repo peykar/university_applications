@@ -15,6 +15,7 @@
   {% else %}
     <a href="{% url 'lead-detail' lead.pk %}"{% if entity_tab == "overview" %} class="is-active"{% endif %}>{% trans "Overview" %}</a>
     <a href="{% url 'lead-profile' lead.pk %}"{% if entity_tab == "profile" %} class="is-active"{% endif %}>{% trans "Profile" %}</a>
+    <a href="{% url 'lead-preferences' lead.pk %}"{% if entity_tab == "preferences" %} class="is-active"{% endif %}>{% trans "Preferences" %}</a>
     <a href="{% url 'lead-programs' lead.pk %}"{% if entity_tab == "programs" %} class="is-active"{% endif %}>{% trans "Programs" %}</a>
     <a href="{% url 'lead-documents' lead.pk %}"{% if entity_tab == "documents" %} class="is-active"{% endif %}>{% trans "Documents" %}</a>
     <a href="{% url 'lead-messages' lead.pk %}"{% if entity_tab == "messages" %} class="is-active"{% endif %}>{% trans "Messages" %}</a>

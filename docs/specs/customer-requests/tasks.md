@@ -90,7 +90,7 @@ Status: IMPLEMENTED
 
 - [x] `CRQ-071` Make document type itself open the uploaded file while keeping filenames hidden.
 - [x] `CRQ-072` Refine mobile Documents heading/upload placement, card density, and ordinary-card arrow alignment.
-- [x] `CRQ-073` Make all five customer Request tabs fit the mobile row without clipping.
+- [x] `CRQ-073` Keep all six customer Request tabs readable in a single-line horizontally scrollable mobile strip.
 
 - [x] `CRQ-074` Keep **Documents** and the primary **+ Upload document** page action on opposite logical sides of the same title row across desktop/mobile/RTL.
 
@@ -110,3 +110,8 @@ Status: IMPLEMENTED
 - [x] `CRQ-084` Preserve Request context on desktop Messages and hide it on customer mobile widths.
 - [x] `CRQ-085` Render message attachments as compact clickable file affordances.
 - [x] `CRQ-086` Differentiate assigned-empty and advisor-unassigned messaging states without inventing a start action.
+
+- [x] `CRQ-087` Add Preferences as a first-class Request tab between Profile and Programs.
+- [x] `CRQ-088` Build a complete grouped read-only Preferences workspace.
+- [x] `CRQ-089` Add shared page-level Edit preferences action, dedicated edit route, return flow, and finalized guard.
+- [x] `CRQ-090` Keep Program preferences as context summary elsewhere while making Preferences full-width and non-duplicative.

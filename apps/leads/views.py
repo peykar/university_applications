@@ -350,6 +350,21 @@ def lead_edit(request, lead_id):
 @login_required
 def lead_preferences(request, lead_id):
     lead = _customer_lead(request.user, lead_id)
+    context = _lead_entity_context(request=request, lead=lead)
+    context["entity_tab"] = "preferences"
+    return render(request, "leads/lead_section.html", context)
+
+
+@login_required
+def lead_preferences_edit(request, lead_id):
+    lead = _customer_lead(request.user, lead_id)
+    if lead.status == LeadStatus.FINALIZED:
+        messages.error(
+            request,
+            "This Request's preferences can no longer be edited.",
+        )
+        return redirect("lead-preferences", lead_id=lead.pk)
+
     preferences = lead.preferences
 
     if request.method == "POST":
@@ -372,7 +387,7 @@ def lead_preferences(request, lead_id):
                 )
             )
             messages.success(request, "Study preferences updated.")
-            return redirect("lead-programs", lead_id=lead.pk)
+            return redirect("lead-preferences", lead_id=lead.pk)
     else:
         form = LeadPreferenceForm(instance=preferences)
 
@@ -382,7 +397,7 @@ def lead_preferences(request, lead_id):
         {
             "lead": lead,
             "form": form,
-            "entity_tab": "programs",
+            "entity_tab": "preferences",
             "agent_context": False,
         },
     )

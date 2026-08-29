@@ -7,6 +7,7 @@ Status: BASELINED
 - Stored in `LeadPreference` one-to-one with Lead.
 - Catalogue relations use M2M where implemented.
 - Degree/university type codes are validated against catalogue choices.
+- Customer presentation is owned by the Request **Preferences** tab; editing uses the dedicated Request-local preferences edit route. The Program preferences context card is summary/navigation only.
 
 ## Cross-cutting constraints
 

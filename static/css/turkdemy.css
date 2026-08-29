@@ -5758,7 +5758,7 @@ a.entity-list-row:hover{
 .customer-request-detail{max-width:none}
 .customer-request-detail .entity-context-head{margin-bottom:22px}
 .request-detail-layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:26px;align-items:start}
-.request-detail-layout-documents{grid-template-columns:minmax(0,1fr)}
+.request-detail-layout-documents,.request-detail-layout-full{grid-template-columns:minmax(0,1fr)}
 .request-detail-main{min-width:0}
 .request-detail-main>.entity-context-head{margin-bottom:22px}
 .request-context-sidebar{position:sticky;top:96px;display:grid;gap:12px;min-width:0}
@@ -5979,8 +5979,9 @@ a.entity-list-row:hover{
 .request-document-empty span{max-width:420px;color:var(--muted);font-size:.8rem;line-height:1.5}
 .request-document-empty .button{margin-top:4px}
 @media(max-width:700px){
- .customer-request-entity-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin-inline:0;padding-inline:0;overflow:visible;scrollbar-width:none}
- .customer-request-entity-nav>a{justify-content:center;min-width:0;padding:8px 3px;font-size:clamp(.64rem,2.7vw,.72rem)}
+ .customer-request-entity-nav{display:flex;gap:0;margin-inline:0;padding-inline:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch}
+ .customer-request-entity-nav::-webkit-scrollbar{display:none}
+ .customer-request-entity-nav>a{flex:0 0 auto;justify-content:center;min-width:max-content;padding:8px 11px;font-size:.72rem;white-space:nowrap}
  .request-documents-heading{gap:10px}
  .request-documents-heading .button{padding:9px 12px;font-size:.75rem;white-space:nowrap}
  .customer-applicant-page .request-document-card{grid-template-columns:1fr;padding:12px 46px 12px 14px;min-height:82px}
@@ -6148,4 +6149,24 @@ a.entity-list-row:hover{
   .customer-applicant-page .request-message-workspace .chat-message-customer .chat-message-meta{justify-items:end}
   .customer-applicant-page .request-message-compose .chat-attach-label{padding-inline:7px}
   .customer-applicant-page .request-message-compose .chat-attachment-selection{max-width:92px}
+}
+
+
+/* Customer Request: Preferences first-class tab (CRQ-087..CRQ-090). */
+.request-preferences-heading{display:flex;align-items:center!important;justify-content:space-between;gap:14px;flex-wrap:nowrap}
+.request-preferences-heading h2{margin:0!important}
+.request-preferences-action{flex:0 0 auto}
+.request-preferences-panel{display:grid;gap:0}
+.request-preferences-section{padding:18px 0;border-top:1px solid #e8edf1}
+.request-preferences-section-primary{padding-top:4px;border-top:0}
+.request-preferences-section-heading{margin-bottom:12px}
+.request-preferences-section-heading h2{margin:0;color:#30465c;font-size:.86rem}
+.request-preferences-facts{margin:0}
+.request-preferences-fact-wide{grid-column:1/-1}
+@media(max-width:700px){
+  .request-preferences-heading .button{padding:9px 12px;font-size:.75rem;white-space:nowrap}
+}
+@media(max-width:430px){
+  .customer-applicant-page .lead-panel .request-preferences-heading{display:flex;align-items:center!important;justify-content:space-between;gap:8px}
+  .customer-applicant-page .lead-panel .request-preferences-heading .button{margin:0;padding:8px 10px;font-size:.7rem;white-space:nowrap}
 }

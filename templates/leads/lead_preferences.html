@@ -1,16 +1,12 @@
 {% extends "customer/base.html" %}
 {% load i18n static %}
-{% block title %}{% trans "Study preferences" %} — {{ lead }}{% endblock %}
+{% block title %}{% trans "Edit preferences" %} — {{ lead }}{% endblock %}
 {% block customer_content %}
 {% include "includes/applicant_entity_header.html" %}
 <section class="applicant-form-page">
   <header class="applicant-form-header">
-    <p class="eyebrow">{% trans "Program matching" %}</p>
-    <h1>{% trans "Study preferences" %}</h1>
-    <p class="lead-context">{{ lead }}</p>
-    <p class="muted">
-      {% trans "Tell us the broad criteria that matter. Staff/system can use them to suggest suitable programs." %}
-    </p>
+    <h1>{% trans "Edit preferences" %}</h1>
+    <p class="muted">{% trans "Tell us what you are looking for so TurkDemy can suggest suitable programs." %}</p>
   </header>
 
   <form method="post" class="form-card applicant-form-card lead-profile-form">
@@ -121,8 +117,8 @@
 
     <div class="form-actions applicant-form-actions">
       <button class="button" type="submit">{% trans "Save preferences" %}</button>
-      <a class="button button-secondary" href="{% url 'lead-detail' lead.id %}">
-        {% trans "Back to request" %}
+      <a class="button button-secondary" href="{% url 'lead-preferences' lead.id %}">
+        {% trans "Cancel" %}
       </a>
     </div>
   </form>

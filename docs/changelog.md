@@ -1107,3 +1107,13 @@
 - Updated the unassigned-advisor assertion to the approved customer-safe Messages copy from CRQ-086.
 - Corrected the composer structural test to inspect `apps/messaging/forms.py`, where `MessageForm` and its attachment widget are actually defined, instead of `apps/leads/forms.py`.
 - No product behavior or SDD requirement changed.
+
+
+## 2026-08-29 — Preferences becomes a first-class Request tab
+
+- Advanced Customer Requests SDD to v1.27 with CRQ-087 through CRQ-090 and revised CRQ-073.
+- Added **Preferences** between Profile and Programs in customer Request navigation.
+- Converted `/preferences/` into a grouped read-only Request workspace covering study, university, budget, and other preferences.
+- Added `/preferences/edit/` with the shared **Edit preferences →** page action, Preferences return flow, and finalized-Request guard.
+- Kept Program preferences as a compact context summary/shortcut on other Request tabs while removing the context sidebar from Preferences itself.
+- Replaced the five-column mobile Request-tab layout with a six-tab single-line horizontal scroll strip so labels remain readable and tappable.

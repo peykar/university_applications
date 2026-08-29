@@ -223,3 +223,8 @@ The footer uses the same customer-facing workspace language as the rest of TurkD
 ### Mobile customer workspace actions
 
 The customer workspace navigation uses an adaptive narrow-screen grid so My Requests, Messages, Get Help, and the optional WhatsApp action remain visible without horizontal clipping. Long support labels may wrap inside their cell; if WhatsApp is not configured, the remaining actions redistribute automatically.
+
+
+## Customer Request tabs
+
+The canonical customer Request tab navigation is **Overview · Profile · Preferences · Programs · Documents · Messages**. Preferences represents what the customer is looking for; Programs represents concrete programs being considered. On mobile, the six tabs remain on one line in a horizontally scrollable strip rather than being compressed into equal-width columns.
