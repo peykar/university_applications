@@ -5852,6 +5852,19 @@ a.entity-list-row:hover{
   font-weight:700;
 }
 
+
+/* Customer Request: Profile page action */
+.request-profile-heading{display:flex;align-items:center!important;justify-content:space-between;gap:14px;flex-wrap:nowrap}
+.request-profile-heading h2{margin:0!important}
+.request-profile-action{flex:0 0 auto}
+@media(max-width:700px){
+  .request-profile-heading .button{padding:9px 12px;font-size:.75rem;white-space:nowrap}
+}
+@media(max-width:430px){
+  .customer-applicant-page .lead-panel .request-profile-heading{display:flex;align-items:center!important;justify-content:space-between;gap:8px}
+  .customer-applicant-page .lead-panel .request-profile-heading .button{margin:0;padding:8px 10px;font-size:.7rem;white-space:nowrap}
+}
+
 /* Customer Request: Programs tab */
 .request-programs-heading{display:flex;align-items:center!important;justify-content:space-between;gap:14px;flex-wrap:nowrap}
 .request-programs-heading h2{margin:0!important}

@@ -1082,3 +1082,11 @@
 - Added one shared `request-page-primary-action` visual component for Request page-level primary actions.
 - Programs **Find programs →** and Documents **+ Upload document** now share height, padding, typography, radius, dark-blue treatment, and hover/focus behavior while retaining content-driven widths.
 - Page-specific action classes now control placement/semantics rather than duplicating visual styling.
+
+
+## 2026-08-29 — Profile shared page-action alignment
+
+- Advanced Customer Requests SDD to v1.25 with CRQ-079 and refined CRQ-032/CRQ-034.
+- Added a single **Profile** workspace title row and moved **Edit profile →** out of the Personal information subsection.
+- Reused the shared `request-page-primary-action` component so Profile, Programs, and Documents page-level actions share the same visual contract.
+- Preserved finalized Request edit restrictions and Agent-side Edit applicant behavior.

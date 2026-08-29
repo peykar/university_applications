@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.24
+Version: 1.25
 
 ## Goal
 
@@ -136,11 +136,11 @@ CRQ-030 — The Request context document card MUST use **Uploaded documents** as
 
 CRQ-031 — The Request context preference card MUST use **Program preferences** as its single heading, MUST NOT show a decorative **Study** eyebrow, and MUST expose at most one edit action. When editable, that action MUST be the header-level **Edit** action; the duplicate bottom **Edit preferences** action MUST NOT render.
 
-CRQ-032 — The customer Request **Profile** tab MUST rely on the active Request navigation tab for page identity and MUST NOT repeat that identity with decorative **Profile** or **Request profile** headings inside the tab content. The content MUST begin with meaningful person-information sections.
+CRQ-032 — The customer Request **Profile** tab MUST use **Profile** as its single workspace title and MUST NOT repeat that identity with decorative **Profile** eyebrows or **Request profile** headings. The shared Request header continues to own the person name; Profile content beneath the page-title row MUST begin with meaningful person-information sections.
 
 CRQ-033 — Customer Profile information MUST be grouped by meaning: **Personal information**, **Identity & nationality**, **Residence**, **Passport**, and **Education & language**. The Request person's name MUST remain in the shared Request header and MUST NOT be repeated inside Profile content.
 
-CRQ-034 — Customer Profile MUST expose at most one **Edit profile** action. When the Request is editable, that action MUST live with the Profile content rather than appearing in the shared Request header. Finalized Requests MUST NOT expose the customer edit action. Agent-facing **Edit applicant** behavior remains unchanged.
+CRQ-034 — Customer Profile MUST expose at most one **Edit profile** action. When the Request is editable, that action MUST live on the Profile page-title/action row rather than appearing in the shared Request header or inside a person-information subsection. Finalized Requests MUST NOT expose the customer edit action. Agent-facing **Edit applicant** behavior remains unchanged.
 
 CRQ-035 — The customer Profile tab MUST remain person-focused and MUST NOT duplicate **Program preferences** or uploaded-document context already owned by the persistent Request context sidebar. The context sidebar MUST continue to render beside Profile using the same Request detail layout.
 
@@ -240,3 +240,6 @@ CRQ-077 — On customer mobile Programs pages, each program card MUST collapse t
 
 
 CRQ-078 — All customer Request page-level primary actions MUST use one shared visual action class/component so Programs, Documents, Messages, and future Request tabs receive the same height, padding, typography, radius, dark-blue treatment, hover/focus behavior, mobile sizing, and RTL-safe alignment. Action width MUST remain content-driven rather than being forced equal.
+
+
+CRQ-079 — The customer Profile workspace MUST apply the shared Request page-title/action convention: **Profile** at logical start and **Edit profile →** at logical end on the same row across desktop/mobile/RTL. **Edit profile →** MUST use the shared `request-page-primary-action` visual component used by Programs and Documents.

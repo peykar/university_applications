@@ -100,3 +100,5 @@ Status: IMPLEMENTED
 - [x] `CRQ-077` Collapse Programs cards to a true vertical mobile flow with full-width intake selection, horizontal bottom Remove action, and a non-stacking Programs title/action row.
 
 - [x] `CRQ-078` Unify Request page-level primary actions behind one shared visual class while keeping content-driven widths and page-specific placement.
+
+- [x] `CRQ-079` Move **Edit profile →** to a Profile page-title/action row and reuse the shared Request page primary-action component across desktop/mobile/RTL.

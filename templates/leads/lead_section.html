@@ -8,12 +8,15 @@
 {% include "includes/applicant_entity_header.html" %}
 {% if entity_tab == "profile" %}
   <section class="lead-panel entity-section request-profile-panel">
+    <div class="section-heading request-profile-heading">
+      <h2>{% trans "Profile" %}</h2>
+      {% if lead.status != "finalized" %}
+        <a class="button request-page-primary-action request-profile-action" href="{% url 'lead-edit' lead.pk %}">{% trans "Edit profile" %} →</a>
+      {% endif %}
+    </div>
     <section class="request-profile-section request-profile-section-primary">
       <div class="request-profile-section-heading">
         <h2>{% trans "Personal information" %}</h2>
-        {% if lead.status != "finalized" %}
-          <a class="section-link" href="{% url 'lead-edit' lead.pk %}">{% trans "Edit profile" %} →</a>
-        {% endif %}
       </div>
       <dl class="entity-facts-grid request-profile-facts">
         <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:"—" }}</dd></div>

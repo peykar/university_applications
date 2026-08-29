@@ -262,12 +262,13 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertEqual(self.request_context_sidebar.count('{% trans "Edit" %} →'), 1)
         self.assertNotIn('{% trans "Edit preferences" %}', self.request_context_sidebar)
 
-    def test_profile_starts_with_meaningful_sections_without_duplicate_identity(self):
+    def test_profile_starts_with_single_workspace_title_and_person_sections(self):
         profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
             '{% elif entity_tab == "programs" %}', 1
         )[0]
         self.assertNotIn('{% trans "Request profile" %}', profile)
         self.assertNotIn('<p class="eyebrow">{% trans "Profile" %}</p>', profile)
+        self.assertEqual(profile.count('<h2>{% trans "Profile" %}</h2>'), 1)
         self.assertIn('<h2>{% trans "Personal information" %}</h2>', profile)
         self.assertNotIn("<h1>{{ lead }}</h1>", profile)
 
@@ -313,6 +314,20 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn("{% url 'lead-edit' lead.pk %}", profile)
         self.assertIn('{% if lead.status != "finalized" %}', profile)
         self.assertNotIn('{% trans "Edit profile" %}', self.request_header)
+
+    def test_profile_uses_shared_page_title_action_convention(self):
+        profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
+            '{% elif entity_tab == "programs" %}', 1
+        )[0]
+        self.assertIn('class="section-heading request-profile-heading"', profile)
+        self.assertIn('<h2>{% trans "Profile" %}</h2>', profile)
+        self.assertIn(
+            'class="button request-page-primary-action request-profile-action"',
+            profile,
+        )
+        personal = profile.split('{% trans "Personal information" %}', 1)[1]
+        self.assertNotIn('class="section-link"', personal.split("</section>", 1)[0])
+        self.assertIn(".request-profile-heading{display:flex;", self.css)
         self.assertIn('{% trans "Edit applicant" %}', self.request_header)
 
     def test_profile_keeps_request_context_out_of_profile_body(self):

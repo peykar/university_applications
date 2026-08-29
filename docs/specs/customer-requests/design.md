@@ -121,7 +121,7 @@ The customer Profile tab treats the active **Profile** navigation state as suffi
 
 Profile content is one compact primary panel divided into semantic groups: **Personal information**, **Identity & nationality**, **Residence**, **Passport**, and **Education & language**. Section boundaries provide scanability without turning each group into another dashboard card.
 
-The single customer **Edit profile** action is placed beside the first Profile content heading and keeps the existing editability rule: finalized Requests do not expose customer editing. The shared Request header no longer changes its customer actions merely because Profile is selected. Agent-facing Edit applicant remains in the shared Agent header.
+The single customer **Edit profile** action is placed on the Profile workspace page-title/action row beside the single **Profile** workspace title and keeps the existing editability rule: finalized Requests do not expose customer editing. It uses the shared `request-page-primary-action` component, while person-information subsection headings remain content-only. The shared Request header no longer changes its customer actions merely because Profile is selected. Agent-facing Edit applicant remains in the shared Agent header.
 
 Program preferences and uploaded-document summaries remain exclusively in the persistent Request context sidebar. They are intentionally not copied into Profile because Profile describes the person while the context rail describes Request-level study and document context.
 
@@ -212,3 +212,8 @@ The customer Request tab bar uses a five-column mobile layout for Overview, Prof
 ## Shared Request page primary action (CRQ-078)
 
 Request page-level primary actions use `request-page-primary-action` in addition to the base button class. The shared class owns geometry and visual treatment: minimum height, padding, typography, radius, dark-blue background/border, and hover/focus state. Page-specific classes may control placement only. Width remains intrinsic to each label. Existing mobile heading rules apply identical compact spacing to Programs and Documents, while logical start/end heading alignment remains RTL-safe.
+
+
+## Profile page action alignment (CRQ-079)
+
+Profile now follows the same Request workspace header contract as Programs and Documents. `request-profile-heading` is a logical start/end flex row containing the single **Profile** title and the editable-state **Edit profile →** action. The action reuses `request-page-primary-action`; profile-specific CSS controls placement and narrow-screen spacing only. Finalized Requests omit the action, and subsection headings such as Personal information no longer own page-level actions.
