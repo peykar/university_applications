@@ -39,7 +39,7 @@
                 <strong>{{ interest.program.name_en }}</strong>
                 <small>{{ interest.program.university.name_en }}</small>
                 <small class="request-overview-program-meta">
-                  {{ interest.program.get_degree_display }} · {{ interest.program.program_language.name_en }}
+                  {{ interest.program.get_degree_display }} · {{ interest.program.instruction_language_display }}
                   {% if interest.program_offering %}
                     · {{ interest.program_offering.tuition_discounted|default:interest.program_offering.tuition|currency_amount:interest.program_offering.currency }} / {{ interest.program_offering.get_fee_basis_display }}
                   {% elif interest.program.customer_offerings %}

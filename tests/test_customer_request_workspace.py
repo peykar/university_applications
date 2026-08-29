@@ -679,7 +679,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_overview_programs_show_compact_comparison_data(self):
         self.assertIn("interest.program.get_degree_display", self.request_detail)
-        self.assertIn("interest.program.program_language.name_en", self.request_detail)
+        self.assertIn("interest.program.instruction_language_display", self.request_detail)
         self.assertIn("currency_amount:interest.program_offering.currency", self.request_detail)
         self.assertIn('{% trans "From" %}', self.request_detail)
 
@@ -695,8 +695,8 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         )[0]
         for token in (
             "program.get_degree_display",
-            "program.program_language.name_en",
-            "program.duration",
+            "program.instruction_language_display",
+            "program.duration_display",
             "request-program-tuition",
             '{% trans "Intake" %}',
         ):

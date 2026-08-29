@@ -125,13 +125,14 @@ def _lead_entity_context(*, request, lead, mark_read=False):
         lead.program_interests.select_related(
             "program",
             "program__university",
-            "program__program_language",
+            "program__academic_unit",
             "program_offering",
             "program_offering__academic_year",
             "program_offering__semester",
         )
         .prefetch_related(
-            Prefetch("program__offerings", queryset=active_offerings, to_attr="customer_offerings")
+            "program__instruction_language_rows__language",
+            Prefetch("program__offerings", queryset=active_offerings, to_attr="customer_offerings"),
         )
         .order_by("-created_at")
     )
@@ -674,8 +675,8 @@ def apply_program(request, slug):
     program = get_object_or_404(
         Program.objects.select_related(
             "university",
-            "program_language",
-        ),
+            "academic_unit",
+        ).prefetch_related("instruction_language_rows__language"),
         slug_en=slug,
         is_active=True,
         university__is_active=True,

@@ -7,9 +7,10 @@ view.
 
 It shows:
 - degree
-- language
-- field/department
-- duration
+- instruction language composition (including percentages when known)
+- academic unit and field/department
+- structured study mode
+- fraction-safe duration
 - thesis type when applicable
 - program description
 
@@ -23,10 +24,13 @@ Active ProgramOffering records are rendered as cards with:
 - cash tuition
 - installment tuition
 - deposit
+- preparatory tuition when supplied
+- whether preparation is included
 - fee basis
 - quota
 - application deadline
 - open/closed indication based on the deadline
+- commercial/source notes when supplied
 
 ## University context
 

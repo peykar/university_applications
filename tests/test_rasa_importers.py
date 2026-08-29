@@ -113,6 +113,8 @@ class RasaImporterTests(TestCase):
             self.assertEqual(Program.objects.count(), 1)
             program = Program.objects.get()
             self.assertEqual(program.duration, 4)
+            self.assertEqual(program.duration_months, 48)
+            self.assertEqual(program.instruction_languages.count(), 1)
             self.assertEqual(program.listing_priority, 2)
             self.assertEqual(ProgramOffering.objects.count(), 1)
             offering = ProgramOffering.objects.get()

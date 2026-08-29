@@ -132,8 +132,8 @@
               <p class="request-program-university">{{ interest.program.university.name_en }}</p>
               <p class="request-program-meta">
                 <span>{{ interest.program.get_degree_display }}</span><span aria-hidden="true">·</span>
-                <span>{{ interest.program.program_language.name_en }}</span>
-                {% if interest.program.duration %}<span aria-hidden="true">·</span><span>{% blocktrans with years=interest.program.duration %}{{ years }} years{% endblocktrans %}</span>{% endif %}
+                <span>{{ interest.program.instruction_language_display }}</span>
+                {% if interest.program.duration_months %}<span aria-hidden="true">·</span><span>{{ interest.program.duration_display }}</span>{% endif %}
               </p>
               <p class="request-program-tuition">
                 {% if interest.program_offering %}

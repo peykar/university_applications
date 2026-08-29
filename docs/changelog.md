@@ -1,3 +1,10 @@
+
+## 2026-08-29 — Catalogue v2 django-stubs startup fix
+
+- Fixed `Program.instruction_languages` so its generic `ManyToManyField` annotation is not evaluated at Django import time.
+- Added `BUG-0010` documenting the django-stubs startup regression and correction.
+- Reverted the temporary mypy dependency restriction from `BUG-0009`; the supplied traceback identified an application runtime-annotation failure instead of a proven dependency compatibility failure.
+
 ## 2026-08-29 — Customer Programs borderless separated actions
 
 - Advanced Customer Requests SDD to v1.18 with CRQ-064 and revised CRQ-062/CRQ-063 action semantics.
@@ -1126,3 +1133,36 @@
   multi-language instruction, source provenance, duration and pricing semantics.
 - Added FEAT-0006 and an implementation/migration task plan; no v2 code has been
   implemented in this change.
+
+## 2026-08-29 — Catalogue v2 implementation
+
+- Implemented AcademicUnit modelling and same-University Program validation.
+- Added canonical multi-language Program instruction data with optional language
+  percentages, primary-language metadata, admin validation, and mixed-language
+  Rasa import support.
+- Added structured Program study mode and canonical duration in months so
+  fractional-year programmes such as 1.5 years are lossless.
+- Added UniversityCatalogueSource provenance with protected offering references,
+  uploaded source files, received/validity dates, notes, academic year, and
+  recorded-by metadata.
+- Renamed the user/domain-facing preparatory fee field to
+  `preparatory_tuition` while retaining the legacy database column for safe data
+  continuity, and added preparation inclusion, offering notes, and validity.
+- Expanded catalogue admin maintenance to expose complete Program and
+  ProgramOffering academic/commercial data.
+- Updated Rasa mapping, public catalogue filters/detail/cards, customer/agent
+  programme displays, and API serializers to consume canonical language,
+  duration, study-mode, AcademicUnit, and offering fields.
+- Added idempotent `backfill_catalogue_v2` for existing single-language and
+  whole-year duration data, plus Catalogue v2 regression tests.
+- Kept admission requirements/credit-transfer modelling out of Catalogue v2 and
+  opened `DISC-0001` for that separate capability.
+
+## 2026-08-29 — django-stubs / mypy compatibility fix
+
+- Fixed `NewSemanalDjangoPlugin` startup failure caused by resolving
+  `django-stubs` 5.2.9 together with unsupported mypy 1.20.2.
+- Switched the project to the `django-stubs[compatible-mypy]` extra and pinned
+  mypy below 1.20 for the Django 5.2 / django-stubs 5.2.x toolchain.
+- Added `BUG-0009` and documented the dependency compatibility rule.
+- Corrected stale Catalogue v2 wording in the domain-model documentation.

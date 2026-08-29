@@ -33,7 +33,9 @@ The complete filter set:
 - keyword
 - field/department
 - degree
-- language
+- language (matches any canonical instruction language)
+- study mode
+- academic unit
 - university
 - city
 - university type
@@ -72,7 +74,9 @@ Public catalogue URLs use human-readable stable values whenever the model
 provides them:
 
 - `field`: department slug
-- `language`: program-language slug
+- `language`: instruction-language slug
+- `study_mode`: stable study-mode enum/code
+- `academic_unit`: academic-unit slug
 - `university`: university slug
 - `city`: city slug
 - `degree`: enum/code (already URL-friendly)

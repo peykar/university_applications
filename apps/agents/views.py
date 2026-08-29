@@ -300,7 +300,8 @@ def _agent_applicant_context(*, request, lead, mark_read=False):
                 is_active=True,
                 university__is_active=True,
             )
-            .select_related("university", "program_language")
+            .select_related("university", "academic_unit")
+            .prefetch_related("instruction_language_rows__language")
             .order_by("-listing_priority", "university__name_en", "name_en")[:20]
         )
 

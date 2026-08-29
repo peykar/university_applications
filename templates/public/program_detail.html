@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n currency %}
 {% block title %}{{ program.name_en }} · {{ program.university.name_en }} — TurkDemy{% endblock %}
-{% block meta_description %}{{ program.name_en }} at {{ program.university.name_en }}. {{ program.get_degree_display }}, {{ program.program_language.name_en }}{% if program.duration %}, {{ program.duration }} years{% endif %}.{% endblock %}
+{% block meta_description %}{{ program.name_en }} at {{ program.university.name_en }}. {{ program.get_degree_display }}, {{ program.instruction_language_display }}{% if program.duration_months %}, {{ program.duration_display }}{% endif %}.{% endblock %}
 
 {% block content %}
 <section class="program-detail-hero{% if program.university.banner %} program-detail-hero-photo{% endif %}"
@@ -23,9 +23,9 @@
       </p>
 
       <div class="program-fact-pills">
-        <span>{{ program.program_language.name_en }}</span>
+        <span>{{ program.instruction_language_display }}</span>
         {% if program.department %}<span>{{ program.department.name_en }}</span>{% endif %}
-        {% if program.duration %}<span>{{ program.duration }} {% trans "years" %}</span>{% endif %}
+        {% if program.duration_months %}<span>{{ program.duration_display }}</span>{% endif %}
         {% if program.thesis_type %}<span>{{ program.get_thesis_type_display }}</span>{% endif %}
       </div>
     </div>
@@ -48,11 +48,11 @@
   </article>
   <article class="program-summary-card">
     <span>{% trans "Language" %}</span>
-    <strong>{{ program.program_language.name_en }}</strong>
+    <strong>{{ program.instruction_language_display }}</strong>
   </article>
   <article class="program-summary-card">
     <span>{% trans "Duration" %}</span>
-    <strong>{% if program.duration %}{{ program.duration }} {% trans "years" %}{% else %}—{% endif %}</strong>
+    <strong>{% if program.duration_months %}{{ program.duration_display }}{% else %}—{% endif %}</strong>
   </article>
   <article class="program-summary-card">
     <span>{% trans "University" %}</span>
@@ -119,9 +119,16 @@
               {% if offering.deposit %}
                 <div><dt>{% trans "Deposit" %}</dt><dd>{{ offering.deposit|currency_amount_full:offering.currency }}</dd></div>
               {% endif %}
+              {% if offering.preparatory_tuition %}
+                <div><dt>{% trans "Preparatory tuition" %}</dt><dd>{{ offering.preparatory_tuition|currency_amount_full:offering.currency }}</dd></div>
+              {% endif %}
+              {% if offering.preparation_included %}
+                <div><dt>{% trans "Preparation" %}</dt><dd>{% trans "Included" %}</dd></div>
+              {% endif %}
               <div><dt>{% trans "Quota" %}</dt><dd>{{ offering.quota|default:"—" }}</dd></div>
               <div><dt>{% trans "Deadline" %}</dt><dd>{{ offering.deadline|default:"—" }}</dd></div>
             </dl>
+            {% if offering.notes %}<p class="muted">{{ offering.notes }}</p>{% endif %}
           </article>
         {% empty %}
           <div class="empty-state">{% trans "No active offerings are currently available for this program." %}</div>
@@ -223,10 +230,10 @@
               </div>
               <p class="eyebrow">{{ related.get_degree_display }}</p>
               <h3>{{ related.name_en }}</h3>
-              <p class="muted">{{ related.university.city.name_en }} · {{ related.program_language.name_en }}</p>
+              <p class="muted">{{ related.university.city.name_en }} · {{ related.instruction_language_display }}</p>
               <div class="badges">
                 {% if related.department %}<span class="badge">{{ related.department.name_en }}</span>{% endif %}
-                {% if related.duration %}<span class="badge">{{ related.duration }} {% trans "years" %}</span>{% endif %}
+                {% if related.duration_months %}<span class="badge">{{ related.duration_display }}</span>{% endif %}
               </div>
               <div class="related-program-price">
                 {% if related.min_active_tuition %}
@@ -259,7 +266,7 @@
             <a class="more-program-row" href="{% url 'program-detail' related.slug_en %}">
               <div>
                 <strong>{{ related.name_en }}</strong>
-                <span>{{ related.get_degree_display }} · {{ related.program_language.name_en }}{% if related.department %} · {{ related.department.name_en }}{% endif %}</span>
+                <span>{{ related.get_degree_display }} · {{ related.instruction_language_display }}{% if related.department %} · {{ related.department.name_en }}{% endif %}</span>
               </div>
               {% if related.min_active_tuition %}
                 <span class="more-program-price">{{ related.min_active_tuition|currency_amount:related.min_active_currency }}</span>

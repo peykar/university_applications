@@ -63,6 +63,28 @@
           </div>
         </div>
 
+        <div class="filter-pair">
+          <div class="filter-group">
+            <label>{% trans "Study mode" %}</label>
+            <select name="study_mode">
+              <option value="">{% trans "Any study mode" %}</option>
+              {% for value, label in study_mode_choices %}
+                <option value="{{ value }}"{% if filters.study_mode == value %} selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label>{% trans "Academic unit" %}</label>
+            <select name="academic_unit">
+              <option value="">{% trans "Any academic unit" %}</option>
+              {% for unit in academic_unit_choices %}
+                <option value="{{ unit.slug_en }}"{% if filters.academic_unit == unit.slug_en %} selected{% endif %}>{{ unit.name_en }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
         <div class="filter-group">
           <label>{% trans "University" %}</label>
           <select name="university">

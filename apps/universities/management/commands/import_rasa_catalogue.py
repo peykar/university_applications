@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from decimal import Decimal, InvalidOperation
 from mimetypes import guess_type
 from pathlib import Path
@@ -15,13 +16,17 @@ from django.utils.text import slugify
 from apps.core.audit import audited_get_or_create, audited_update_or_create, get_system_user
 from apps.geography.models import City, Country, Province
 from apps.universities.models import (
+    AcademicUnit,
+    AcademicUnitType,
     AcademicYear,
     DegreeType,
     Department,
     Program,
+    ProgramInstructionLanguage,
     ProgramLanguage,
     ProgramOffering,
     Semester,
+    StudyMode,
     University,
     UniversityMedia,
     UniversityType,
@@ -54,6 +59,14 @@ LANGUAGE_MAP = {
     },
 }
 
+LANGUAGE_ALIASES = {
+    "en": "english",
+    "eng": "english",
+    "tr": "turkish",
+    "tur": "turkish",
+    "türkçe": "turkish",
+}
+
 DEGREE_MAP = {
     "associate": DegreeType.ASSOCIATE,
     "bachelor": DegreeType.BACHELOR,
@@ -66,6 +79,26 @@ DEGREE_MAP = {
 THESIS_MAP = {
     "master_thesis": "thesis",
     "master_non_thesis": "non_thesis",
+}
+
+STUDY_MODE_MAP = {
+    "on campus": StudyMode.ON_CAMPUS,
+    "on-campus": StudyMode.ON_CAMPUS,
+    "campus": StudyMode.ON_CAMPUS,
+    "distance": StudyMode.DISTANCE,
+    "distance learning": StudyMode.DISTANCE,
+    "online": StudyMode.ONLINE,
+    "hybrid": StudyMode.HYBRID,
+}
+
+ACADEMIC_UNIT_TYPE_MAP = {
+    "faculty": AcademicUnitType.FACULTY,
+    "school": AcademicUnitType.SCHOOL,
+    "institute": AcademicUnitType.INSTITUTE,
+    "vocational school": AcademicUnitType.VOCATIONAL_SCHOOL,
+    "conservatory": AcademicUnitType.CONSERVATORY,
+    "college": AcademicUnitType.COLLEGE,
+    "graduate school": AcademicUnitType.GRADUATE_SCHOOL,
 }
 
 
@@ -107,6 +140,35 @@ def as_int(value: Any) -> int | None:
         return None
 
     return int(number)
+
+
+def as_duration_months(value: Any) -> int | None:
+    """Convert a source duration expressed in years to canonical whole months."""
+    years = as_decimal(value)
+    if years is None or years <= 0:
+        return None
+    months = years * Decimal("12")
+    if months != months.to_integral_value():
+        return None
+    return int(months)
+
+
+def parse_instruction_languages(value: Any) -> list[tuple[str, Decimal | None]]:
+    """Parse explicit mixed-language strings without inventing percentages."""
+    raw = str(value or "").strip()
+    if not raw:
+        return []
+    normalized = re.sub(r"\s+", " ", raw)
+    parts = [part.strip() for part in re.split(r"\s*(?:&|/|,|\+)\s*", normalized) if part.strip()]
+    result: list[tuple[str, Decimal | None]] = []
+    for part in parts:
+        match = re.match(r"^(?:(\d+(?:\.\d+)?)%\s*)?(.+?)$", part)
+        if not match:
+            continue
+        percentage = as_decimal(match.group(1)) if match.group(1) else None
+        language_name = match.group(2).strip()
+        result.append((language_name, percentage))
+    return result
 
 
 def normalize_slug(value: str | None, fallback: str) -> str:
@@ -569,6 +631,7 @@ class Command(BaseCommand):
 
     def _get_language(self, language_value: str | None) -> ProgramLanguage:
         key = (language_value or "unknown").strip().lower()
+        key = LANGUAGE_ALIASES.get(key, key)
         names = LANGUAGE_MAP.get(
             key,
             {
@@ -622,19 +685,87 @@ class Command(BaseCommand):
         )
         return department
 
+    def _get_academic_unit(
+        self, item: dict[str, Any], university: University
+    ) -> AcademicUnit | None:
+        name = str(
+            item.get("academic_unit")
+            or item.get("faculty")
+            or item.get("school")
+            or item.get("institute")
+            or ""
+        ).strip()
+        if not name:
+            return None
+        raw_type = str(item.get("academic_unit_type") or "").strip().lower()
+        if not raw_type:
+            if item.get("faculty"):
+                raw_type = "faculty"
+            elif item.get("school"):
+                raw_type = "school"
+            elif item.get("institute"):
+                raw_type = "institute"
+        unit_type = ACADEMIC_UNIT_TYPE_MAP.get(raw_type, AcademicUnitType.OTHER)
+        slug = normalize_slug(name, f"academic-unit-{university.id}")
+        unit, _ = audited_update_or_create(
+            AcademicUnit.objects,
+            lookup={"university": university, "slug_en": slug},
+            defaults={
+                "name_en": name,
+                "name_fa": "",
+                "name_tr": "",
+                "name_ar": "",
+                "slug_fa": slug,
+                "slug_tr": slug,
+                "slug_ar": slug,
+                "unit_type": unit_type,
+                "is_active": True,
+            },
+            actor=self.system_user,
+        )
+        return unit
+
+    def _sync_instruction_languages(self, program: Program, raw_value: Any) -> None:
+        specs = parse_instruction_languages(raw_value)
+        if not specs:
+            return
+        percentages = [percentage for _, percentage in specs]
+        populated = [value for value in percentages if value is not None]
+        if populated and (len(populated) != len(specs) or sum(populated, Decimal("0")) != 100):
+            raise CommandError(f"Instruction-language percentages must total 100: {raw_value!r}")
+        language_ids = []
+        for index, (language_name, percentage) in enumerate(specs):
+            language = self._get_language(language_name)
+            language_ids.append(language.pk)
+            audited_update_or_create(
+                ProgramInstructionLanguage.objects,
+                lookup={"program": program, "language": language},
+                defaults={
+                    "percentage": percentage,
+                    "is_primary": index == 0,
+                },
+                actor=self.system_user,
+            )
+        program.instruction_language_rows.exclude(language_id__in=language_ids).delete()
+
     def _upsert_program(self, item: dict[str, Any], university: University) -> tuple[Program, bool]:
         raw_degree = str(item.get("degree") or "").strip().lower()
         degree = DEGREE_MAP.get(raw_degree, DegreeType.BACHELOR)
         thesis_type = THESIS_MAP.get(raw_degree)
 
-        language = self._get_language(item.get("language"))
+        language_specs = parse_instruction_languages(item.get("language"))
+        legacy_language = self._get_language(language_specs[0][0]) if language_specs else None
         department = self._get_department(item, university)
+        academic_unit = self._get_academic_unit(item, university)
+        raw_study_mode = str(item.get("study_mode") or "").strip().lower()
+        study_mode = STUDY_MODE_MAP.get(raw_study_mode, StudyMode.ON_CAMPUS)
 
         raw_slug = str(item.get("slug") or item.get("name_en") or item.get("id") or "program")
         slug = normalize_slug(raw_slug, f"program-{item.get('id', '')}")
 
         defaults = {
             "university": university,
+            "academic_unit": academic_unit,
             "department": department,
             "name_en": str(item.get("name_en") or raw_slug),
             "name_fa": str(item.get("name_fa") or ""),
@@ -649,18 +780,22 @@ class Command(BaseCommand):
             "description_ar": str(item.get("description_ar") or ""),
             "degree": degree,
             "thesis_type": thesis_type,
-            "program_language": language,
+            "program_language": legacy_language,
+            "study_mode": study_mode,
             "duration": as_int(item.get("duration_years")),
+            "duration_months": as_duration_months(item.get("duration_years")),
             "listing_priority": as_int(item.get("boost_score")) or 0,
             "is_active": bool(item.get("active", True)),
         }
 
-        return audited_update_or_create(
+        program, created = audited_update_or_create(
             Program.objects,
             lookup={"university": university, "slug_en": slug},
             defaults=defaults,
             actor=self.system_user,
         )
+        self._sync_instruction_languages(program, item.get("language"))
+        return program, created
 
     def _upsert_offering(
         self,
@@ -678,6 +813,13 @@ class Command(BaseCommand):
         if tuition is None:
             return None, False
 
+        raw_study_mode = str(item.get("study_mode") or "").strip()
+        unmapped_note = ""
+        if raw_study_mode and raw_study_mode.lower() not in STUDY_MODE_MAP:
+            unmapped_note = f"Unmapped source study mode: {raw_study_mode}"
+        source_note = str(item.get("offering_notes") or item.get("notes") or "").strip()
+        notes = "\n".join(part for part in (source_note, unmapped_note) if part)
+
         defaults = {
             "fee_basis": "annual",
             "currency": "USD",
@@ -686,8 +828,14 @@ class Command(BaseCommand):
             "tuition_discounted": discounted,
             "tuition_cash": cash,
             "tuition_annual_installment": installment,
+            "deposit": as_decimal(item.get("deposit_usd")),
+            "preparatory_tuition": as_decimal(item.get("preparatory_tuition_usd")),
+            "preparation_included": bool(item.get("preparation_included", False)),
             "quota": as_int(item.get("quota")),
             "deadline": item.get("deadline") or None,
+            "valid_from": item.get("valid_from") or None,
+            "valid_until": item.get("valid_until") or None,
+            "notes": notes,
             "is_active": bool(item.get("active", True)),
         }
 

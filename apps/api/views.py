@@ -25,15 +25,20 @@ class UniversityDetailAPIView(generics.RetrieveAPIView):
 
 
 class ProgramListAPIView(generics.ListAPIView):
-    queryset = Program.objects.filter(is_active=True).select_related(
-        "university",
-        "program_language",
+    queryset = (
+        Program.objects.filter(is_active=True)
+        .select_related("university", "academic_unit")
+        .prefetch_related("instruction_language_rows__language")
     )
     serializer_class = ProgramSerializer
 
 
 class ProgramDetailAPIView(generics.RetrieveAPIView):
-    queryset = Program.objects.filter(is_active=True)
+    queryset = (
+        Program.objects.filter(is_active=True)
+        .select_related("university", "academic_unit")
+        .prefetch_related("instruction_language_rows__language")
+    )
     serializer_class = ProgramSerializer
     lookup_field = "slug_en"
     lookup_url_kwarg = "slug"
@@ -44,6 +49,7 @@ class ProgramOfferingListAPIView(generics.ListAPIView):
         "program",
         "academic_year",
         "semester",
+        "source",
     )
     serializer_class = ProgramOfferingSerializer
 

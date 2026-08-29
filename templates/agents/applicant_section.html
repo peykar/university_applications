@@ -95,7 +95,7 @@
         <article class="program-search-result">
           <div class="program-search-result-copy">
             <strong>{{ program.name_en }}</strong>
-            <span>{{ program.university.name_en }} · {{ program.get_degree_display }} · {{ program.program_language.name_en }}</span>
+            <span>{{ program.university.name_en }} · {{ program.get_degree_display }} · {{ program.instruction_language_display }}</span>
           </div>
           <form method="post" action="{% url 'agent-applicant-program-recommend' lead.pk %}" class="program-recommend-form">
             {% csrf_token %}

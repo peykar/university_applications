@@ -12,6 +12,7 @@ from django.utils.translation import gettext as _
 from apps.content.models import FAQ, FAQCategory
 from apps.geography.models import City
 from apps.universities.models import (
+    AcademicUnit,
     AcademicYear,
     Currency,
     DegreeType,
@@ -20,6 +21,7 @@ from apps.universities.models import (
     ProgramLanguage,
     ProgramOffering,
     Semester,
+    StudyMode,
     University,
     UniversityMedia,
     UniversityType,
@@ -46,7 +48,14 @@ def _program_filter_options(*, university=None):
 
     return {
         "degree_choices": DegreeType.choices,
+        "study_mode_choices": StudyMode.choices,
         "language_choices": ProgramLanguage.objects.filter(
+            is_active=True,
+            programs__in=base_programs,
+        )
+        .distinct()
+        .order_by("name_en"),
+        "academic_unit_choices": AcademicUnit.objects.filter(
             is_active=True,
             programs__in=base_programs,
         )
@@ -99,10 +108,10 @@ def home(request):
     popular_programs = (
         active_programs.select_related(
             "university",
-            "program_language",
+            "academic_unit",
             "department",
         )
-        .prefetch_related("offerings")
+        .prefetch_related("instruction_language_rows__language", "offerings")
         .annotate(
             min_tuition=Min(
                 "offerings__tuition",
@@ -203,10 +212,10 @@ def university_detail(request, slug):
         )
         .select_related(
             "university",
+            "academic_unit",
             "department",
-            "program_language",
         )
-        .prefetch_related("offerings")
+        .prefetch_related("instruction_language_rows__language", "offerings")
     )
 
     programs = annotate_min_active_tuition(apply_program_filters(programs, state)).order_by(
@@ -287,6 +296,19 @@ def _build_active_program_filters(request, options) -> list[dict[str, str]]:
         None,
     )
     add("language", getattr(language, "name_en", None))
+
+    study_mode_label = dict(StudyMode.choices).get(request.GET.get("study_mode"))
+    add("study_mode", study_mode_label)
+
+    academic_unit = next(
+        (
+            item
+            for item in options.get("academic_unit_choices", [])
+            if item.slug_en == request.GET.get("academic_unit")
+        ),
+        None,
+    )
+    add("academic_unit", getattr(academic_unit, "name_en", None))
 
     university = next(
         (
@@ -376,10 +398,10 @@ def program_list(request):
         .select_related(
             "university",
             "university__city",
+            "academic_unit",
             "department",
-            "program_language",
         )
-        .prefetch_related("offerings")
+        .prefetch_related("instruction_language_rows__language", "offerings")
     )
 
     programs = apply_program_filters(programs, state).order_by(
@@ -456,9 +478,10 @@ def program_detail(request, slug):
             "university__city",
             "university__city__province",
             "university__city__province__country",
+            "academic_unit",
             "department",
-            "program_language",
         ).prefetch_related(
+            "instruction_language_rows__language",
             Prefetch("offerings", queryset=active_offerings, to_attr="active_offerings"),
             Prefetch("university__media", queryset=active_media, to_attr="active_media"),
         ),
@@ -469,48 +492,11 @@ def program_detail(request, slug):
 
     similarity_filter = Q(degree=program.degree)
     department = program.department if program.department_id else None
+    language_ids = list(program.instruction_languages.values_list("pk", flat=True))
     if department is not None:
         similarity_filter |= Q(department__slug_en=department.slug_en)
-    if program.program_language_id:
-        similarity_filter |= Q(program_language=program.program_language)
-
-    similarity_cases = []
-    if department is not None:
-        similarity_cases.extend(
-            [
-                When(
-                    department__slug_en=department.slug_en,
-                    degree=program.degree,
-                    program_language=program.program_language,
-                    then=Value(6),
-                ),
-                When(
-                    department__slug_en=department.slug_en,
-                    degree=program.degree,
-                    then=Value(5),
-                ),
-                When(
-                    department__slug_en=department.slug_en,
-                    program_language=program.program_language,
-                    then=Value(4),
-                ),
-                When(
-                    department__slug_en=department.slug_en,
-                    then=Value(3),
-                ),
-            ]
-        )
-
-    similarity_cases.extend(
-        [
-            When(
-                degree=program.degree,
-                program_language=program.program_language,
-                then=Value(2),
-            ),
-            When(degree=program.degree, then=Value(1)),
-        ]
-    )
+    if language_ids:
+        similarity_filter |= Q(instruction_languages__in=language_ids)
 
     similar_programs = annotate_min_active_tuition(
         Program.objects.filter(
@@ -522,13 +508,16 @@ def program_detail(request, slug):
         .select_related(
             "university",
             "university__city",
+            "academic_unit",
             "department",
-            "program_language",
         )
+        .prefetch_related("instruction_language_rows__language")
         .annotate(
             similarity_score=Case(
-                *similarity_cases,
-                default=Value(0),
+                When(department=department, degree=program.degree, then=Value(4)),
+                When(department=department, then=Value(3)),
+                When(degree=program.degree, then=Value(2)),
+                default=Value(1),
                 output_field=IntegerField(),
             ),
         )
@@ -547,9 +536,10 @@ def program_detail(request, slug):
         )
         .exclude(pk=program.pk)
         .select_related(
+            "academic_unit",
             "department",
-            "program_language",
         )
+        .prefetch_related("instruction_language_rows__language")
         .order_by("-listing_priority", "name_en")[:4]
     )
 

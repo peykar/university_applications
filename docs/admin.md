@@ -63,19 +63,19 @@ University Admin includes:
 
 ## Programs
 
-Program Admin includes:
-- university
-- department
-- degree
-- program language
-- duration
-- listing priority
-- active state
-- relevant filters/search/autocomplete
-- inline `ProgramOffering` management
+Program Admin separates stable academic identity from intake/commercial data.
+It includes University, AcademicUnit, optional Department, degree, thesis type,
+study mode, canonical duration in months, listing priority, active state, and an
+inline instruction-language composition editor with optional percentages.
 
-This allows staff to manage multiple intake/price records from the Program
-screen.
+The `ProgramOffering` inline/admin exposes academic year, intake, fee basis,
+currency, standard/list tuition, offered/discounted tuition, cash/advance-payment
+tuition, installment tuition, deposit, preparatory tuition, preparation-included
+state, quota, deadline, commercial validity, source, notes, and active state.
+
+`UniversityCatalogueSource` has its own admin for uploaded university sheets and
+provenance metadata. Offering/source same-University validation prevents linking
+a price row to another university's source.
 
 ## Students
 

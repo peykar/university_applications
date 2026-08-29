@@ -76,7 +76,7 @@ Document attachment and document requirement are separate concepts.
 
 ## Catalogue
 
-Catalogue v2 is approved but not yet implemented. The target domain is:
+Catalogue v2 is implemented. The canonical domain is:
 
 ```text
 University
@@ -96,6 +96,6 @@ University
            └── source? -> UniversityCatalogueSource
 ```
 
-Until Catalogue v2 tasks are implemented, the legacy single ProgramLanguage and
-duration/pre-school-fee fields remain executable compatibility structures. See
-`docs/specs/catalogue/` and ADR-006.
+Legacy single-language and whole-year duration fields remain executable compatibility
+bridges during migration. Existing databases should run `backfill_catalogue_v2` after
+applying schema migrations. See `docs/specs/catalogue/` and ADR-006.

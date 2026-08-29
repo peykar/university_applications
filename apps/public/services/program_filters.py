@@ -17,6 +17,8 @@ class ProgramFilterState:
     field: str = ""
     degree: str = ""
     language: str = ""
+    study_mode: str = ""
+    academic_unit: str = ""
     university: str = ""
     city: str = ""
     university_type: str = ""
@@ -62,6 +64,8 @@ def read_program_filters(params: Any) -> ProgramFilterState:
         field=(params.get("field") or "").strip(),
         degree=(params.get("degree") or "").strip(),
         language=(params.get("language") or "").strip(),
+        study_mode=(params.get("study_mode") or "").strip(),
+        academic_unit=(params.get("academic_unit") or "").strip(),
         university=(params.get("university") or "").strip(),
         city=(params.get("city") or "").strip(),
         university_type=(params.get("university_type") or "").strip(),
@@ -111,7 +115,13 @@ def apply_program_filters(
         queryset = queryset.filter(degree=state.degree)
 
     if state.language:
-        queryset = queryset.filter(program_language__slug_en=state.language)
+        queryset = queryset.filter(instruction_languages__slug_en=state.language)
+
+    if state.study_mode:
+        queryset = queryset.filter(study_mode=state.study_mode)
+
+    if state.academic_unit:
+        queryset = queryset.filter(academic_unit__slug_en=state.academic_unit)
 
     if state.university:
         queryset = queryset.filter(university__slug_en=state.university)

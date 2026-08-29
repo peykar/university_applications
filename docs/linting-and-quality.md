@@ -91,3 +91,19 @@ appropriate.
 
 Coverage is branch-aware and currently has a minimum threshold of 70%.
 Increase the threshold as the test suite matures.
+
+## django-stubs / mypy compatibility
+
+`django-stubs` includes a mypy plugin and must be kept within its supported mypy
+range. TurkDemy currently targets Django 5.2 with `django-stubs` 5.2.x, so the
+project installs the `compatible-mypy` extra and constrains mypy to `<1.20`.
+This prevents plugin-construction failures caused by resolving mypy 1.20+ with
+`django-stubs` 5.2.x.
+
+After changing either dependency, refresh the lock file and run the full gate:
+
+```bash
+uv lock
+uv sync --all-groups
+make check
+```

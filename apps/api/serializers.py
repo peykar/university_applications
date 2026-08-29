@@ -35,10 +35,24 @@ class ProgramSerializer(serializers.ModelSerializer):
         source="university.name_en",
         read_only=True,
     )
-    language = serializers.CharField(
-        source="program_language.name_en",
-        read_only=True,
+    languages = serializers.SerializerMethodField()
+    academic_unit_name = serializers.CharField(
+        source="academic_unit.name_en", read_only=True, default=None
     )
+    duration_display = serializers.CharField(read_only=True)
+
+    def get_languages(self, obj):
+        return [
+            {
+                "id": str(row.language_id),
+                "name": row.language.name_en,
+                "percentage": row.percentage,
+                "is_primary": row.is_primary,
+            }
+            for row in obj.instruction_language_rows.select_related("language").order_by(
+                "-is_primary", "language__name_en"
+            )
+        ]
 
     class Meta:
         model = Program
@@ -52,8 +66,12 @@ class ProgramSerializer(serializers.ModelSerializer):
             "university",
             "university_name",
             "degree",
-            "language",
-            "duration",
+            "study_mode",
+            "academic_unit",
+            "academic_unit_name",
+            "languages",
+            "duration_months",
+            "duration_display",
             "listing_priority",
         )
 
@@ -79,8 +97,14 @@ class ProgramOfferingSerializer(serializers.ModelSerializer):
             "tuition_cash",
             "tuition_annual_installment",
             "deposit",
+            "preparatory_tuition",
+            "preparation_included",
             "quota",
             "deadline",
+            "valid_from",
+            "valid_until",
+            "notes",
+            "source",
         )
 
 

@@ -76,9 +76,11 @@ Re-import behavior:
 | `description_en/fa/tr/ar` | corresponding `Program.description_*` |
 | `department_*` | `Department` + `Program.department` |
 | `degree` | `Program.degree` |
-| `language` | `ProgramLanguage` + `Program.program_language` |
-| `duration_years` | `Program.duration` |
+| `language` | `ProgramLanguage` + one or more `ProgramInstructionLanguage` rows; legacy bridge is also populated |
+| `duration_years` | canonical `Program.duration_months`; whole-year legacy `Program.duration` populated when exact |
 | `boost_score` | `Program.listing_priority` |
+| `study_mode` | `Program.study_mode` when explicitly recognized; unknown values are preserved in offering notes |
+| `academic_unit` / `faculty` / `school` / `institute` | `AcademicUnit` + `Program.academic_unit` when supplied |
 | `active` | `Program.is_active` |
 
 ### Degree mapping
@@ -104,8 +106,13 @@ normalizes them into `ProgramOffering`.
 | `tuition_cash_usd` | `tuition_cash` |
 | `tuition_annual_installment_usd` | `tuition_annual_installment` |
 | `discount_pct` | `tuition_discount_percentage` |
+| `deposit_usd` | `deposit` |
+| `preparatory_tuition_usd` | `preparatory_tuition` |
+| `preparation_included` | `preparation_included` |
 | `quota` | `quota` |
 | `deadline` | `deadline` |
+| `valid_from` / `valid_until` | offering commercial validity |
+| `offering_notes` / `notes` | `notes` |
 
 Current importer assumptions:
 
@@ -252,3 +259,17 @@ FAQ.category (TurkDemy ForeignKey)
 
 The importer also supports numeric IDs, explicit category-key fields, and a
 nested category object as defensive fallbacks.
+
+### Catalogue v2 compatibility backfill
+
+After generating/applying schema migrations on an existing database, run:
+
+```bash
+uv run python manage.py backfill_catalogue_v2
+```
+
+The command is idempotent. It converts legacy whole-year durations to months and
+creates a canonical instruction-language association from each legacy
+`program_language` value. Mixed-language source strings such as `30% English &
+70% Turkish` are parsed into separate associations; invalid supplied percentage
+totals fail instead of being guessed.

@@ -25,12 +25,12 @@
   <div class="program-card-main">
     <h2>{{ program.name_en }}</h2>
     <div class="program-meta-row">
-      <span class="program-meta-chip">{{ program.program_language.name_en }}</span>
+      <span class="program-meta-chip">{{ program.instruction_language_display }}</span>
       {% if program.department %}
         <span class="program-meta-chip">{{ program.department.name_en }}</span>
       {% endif %}
-      {% if program.duration %}
-        <span class="program-meta-chip">{{ program.duration }} {% trans "years" %}</span>
+      {% if program.duration_months %}
+        <span class="program-meta-chip">{{ program.duration_display }}</span>
       {% endif %}
     </div>
   </div>

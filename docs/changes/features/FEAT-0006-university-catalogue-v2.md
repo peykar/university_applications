@@ -1,6 +1,6 @@
 # FEAT-0006 — University catalogue v2
 
-Status: APPROVED / SPECIFIED
+Status: IMPLEMENTED / LOCAL VERIFICATION REQUIRED
 Classification: FEATURE
 Date: 2026-08-29
 
@@ -34,5 +34,15 @@ feature.
 
 ## Implementation status
 
-Not implemented. This record authorizes the task plan; code changes are a
-separate implementation step.
+Implemented in the Catalogue v2 delivery. Canonical structures are live while
+legacy single-language and whole-year duration fields remain as compatibility
+bridges. Existing databases must generate/apply schema migrations and then run
+`uv run python manage.py backfill_catalogue_v2` before deprecated readers are
+removed in a later change. Admission requirements remain deferred by CAT-024.
+
+## 2026-08-29 formatting follow-up
+
+Resolved the two Catalogue v2 Ruff violations found by the local `make format` run:
+`ProgramOfferingAdminForm` now declares its editable `ModelForm` fields explicitly (DJ007),
+and `ProgramInstructionLanguage.Meta.constraints` is annotated as `ClassVar` (RUF012).
+No catalogue behavior or SDD requirement changed.

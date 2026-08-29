@@ -94,7 +94,7 @@
       <a class="program-row" href="{% url 'program-detail' program.slug_en %}">
         <div>
           <strong>{{ program.name_en }}</strong>
-          <span>{{ program.university.name_en }} · {{ program.get_degree_display }} · {{ program.program_language.name_en }}</span>
+          <span>{{ program.university.name_en }} · {{ program.get_degree_display }} · {{ program.instruction_language_display }}</span>
         </div>
         <div class="program-row-meta">
           {% if program.min_tuition %}
