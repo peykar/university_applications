@@ -24,6 +24,8 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.request_context_sidebar = (
             root / "templates/includes/customer_request_context_sidebar.html"
         ).read_text(encoding="utf-8")
+        self.request_form = (root / "templates/leads/lead_form.html").read_text(encoding="utf-8")
+        self.forms = (root / "apps/leads/forms.py").read_text(encoding="utf-8")
         self.views = (root / "apps/leads/views.py").read_text(encoding="utf-8")
         self.settings_source = (root / "turkdemy/settings/base.py").read_text(encoding="utf-8")
         self.support_context = (root / "apps/core/context_processors.py").read_text(
@@ -274,9 +276,10 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         )[0]
         for heading in (
             "Personal information",
-            "Location & nationality",
+            "Identity & nationality",
+            "Residence",
             "Passport",
-            "Education",
+            "Education & language",
         ):
             self.assertIn(f'{{% trans "{heading}" %}}', profile)
         for field in (
@@ -285,8 +288,18 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             "Birthdate",
             "Gender",
             "Nationality",
-            "Residence",
+            "Country of birth",
+            "Country of residence",
+            "City of residence",
+            "Address",
             "Passport number",
+            "Issuing authority",
+            "Date of issue",
+            "Date of expiry",
+            "English test type",
+            "English test score",
+            "High school GPA",
+            "High school GPA scale",
             "Educational background",
         ):
             self.assertIn(f'{{% trans "{field}" %}}', profile)
@@ -322,6 +335,113 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn(".request-profile-section-heading{", self.css)
         self.assertIn(".request-profile-facts-single{", self.css)
         self.assertIn("grid-template-columns:1fr;", self.css)
+
+    def test_profile_displays_all_customer_editable_data(self):
+        profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
+            '{% elif entity_tab == "programs" %}', 1
+        )[0]
+        for field in (
+            "Email",
+            "Phone",
+            "Birthdate",
+            "Gender",
+            "Nationality",
+            "Country of birth",
+            "Country of residence",
+            "City of residence",
+            "Address",
+            "Passport number",
+            "Issuing authority",
+            "Date of issue",
+            "Date of expiry",
+            "English test type",
+            "English test score",
+            "High school GPA",
+            "High school GPA scale",
+            "Educational background",
+        ):
+            self.assertIn(f'{{% trans "{field}" %}}', profile)
+        self.assertNotIn('{% trans "First name" %}', profile)
+        self.assertIn("{{ lead.first_name }}", self.request_header)
+        self.assertIn(
+            "{% if lead.middle_name %} {{ lead.middle_name }}{% endif %}",
+            self.request_header,
+        )
+        self.assertIn(
+            "{% if lead.last_name %} {{ lead.last_name }}{% endif %}",
+            self.request_header,
+        )
+        self.assertIn('|default:"—"', profile)
+        self.assertIn('|default_if_none:"—"', profile)
+
+    def test_profile_and_customer_edit_form_are_field_aligned(self):
+        edit_form = self.forms.split("class CustomerLeadEditForm", 1)[1].split(
+            "class LeadPreferenceForm", 1
+        )[0]
+        self.assertIn('if field_name != "needs_program_recommendation"', edit_form)
+        self.assertIn("class Meta(LeadForm.Meta)", edit_form)
+        profile_sources = (
+            "lead.country_of_birth",
+            "lead.country_of_residence",
+            "lead.city_of_residence",
+            "lead.address",
+            "lead.passport_issuing_authority",
+            "lead.passport_date_of_issue",
+            "lead.passport_date_of_expiry",
+            # Choice fields should use their human-readable display value.
+            "lead.get_english_test_type_display",
+            "lead.english_language_test_score",
+            "lead.high_school_gpa",
+            "lead.high_school_gpa_scale",
+            "lead.educational_background",
+        )
+        for profile_source in profile_sources:
+            self.assertIn(profile_source, self.request_section)
+
+    def test_customer_edit_profile_uses_request_safe_copy_and_actions(self):
+        edit_view = self.views.split("def lead_edit", 1)[1].split("def lead_preferences", 1)[0]
+        self.assertIn('"title": "Edit profile"', edit_view)
+        self.assertIn('"Profile updated."', edit_view)
+        self.assertIn('{% trans "Save changes" %}', self.request_form)
+        self.assertIn("{% url 'lead-profile' lead.pk %}", self.request_form)
+        self.assertNotIn(
+            (
+                '{% trans "This information is provisional until TurkDemy staff '
+                'validate and finalize it." %}'
+            ),
+            self.request_form,
+        )
+        self.assertIn(
+            '{% if not lead %}<p class="eyebrow">{% trans "Request profile" %}</p>{% endif %}',
+            self.request_form,
+        )
+
+    def test_customer_edit_profile_excludes_internal_recommendation_control(self):
+        edit_view = self.views.split("def lead_edit", 1)[1].split("def lead_preferences", 1)[0]
+        self.assertIn("CustomerLeadEditForm", edit_view)
+        self.assertIn('field_name != "needs_program_recommendation"', self.forms)
+        self.assertIn(
+            (
+                '{% if not lead %}<div class="applicant-form-field '
+                'applicant-form-field-wide applicant-recommendation-field">'
+            ),
+            self.request_form,
+        )
+
+    def test_profile_view_and_edit_share_semantic_sections(self):
+        profile = self.request_section.split('{% if entity_tab == "profile" %}', 1)[1].split(
+            '{% elif entity_tab == "programs" %}', 1
+        )[0]
+        for heading in (
+            "Personal information",
+            "Passport",
+            "Education & language",
+        ):
+            self.assertIn(f'{{% trans "{heading}" %}}', profile)
+            self.assertIn(f'{{% trans "{heading}" %}}', self.request_form)
+        self.assertIn('{% trans "Identity & nationality" %}', profile)
+        self.assertIn('{% trans "Residence" %}', profile)
+        self.assertIn('{% trans "Residence" %}', self.request_form)
 
     def test_customer_request_header_uses_customer_friendly_statuses(self):
         self.assertIn('{% trans "Received" %}', self.request_header)

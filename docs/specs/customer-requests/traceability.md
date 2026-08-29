@@ -43,3 +43,8 @@ Status: IMPLEMENTED
 | `CRQ-035` | `templates/leads/lead_section.html`, persistent context sidebar include | `CustomerRequestWorkspaceTests.test_profile_keeps_request_context_out_of_profile_body` | Named test |
 | `CRQ-036` | Profile markup and `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_profile_uses_compact_grouped_panel_contract` | Named test |
 
+| `CRQ-037` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_profile_displays_all_customer_editable_data` | Named test |
+| `CRQ-038` | `apps/leads/forms.py`, `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_profile_and_customer_edit_form_are_field_aligned` | Named test |
+| `CRQ-039` | `apps/leads/views.py`, `templates/leads/lead_form.html` | `CustomerRequestWorkspaceTests.test_customer_edit_profile_uses_request_safe_copy_and_actions` | Named test |
+| `CRQ-040` | `apps/leads/forms.py`, `apps/leads/views.py`, `templates/leads/lead_form.html` | `CustomerRequestWorkspaceTests.test_customer_edit_profile_excludes_internal_recommendation_control` | Named test |
+| `CRQ-041` | `templates/leads/lead_section.html`, `templates/leads/lead_form.html` | `CustomerRequestWorkspaceTests.test_profile_view_and_edit_share_semantic_sections` | Named test |

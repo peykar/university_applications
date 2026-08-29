@@ -26,6 +26,7 @@ from apps.universities.models import DegreeType, Program, UniversityType
 
 from .forms import (
     ApplyProgramForm,
+    CustomerLeadEditForm,
     LeadDocumentForm,
     LeadDocumentReplacementForm,
     LeadForm,
@@ -50,6 +51,7 @@ def _customer_lead(user, lead_id):
     return get_object_or_404(
         Lead.objects.select_related(
             "nationality",
+            "country_of_birth",
             "country_of_residence",
             "assigned_to",
             "converted_student",
@@ -293,12 +295,12 @@ def lead_edit(request, lead_id):
     if lead.status == LeadStatus.FINALIZED:
         messages.error(
             request,
-            "Finalized applicant data can no longer be edited here.",
+            "This Request profile can no longer be edited.",
         )
         return redirect("lead-profile", lead_id=lead.pk)
 
     if request.method == "POST":
-        form = LeadForm(request.POST, instance=lead)
+        form = CustomerLeadEditForm(request.POST, instance=lead)
         if form.is_valid():
             updated_lead = form.save(commit=False)
             updated_lead.updated_by = request.user
@@ -309,12 +311,12 @@ def lead_edit(request, lead_id):
                 form=form,
                 actor=request.user,
             ):
-                messages.success(request, "Applicant profile updated.")
+                messages.success(request, "Profile updated.")
             else:
-                messages.info(request, "No applicant profile data changed.")
+                messages.info(request, "No profile data changed.")
             return redirect("lead-profile", lead_id=updated_lead.pk)
     else:
-        form = LeadForm(instance=lead)
+        form = CustomerLeadEditForm(instance=lead)
 
     return render(
         request,
@@ -322,7 +324,7 @@ def lead_edit(request, lead_id):
         {
             "form": form,
             "lead": lead,
-            "title": "Edit applicant",
+            "title": "Edit profile",
             "entity_tab": "profile",
             "agent_context": False,
         },

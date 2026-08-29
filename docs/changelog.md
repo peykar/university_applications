@@ -1,3 +1,22 @@
+
+## 2026-08-29 — Customer Profile field-alignment regression test
+
+- Fixed the CRQ-037 profile/edit alignment regression test so choice-backed `english_test_type` is verified through Django's customer-facing `get_english_test_type_display` accessor.
+- No production UI or business behavior changed; the Profile page already rendered the human-readable English test type correctly.
+
+## 2026-08-29 — Customer profile mypy regression fix
+
+- Added an explicit variable-length tuple type to `LeadForm.Meta.fields` so `CustomerLeadEditForm.Meta` can safely derive the customer-visible field tuple while omitting the internal `needs_program_recommendation` field.
+- No customer or Agent behavior changed; this only aligns the inherited Django `ModelForm.Meta.fields` typing with the intended subclass override.
+
+
+## 2026-08-29 — Customer Profile full-data alignment
+
+- Expanded the customer Request Profile so every customer-editable profile value has a read-only representation; the person's name remains represented once in the shared Request title.
+- Added country of birth, residence/address details, passport authority/issue/expiry dates, English test data, GPA/scale, and educational background to Profile.
+- Added `CustomerLeadEditForm` so existing Request editing no longer exposes the internal `needs_program_recommendation` workflow control.
+- Reworded existing customer editing to **Edit profile** / **Save changes**, removed provisional/finalization copy, and made Cancel return to the Request Profile tab.
+- Added CRQ-037 through CRQ-041 and bumped Customer Requests SDD to v1.9.
 ## 2026-08-29 — Customer Profile finalized-guard test alignment
 
 - Updated the finalized-customer mutation structure test to verify the Profile edit guard in `lead_section.html`, where CRQ-034 intentionally moved the customer Edit profile action.

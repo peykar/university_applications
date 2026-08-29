@@ -119,8 +119,16 @@ The context rail likewise uses only **Uploaded documents** and **Program prefere
 
 The customer Profile tab treats the active **Profile** navigation state as sufficient page identity. It therefore does not add a second Profile eyebrow or a generic Request profile title. The Request person's name remains owned by the shared Request header and is not repeated in the tab body.
 
-Profile content is one compact primary panel divided into semantic groups: **Personal information** for email, phone, birthdate and gender; **Location & nationality** for nationality and residence; **Passport** for passport number; and **Education** for educational background. Section boundaries provide scanability without turning each group into another dashboard card.
+Profile content is one compact primary panel divided into semantic groups: **Personal information**, **Identity & nationality**, **Residence**, **Passport**, and **Education & language**. Section boundaries provide scanability without turning each group into another dashboard card.
 
 The single customer **Edit profile** action is placed beside the first Profile content heading and keeps the existing editability rule: finalized Requests do not expose customer editing. The shared Request header no longer changes its customer actions merely because Profile is selected. Agent-facing Edit applicant remains in the shared Agent header.
 
 Program preferences and uploaded-document summaries remain exclusively in the persistent Request context sidebar. They are intentionally not copied into Profile because Profile describes the person while the context rail describes Request-level study and document context.
+
+## Profile view/edit alignment
+
+The customer Profile is the read-only representation of the customer-editable Request-person data. The shared Request title owns the person's name, so first/middle/last name are not repeated in the Profile body; every other field in the customer edit form has a visible read-only counterpart. Empty data remains visible as an em dash so customers can distinguish "not provided" from "field does not exist."
+
+The read-only layout is grouped as **Personal information**, **Identity & nationality**, **Residence**, **Passport**, and **Education & language**. This exposes country of birth, full residence/address data, passport authority/issue/expiry dates, English test details, GPA/scale, and educational background rather than presenting only a partial profile.
+
+Editing an existing Request uses a dedicated customer edit form derived from the intake form but excludes internal workflow controls such as `needs_program_recommendation`. The customer edit screen uses **Edit profile** / **Save changes**, omits Request-profile/finalization explanatory copy, and cancels back to the Request Profile tab. Initial intake is kept separate so its existing "need help choosing" behavior can continue without leaking the internal control into later profile maintenance.

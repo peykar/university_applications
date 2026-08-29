@@ -7,12 +7,10 @@
 {% endif %}
 <section class="applicant-form-page">
   <header class="applicant-form-header">
-    <p class="eyebrow">{% trans "Request profile" %}</p>
+    {% if not lead %}<p class="eyebrow">{% trans "Request profile" %}</p>{% endif %}
     <h1>{{ title }}</h1>
     {% if next_program %}
       <p class="muted">{% trans "Start with whatever information you have. Most fields are optional; our admissions team can collect the rest later." %}</p>
-    {% else %}
-      <p class="muted">{% trans "This information is provisional until TurkDemy staff validate and finalize it." %}</p>
     {% endif %}
   </header>
 
@@ -73,13 +71,18 @@
         <div class="applicant-form-field">{{ form.high_school_gpa.label_tag }}{{ form.high_school_gpa }}{{ form.high_school_gpa.errors }}</div>
         <div class="applicant-form-field">{{ form.high_school_gpa_scale.label_tag }}{{ form.high_school_gpa_scale }}{{ form.high_school_gpa_scale.errors }}</div>
         <div class="applicant-form-field applicant-form-field-wide">{{ form.educational_background.label_tag }}{{ form.educational_background }}{{ form.educational_background.errors }}</div>
-        <div class="applicant-form-field applicant-form-field-wide applicant-recommendation-field">{{ form.needs_program_recommendation }} {{ form.needs_program_recommendation.label_tag }}{{ form.needs_program_recommendation.errors }}{% if form.needs_program_recommendation.help_text %}<p class="helptext">{{ form.needs_program_recommendation.help_text }}</p>{% endif %}</div>
+        {% if not lead %}<div class="applicant-form-field applicant-form-field-wide applicant-recommendation-field">{{ form.needs_program_recommendation }} {{ form.needs_program_recommendation.label_tag }}{{ form.needs_program_recommendation.errors }}{% if form.needs_program_recommendation.help_text %}<p class="helptext">{{ form.needs_program_recommendation.help_text }}</p>{% endif %}</div>{% endif %}
       </div>
     </section>
 
     <div class="form-actions applicant-form-actions">
-      <a class="button button-secondary" href="{% url 'lead-list' %}">{% trans "Cancel" %}</a>
-      <button class="button" type="submit">{% if next_program %}{% trans "Continue application" %}{% else %}{% trans "Save applicant" %}{% endif %}</button>
+      {% if lead %}
+        <a class="button button-secondary" href="{% url 'lead-profile' lead.pk %}">{% trans "Cancel" %}</a>
+        <button class="button" type="submit">{% trans "Save changes" %}</button>
+      {% else %}
+        <a class="button button-secondary" href="{% url 'lead-list' %}">{% trans "Cancel" %}</a>
+        <button class="button" type="submit">{% if next_program %}{% trans "Continue application" %}{% else %}{% trans "Save applicant" %}{% endif %}</button>
+      {% endif %}
     </div>
   </form>
 </section>

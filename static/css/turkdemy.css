@@ -4806,6 +4806,9 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .request-profile-facts-single{
   grid-template-columns:minmax(0,1fr);
 }
+.request-profile-fact-wide{
+  grid-column:1 / -1;
+}
 .entity-list{
   display:grid;
 }

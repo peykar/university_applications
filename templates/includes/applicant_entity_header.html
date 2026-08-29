@@ -12,7 +12,11 @@
   <div class="entity-context-title">
     <div>
       {% if agent_context %}<p class="eyebrow">{% trans "Applicant" %}</p>{% endif %}
-      <h1>{{ lead }}</h1>
+      {% if agent_context %}
+        <h1>{{ lead }}</h1>
+      {% else %}
+        <h1>{{ lead.first_name }}{% if lead.middle_name %} {{ lead.middle_name }}{% endif %}{% if lead.last_name %} {{ lead.last_name }}{% endif %}</h1>
+      {% endif %}
       <div class="applicant-status-row">
         <span class="lead-status lead-status-{{ lead.status }}">
           {% if agent_context %}

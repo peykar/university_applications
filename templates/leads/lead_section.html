@@ -18,18 +18,29 @@
       <dl class="entity-facts-grid request-profile-facts">
         <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:"—" }}</dd></div>
         <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
-        <div><dt>{% trans "Birthdate" %}</dt><dd>{{ lead.birthdate|default:"—" }}</dd></div>
+        <div><dt>{% trans "Birthdate" %}</dt><dd>{{ lead.birthdate|default_if_none:"—" }}</dd></div>
         <div><dt>{% trans "Gender" %}</dt><dd>{{ lead.get_gender_display|default:"—" }}</dd></div>
       </dl>
     </section>
 
     <section class="request-profile-section">
       <div class="request-profile-section-heading">
-        <h2>{% trans "Location & nationality" %}</h2>
+        <h2>{% trans "Identity & nationality" %}</h2>
       </div>
       <dl class="entity-facts-grid request-profile-facts">
         <div><dt>{% trans "Nationality" %}</dt><dd>{{ lead.nationality|default:"—" }}</dd></div>
-        <div><dt>{% trans "Residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }}{% if lead.city_of_residence %}, {{ lead.city_of_residence }}{% endif %}</dd></div>
+        <div><dt>{% trans "Country of birth" %}</dt><dd>{{ lead.country_of_birth|default:"—" }}</dd></div>
+      </dl>
+    </section>
+
+    <section class="request-profile-section">
+      <div class="request-profile-section-heading">
+        <h2>{% trans "Residence" %}</h2>
+      </div>
+      <dl class="entity-facts-grid request-profile-facts">
+        <div><dt>{% trans "Country of residence" %}</dt><dd>{{ lead.country_of_residence|default:"—" }}</dd></div>
+        <div><dt>{% trans "City of residence" %}</dt><dd>{{ lead.city_of_residence|default:"—" }}</dd></div>
+        <div class="request-profile-fact-wide"><dt>{% trans "Address" %}</dt><dd>{{ lead.address|default:"—"|linebreaksbr }}</dd></div>
       </dl>
     </section>
 
@@ -37,17 +48,24 @@
       <div class="request-profile-section-heading">
         <h2>{% trans "Passport" %}</h2>
       </div>
-      <dl class="entity-facts-grid request-profile-facts request-profile-facts-single">
+      <dl class="entity-facts-grid request-profile-facts">
         <div><dt>{% trans "Passport number" %}</dt><dd>{{ lead.passport_no|default:"—" }}</dd></div>
+        <div><dt>{% trans "Issuing authority" %}</dt><dd>{{ lead.passport_issuing_authority|default:"—" }}</dd></div>
+        <div><dt>{% trans "Date of issue" %}</dt><dd>{{ lead.passport_date_of_issue|default_if_none:"—" }}</dd></div>
+        <div><dt>{% trans "Date of expiry" %}</dt><dd>{{ lead.passport_date_of_expiry|default_if_none:"—" }}</dd></div>
       </dl>
     </section>
 
     <section class="request-profile-section">
       <div class="request-profile-section-heading">
-        <h2>{% trans "Education" %}</h2>
+        <h2>{% trans "Education & language" %}</h2>
       </div>
-      <dl class="entity-facts-grid request-profile-facts request-profile-facts-single">
-        <div><dt>{% trans "Educational background" %}</dt><dd>{{ lead.educational_background|default:"—"|linebreaksbr }}</dd></div>
+      <dl class="entity-facts-grid request-profile-facts">
+        <div><dt>{% trans "English test type" %}</dt><dd>{{ lead.get_english_test_type_display|default:"—" }}</dd></div>
+        <div><dt>{% trans "English test score" %}</dt><dd>{{ lead.english_language_test_score|default_if_none:"—" }}</dd></div>
+        <div><dt>{% trans "High school GPA" %}</dt><dd>{{ lead.high_school_gpa|default_if_none:"—" }}</dd></div>
+        <div><dt>{% trans "High school GPA scale" %}</dt><dd>{{ lead.high_school_gpa_scale|default_if_none:"—" }}</dd></div>
+        <div class="request-profile-fact-wide"><dt>{% trans "Educational background" %}</dt><dd>{{ lead.educational_background|default:"—"|linebreaksbr }}</dd></div>
       </dl>
     </section>
   </section>

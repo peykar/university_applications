@@ -42,7 +42,7 @@ class LeadForm(forms.ModelForm):
 
     class Meta:
         model = Lead
-        fields = (
+        fields: ClassVar[tuple[str, ...]] = (
             "first_name",
             "middle_name",
             "last_name",
@@ -81,6 +81,17 @@ class LeadForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             if field_name != "applicant_for":
                 field.required = False
+
+
+class CustomerLeadEditForm(LeadForm):
+    """Customer-facing profile editor without internal workflow controls."""
+
+    class Meta(LeadForm.Meta):
+        fields = tuple(
+            field_name
+            for field_name in LeadForm.Meta.fields
+            if field_name != "needs_program_recommendation"
+        )
 
 
 class LeadPreferenceForm(forms.ModelForm):

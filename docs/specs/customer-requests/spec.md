@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.8
+Version: 1.9
 
 ## Goal
 
@@ -138,13 +138,23 @@ CRQ-031 — The Request context preference card MUST use **Program preferences**
 
 CRQ-032 — The customer Request **Profile** tab MUST rely on the active Request navigation tab for page identity and MUST NOT repeat that identity with decorative **Profile** or **Request profile** headings inside the tab content. The content MUST begin with meaningful person-information sections.
 
-CRQ-033 — Customer Profile information MUST be grouped by meaning: **Personal information** (email, phone, birthdate, gender), **Location & nationality** (nationality, residence), **Passport** (passport number), and **Education** (educational background). The Request person's name MUST remain in the shared Request header and MUST NOT be repeated inside Profile content.
+CRQ-033 — Customer Profile information MUST be grouped by meaning: **Personal information**, **Identity & nationality**, **Residence**, **Passport**, and **Education & language**. The Request person's name MUST remain in the shared Request header and MUST NOT be repeated inside Profile content.
 
 CRQ-034 — Customer Profile MUST expose at most one **Edit profile** action. When the Request is editable, that action MUST live with the Profile content rather than appearing in the shared Request header. Finalized Requests MUST NOT expose the customer edit action. Agent-facing **Edit applicant** behavior remains unchanged.
 
 CRQ-035 — The customer Profile tab MUST remain person-focused and MUST NOT duplicate **Program preferences** or uploaded-document context already owned by the persistent Request context sidebar. The context sidebar MUST continue to render beside Profile using the same Request detail layout.
 
 CRQ-036 — Profile groups MUST use a compact, scan-friendly presentation inside one primary Profile panel, with clear section boundaries and responsive fact grids rather than separate decorative cards or repeated page-level headings.
+
+CRQ-037 — Customer Profile read-only content MUST represent every field that the customer can edit in the existing Request profile editor, except the person's first/middle/last name MAY be represented once by the shared Request title instead of repeated in the Profile body. The read-only groups MUST include country of birth, residence address, passport issuing authority and dates, English test details, high-school GPA details, and educational background in addition to the previously shown fields.
+
+CRQ-038 — Customer Profile display and customer Profile editing MUST remain field-aligned: adding a new customer-editable profile field requires adding a corresponding customer-visible read-only representation, unless an explicit customer-requests SDD requirement documents why that field is intentionally hidden. Missing values MUST render a stable placeholder rather than disappearing from the Profile layout.
+
+CRQ-039 — The existing customer **Edit profile** page MUST use customer-facing Request/Profile terminology and MUST NOT expose internal Applicant/finalization workflow wording. Editing an existing Request MUST use **Edit profile**, **Save changes**, and return/cancel to the Request Profile tab.
+
+CRQ-040 — Internal workflow controls such as **needs program recommendation** MUST NOT render in the existing customer Profile editor. Customer program-preference/help flows remain separate; Agent-side recommendation controls and the initial Request-intake behavior MAY continue to use the underlying domain flag where required.
+
+CRQ-041 — Customer Profile editing MUST preserve the same semantic grouping as the read-only Profile wherever practical: Personal information, identity/nationality and residence, Passport, and Education & language. The read-only Profile MAY split identity/nationality and residence into separate scan-friendly sections without changing field ownership.
 
 ## Acceptance policy
 

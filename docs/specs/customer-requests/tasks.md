@@ -47,3 +47,8 @@ Status: IMPLEMENTED
 - [x] `CRQ-035` Keep Profile person-focused and leave preferences/documents in the persistent context sidebar.
 - [x] `CRQ-036` Present Profile as one compact grouped panel with responsive fact grids.
 
+- [x] `CRQ-037` Expand customer Profile read-only data to cover every customer-editable profile field, with the Request title owning the name.
+- [x] `CRQ-038` Add a field-alignment/placeholder contract between Profile display and customer editing.
+- [x] `CRQ-039` Clean existing customer Edit Profile wording/actions and return path.
+- [x] `CRQ-040` Remove internal recommendation workflow control from customer Profile editing while preserving intake/Agent behavior.
+- [x] `CRQ-041` Align customer Profile view/edit semantic sections.
