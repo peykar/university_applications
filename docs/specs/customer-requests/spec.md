@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.9
+Version: 1.10
 
 ## Goal
 
@@ -155,6 +155,18 @@ CRQ-039 — The existing customer **Edit profile** page MUST use customer-facing
 CRQ-040 — Internal workflow controls such as **needs program recommendation** MUST NOT render in the existing customer Profile editor. Customer program-preference/help flows remain separate; Agent-side recommendation controls and the initial Request-intake behavior MAY continue to use the underlying domain flag where required.
 
 CRQ-041 — Customer Profile editing MUST preserve the same semantic grouping as the read-only Profile wherever practical: Personal information, identity/nationality and residence, Passport, and Education & language. The read-only Profile MAY split identity/nationality and residence into separate scan-friendly sections without changing field ownership.
+
+CRQ-042 — The customer Request **Programs** tab MUST use **Programs** as its single section heading and MUST NOT repeat the tab identity with a decorative Programs eyebrow. The tab MAY expose one **Find programs** action because adding another program is the primary workflow on this page.
+
+CRQ-043 — Every program shown on the customer Programs tab MUST be a single whole-card link to that program's public detail page. Program name MUST be the strongest card label, followed by university, then compact degree/intake metadata; the card MUST NOT require a separate View details link.
+
+CRQ-044 — Customer program cards MUST preserve provenance without letting provenance dominate the card hierarchy: Agent-originated interests MUST show **Suggested by your advisor** and customer-originated interests MUST show **Added by you** as secondary source labels.
+
+CRQ-045 — Program intake presentation on the customer Programs tab MUST use concrete semester/year text when an offering is selected and MUST use the customer-facing phrase **Intake to be decided** when no offering is selected. The internal phrase **Any intake / decide later** MUST NOT render on this customer page.
+
+CRQ-046 — The customer Programs tab MUST expose only one browse/add-program action. When the persistent header-level **Find programs** action is present, the empty state MUST provide explanatory copy without adding a second **Browse programs** button.
+
+CRQ-047 — The customer Programs tab MUST remain focused on programs associated with the Request and MUST NOT duplicate the **Program preferences** summary/edit UI owned by the persistent Request context sidebar.
 
 ## Acceptance policy
 

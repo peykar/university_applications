@@ -443,6 +443,72 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn('{% trans "Residence" %}', profile)
         self.assertIn('{% trans "Residence" %}', self.request_form)
 
+    def test_programs_tab_has_single_heading_and_primary_action(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        self.assertEqual(programs.count('{% trans "Programs" %}'), 1)
+        self.assertNotIn('<p class="eyebrow">{% trans "Programs" %}</p>', programs)
+        self.assertEqual(programs.count('{% trans "Find programs" %}'), 1)
+        self.assertIn("{% url 'program-list' %}", programs)
+
+    def test_program_cards_are_whole_click_targets_with_program_first_hierarchy(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        self.assertIn(
+            '<a class="lead-interest-card request-program-card" '
+            "href=\"{% url 'program-detail' interest.program.slug_en %}\">",
+            programs,
+        )
+        self.assertIn("<h3>{{ interest.program.name_en }}</h3>", programs)
+        self.assertIn('class="request-program-university"', programs)
+        self.assertIn('class="request-program-meta"', programs)
+        self.assertNotIn("<h3><a href=", programs)
+        self.assertNotIn('{% trans "View details" %}', programs)
+        self.assertIn(".request-program-card{", self.css)
+
+    def test_program_cards_keep_source_as_secondary_context(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        name_index = programs.index("{{ interest.program.name_en }}")
+        source_index = programs.index('{% trans "Suggested by your advisor" %}')
+        self.assertLess(name_index, source_index)
+        self.assertIn('{% trans "Suggested by your advisor" %}', programs)
+        self.assertIn('{% trans "Added by you" %}', programs)
+        self.assertIn("request-program-source", programs)
+
+    def test_program_intake_copy_is_customer_friendly(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        self.assertIn("interest.program_offering.semester.name_en", programs)
+        self.assertIn("interest.program_offering.academic_year.name_en", programs)
+        self.assertIn('{% trans "Intake to be decided" %}', programs)
+        self.assertNotIn('{% trans "Any intake / decide later" %}', programs)
+
+    def test_programs_empty_state_does_not_duplicate_browse_action(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        self.assertIn(
+            '{% trans "No programs have been added to this request yet." %}',
+            programs,
+        )
+        self.assertNotIn('{% trans "Browse programs" %}', programs)
+        self.assertEqual(programs.count("{% url 'program-list' %}"), 1)
+
+    def test_programs_tab_does_not_duplicate_program_preferences(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        self.assertNotIn('{% trans "Program preferences" %}', programs)
+        self.assertIn(
+            '<h2>{% trans "Program preferences" %}</h2>',
+            self.request_context_sidebar,
+        )
+
     def test_customer_request_header_uses_customer_friendly_statuses(self):
         self.assertIn('{% trans "Received" %}', self.request_header)
         self.assertIn('{% trans "In progress" %}', self.request_header)

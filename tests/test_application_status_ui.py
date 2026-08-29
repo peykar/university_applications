@@ -23,7 +23,7 @@ class ApplicantProgramSourceUITests(SimpleTestCase):
 
     def test_customer_program_ui_uses_source_not_interest_status(self):
         program_section = self.template.split(
-            '<div class="lead-interest-list">',
+            '<div class="lead-interest-list request-program-list">',
             1,
         )[1].split("</section>", 1)[0]
         self.assertIn("Suggested by your advisor", program_section)
@@ -32,4 +32,4 @@ class ApplicantProgramSourceUITests(SimpleTestCase):
 
     def test_program_section_is_simple(self):
         self.assertIn('{% trans "Programs" %}', self.template)
-        self.assertIn("Any intake / decide later", self.template)
+        self.assertIn("Intake to be decided", self.template)

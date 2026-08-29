@@ -1,4 +1,19 @@
 
+## 2026-08-29 — Programs cleanup regression-test alignment
+
+- Updated the legacy customer program-source UI test to target the SDD-defined `request-program-list` markup introduced by CRQ-043/CRQ-044.
+- Updated the legacy intake-copy assertion from `Any intake / decide later` to the customer-facing `Intake to be decided` wording required by CRQ-045.
+- No production UI or business behavior changed.
+
+## 2026-08-29 — Customer Request Programs tab simplification
+
+- Advanced Customer Requests SDD to v1.10 with CRQ-042 through CRQ-047.
+- Removed the duplicate Programs eyebrow and kept one Programs heading plus one Find programs action.
+- Made each program card the complete program-detail click target with program name, university, degree/intake metadata, and secondary provenance.
+- Replaced customer-facing “Any intake / decide later” with “Intake to be decided”.
+- Removed the duplicate Browse programs action from the empty state and kept Program preferences exclusively in the persistent Request context sidebar.
+- Added regression coverage for Programs-tab hierarchy, click targets, provenance, intake wording, empty-state action economy, and preference ownership.
+
 ## 2026-08-29 — Customer Profile field-alignment regression test
 
 - Fixed the CRQ-037 profile/edit alignment regression test so choice-backed `english_test_type` is verified through Django's customer-facing `get_english_test_type_display` accessor.

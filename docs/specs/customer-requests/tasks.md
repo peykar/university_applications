@@ -52,3 +52,11 @@ Status: IMPLEMENTED
 - [x] `CRQ-039` Clean existing customer Edit Profile wording/actions and return path.
 - [x] `CRQ-040` Remove internal recommendation workflow control from customer Profile editing while preserving intake/Agent behavior.
 - [x] `CRQ-041` Align customer Profile view/edit semantic sections.
+
+- [x] `CRQ-042` Simplify the Programs tab to one Programs heading plus one Find programs action.
+- [x] `CRQ-043` Make each customer program card the complete program-detail click target with program-first hierarchy.
+- [x] `CRQ-044` Keep Added by you / Suggested by your advisor as secondary provenance labels.
+- [x] `CRQ-045` Replace the customer no-offering phrase with Intake to be decided while keeping concrete offering metadata.
+- [x] `CRQ-046` Remove the duplicate Browse programs empty-state action.
+- [x] `CRQ-047` Keep Program preferences exclusively in the persistent Request context sidebar.
+

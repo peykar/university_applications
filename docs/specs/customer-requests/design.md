@@ -132,3 +132,13 @@ The customer Profile is the read-only representation of the customer-editable Re
 The read-only layout is grouped as **Personal information**, **Identity & nationality**, **Residence**, **Passport**, and **Education & language**. This exposes country of birth, full residence/address data, passport authority/issue/expiry dates, English test details, GPA/scale, and educational background rather than presenting only a partial profile.
 
 Editing an existing Request uses a dedicated customer edit form derived from the intake form but excludes internal workflow controls such as `needs_program_recommendation`. The customer edit screen uses **Edit profile** / **Save changes**, omits Request-profile/finalization explanatory copy, and cancels back to the Request Profile tab. Initial intake is kept separate so its existing "need help choosing" behavior can continue without leaking the internal control into later profile maintenance.
+## Programs tab information architecture
+
+The active **Programs** Request navigation tab provides page identity, so the tab body uses one **Programs** heading without a decorative eyebrow. A single header-level **Find programs** action links to the catalogue and is the page's add/browse action. The empty state therefore contains guidance only and does not repeat that action.
+
+Each associated `LeadProgramInterest` is rendered as one whole-card link to the canonical public program detail route. The visual hierarchy is program name first, university second, compact degree/intake metadata third, then provenance as secondary context. No nested program-title link or separate View details action is needed because the card itself is the click target.
+
+Provenance remains customer-visible: Agent-originated rows use **Suggested by your advisor** and customer-originated rows use **Added by you**. Selected offerings display semester and academic year; interests without an offering use **Intake to be decided** rather than the internal/intake-workflow phrase “Any intake / decide later.”
+
+Program preferences remain Request context rather than Programs-tab body content. The existing persistent right sidebar continues to own preference summary/edit behavior, preventing the Programs tab from becoming a duplicate preference editor.
+

@@ -48,3 +48,10 @@ Status: IMPLEMENTED
 | `CRQ-039` | `apps/leads/views.py`, `templates/leads/lead_form.html` | `CustomerRequestWorkspaceTests.test_customer_edit_profile_uses_request_safe_copy_and_actions` | Named test |
 | `CRQ-040` | `apps/leads/forms.py`, `apps/leads/views.py`, `templates/leads/lead_form.html` | `CustomerRequestWorkspaceTests.test_customer_edit_profile_excludes_internal_recommendation_control` | Named test |
 | `CRQ-041` | `templates/leads/lead_section.html`, `templates/leads/lead_form.html` | `CustomerRequestWorkspaceTests.test_profile_view_and_edit_share_semantic_sections` | Named test |
+| `CRQ-042` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_programs_tab_has_single_heading_and_primary_action` | Named test |
+| `CRQ-043` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_cards_are_whole_click_targets_with_program_first_hierarchy` | Named test |
+| `CRQ-044` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_cards_keep_source_as_secondary_context` | Named test |
+| `CRQ-045` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_program_intake_copy_is_customer_friendly` | Named test |
+| `CRQ-046` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_programs_empty_state_does_not_duplicate_browse_action` | Named test |
+| `CRQ-047` | `templates/leads/lead_section.html`, `templates/includes/customer_request_context_sidebar.html` | `CustomerRequestWorkspaceTests.test_programs_tab_does_not_duplicate_program_preferences` | Named test |
+
