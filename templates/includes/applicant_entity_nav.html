@@ -1,5 +1,5 @@
 {% load i18n %}
-<nav class="entity-nav applicant-entity-nav" aria-label="{% if agent_context %}{% trans 'Applicant navigation' %}{% else %}{% trans 'Request navigation' %}{% endif %}">
+<nav class="entity-nav applicant-entity-nav{% if not agent_context %} customer-request-entity-nav{% endif %}" aria-label="{% if agent_context %}{% trans 'Applicant navigation' %}{% else %}{% trans 'Request navigation' %}{% endif %}">
   {% if agent_context %}
     <a href="{% url 'agent-applicant-detail' lead.pk %}"{% if entity_tab == "overview" %} class="is-active"{% endif %}>{% trans "Overview" %}</a>
     <a href="{% url 'agent-applicant-profile' lead.pk %}"{% if entity_tab == "profile" %} class="is-active"{% endif %}>{% trans "Profile" %}</a>

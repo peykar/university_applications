@@ -80,4 +80,8 @@ Status: IMPLEMENTED
 | `CRQ-067` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_document_cards_show_customer_status_and_open_affordance` | Named structural/style test |
 | `CRQ-068` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_replacement_document_card_exposes_reason_and_replace_action` | Named structural test |
 | `CRQ-069` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_documents_workspace_has_one_contextual_upload_action` | Named structural test |
-| `CRQ-070` | `templates/includes/customer_request_context_sidebar.html` | `CustomerRequestWorkspaceTests.test_documents_tab_suppresses_duplicate_document_context` | Named structural test |
+| `CRQ-070` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_documents_tab_has_no_request_context_sidebar` | Named structural/style test |
+
+| `CRQ-071` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_document_type_is_a_direct_file_link` | Named structural/style test |
+| `CRQ-072` | `static/css/turkdemy.css`, `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_documents_mobile_layout_is_compact_and_upload_stays_in_heading` | Named style/structural test |
+| `CRQ-073` | `static/css/turkdemy.css`, `templates/includes/applicant_entity_nav.html` | `CustomerRequestWorkspaceTests.test_customer_request_mobile_tabs_fit_without_clipping` | Named style/structural test |

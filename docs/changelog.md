@@ -1041,3 +1041,13 @@
 - Updated replacement-workflow coverage to assert the CRQ-067 customer-facing label **Needs replacement** instead of the previous **Replacement requested** wording.
 - No production behavior changed; this aligns legacy tests with the already-approved Customer Documents v1.19 contract.
 
+
+
+## 2026-08-29 — Customer Documents mobile/context refinement
+
+- Advanced Customer Requests SDD to v1.20 with CRQ-071 through CRQ-073 and refined CRQ-070.
+- Removed the entire Request context sidebar from the Documents tab, including Program preferences, and expanded the Documents workspace into the available Request-detail width.
+- Made each document type label a direct file link while continuing to hide stored filenames.
+- Kept the single Upload document action on the Documents heading row on mobile and gave it a lighter secondary treatment.
+- Reduced ordinary mobile document-card height and vertically centered the open arrow; replacement-required cards retain expanded workflow space.
+- Reworked the five customer Request tabs into a narrow-screen five-column layout so Messages is no longer clipped off-screen.

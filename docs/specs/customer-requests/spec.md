@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.19
+Version: 1.20
 
 ## Goal
 
@@ -220,4 +220,11 @@ CRQ-068 — When replacement is requested, the customer document card MUST show 
 
 CRQ-069 — The Documents workspace MUST expose only one primary Upload document action when documents exist. When no documents exist, that action MUST move into the empty state rather than being duplicated in the page heading and empty state.
 
-CRQ-070 — While the Documents tab is active, the Request context sidebar MUST suppress its Uploaded documents summary because the main workspace already owns the complete document list; Program preferences MUST remain available as Request context.
+CRQ-070 — While the Documents tab is active, the Request context sidebar MUST NOT render. The Documents workspace owns the complete document task on this page and MUST expand into the available Request-detail width rather than repeating Uploaded documents or Program preferences as side context.
+
+
+CRQ-071 — The document type label on each customer Documents card MUST itself be a direct link to the uploaded file, in addition to the lightweight directional open affordance. Stored filenames MUST remain hidden.
+
+CRQ-072 — On customer mobile Documents pages, the Documents heading and Upload document action MUST remain on one header row when upload is available. Upload MUST use a lighter secondary treatment, ordinary document cards MUST remain compact, and the open arrow MUST be vertically centered for ordinary cards while replacement-required cards MAY keep top-aligned navigation to preserve expanded content readability.
+
+CRQ-073 — Customer Request tab navigation on mobile MUST present Overview, Profile, Programs, Documents, and Messages without clipping a tab label off-screen. The five customer tabs MUST fit the available row at narrow widths while retaining an unambiguous active state and usable tap targets.

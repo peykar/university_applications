@@ -1,6 +1,5 @@
 {% load i18n %}
 <aside class="request-context-sidebar" aria-label="{% trans 'Request context' %}">
-  {% if entity_tab != "documents" %}
   <section class="request-context-card">
     <div class="request-context-card-head">
       <div><h2>{% trans "Uploaded documents" %}</h2></div>
@@ -29,7 +28,6 @@
       <a class="request-context-action" href="{% url 'lead-documents' lead.pk %}">+ {% trans "Upload document" %}</a>
     {% endif %}
   </section>
-  {% endif %}
 
   <section class="request-context-card">
     <div class="request-context-card-head">

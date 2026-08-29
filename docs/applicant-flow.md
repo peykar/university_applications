@@ -81,3 +81,8 @@ In an editable Request, each program uses one intake dropdown. The selected offe
 ### Customer program recommendation notes
 
 On the customer Request Programs workspace, an Agent recommendation may include `suggestion_reason`. When present it is shown directly below **Suggested by your advisor** as readable customer context with automatic text direction (`dir="auto"`). The generic LeadProgramInterest `notes` field remains internal and is not exposed.
+
+
+### Customer Documents workspace
+
+The customer Documents tab is a focused full-width workspace with no Request context sidebar. Document type is the customer-facing identity and direct file link; stored filenames are hidden. On mobile, the heading and single Upload document action share one row, ordinary document cards stay compact, and all five Request-local tabs remain visible without clipping.

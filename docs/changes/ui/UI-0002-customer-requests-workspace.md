@@ -40,3 +40,10 @@ See `docs/specs/customer-requests/` (`CRQ-001`–`CRQ-064`).
 - Kept Program Detail and Remove visually separated on Programs cards in both LTR and RTL.
 - Program Detail now uses a lightweight borderless SVG arrow at the card top/end position.
 - Remove now uses a neutral-gray borderless trash + text action at the card bottom/end, beneath intake management, while preserving confirmed POST behavior.
+
+- Rebuilt Documents as a focused workspace with no Request context sidebar on that tab.
+- Made document type a direct link to the uploaded file while keeping stored filenames hidden.
+- Refined mobile Documents layout so heading/upload remain on one row, ordinary cards stay compact, and open arrows align consistently.
+- Reworked the customer Request tab bar at mobile widths so all five tabs remain visible without clipping.
+
+Current Customer Requests SDD coverage: `CRQ-001`–`CRQ-073`.

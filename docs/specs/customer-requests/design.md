@@ -189,4 +189,11 @@ The Documents tab is the complete customer document-management workspace. It use
 
 Cards stay compact unless action is required. A replacement-requested card expands to show `review_note` when available and the existing replacement upload disclosure/form. The normal upload flow remains the existing modal, but only one primary Upload document trigger is rendered: in the heading when documents exist, or inside the empty state when none exist.
 
-The Request context sidebar is contextual. Its Uploaded documents summary is useful on Overview/Profile/Programs/Messages but redundant on Documents, so that card is suppressed while `entity_tab == "documents"`. Program preferences remain visible as cross-cutting Request context.
+The Request context sidebar is contextual. It is useful on Overview/Profile/Programs/Messages, but the Documents tab is a focused document-management workspace and renders no Request context sidebar at all. The Documents layout therefore expands into the available Request-detail width and does not repeat either Uploaded documents or Program preferences.
+
+
+## Documents mobile refinement
+
+On the Documents tab, document type is both the semantic identity and a direct file link; the stored filename remains implementation detail. The separate borderless arrow remains as a secondary open affordance. On small screens, the Documents heading and the single Upload document action share one row, with Upload using a lighter secondary treatment. Ordinary cards reduce vertical padding and center the open arrow against the card; replacement-required cards may keep the arrow near the top because their review note/replacement workflow makes the card intentionally taller.
+
+The customer Request tab bar uses a five-column mobile layout for Overview, Profile, Programs, Documents, and Messages. This avoids the final tab being visually clipped while keeping all Request-local navigation available without a hidden horizontal-scroll dependency.

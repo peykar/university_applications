@@ -3,7 +3,7 @@
 {% block title %}{{ lead }} · {{ entity_tab|title }} — TurkDemy{% endblock %}
 {% block customer_content %}
 <div class="customer-applicant-page customer-request-detail">
-<div class="request-detail-layout">
+<div class="request-detail-layout{% if entity_tab == 'documents' %} request-detail-layout-documents{% endif %}">
 <main class="request-detail-main">
 {% include "includes/applicant_entity_header.html" %}
 {% if entity_tab == "profile" %}
@@ -158,7 +158,7 @@
       {% for document in documents %}
         <article class="lead-document-row request-document-card lead-document-row-review-{{ document.review_status }}">
           <div class="lead-document-copy request-document-copy">
-            <strong>{{ document.get_document_type_display }}</strong>
+            <a class="request-document-title-link" href="{{ document.file.url }}" target="_blank" rel="noopener">{{ document.get_document_type_display }}</a>
             {% if document.review_status == "approved" %}
               <span class="badge badge-success">{% trans "Approved" %}</span>
             {% elif document.review_status == "replacement_requested" %}
@@ -264,7 +264,9 @@
 {% endif %}
 
 </main>
-{% include "includes/customer_request_context_sidebar.html" %}
+{% if entity_tab != "documents" %}
+  {% include "includes/customer_request_context_sidebar.html" %}
+{% endif %}
 </div>
 
 <script>

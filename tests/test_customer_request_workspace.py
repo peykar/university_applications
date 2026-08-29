@@ -704,7 +704,55 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn("empty-state request-document-empty", documents)
         self.assertNotIn('{% trans "Add another document" %}', documents)
 
-    def test_documents_tab_suppresses_duplicate_document_context(self):
-        self.assertIn('{% if entity_tab != "documents" %}', self.request_context_sidebar)
-        self.assertIn('{% trans "Uploaded documents" %}', self.request_context_sidebar)
+    def test_documents_tab_has_no_request_context_sidebar(self):
+        self.assertIn(
+            '{% if entity_tab != "documents" %}',
+            self.request_section,
+        )
+        self.assertIn(
+            '{% include "includes/customer_request_context_sidebar.html" %}',
+            self.request_section,
+        )
+        self.assertIn(
+            "request-detail-layout-documents",
+            self.request_section,
+        )
+        self.assertIn(
+            ".request-detail-layout-documents{grid-template-columns:minmax(0,1fr)}",
+            self.css,
+        )
         self.assertIn('{% trans "Program preferences" %}', self.request_context_sidebar)
+
+    def test_document_type_is_a_direct_file_link(self):
+        documents = self.request_section.split('{% elif entity_tab == "documents" %}', 1)[1].split(
+            '{% elif entity_tab == "applications" %}', 1
+        )[0]
+        self.assertIn('class="request-document-title-link"', documents)
+        self.assertIn('href="{{ document.file.url }}"', documents)
+        self.assertIn("{{ document.get_document_type_display }}</a>", documents)
+        self.assertIn(".request-document-title-link{", self.css)
+
+    def test_documents_mobile_layout_is_compact_and_upload_stays_in_heading(self):
+        self.assertIn(
+            ".request-documents-heading{display:flex;align-items:center;",
+            self.css,
+        )
+        self.assertIn(".request-documents-heading .button{", self.css)
+        self.assertIn("min-height:82px", self.css)
+        self.assertIn("inset-block-start:50%", self.css)
+        self.assertIn("transform:translateY(-50%)", self.css)
+
+    def test_customer_request_mobile_tabs_fit_without_clipping(self):
+        self.assertIn(
+            "customer-request-entity-nav",
+            self.request_nav,
+        )
+        self.assertIn(
+            ".customer-request-entity-nav{display:grid;"
+            "grid-template-columns:repeat(5,minmax(0,1fr));",
+            self.css,
+        )
+        self.assertIn(
+            "font-size:clamp(.64rem,2.7vw,.72rem)",
+            self.css,
+        )

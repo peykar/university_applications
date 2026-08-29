@@ -86,4 +86,8 @@ Status: IMPLEMENTED
 - [x] `CRQ-067` Present customer-safe review states and a lightweight file-open affordance on every document card.
 - [x] `CRQ-068` Expand only replacement-required cards with review reason and replacement workflow.
 - [x] `CRQ-069` Keep one Upload document primary action, moving it into the empty state when no documents exist.
-- [x] `CRQ-070` Hide Uploaded documents context while Documents is active and retain Program preferences.
+- [x] `CRQ-070` Remove the entire Request context sidebar on Documents and let the document workspace use the available width.
+
+- [x] `CRQ-071` Make document type itself open the uploaded file while keeping filenames hidden.
+- [x] `CRQ-072` Refine mobile Documents heading/upload placement, card density, and ordinary-card arrow alignment.
+- [x] `CRQ-073` Make all five customer Request tabs fit the mobile row without clipping.
