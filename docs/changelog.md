@@ -1,3 +1,10 @@
+## 2026-08-29 — Customer Programs card-width and remove-icon polish
+
+- Made every card in the dedicated customer Programs workspace fill the full available Programs-column width, independent of its content length.
+- Removed the persistent border/background box from the program-removal control.
+- Changed the trash icon to a neutral gray treatment with a darker hover state while retaining accessible focus indication.
+- Updated Customer Requests SDD to v1.13 with CRQ-059 and refined CRQ-056.
+
 ## 2026-08-29 — Customer program intake interaction simplification
 
 - Advanced Customer Requests SDD to v1.12 with CRQ-055 through CRQ-058 and aligned the earlier intake-copy requirements with the new control.

@@ -160,3 +160,13 @@ The customer Programs workspace keeps intake selection intentionally lightweight
 Removal is deliberately outside the intake form because it mutates the program interest rather than its offering. It is represented by a compact trash icon at card level, with accessible text and browser confirmation before POST.
 
 For Agent-originated interests, `LeadProgramInterest.suggestion_reason` is the customer-facing recommendation explanation and is shown only when populated. The separate generic `notes` field remains internal and is not rendered to customers. Finalized Requests keep the same information presentation but suppress editable intake/removal controls.
+
+## Programs card width and destructive-action styling
+
+The dedicated Programs workspace is a single comparison column. Its program list is
+therefore explicitly rendered as a one-column grid and each card fills the available
+column width. Content length must not determine card width.
+
+Program removal remains a separate card-level control, but the trash icon is visually
+neutral rather than styled as a boxed/destructive button. It uses a gray borderless
+icon at rest, a darker gray hover state, and a focus-visible outline for keyboard users.

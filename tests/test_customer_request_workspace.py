@@ -581,6 +581,18 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             programs,
         )
         self.assertIn('<svg viewBox="0 0 24 24"', programs)
+        self.assertIn("border:0;background:transparent", self.css)
+        self.assertIn("color:#8a97a3", self.css)
+
+    def test_program_cards_fill_programs_column(self):
+        self.assertIn(
+            ".request-program-list{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;width:100%}",
+            self.css,
+        )
+        self.assertIn(
+            ".request-program-card{position:relative;width:100%;box-sizing:border-box}",
+            self.css,
+        )
 
     def test_agent_suggestion_reason_is_customer_visible_without_internal_notes(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(

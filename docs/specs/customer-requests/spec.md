@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.12
+Version: 1.13
 
 ## Goal
 
@@ -191,8 +191,10 @@ CRQ-054 — Because program cards now contain management controls, the Programs 
 
 CRQ-055 — Each editable Request program MUST expose exactly one intake dropdown. When an intake is already selected, that offering MUST be the selected option; otherwise **Select intake** MUST be selected. Changing the dropdown MUST immediately submit the intake form and return the customer to the Programs page without a separate Select, Save, or Change intake button.
 
-CRQ-056 — Program removal MUST remain a program-level action separate from intake selection. The Programs card MUST represent removal with a conventional trash-bin icon, provide an accessible **Remove program** label, and request confirmation before submitting the removal form.
+CRQ-056 — Program removal MUST remain a program-level action separate from intake selection. The Programs card MUST represent removal with a conventional trash-bin icon, provide an accessible **Remove program** label, and request confirmation before submitting the removal form. The icon control MUST be visually neutral: gray, borderless, and without a persistent surrounding button box.
 
 CRQ-057 — For Agent-originated program interests, the Programs workspace MUST show `suggestion_reason` as customer-visible advisor context when it is non-empty. It MUST NOT expose the generic/internal `notes` field. Customer-originated interests MUST NOT render an empty advisor-note area.
 
 CRQ-058 — Finalized Requests MUST keep program management read-only: intake controls and removal controls MUST not render, while the selected intake (or **Not selected**) MAY be shown as read-only context.
+
+CRQ-059 — Program cards in the dedicated Programs workspace MUST fill the available width of their holding Programs column rather than shrink to content width. Card widths MUST remain consistent regardless of program title, metadata, recommendation note, or intake state.

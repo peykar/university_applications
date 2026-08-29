@@ -73,3 +73,4 @@ Status: IMPLEMENTED
 - [x] `CRQ-056` Move removal to an accessible confirmed trash-icon action at program-card level.
 - [x] `CRQ-057` Surface Agent `suggestion_reason` to customers without exposing internal `notes`.
 - [x] `CRQ-058` Preserve finalized Request read-only behavior for intake and removal controls.
+- [x] `CRQ-059` Make Programs-workspace cards fill the available column width and keep card widths consistent.
