@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.22
+Version: 1.23
 
 ## Goal
 
@@ -233,3 +233,7 @@ CRQ-073 — Customer Request tab navigation on mobile MUST present Overview, Pro
 CRQ-074 — The Documents workspace MUST place its page-level action on the opposite logical side of the **Documents** title on desktop and mobile. The action MUST use the primary dark-blue button treatment and MUST be labelled **+ Upload document**. Logical start/end alignment MUST preserve the same title/action relationship in RTL.
 
 CRQ-075 — On narrow mobile widths, the **Documents** title and **+ Upload document** page action MUST remain on the same title row rather than stacking. The action MAY use reduced mobile padding/text size, but MUST retain the primary dark-blue treatment and opposite logical-side alignment.
+
+CRQ-076 — The dedicated Programs workspace MUST follow the Request page-title/action convention: **Programs** occupies logical start and the page-level **Find programs →** action occupies logical end on the same heading row. The action MUST use the same primary dark-blue button treatment as other Request page-level actions, including Documents, and logical alignment MUST preserve the relationship in RTL.
+
+CRQ-077 — On customer mobile Programs pages, each program card MUST collapse to a single vertical content flow rather than retaining a multi-column desktop layout. Program detail content MUST use the card width, intake management MUST render as its own full-width row with a usable full-width dropdown, and Remove MUST remain a horizontal bottom/end action rather than becoming a squeezed or vertically wrapped column. The Programs title and Find programs action MUST remain on one heading row at narrow widths.

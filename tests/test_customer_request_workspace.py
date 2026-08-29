@@ -452,6 +452,11 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertNotIn('<p class="eyebrow">{% trans "Programs" %}</p>', programs)
         self.assertEqual(programs.count('{% trans "Find programs" %}'), 1)
         self.assertIn("{% url 'program-list' %}", programs)
+        self.assertIn('class="button request-programs-action"', programs)
+        self.assertIn(
+            ".request-programs-action{flex:0 0 auto;background:#173b61;",
+            self.css,
+        )
 
     def test_program_card_uses_detail_link_beside_management_controls(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
@@ -468,6 +473,28 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn('class="request-program-meta"', programs)
         self.assertIn('class="request-program-management"', programs)
         self.assertIn(".request-program-detail-link{", self.css)
+
+    def test_programs_mobile_cards_collapse_to_vertical_management_flow(self):
+        self.assertIn(
+            ".customer-applicant-page .request-program-card{display:block!important}",
+            self.css,
+        )
+        self.assertIn(
+            ".request-program-management{display:grid;grid-template-columns:1fr;",
+            self.css,
+        )
+        self.assertIn(
+            ".request-program-intake-form select{max-width:none;width:100%;min-height:40px}",
+            self.css,
+        )
+        self.assertIn(
+            ".request-program-footer-actions{width:100%;justify-content:flex-end;",
+            self.css,
+        )
+        self.assertIn(
+            ".customer-applicant-page .lead-panel .request-programs-heading{",
+            self.css,
+        )
 
     def test_program_cards_keep_source_as_secondary_context(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(

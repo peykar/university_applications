@@ -5853,8 +5853,10 @@ a.entity-list-row:hover{
 }
 
 /* Customer Request: Programs tab */
-.request-programs-heading{align-items:center!important}
+.request-programs-heading{display:flex;align-items:center!important;justify-content:space-between;gap:14px;flex-wrap:nowrap}
 .request-programs-heading h2{margin:0!important}
+.request-programs-action{flex:0 0 auto;background:#173b61;color:#fff;border:1px solid #173b61;box-shadow:none;text-decoration:none}
+.request-programs-action:hover{background:#0f3150;color:#fff;border-color:#0f3150;text-decoration:none}
 .request-program-card{
   display:flex;align-items:center;justify-content:space-between;gap:20px;
   color:inherit;text-decoration:none;cursor:pointer;
@@ -5911,9 +5913,29 @@ a.entity-list-row:hover{
 .request-program-remove:hover{color:#5f6b75}
 .request-program-remove:focus-visible{outline:2px solid #9aa7b2;outline-offset:3px}
 @media(max-width:700px){
-  .request-program-management{align-items:flex-start}
+  .customer-applicant-page .request-program-card{display:block!important}
+  .request-program-detail-link{width:100%;gap:12px}
+  .request-program-copy{width:100%}
+  .request-program-management{display:grid;grid-template-columns:1fr;align-items:start;gap:7px;width:100%}
   .request-program-intake-form{width:100%}
-  .request-program-intake-form select{max-width:none;width:100%}
+  .request-program-intake-form select{max-width:none;width:100%;min-height:40px}
+  .request-program-footer-actions{width:100%;justify-content:flex-end;margin-top:12px}
+  .request-programs-heading .button{padding:9px 12px;font-size:.75rem;white-space:nowrap}
+}
+
+@media(max-width:430px){
+  .customer-applicant-page .lead-panel .request-programs-heading{
+    display:flex;
+    align-items:center!important;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .customer-applicant-page .lead-panel .request-programs-heading .button{
+    margin:0;
+    padding:8px 10px;
+    font-size:.7rem;
+    white-space:nowrap;
+  }
 }
 
 /* Customer Request documents workspace */

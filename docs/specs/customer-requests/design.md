@@ -201,3 +201,9 @@ The customer Request tab bar uses a five-column mobile layout for Overview, Prof
 ## Narrow mobile Documents action row
 
 `CRQ-075` adds a narrow-screen override after the legacy generic `section-heading` mobile rule so the Documents page-action contract remains authoritative at widths at or below 430px. The title/action row stays flex-based with logical start/end alignment and a compact primary action.
+
+## Programs page-action and mobile card refinement
+
+`CRQ-076` applies the same Request page-title/action convention already used by Documents to the dedicated Programs workspace. `request-programs-heading` is a non-wrapping logical start/end flex row; **Find programs →** is rendered as the standard primary dark-blue Request page action rather than a lightweight text link. The same markup is used across desktop, mobile, LTR, and RTL.
+
+`CRQ-077` fixes the narrow-screen regression caused by an older `display:flex!important` mobile rule on `.request-program-card`. At customer mobile widths the Programs card is explicitly restored to a block/vertical flow. Program detail occupies the full width, intake management becomes a one-column section with a full-width select, and the bottom Remove row remains horizontally aligned to logical end. A narrow-screen heading override keeps **Programs** and **Find programs →** on the same row even though the legacy generic section-heading rule stacks other headings at <=430px.

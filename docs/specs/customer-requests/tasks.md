@@ -95,3 +95,6 @@ Status: IMPLEMENTED
 - [x] `CRQ-074` Keep **Documents** and the primary **+ Upload document** page action on opposite logical sides of the same title row across desktop/mobile/RTL.
 
 - [x] `CRQ-075` Keep Documents and **+ Upload document** on one row even at the narrowest supported customer mobile widths.
+
+- [x] `CRQ-076` Apply the Request page-title/action convention to Programs and render **Find programs →** as the primary dark-blue page action.
+- [x] `CRQ-077` Collapse Programs cards to a true vertical mobile flow with full-width intake selection, horizontal bottom Remove action, and a non-stacking Programs title/action row.

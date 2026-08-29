@@ -1067,3 +1067,10 @@
 - Added a narrow-mobile override so **Documents** and **+ Upload document** remain on the same title/action row at widths at or below 430px.
 - Kept the upload action dark-blue and primary while reducing only its narrow-screen spacing.
 - Reworked the customer workspace mobile navigation into an adaptive grid so My Requests, Messages, Get Help, and the optional WhatsApp action remain visible without clipping; long support labels may wrap.
+
+## 2026-08-29 — Programs page-action and mobile layout refinement
+
+- Advanced Customer Requests SDD to v1.23 with CRQ-076 and CRQ-077.
+- Applied the shared Request page-title/action convention to Programs: **Programs** stays at logical start and **Find programs →** is now the dark-blue primary page action at logical end on desktop and mobile.
+- Fixed the mobile Programs card regression caused by a legacy flex override: cards now collapse to a true vertical flow, program content uses the full card width, intake is a full-width management row, and Remove remains a horizontal bottom/end action.
+- Added a narrow-mobile Programs heading override so the title/action row does not stack at <=430px.

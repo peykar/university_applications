@@ -74,7 +74,7 @@
   <section class="lead-panel entity-section request-programs-panel">
     <div class="section-heading request-programs-heading">
       <h2>{% trans "Programs" %}</h2>
-      <a class="section-link" href="{% url 'program-list' %}">{% trans "Find programs" %} →</a>
+      <a class="button request-programs-action" href="{% url 'program-list' %}">{% trans "Find programs" %} →</a>
     </div>
     <div class="lead-interest-list request-program-list">
       {% for interest in interests %}
