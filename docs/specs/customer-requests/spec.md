@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.23
+Version: 1.24
 
 ## Goal
 
@@ -237,3 +237,6 @@ CRQ-075 — On narrow mobile widths, the **Documents** title and **+ Upload docu
 CRQ-076 — The dedicated Programs workspace MUST follow the Request page-title/action convention: **Programs** occupies logical start and the page-level **Find programs →** action occupies logical end on the same heading row. The action MUST use the same primary dark-blue button treatment as other Request page-level actions, including Documents, and logical alignment MUST preserve the relationship in RTL.
 
 CRQ-077 — On customer mobile Programs pages, each program card MUST collapse to a single vertical content flow rather than retaining a multi-column desktop layout. Program detail content MUST use the card width, intake management MUST render as its own full-width row with a usable full-width dropdown, and Remove MUST remain a horizontal bottom/end action rather than becoming a squeezed or vertically wrapped column. The Programs title and Find programs action MUST remain on one heading row at narrow widths.
+
+
+CRQ-078 — All customer Request page-level primary actions MUST use one shared visual action class/component so Programs, Documents, Messages, and future Request tabs receive the same height, padding, typography, radius, dark-blue treatment, hover/focus behavior, mobile sizing, and RTL-safe alignment. Action width MUST remain content-driven rather than being forced equal.

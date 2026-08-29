@@ -91,3 +91,5 @@ Status: IMPLEMENTED
 | `CRQ-075` | `static/css/turkdemy.css`, `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_documents_title_action_stay_same_row_at_narrow_mobile` | Named style/structural test |
 | `CRQ-076` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_programs_tab_has_single_heading_and_primary_action` | Named structural/style test |
 | `CRQ-077` | `static/css/turkdemy.css`, Programs card markup | `CustomerRequestWorkspaceTests.test_programs_mobile_cards_collapse_to_vertical_management_flow` | Named responsive/style test |
+
+| `CRQ-078` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_request_page_primary_actions_share_one_visual_component` | Named structural/style test |

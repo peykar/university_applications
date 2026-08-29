@@ -1074,3 +1074,11 @@
 - Applied the shared Request page-title/action convention to Programs: **Programs** stays at logical start and **Find programs →** is now the dark-blue primary page action at logical end on desktop and mobile.
 - Fixed the mobile Programs card regression caused by a legacy flex override: cards now collapse to a true vertical flow, program content uses the full card width, intake is a full-width management row, and Remove remains a horizontal bottom/end action.
 - Added a narrow-mobile Programs heading override so the title/action row does not stack at <=430px.
+
+
+## 2026-08-29 — Shared Request page primary-action styling
+
+- Advanced Customer Requests SDD to v1.24 with CRQ-078.
+- Added one shared `request-page-primary-action` visual component for Request page-level primary actions.
+- Programs **Find programs →** and Documents **+ Upload document** now share height, padding, typography, radius, dark-blue treatment, and hover/focus behavior while retaining content-driven widths.
+- Page-specific action classes now control placement/semantics rather than duplicating visual styling.

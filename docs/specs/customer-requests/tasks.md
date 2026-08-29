@@ -98,3 +98,5 @@ Status: IMPLEMENTED
 
 - [x] `CRQ-076` Apply the Request page-title/action convention to Programs and render **Find programs →** as the primary dark-blue page action.
 - [x] `CRQ-077` Collapse Programs cards to a true vertical mobile flow with full-width intake selection, horizontal bottom Remove action, and a non-stacking Programs title/action row.
+
+- [x] `CRQ-078` Unify Request page-level primary actions behind one shared visual class while keeping content-driven widths and page-specific placement.

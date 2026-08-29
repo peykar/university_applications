@@ -207,3 +207,8 @@ The customer Request tab bar uses a five-column mobile layout for Overview, Prof
 `CRQ-076` applies the same Request page-title/action convention already used by Documents to the dedicated Programs workspace. `request-programs-heading` is a non-wrapping logical start/end flex row; **Find programs →** is rendered as the standard primary dark-blue Request page action rather than a lightweight text link. The same markup is used across desktop, mobile, LTR, and RTL.
 
 `CRQ-077` fixes the narrow-screen regression caused by an older `display:flex!important` mobile rule on `.request-program-card`. At customer mobile widths the Programs card is explicitly restored to a block/vertical flow. Program detail occupies the full width, intake management becomes a one-column section with a full-width select, and the bottom Remove row remains horizontally aligned to logical end. A narrow-screen heading override keeps **Programs** and **Find programs →** on the same row even though the legacy generic section-heading rule stacks other headings at <=430px.
+
+
+## Shared Request page primary action (CRQ-078)
+
+Request page-level primary actions use `request-page-primary-action` in addition to the base button class. The shared class owns geometry and visual treatment: minimum height, padding, typography, radius, dark-blue background/border, and hover/focus state. Page-specific classes may control placement only. Width remains intrinsic to each label. Existing mobile heading rules apply identical compact spacing to Programs and Documents, while logical start/end heading alignment remains RTL-safe.

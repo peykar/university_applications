@@ -452,11 +452,33 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertNotIn('<p class="eyebrow">{% trans "Programs" %}</p>', programs)
         self.assertEqual(programs.count('{% trans "Find programs" %}'), 1)
         self.assertIn("{% url 'program-list' %}", programs)
-        self.assertIn('class="button request-programs-action"', programs)
         self.assertIn(
-            ".request-programs-action{flex:0 0 auto;background:#173b61;",
+            'class="button request-page-primary-action request-programs-action"',
+            programs,
+        )
+        self.assertIn(
+            ".request-page-primary-action{flex:0 0 auto;display:inline-flex;",
             self.css,
         )
+
+    def test_request_page_primary_actions_share_one_visual_component(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        documents = self.request_section.split('{% elif entity_tab == "documents" %}', 1)[1].split(
+            '{% elif entity_tab == "applications" %}', 1
+        )[0]
+        self.assertIn(
+            'class="button request-page-primary-action request-programs-action"',
+            programs,
+        )
+        self.assertIn('class="button request-page-primary-action modal-trigger"', documents)
+        self.assertIn(
+            ".request-page-primary-action{flex:0 0 auto;display:inline-flex;",
+            self.css,
+        )
+        self.assertIn("min-height:42px;padding:10px 16px;", self.css)
+        self.assertIn("border-radius:8px;", self.css)
 
     def test_program_card_uses_detail_link_beside_management_controls(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
@@ -781,7 +803,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             self.css,
         )
         self.assertIn(
-            ".request-documents-heading .button{flex:0 0 auto;background:#173b61;color:#fff;",
+            ".request-page-primary-action{flex:0 0 auto;display:inline-flex;",
             self.css,
         )
 
