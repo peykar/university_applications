@@ -1,3 +1,10 @@
+- Fixed BUG-0012: avoid mypy local-variable redefinition in the university program JSON importer by using distinct academic-unit and department defaults variables.
+
+## 2026-08-30 — University program JSON importer mypy defaults fix
+
+- Fixed heterogeneous Django model-default mappings in `import_programs_for_university` so mypy does not incorrectly constrain them to string-only values.
+- Kept the JSON import schema and runtime behavior unchanged.
+- Added `BUG-0011` documenting the regression and verification command.
 
 ## 2026-08-29 — Catalogue v2 django-stubs startup fix
 
@@ -1166,3 +1173,18 @@
   mypy below 1.20 for the Django 5.2 / django-stubs 5.2.x toolchain.
 - Added `BUG-0009` and documented the dependency compatibility rule.
 - Corrected stale Catalogue v2 wording in the domain-model documentation.
+
+## 2026-08-30 — Normalized university programme JSON importer
+
+- Advanced Catalogue SDD to v2.1 with CAT-025 through CAT-030.
+- Defined schema-v1 normalized per-University programme JSON, including
+  AcademicUnits, optional Departments, Programs, canonical instruction
+  languages, and Catalogue v2 ProgramOffering fields.
+- Added `import_programs_for_university <university-id>
+  <university-catalogue-source-id> <program-file.json>`.
+- Added deterministic create/update semantics, atomic rollback, same-University
+  source validation, exact instruction-language synchronization, and explicit
+  source provenance for every imported Offering.
+- Added importer tests, complete format documentation, and an example JSON file.
+- Recorded the user's successful baseline `make check` and Catalogue v2 backfill
+  verification before this importer extension.

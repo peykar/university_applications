@@ -1,7 +1,7 @@
 # University and program catalogue — tasks
 
 Status: APPROVED
-Version: 2.0
+Version: 2.1
 
 - [x] CAT-T01 (`CAT-007`, `CAT-008`, `CAT-020`) Add AcademicUnit model,
       validation, admin maintenance, and Program association.
@@ -34,4 +34,7 @@ Version: 2.0
 - [x] CAT-T14 Update `docs/models.md`, `docs/rasa-mapping.md`,
       `docs/program-detail.md`, `docs/program-filters.md`, and relevant admin
       documentation after implementation.
-- [ ] CAT-T15 Run `make format` and `make check`; record verification results.
+- [x] CAT-T15 Run `make format` and `make check`; user verified the Catalogue v2 baseline passes locally.
+- [x] CAT-T16 (`CAT-025`, `CAT-026`, `CAT-029`) Define schema-v1 normalized university-programme JSON and implement the three-argument atomic management command.
+- [x] CAT-T17 (`CAT-027`, `CAT-028`) Implement deterministic upsert keys, exact Program instruction-language synchronization, and source-bound Offering updates.
+- [x] CAT-T18 (`CAT-030`) Add command tests, contract documentation, a complete example JSON file, and change documentation.

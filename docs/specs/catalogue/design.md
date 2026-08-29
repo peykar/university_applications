@@ -1,7 +1,7 @@
 # University and program catalogue — technical design
 
 Status: APPROVED
-Version: 2.0
+Version: 2.1
 
 ## Domain shape
 
@@ -122,6 +122,34 @@ Implement in compatibility stages:
 University-supplied sheets are evidence, not automatically trusted normalized
 input. Import code must not infer percentages, study mode, validity, or pricing
 semantics where the source is ambiguous; preserve the raw/source note instead.
+
+### Normalized per-University JSON import
+
+`import_programs_for_university` is the deterministic ingestion boundary between
+manually/externally normalized university source material and Catalogue v2. It
+accepts exactly three required positional inputs: University UUID,
+UniversityCatalogueSource UUID, and schema-v1 JSON path. The JSON deliberately
+does not carry database IDs for University/source; those are explicit runtime
+arguments and the command verifies source ownership before any writes.
+
+Schema v1 contains top-level AcademicUnits and Departments referenced by stable
+`slug_en`, plus Programs keyed by `slug_en` within the target University. Programs
+carry canonical degree, thesis type, study mode, duration in months and one or
+more instruction-language rows. Offerings carry AcademicYear/Semester and the
+structured Catalogue v2 pricing/validity fields. The command forces the supplied
+UniversityCatalogueSource onto every imported Offering.
+
+Upsert keys are intentionally simple and source-stable: University + English
+slug for AcademicUnit/Department/Program, and Program + AcademicYear + Semester +
+source for Offering. Multiple existing rows matching an import key are treated as
+an ambiguity and fail the transaction. Absence from a later file never means
+delete/deactivate. For Programs that are present, instruction-language rows are
+synchronized exactly to the normalized file.
+
+The whole import is one transaction. Structural validation happens before writes
+where possible, and model validation runs before saves. This command consumes
+normalized JSON only; extracting or interpreting arbitrary PDFs/XLSX remains
+outside the management command and outside automatic OCR scope.
 
 ## Public catalogue
 

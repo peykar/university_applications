@@ -1,7 +1,7 @@
 # University and program catalogue
 
 Status: APPROVED
-Version: 2.0
+Version: 2.1
 
 ## Goal
 
@@ -109,6 +109,37 @@ CAT-024 — Admission requirements such as minimum GPA/percentage, IELTS/TOEFL,
 SAT/TR-YÖS/GRE/GMAT, portfolio/interview requirements, and credit-transfer rules
 are explicitly deferred to a separate Admission Requirements capability and
 MUST NOT be encoded as ad-hoc ProgramOffering pricing fields.
+
+CAT-025 — TurkDemy MUST provide an `import_programs_for_university` management
+command with exactly three required positional inputs: target University ID,
+target UniversityCatalogueSource ID, and normalized programme JSON file path.
+The source MUST already exist and MUST belong to the supplied University.
+
+CAT-026 — The normalized university-programme JSON contract MUST be explicitly
+versioned. Schema v1 MUST support AcademicUnits, optional Departments, Programs,
+canonical instruction-language composition, and zero or more ProgramOfferings
+using Catalogue v2 field semantics.
+
+CAT-027 — Schema-v1 imports MUST use deterministic update keys: AcademicUnit,
+Department, and Program by `slug_en` within the supplied University; Offering by
+Program + AcademicYear + Semester + supplied UniversityCatalogueSource. Re-running
+the same normalized file MUST update those records rather than creating duplicates.
+
+CAT-028 — For every Program present in a normalized file, the supplied
+instruction-language composition MUST be authoritative for that Program and MUST
+obey CAT-009/CAT-010. Every imported Offering MUST reference the catalogue source
+passed to the command.
+
+CAT-029 — A normalized programme import MUST be atomic. Invalid schema, invalid
+references, invalid percentages/pricing/dates, source ownership mismatch, or
+ambiguous duplicate database matches MUST stop the import rather than partially
+writing or silently choosing a record. Rows absent from the file MUST NOT be
+deleted or deactivated automatically.
+
+CAT-030 — The normalized JSON contract and management-command usage MUST be
+documented with a complete example file and covered by tests for creation,
+idempotent update, source ownership, validation rollback, and duplicate-key
+rejection.
 
 ## Pricing vocabulary
 

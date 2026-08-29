@@ -1,7 +1,7 @@
 # University and program catalogue — traceability
 
 Status: IMPLEMENTED / LOCAL VERIFICATION REQUIRED
-Version: 2.0
+Version: 2.1
 
 | Requirement | Design | Tasks | Implementation | Verification |
 |---|---|---|---|---|
@@ -29,12 +29,19 @@ Version: 2.0
 | `CAT-022` | Import mapping/no guessing | `CAT-T03`, `CAT-T04`, `CAT-T09` | Rasa mixed-language/fractional-duration/study-mode mappings and unmapped-note preservation | importer helper tests + `tests/test_rasa_importers.py` |
 | `CAT-023` | Canonical public consumers | `CAT-T03`, `CAT-T04`, `CAT-T10` | public filters/detail/cards, Request/Agent templates, API serializers | `tests/test_program_filters.py`, Request structural tests, catalogue v2 tests |
 | `CAT-024` | Admission-requirements boundary | `CAT-T13` | no admission-requirement fields added; `DISC-0001` records deferred capability | SDD/document review |
+| `CAT-025` | Normalized per-University JSON import | `CAT-T16` | `apps/universities/management/commands/import_programs_for_university.py` | `UniversityProgramJsonImportTests.test_source_must_belong_to_university_before_any_import_writes` |
+| `CAT-026` | Versioned JSON contract | `CAT-T16` | command schema validation; `docs/university-program-json-import.md`; `docs/examples/university-programs-v1.json` | university-program JSON importer tests |
+| `CAT-027` | Deterministic idempotent upserts | `CAT-T17` | Program/AcademicUnit/Department slug keys; Offering Program+year+semester+source key | `UniversityProgramJsonImportTests.test_reimport_updates_program_and_offering_without_duplicates` |
+| `CAT-028` | Authoritative languages/source provenance | `CAT-T17` | `_sync_languages`; `_upsert_offering` source binding | `UniversityProgramJsonImportTests.test_import_creates_program_academic_unit_languages_and_source_bound_offering` |
+| `CAT-029` | Atomic validation/no deletion | `CAT-T16`, `CAT-T17` | `transaction.atomic`; schema/reference validation; duplicate-match guards | source mismatch + invalid percentage rollback tests |
+| `CAT-030` | Docs/example/tests | `CAT-T18` | importer docs/example + `tests/test_university_program_json_import.py` | named importer tests |
 
 ## Verification status
 
-Repository-level SDD validation passes. Full Django/pytest verification must be
-run in the normal project environment because the delivery sandbox cannot fetch
-the locked Python dependencies from PyPI. The implementation deliberately keeps
-legacy `Program.program_language` and `Program.duration` as compatibility
-bridges until production data has been backfilled and downstream integrations
-have moved to the canonical structures.
+The user verified the Catalogue v2 baseline with local `make check` after applying
+the required migrations/backfill. The normalized JSON-import extension has
+repository-level verification in the delivery sandbox; its Django/pytest tests
+must be re-run with local `make check` because the delivery sandbox does not have
+the locked project dependencies installed. Legacy `Program.program_language` and
+`Program.duration` remain compatibility bridges while canonical fields are used
+by the importer and readers.

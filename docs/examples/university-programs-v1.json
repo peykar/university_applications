@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "academic_units": [
+    {
+      "slug_en": "faculty-of-engineering",
+      "name_en": "Faculty of Engineering",
+      "unit_type": "faculty"
+    }
+  ],
+  "departments": [],
+  "programs": [
+    {
+      "slug_en": "software-engineering-english",
+      "name_en": "Software Engineering",
+      "degree": "bachelor",
+      "thesis_type": null,
+      "academic_unit": "faculty-of-engineering",
+      "department": null,
+      "study_mode": "on_campus",
+      "duration_months": 48,
+      "instruction_languages": [
+        {
+          "slug": "english",
+          "name_en": "English",
+          "percentage": "100",
+          "is_primary": true
+        }
+      ],
+      "offerings": [
+        {
+          "academic_year": "2026-2027",
+          "semester": "Fall",
+          "fee_basis": "annual",
+          "currency": "USD",
+          "tuition": "18000.00",
+          "tuition_discounted": "12000.00",
+          "tuition_cash": "11000.00",
+          "deposit": "1000.00",
+          "preparatory_tuition": null,
+          "preparation_included": false,
+          "notes": "Example normalized source row."
+        }
+      ]
+    }
+  ]
+}

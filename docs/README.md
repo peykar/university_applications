@@ -70,3 +70,7 @@ See also: [Agent applicant workspace](agent-applicant-workspace.md).
 - `specs/communication-log/` — CRM-style external communication history.
 
 - `operations-workspace.md` — TODO and Communication Log workspace behavior/setup.
+
+## Catalogue import
+
+- `university-program-json-import.md` — normalized per-University JSON format and import command.
