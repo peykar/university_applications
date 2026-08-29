@@ -16,6 +16,7 @@ from apps.messaging.forms import MessageForm
 from apps.messaging.models import (
     Conversation,
     ConversationParticipantRole,
+    Message,
     MessageSenderRole,
 )
 from apps.messaging.services import (
@@ -98,19 +99,22 @@ def _customer_activity_label(activity: LeadActivity) -> str:
 
 
 def _lead_entity_context(*, request, lead, mark_read=False):
-    conversation = ensure_conversation(lead)
-    unread_message_count = unread_count_for_conversation(
-        conversation=conversation,
-        user=request.user,
-        participant_role=ConversationParticipantRole.CUSTOMER,
-    )
-    message_qs = conversation.messages.select_related("sender").prefetch_related("attachments")
-    if mark_read:
-        mark_conversation_read(
+    conversation = ensure_conversation(lead) if lead.agent_id else None
+    unread_message_count = 0
+    message_qs = Message.objects.none()
+    if conversation is not None:
+        unread_message_count = unread_count_for_conversation(
             conversation=conversation,
             user=request.user,
             participant_role=ConversationParticipantRole.CUSTOMER,
         )
+        message_qs = conversation.messages.select_related("sender").prefetch_related("attachments")
+        if mark_read:
+            mark_conversation_read(
+                conversation=conversation,
+                user=request.user,
+                participant_role=ConversationParticipantRole.CUSTOMER,
+            )
 
     active_offerings = (
         ProgramOffering.objects.filter(is_active=True)
@@ -605,14 +609,15 @@ def lead_document_replace(request, lead_id, document_id):
         created_by=request.user,
         updated_by=request.user,
     )
-    send_system_message(
-        lead,
-        (
-            f"A replacement was uploaded for "
-            f"{document.get_document_type_display()}. It is now pending review."
-        ),
-        performed_by=request.user,
-    )
+    if lead.agent_id:
+        send_system_message(
+            lead,
+            (
+                f"A replacement was uploaded for "
+                f"{document.get_document_type_display()}. It is now pending review."
+            ),
+            performed_by=request.user,
+        )
     messages.success(request, "Replacement uploaded and sent for review.")
     return redirect("lead-documents", lead_id=lead.pk)
 
@@ -621,6 +626,13 @@ def lead_document_replace(request, lead_id, document_id):
 @require_POST
 def lead_send_message(request, lead_id):
     lead = _customer_lead(request.user, lead_id)
+    if not lead.agent_id:
+        messages.info(
+            request,
+            _("Messaging will be available once an advisor is assigned."),
+        )
+        return redirect("lead-messages", lead_id=lead.pk)
+
     conversation = ensure_conversation(lead)
 
     if conversation.is_closed:

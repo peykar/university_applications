@@ -22,3 +22,7 @@ Status: BASELINED
 Consult the ADRs under `docs/architecture/decisions/` when this capability
 touches Lead→Student conversion, generic messaging, active Agent context,
 program-interest/Application boundaries, or document layers.
+## Subjects awaiting Agent assignment
+
+`Conversation` continues to require both Agent and customer. Callers that present an optional messaging surface for an Agent-less Lead MUST treat the conversation as unavailable rather than weakening that invariant or creating a partial Conversation. Customer Request views use empty message state until assignment; send attempts are rejected safely.
+

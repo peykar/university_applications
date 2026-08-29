@@ -1,7 +1,7 @@
 # Generic messaging
 
 Status: BASELINED
-Version: 1.0
+Version: 1.1
 
 ## Goal
 
@@ -28,6 +28,8 @@ Messages MUST be scoped to the Application; workspace Messages MUST act as inbox
 
 MSG-008 — Conversation access MUST respect customer ownership and active-Agent
 authorization for the subject.
+
+MSG-009 — Subject-scoped messaging MUST NOT make an otherwise valid customer Request inaccessible when the subject has no Agent yet. No Conversation may be created without the required Agent/customer pair; customer message composition MUST remain unavailable until that pair exists, and direct send attempts MUST fail safely without a server error.
 
 ## Acceptance policy
 

@@ -76,3 +76,4 @@ Status: IMPLEMENTED
 - [x] `CRQ-059` Make Programs-workspace cards fill the available column width and keep card widths consistent.
 
 - [x] `CRQ-060` Render advisor recommendation reasons on a separate bidi-aware readable line beneath provenance.
+- [x] `CRQ-061` Keep Agent-less customer Requests renderable and make Request messaging safely unavailable until assignment.

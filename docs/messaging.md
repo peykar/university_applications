@@ -50,3 +50,7 @@ read cursor; Agent-user read cursors are independent.
 ## Fresh installation
 
 Legacy Lead messaging has been removed. Generate fresh migrations with `uv run python manage.py makemigrations` and apply them with `uv run python manage.py migrate`.
+## Requests without an Agent yet
+
+A customer Request can exist before an Agent organization is assigned. Such a Request remains fully viewable, but no generic Conversation is created because Conversation requires both an Agent and customer. The Request Messages tab explains that messaging becomes available after advisor assignment and does not show a compose form. Direct send attempts are redirected safely. Once an Agent is assigned, normal subject-scoped messaging becomes available.
+

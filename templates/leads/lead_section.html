@@ -213,20 +213,24 @@
   <section class="lead-panel entity-section">
     <div class="section-heading"><div><p class="eyebrow">{% trans "Messages" %}</p><h2>{% trans "Messages about this request" %}</h2></div></div>
     <div class="lead-chat">
-      <div class="lead-chat-messages">
-        {% for message in lead_messages %}
-          <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
-            <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|date:"Y-m-d H:i" }}</time></div>
-            {% if message.body %}<div class="chat-message-body">{{ message.body|linebreaksbr }}</div>{% endif %}
-            {% for attachment in message.attachments.all %}<a class="chat-attachment" href="{{ attachment.file.url }}">📎 {{ attachment.original_name }}</a>{% endfor %}
-          </article>
-        {% empty %}<div class="empty-chat">{% trans "No messages yet." %}</div>{% endfor %}
-      </div>
-      {% if not conversation.is_closed %}
-        <form method="post" enctype="multipart/form-data" action="{% url 'lead-send-message' lead.pk %}" class="chat-compose">
-          {% csrf_token %}{{ message_form.body }}
-          <div class="chat-compose-actions"><div class="chat-file-control">{{ message_form.attachment }}</div><button class="button" type="submit">{% trans "Send" %}</button></div>
-        </form>
+      {% if conversation %}
+        <div class="lead-chat-messages">
+          {% for message in lead_messages %}
+            <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
+              <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|date:"Y-m-d H:i" }}</time></div>
+              {% if message.body %}<div class="chat-message-body">{{ message.body|linebreaksbr }}</div>{% endif %}
+              {% for attachment in message.attachments.all %}<a class="chat-attachment" href="{{ attachment.file.url }}">📎 {{ attachment.original_name }}</a>{% endfor %}
+            </article>
+          {% empty %}<div class="empty-chat">{% trans "No messages yet." %}</div>{% endfor %}
+        </div>
+        {% if not conversation.is_closed %}
+          <form method="post" enctype="multipart/form-data" action="{% url 'lead-send-message' lead.pk %}" class="chat-compose">
+            {% csrf_token %}{{ message_form.body }}
+            <div class="chat-compose-actions"><div class="chat-file-control">{{ message_form.attachment }}</div><button class="button" type="submit">{% trans "Send" %}</button></div>
+          </form>
+        {% endif %}
+      {% else %}
+        <div class="empty-chat">{% trans "Messaging will be available once an advisor is assigned." %}</div>
       {% endif %}
     </div>
   </section>

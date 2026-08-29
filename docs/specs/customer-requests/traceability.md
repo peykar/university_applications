@@ -70,3 +70,4 @@ Status: IMPLEMENTED
 | `CRQ-058` | `templates/leads/lead_section.html`, mutation views | `CustomerRequestWorkspaceTests.test_finalized_program_management_is_read_only` | Named structural test + mutation guards |
 | `CRQ-059` | `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_cards_fill_programs_column` | Named structural/style test |
 | `CRQ-060` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_agent_suggestion_reason_is_separate_bidi_aware_note` | Named test |
+| `CRQ-061` | `apps/leads/views.py`, `templates/leads/lead_section.html` | `UnassignedCustomerRequestTests` | Named runtime tests |

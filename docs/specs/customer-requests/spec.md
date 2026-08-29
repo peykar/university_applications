@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.14
+Version: 1.15
 
 ## Goal
 
@@ -200,3 +200,6 @@ CRQ-058 — Finalized Requests MUST keep program management read-only: intake co
 CRQ-059 — Program cards in the dedicated Programs workspace MUST fill the available width of their holding Programs column rather than shrink to content width. Card widths MUST remain consistent regardless of program title, metadata, recommendation note, or intake state.
 
 CRQ-060 — When an Agent recommendation has a customer-visible `suggestion_reason`, the Programs workspace MUST render the advisor provenance label and the recommendation explanation as separate visual lines. The explanation MUST use normal readable body styling and automatic bidirectional text direction so Persian, Arabic, English, and other note content renders naturally.
+
+CRQ-061 — A customer Request MUST remain viewable when its Lead has no Agent organization assigned. Request Overview/Profile/Programs/Documents MUST render without creating an invalid Conversation; unread/recent-message summaries MUST behave as empty until an Agent is assigned. The Request Messages tab MUST explain that messaging becomes available after advisor assignment and MUST NOT render a compose form while no Agent is available.
+

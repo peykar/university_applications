@@ -1,3 +1,14 @@
+## 2026-08-29 — Unassigned Request messaging guard and archive integrity
+
+- Fixed customer Request detail pages crashing when a Lead has no Agent organization.
+- Request pages now use empty message state until Agent assignment instead of attempting to create an invalid Conversation.
+- Request Messages explains that messaging becomes available after advisor assignment and hides the compose form until then.
+- Direct customer message POSTs are guarded and redirect safely while no Agent is assigned.
+- Replacement-upload system chat messages are skipped while no Agent conversation can exist; the customer-visible activity record remains canonical history.
+- Restored the root `.gitignore` and `docs/changes/*/.gitkeep` placeholder files that were unintentionally dropped by a prior archive build.
+- Added repository-structure regression coverage for critical root/placeholder files.
+- Updated Customer Requests SDD to v1.15 and Generic Messaging to v1.1.
+
 ## 2026-08-29 — Advisor-note and footer terminology alignment
 
 - Advanced Customer Requests SDD to v1.14 with CRQ-060 for separate, readable, bidi-aware advisor recommendation notes.

@@ -188,3 +188,7 @@ a central tabbed workspace plus a right context sidebar with the Lead's uploaded
 documents and LeadPreference summary. Overview surfaces action-required items,
 program interests, customer-safe progress activity and recent messages. Opening
 Overview does not mark conversation messages read; the Request Messages tab does.
+### Unassigned customer Requests
+
+Leads may remain without an Agent when no active `DEFAULT_LEAD_AGENT_ID` can be applied. Customer Request pages must still render in that state. Messaging is unavailable until an Agent organization is assigned; the system does not create a partial Conversation without an Agent.
+

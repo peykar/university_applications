@@ -12,3 +12,4 @@ baseline subject to the gap report.
 - [ ] For the next behavioral change, add requirement IDs before implementation.
 - [ ] Update traceability after each implementation change.
 - [ ] Run `make format` and `make check`.
+- [x] `MSG-009` Guard customer Request messaging until the subject has an Agent while preserving the Conversation invariant.

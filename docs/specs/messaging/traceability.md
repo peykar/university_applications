@@ -12,6 +12,7 @@ Status: BASELINED
 | `MSG-006` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `MSG-007` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `MSG-008` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `MSG-009` | `apps/leads/views.py`, `templates/leads/lead_section.html`, generic Conversation invariant | `UnassignedCustomerRequestTests` | Named runtime tests |
 
 ## Notes
 
