@@ -5888,7 +5888,7 @@ a.entity-list-row:hover{
 .request-program-tuition strong{color:#173b5e;font-size:.86rem}
 .request-program-list{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;width:100%}
 .request-program-card{position:relative;width:100%;box-sizing:border-box}
-.request-program-detail-link{padding-inline-end:30px}
+.request-program-detail-link{padding-inline-end:56px}
 .request-program-suggestion-reason{margin:0!important;color:#53697d!important;font-size:.78rem!important;font-weight:500;line-height:1.5;unicode-bidi:plaintext}
 .request-program-management{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid #e8edf1}
 .request-program-intake-summary{display:grid;gap:2px}

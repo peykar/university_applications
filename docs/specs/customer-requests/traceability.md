@@ -71,3 +71,5 @@ Status: IMPLEMENTED
 | `CRQ-059` | `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_cards_fill_programs_column` | Named structural/style test |
 | `CRQ-060` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_agent_suggestion_reason_is_separate_bidi_aware_note` | Named test |
 | `CRQ-061` | `apps/leads/views.py`, `templates/leads/lead_section.html` | `UnassignedCustomerRequestTests` | Named runtime tests |
+
+| `CRQ-062` | `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_card_actions_have_distinct_spacing` | Named structural/style test |

@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.15
+Version: 1.16
 
 ## Goal
 
@@ -203,3 +203,5 @@ CRQ-060 — When an Agent recommendation has a customer-visible `suggestion_reas
 
 CRQ-061 — A customer Request MUST remain viewable when its Lead has no Agent organization assigned. Request Overview/Profile/Programs/Documents MUST render without creating an invalid Conversation; unread/recent-message summaries MUST behave as empty until an Agent is assigned. The Request Messages tab MUST explain that messaging becomes available after advisor assignment and MUST NOT render a compose form while no Agent is available.
 
+
+CRQ-062 — In editable Programs-workspace cards, the program-detail directional affordance and the program-removal trash action MUST occupy visually distinct space at the card edge. The detail link MUST reserve enough inline-end room that the arrow does not crowd or visually merge with the separate trash control in either LTR or RTL layouts.

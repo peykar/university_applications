@@ -178,3 +178,7 @@ Agent recommendation provenance and explanation are deliberately distinct. The c
 
 A Lead may legitimately exist without an Agent when `DEFAULT_LEAD_AGENT_ID` is empty, invalid, inactive, or when an older record predates assignment. Customer Request rendering therefore does not call `ensure_conversation()` for an Agent-less Lead. The Request context uses an empty `Message` queryset, zero unread count, and no recent messages until an Agent organization exists. The Request Messages tab renders an assignment-pending explanation instead of a compose form. A direct message POST is also guarded and redirects safely with customer-facing feedback. Once an Agent is assigned, the existing generic conversation service creates/loads the canonical Agent + customer + subject conversation normally.
 
+
+## Programs card action spacing
+
+The program-detail arrow and removal icon are separate actions and must read as separate controls. The detail link reserves an inline-end action lane while the removal form remains absolutely positioned at the card edge. Using logical `padding-inline-end` preserves the separation in both LTR and RTL layouts without changing the neutral gray, borderless removal treatment.

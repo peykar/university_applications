@@ -610,6 +610,17 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             self.css,
         )
 
+    def test_program_card_actions_have_distinct_spacing(self):
+        self.assertIn(
+            ".request-program-detail-link{padding-inline-end:56px}",
+            self.css,
+        )
+        self.assertIn(
+            ".request-program-remove-form{position:absolute;"
+            "inset-block-start:12px;inset-inline-end:12px;z-index:2}",
+            self.css,
+        )
+
     def test_agent_suggestion_reason_is_customer_visible_without_internal_notes(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
             '{% elif entity_tab == "documents" %}', 1

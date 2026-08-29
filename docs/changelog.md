@@ -1,3 +1,10 @@
+## 2026-08-29 — Customer Programs card action spacing
+
+- Advanced Customer Requests SDD to v1.16 with CRQ-062.
+- Increased the logical inline-end reservation for the Program Detail link so its arrow is visibly separated from the card-level trash action.
+- Kept the existing gray, borderless removal styling and RTL-safe logical positioning unchanged.
+- Added structural regression coverage for the action-spacing contract.
+
 ## 2026-08-29 — Unassigned Request messaging guard and archive integrity
 
 - Fixed customer Request detail pages crashing when a Lead has no Agent organization.

@@ -77,3 +77,5 @@ Status: IMPLEMENTED
 
 - [x] `CRQ-060` Render advisor recommendation reasons on a separate bidi-aware readable line beneath provenance.
 - [x] `CRQ-061` Keep Agent-less customer Requests renderable and make Request messaging safely unavailable until assignment.
+
+- [x] `CRQ-062` Reserve a distinct inline action lane so the Program Detail arrow and gray trash action remain visually separated in LTR and RTL.
