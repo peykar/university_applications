@@ -49,7 +49,7 @@ Status: IMPLEMENTED
 | `CRQ-040` | `apps/leads/forms.py`, `apps/leads/views.py`, `templates/leads/lead_form.html` | `CustomerRequestWorkspaceTests.test_customer_edit_profile_excludes_internal_recommendation_control` | Named test |
 | `CRQ-041` | `templates/leads/lead_section.html`, `templates/leads/lead_form.html` | `CustomerRequestWorkspaceTests.test_profile_view_and_edit_share_semantic_sections` | Named test |
 | `CRQ-042` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_programs_tab_has_single_heading_and_primary_action` | Named test |
-| `CRQ-043` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_cards_are_whole_click_targets_with_program_first_hierarchy` | Named test |
+| `CRQ-043` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_card_uses_detail_link_beside_management_controls` | Named test |
 | `CRQ-044` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_cards_keep_source_as_secondary_context` | Named test |
 | `CRQ-045` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_program_intake_copy_is_customer_friendly` | Named test |
 | `CRQ-046` | `templates/leads/lead_section.html` | `CustomerRequestWorkspaceTests.test_programs_empty_state_does_not_duplicate_browse_action` | Named test |
@@ -63,3 +63,8 @@ Status: IMPLEMENTED
 | `CRQ-052` | `apps/leads/views.py`, `apps/leads/urls.py`, Programs template | `CustomerRequestWorkspaceTests.test_programs_tab_exposes_remove_contract_with_guards` | Named structural test + runtime validation path |
 | `CRQ-053` | Programs template/domain unchanged | `CustomerRequestWorkspaceTests.test_program_management_has_no_accept_reject_workflow` | Named test |
 | `CRQ-054` | Programs card markup | `CustomerRequestWorkspaceTests.test_program_card_uses_detail_link_beside_management_controls` | Named test |
+
+| `CRQ-055` | `templates/leads/lead_section.html`, intake update view | `CustomerRequestWorkspaceTests.test_program_intake_is_single_auto_submit_dropdown` | Named structural test + existing runtime validation |
+| `CRQ-056` | `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_program_removal_is_separate_accessible_trash_action` | Named test |
+| `CRQ-057` | `templates/leads/lead_section.html`, `LeadProgramInterest.suggestion_reason` | `CustomerRequestWorkspaceTests.test_agent_suggestion_reason_is_customer_visible_without_internal_notes` | Named test |
+| `CRQ-058` | `templates/leads/lead_section.html`, mutation views | `CustomerRequestWorkspaceTests.test_finalized_program_management_is_read_only` | Named structural test + mutation guards |

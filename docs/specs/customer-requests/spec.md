@@ -1,7 +1,7 @@
 # Customer requests
 
 Status: APPROVED
-Version: 1.11
+Version: 1.12
 
 ## Goal
 
@@ -158,11 +158,11 @@ CRQ-041 — Customer Profile editing MUST preserve the same semantic grouping as
 
 CRQ-042 — The customer Request **Programs** tab MUST use **Programs** as its single section heading and MUST NOT repeat the tab identity with a decorative Programs eyebrow. The tab MAY expose one **Find programs** action because adding another program is the primary workflow on this page.
 
-CRQ-043 — Every program shown on the customer Programs tab MUST be a single whole-card link to that program's public detail page. Program name MUST be the strongest card label, followed by university, then compact degree/intake metadata; the card MUST NOT require a separate View details link.
+CRQ-043 — Every program shown on the customer Programs tab MUST provide a large, clear primary link to that program's public detail page. Program name MUST be the strongest card label, followed by university and compact comparison metadata; program-level management controls MUST remain separate interactive elements and the card MUST NOT require a separate View details label.
 
 CRQ-044 — Customer program cards MUST preserve provenance without letting provenance dominate the card hierarchy: Agent-originated interests MUST show **Suggested by your advisor** and customer-originated interests MUST show **Added by you** as secondary source labels.
 
-CRQ-045 — Program intake presentation on the customer Programs tab MUST use concrete semester/year text when an offering is selected and MUST use the customer-facing phrase **Intake to be decided** when no offering is selected. The internal phrase **Any intake / decide later** MUST NOT render on this customer page.
+CRQ-045 — Program intake presentation on the customer Programs tab MUST use the selected offering in the intake control when one exists and MUST use the customer-facing placeholder **Select intake** when no offering is selected. The internal phrase **Any intake / decide later** MUST NOT render on this customer page.
 
 CRQ-046 — The customer Programs tab MUST expose only one browse/add-program action. When the persistent header-level **Find programs** action is present, the empty state MUST provide explanatory copy without adding a second **Browse programs** button.
 
@@ -180,10 +180,19 @@ CRQ-049 — Tuition displayed for a Request program MUST come from ProgramOfferi
 
 CRQ-050 — The Programs tab MUST function as the detailed program-comparison workspace and MUST show degree, language, tuition, duration when known, intake, and provenance without duplicating long-form catalogue content already available on Program Detail.
 
-CRQ-051 — While a Request is editable, the customer MUST be able to select or change the ProgramOffering/intake for an existing Request program. The selected offering MUST belong to that same program and be active; an empty selection MUST represent **Intake to be decided**.
+CRQ-051 — While a Request is editable, the customer MUST be able to select or change the ProgramOffering/intake for an existing Request program. The selected offering MUST belong to that same program and be active; no selected offering MUST be represented by the **Select intake** placeholder.
 
 CRQ-052 — While a Request is editable, the customer MUST be able to remove a program interest from the Request. Intake changes and removal MUST be scoped to a Request owned by the authenticated customer, and finalized Requests MUST reject these mutations.
 
 CRQ-053 — The Programs workspace MUST NOT introduce accept/reject or add-to-request approval states for advisor suggestions. Once a program interest exists on the Request, provenance is informational and both customer-added and advisor-suggested interests use the same intake/removal management model.
 
 CRQ-054 — Because program cards now contain management controls, the Programs workspace MUST use a clear program-detail link as the primary informational click target rather than nesting forms inside a whole-card anchor. The program name/content area and directional affordance MUST remain visibly navigable to Program Detail.
+
+
+CRQ-055 — Each editable Request program MUST expose exactly one intake dropdown. When an intake is already selected, that offering MUST be the selected option; otherwise **Select intake** MUST be selected. Changing the dropdown MUST immediately submit the intake form and return the customer to the Programs page without a separate Select, Save, or Change intake button.
+
+CRQ-056 — Program removal MUST remain a program-level action separate from intake selection. The Programs card MUST represent removal with a conventional trash-bin icon, provide an accessible **Remove program** label, and request confirmation before submitting the removal form.
+
+CRQ-057 — For Agent-originated program interests, the Programs workspace MUST show `suggestion_reason` as customer-visible advisor context when it is non-empty. It MUST NOT expose the generic/internal `notes` field. Customer-originated interests MUST NOT render an empty advisor-note area.
+
+CRQ-058 — Finalized Requests MUST keep program management read-only: intake controls and removal controls MUST not render, while the selected intake (or **Not selected**) MAY be shown as read-only context.

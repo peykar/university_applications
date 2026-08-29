@@ -32,4 +32,4 @@ class ApplicantProgramSourceUITests(SimpleTestCase):
 
     def test_program_section_is_simple(self):
         self.assertIn('{% trans "Programs" %}', self.template)
-        self.assertIn("Intake to be decided", self.template)
+        self.assertIn("Select intake", self.template)

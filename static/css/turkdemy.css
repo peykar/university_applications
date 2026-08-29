@@ -5886,17 +5886,21 @@ a.entity-list-row:hover{
 .request-program-detail-link:hover{color:inherit;text-decoration:none}
 .request-program-tuition{display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin:.45rem 0 0!important;color:#607487!important;font-size:.78rem!important}
 .request-program-tuition strong{color:#173b5e;font-size:.86rem}
-.request-program-management{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid #e8edf1}
-.request-program-intake-summary{display:grid;gap:2px;margin-inline-end:auto}
+.request-program-card{position:relative}
+.request-program-detail-link{padding-inline-end:30px}
+.request-program-suggestion-reason{margin:.4rem 0 0!important;color:#5f7183!important;font-size:.76rem!important;line-height:1.45}
+.request-program-management{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid #e8edf1}
+.request-program-intake-summary{display:grid;gap:2px}
 .request-program-intake-summary span{color:#84919d;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
-.request-program-intake-summary strong{color:#354d63;font-size:.78rem}
-.request-program-intake-form{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.request-program-intake-form select{max-width:290px;min-height:34px;padding:5px 8px;border:1px solid #d6e0e7;border-radius:8px;background:#fff;color:#344c62;font-size:.72rem}
-.request-program-remove{padding:7px 3px;color:#9a4a4a;font-size:.72rem;font-weight:800}
-.request-program-remove:hover{text-decoration:underline}
+.request-program-intake-form{display:flex;align-items:center;min-width:0}
+.request-program-intake-form select{max-width:330px;min-height:34px;padding:5px 30px 5px 8px;border:1px solid #d6e0e7;border-radius:8px;background:#fff;color:#344c62;font-size:.72rem}
+.request-program-intake-readonly{color:#354d63;font-size:.78rem}
+.request-program-remove-form{position:absolute;inset-block-start:12px;inset-inline-end:12px;z-index:2}
+.request-program-remove{display:grid;place-items:center;width:28px;height:28px;padding:4px;border-radius:7px;color:#9a4a4a}
+.request-program-remove svg{width:16px;height:16px;fill:currentColor}
+.request-program-remove:hover{background:#fff1f1;color:#823737}
 @media(max-width:700px){
-  .request-program-management{align-items:stretch}
-  .request-program-intake-summary{width:100%}
+  .request-program-management{align-items:flex-start}
   .request-program-intake-form{width:100%}
-  .request-program-intake-form select{max-width:none;flex:1 1 190px}
+  .request-program-intake-form select{max-width:none;width:100%}
 }

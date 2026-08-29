@@ -56,7 +56,7 @@ Status: IMPLEMENTED
 - [x] `CRQ-042` Simplify the Programs tab to one Programs heading plus one Find programs action.
 - [x] `CRQ-043` Make each customer program card the complete program-detail click target with program-first hierarchy.
 - [x] `CRQ-044` Keep Added by you / Suggested by your advisor as secondary provenance labels.
-- [x] `CRQ-045` Replace the customer no-offering phrase with Intake to be decided while keeping concrete offering metadata.
+- [x] `CRQ-045` Use the customer-facing Select intake placeholder while keeping concrete selected-offering metadata.
 - [x] `CRQ-046` Remove the duplicate Browse programs empty-state action.
 - [x] `CRQ-047` Keep Program preferences exclusively in the persistent Request context sidebar.
 
@@ -68,3 +68,8 @@ Status: IMPLEMENTED
 - [x] `CRQ-052` Add customer program removal with ownership/finalized guards.
 - [x] `CRQ-053` Keep advisor provenance informational; do not add accept/reject/add-to-request states.
 - [x] `CRQ-054` Replace whole-card anchors with a primary detail link so management forms remain valid interactive markup.
+
+- [x] `CRQ-055` Collapse intake management to one auto-submit dropdown with current offering or Select intake placeholder.
+- [x] `CRQ-056` Move removal to an accessible confirmed trash-icon action at program-card level.
+- [x] `CRQ-057` Surface Agent `suggestion_reason` to customers without exposing internal `notes`.
+- [x] `CRQ-058` Preserve finalized Request read-only behavior for intake and removal controls.

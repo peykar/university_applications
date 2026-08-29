@@ -136,9 +136,9 @@ Editing an existing Request uses a dedicated customer edit form derived from the
 
 The active **Programs** Request navigation tab provides page identity, so the tab body uses one **Programs** heading without a decorative eyebrow. A single header-level **Find programs** action links to the catalogue and is the page's add/browse action. The empty state therefore contains guidance only and does not repeat that action.
 
-Each associated `LeadProgramInterest` is rendered as one whole-card link to the canonical public program detail route. The visual hierarchy is program name first, university second, compact degree/intake metadata third, then provenance as secondary context. No nested program-title link or separate View details action is needed because the card itself is the click target.
+Each associated `LeadProgramInterest` provides a large primary content link to the canonical public program detail route while keeping management controls as separate interactive elements. The visual hierarchy is program name first, university second, compact comparison metadata third, then provenance as secondary context. No separate View details label is needed.
 
-Provenance remains customer-visible: Agent-originated rows use **Suggested by your advisor** and customer-originated rows use **Added by you**. Selected offerings display semester and academic year; interests without an offering use **Intake to be decided** rather than the internal/intake-workflow phrase “Any intake / decide later.”
+Provenance remains customer-visible: Agent-originated rows use **Suggested by your advisor** and customer-originated rows use **Added by you**. When an Agent supplied `suggestion_reason`, that explanation is shown beneath the provenance label; the generic `notes` field remains internal. Intake is always represented by one dropdown on editable Requests, with the current offering selected or **Select intake** as the no-selection placeholder.
 
 Program preferences remain Request context rather than Programs-tab body content. The existing persistent right sidebar continues to own preference summary/edit behavior, preventing the Programs tab from becoming a duplicate preference editor.
 
@@ -151,3 +151,12 @@ Request Overview treats Programs as a compact summary, not as formal application
 Tuition is never synthesized from the Program itself because pricing belongs to ProgramOffering. A selected offering is authoritative; without one, the first active offering may provide a clearly labelled From price. Customer intake updates validate that the offering is active and belongs to the interest's program. Program removal and intake mutation are ownership-scoped and disabled/rejected after Request finalization. Advisor/customer provenance remains informational; there is deliberately no accept/reject state.
 
 Because the richer card contains POST controls, valid HTML requires the program-detail anchor to wrap only the informational content rather than the entire card.
+
+
+## Program intake and recommendation interaction
+
+The customer Programs workspace keeps intake selection intentionally lightweight. Every editable program card owns one offering-backed `<select>` inside its intake form. The current `program_offering` is selected when present; otherwise the first state is **Select intake**. A change event submits that form immediately, and the existing POST endpoint validates ownership, Request mutability, active status, and same-program membership before redirecting back to the Programs tab. No adjacent Select/Save/Change button is rendered.
+
+Removal is deliberately outside the intake form because it mutates the program interest rather than its offering. It is represented by a compact trash icon at card level, with accessible text and browser confirmation before POST.
+
+For Agent-originated interests, `LeadProgramInterest.suggestion_reason` is the customer-facing recommendation explanation and is shown only when populated. The separate generic `notes` field remains internal and is not rendered to customers. Finalized Requests keep the same information presentation but suppress editable intake/removal controls.

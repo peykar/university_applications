@@ -97,32 +97,39 @@
                 {% else %}<span>{% trans "Tuition not available" %}</span>{% endif %}
               </p>
               <div class="interest-source-line request-program-source">
-                {% if interest.source == "agent" %}<span class="interest-source interest-source-agent">{% trans "Suggested by your advisor" %}</span>
+                {% if interest.source == "agent" %}
+                  <span class="interest-source interest-source-agent">{% trans "Suggested by your advisor" %}</span>
+                  {% if interest.suggestion_reason %}<p class="request-program-suggestion-reason">{{ interest.suggestion_reason }}</p>{% endif %}
                 {% else %}<span class="interest-source interest-source-user">{% trans "Added by you" %}</span>{% endif %}
               </div>
             </div>
             <span class="request-program-chevron" aria-hidden="true">→</span>
           </a>
+          {% if lead.status != "finalized" %}
+            <form method="post" action="{% url 'lead-program-remove' lead.pk interest.pk %}" class="request-program-remove-form" onsubmit="return confirm('{% trans "Remove this program from your Request?" %}')">
+              {% csrf_token %}
+              <button class="button-reset request-program-remove" type="submit" aria-label="{% trans 'Remove program' %}" title="{% trans 'Remove program' %}">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-1 11H8L7 9Zm3 2v7h2v-7h-2Zm4 0v7h2v-7h-2Z"/></svg>
+              </button>
+            </form>
+          {% endif %}
           <div class="request-program-management">
             <div class="request-program-intake-summary">
               <span>{% trans "Intake" %}</span>
-              <strong>{% if interest.program_offering %}{{ interest.program_offering.semester.name_en }} {{ interest.program_offering.academic_year.name_en }}{% else %}{% trans "Intake to be decided" %}{% endif %}</strong>
             </div>
             {% if lead.status != "finalized" %}
               <form method="post" action="{% url 'lead-program-intake-update' lead.pk interest.pk %}" class="request-program-intake-form">
                 {% csrf_token %}
                 <label class="sr-only" for="offering-{{ interest.pk }}">{% trans "Select intake" %}</label>
-                <select id="offering-{{ interest.pk }}" name="program_offering">
-                  <option value="">{% trans "Intake to be decided" %}</option>
+                <select id="offering-{{ interest.pk }}" name="program_offering" onchange="this.form.submit()">
+                  <option value=""{% if not interest.program_offering_id %} selected{% endif %}>{% trans "Select intake" %}</option>
                   {% for offering in interest.program.customer_offerings %}
                     <option value="{{ offering.pk }}"{% if interest.program_offering_id == offering.pk %} selected{% endif %}>{{ offering.semester.name_en }} {{ offering.academic_year.name_en }} — {{ offering.tuition_discounted|default:offering.tuition|currency_amount:offering.currency }}</option>
                   {% endfor %}
                 </select>
-                <button class="button button-secondary small-button" type="submit">{% if interest.program_offering %}{% trans "Change intake" %}{% else %}{% trans "Select intake" %}{% endif %}</button>
               </form>
-              <form method="post" action="{% url 'lead-program-remove' lead.pk interest.pk %}" class="request-program-remove-form">
-                {% csrf_token %}<button class="button-reset request-program-remove" type="submit">{% trans "Remove" %}</button>
-              </form>
+            {% else %}
+              <strong class="request-program-intake-readonly">{% if interest.program_offering %}{{ interest.program_offering.semester.name_en }} {{ interest.program_offering.academic_year.name_en }}{% else %}{% trans "Not selected" %}{% endif %}</strong>
             {% endif %}
           </div>
         </article>

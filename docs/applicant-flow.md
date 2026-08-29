@@ -73,3 +73,7 @@ the applicant workspace.
 ## Customer Request program workspace
 
 For customers, Request-stage program interests are presented as **Programs**, not as formal applications. Overview gives a compact comparison with university, degree, language, tuition, and provenance. The dedicated Programs tab adds duration, selected intake, and management. Customers can select/change an active intake belonging to that program or remove the program while the Request is editable. Advisor suggestions use the same management behavior as customer-added programs; no accept/reject step is introduced. Formal Application terminology remains reserved for post-finalization university applications.
+
+### Customer program intake interaction
+
+In an editable Request, each program uses one intake dropdown. The selected offering is preselected; otherwise the control shows **Select intake**. Choosing an option immediately submits and returns to the Programs tab, so there is no separate Select/Save/Change button. Program removal is a separate card-level trash action. Agent-suggested programs show the Agent's `suggestion_reason` when provided; generic internal notes are not exposed to the customer.

@@ -1,3 +1,12 @@
+## 2026-08-29 — Customer program intake interaction simplification
+
+- Advanced Customer Requests SDD to v1.12 with CRQ-055 through CRQ-058 and aligned the earlier intake-copy requirements with the new control.
+- Replaced intake summary + submit/change buttons with one offering-backed auto-submit dropdown per editable program.
+- The current offering is selected when present; otherwise the dropdown shows **Select intake**.
+- Moved program removal out of the intake area into a separate accessible trash-bin action with confirmation.
+- Added customer-visible Agent recommendation context from `suggestion_reason` while keeping the generic `notes` field internal.
+- Preserved finalized Request read-only behavior.
+
 ## 2026-08-29 — Customer Request program comparison and management
 
 ### Customer program workspace format regression fix

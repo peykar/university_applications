@@ -486,7 +486,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         )[0]
         self.assertIn("interest.program_offering.semester.name_en", programs)
         self.assertIn("interest.program_offering.academic_year.name_en", programs)
-        self.assertIn('{% trans "Intake to be decided" %}', programs)
+        self.assertIn('{% trans "Select intake" %}', programs)
         self.assertNotIn('{% trans "Any intake / decide later" %}', programs)
 
     def test_programs_empty_state_does_not_duplicate_browse_action(self):
@@ -552,6 +552,51 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             "{% url 'lead-program-intake-update' lead.pk interest.pk %}",
             self.request_section,
         )
+
+    def test_program_intake_is_single_auto_submit_dropdown(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        self.assertIn('name="program_offering" onchange="this.form.submit()"', programs)
+        self.assertIn('{% trans "Select intake" %}', programs)
+        self.assertIn("interest.program_offering_id == offering.pk", programs)
+        self.assertNotIn('{% trans "Change intake" %}', programs)
+        self.assertNotIn('class="button button-secondary small-button" type="submit"', programs)
+
+    def test_program_removal_is_separate_accessible_trash_action(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        intake_form = programs.split('class="request-program-intake-form"', 1)[1].split(
+            "</form>", 1
+        )[0]
+        self.assertNotIn("lead-program-remove", intake_form)
+        self.assertIn('class="request-program-remove-form"', programs)
+        self.assertIn(
+            "confirm('{% trans \"Remove this program from your Request?\" %}')",
+            programs,
+        )
+        self.assertIn(
+            "aria-label=\"{% trans 'Remove program' %}\"",
+            programs,
+        )
+        self.assertIn('<svg viewBox="0 0 24 24"', programs)
+
+    def test_agent_suggestion_reason_is_customer_visible_without_internal_notes(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        self.assertIn("{% if interest.suggestion_reason %}", programs)
+        self.assertIn("{{ interest.suggestion_reason }}", programs)
+        self.assertNotIn("{{ interest.notes }}", programs)
+
+    def test_finalized_program_management_is_read_only(self):
+        programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
+            '{% elif entity_tab == "documents" %}', 1
+        )[0]
+        self.assertIn('{% if lead.status != "finalized" %}', programs)
+        self.assertIn('class="request-program-intake-readonly"', programs)
+        self.assertIn('{% trans "Not selected" %}', programs)
 
     def test_programs_tab_exposes_remove_contract_with_guards(self):
         urls = (Path(settings.BASE_DIR) / "apps/leads/urls.py").read_text(encoding="utf-8")
