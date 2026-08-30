@@ -57,3 +57,7 @@ Version: 2.4
       auto-generate missing slugs from matching localized names during model
       validation/save, preserve explicit slugs, cover `FAQCategory.key`, and add
       regression coverage across catalogue, geography, and current content slugs.
+
+- [x] CAT-T23 (`CAT-035`) Add atomic `rebuild_slugs` maintenance command with
+      dry-run, scoped collision preflight, normal model-save regeneration, tests,
+      and operator documentation.

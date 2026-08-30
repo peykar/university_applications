@@ -1,7 +1,7 @@
 # University and program catalogue — technical design
 
 Status: APPROVED
-Version: 2.5
+Version: 2.6
 
 ## Domain shape
 
@@ -229,3 +229,20 @@ its name later changes. This avoids unexpected public URL changes. A localized
 name that is empty does not create a slug. `slug_en` remains the canonical ASCII
 identifier/import key; this automation primarily removes manual admin work and
 does not change normalized JSON import key semantics.
+
+
+## Explicit slug rebuild maintenance
+
+`rebuild_slugs` is the exceptional repair path for stale URLs. It computes the
+expected slug from each current source name, preflights collisions before writes,
+and then clears each rebuildable slug only in memory before calling the instance's
+normal `save(update_fields=...)`. `BaseModel.save()` therefore performs the actual
+regeneration using the same rules as ordinary creation. No blank intermediate slug
+is written to the database.
+
+Collision preflight applies to canonical lookup slugs (`slug_en`, conventional `slug`, and `key`); localized slugs are not current lookup keys. The collision scope follows catalogue identity: University/Country/ProgramLanguage
+are global; Program, AcademicUnit, and Department are scoped to University; Province
+to Country; City to Province; FAQCategory key is global. A collision aborts the
+whole command. `--dry-run` uses the same plan and collision checks but never saves.
+Rows whose related source name is blank are not rebuilt, so an existing slug is not
+destroyed when there is no deterministic replacement.

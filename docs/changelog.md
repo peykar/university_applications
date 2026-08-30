@@ -1,3 +1,5 @@
+- Fixed BUG-0021: preserve intentional Turkish dotless `ı` in the rebuild-slugs regression fixture with a narrow Ruff RUF001 suppression.
+- Added CHG-0006 / CAT-035: atomic `rebuild_slugs` maintenance command with dry-run and collision preflight for intentional stale-slug regeneration.
 - Fixed BUG-0020: corrected the Persian Unicode-slug importer fixture by removing a ZWNJ that Django correctly rejects in slug values; localized prose keeps proper Persian typography.
 - Fixed BUG-0019: avoid direct typed access to `SlugField.allow_unicode`; use a runtime `getattr` fallback so mypy passes without changing Unicode slug behavior.
 - Fixed BUG-0018: moved the slug helper below Django model `Meta`, `save()`, and `clean()` so the complete `BaseModel` ordering satisfies DJ012.\n- Fixed BUG-0017: reordered `LocalizedSlugMixin` declarations to satisfy Ruff DJ012 without changing model-level slug generation.

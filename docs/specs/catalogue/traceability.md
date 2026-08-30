@@ -1,7 +1,7 @@
 # University and program catalogue — traceability
 
 Status: IMPLEMENTED / LOCAL VERIFICATION REQUIRED
-Version: 2.5
+Version: 2.6
 
 | Requirement | Design | Tasks | Implementation | Verification |
 |---|---|---|---|---|
@@ -39,6 +39,7 @@ Version: 2.5
 | `CAT-032` | University catalogue JSON dump | `CAT-T20` | `apps/universities/management/commands/dump_university_data.py` | `UniversityDataDumpTests` |
 | `CAT-033` | Native Unicode localized slugs | `CAT-T21` | `apps/core/mixins.py`; existing `<str:slug>` catalogue routes; normalized importer model validation | `UnicodeLocalizedCatalogueSlugValidationTests`; `UnicodeCatalogueSlugRoutingTests` |
 | `CAT-034` | Automatic fill-only localized slug generation | `CAT-T22` | `apps/core/models.py::_populate_missing_slugs`; `apps/content/models.py::FAQCategory.key`; `apps/core/mixins.py::LocalizedSlugMixin` | `LocalizedSlugAutogenerationTests` |
+| `CAT-035` | Explicit safe slug rebuild | `CAT-T23` | `apps/core/management/commands/rebuild_slugs.py` | `RebuildSlugsCommandTests` |
 
 ## Verification status
 

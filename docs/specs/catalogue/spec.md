@@ -1,7 +1,7 @@
 # University and program catalogue
 
 Status: APPROVED
-Version: 2.5
+Version: 2.6
 
 ## Goal
 
@@ -177,6 +177,16 @@ with an explicit name mapping, including `FAQCategory.key` from `name_en`.
 Explicit slugs MUST never be overwritten merely because the related name changes.
 Blank source names MUST leave their slug blank. Supported slug fields MUST be
 optional in admin/model forms so this generation path can be used.
+
+CAT-035 — TurkDemy MUST provide an explicit `rebuild_slugs` maintenance command
+that regenerates supported slug fields from their current related name fields,
+including existing non-empty/stale values. Normal model saves MUST remain fill-only
+per CAT-034. The command MUST support `--dry-run`, MUST preflight generated slug
+collisions using the catalogue/geography lookup scopes before writing, MUST perform
+the real rebuild atomically, and MUST leave an existing slug untouched when its
+related source name is blank. Rebuilding MUST use the same ASCII/Unicode slug rules
+as normal model-level generation and MUST invoke normal model `save()` rather than
+bulk database updates.
 
 ## Pricing vocabulary
 
