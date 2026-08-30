@@ -1,7 +1,7 @@
 # University and program catalogue — tasks
 
 Status: APPROVED
-Version: 2.4
+Version: 3.0
 
 - [x] CAT-T01 (`CAT-007`, `CAT-008`, `CAT-020`) Add AcademicUnit model,
       validation, admin maintenance, and Program association.
@@ -58,6 +58,7 @@ Version: 2.4
       validation/save, preserve explicit slugs, cover `FAQCategory.key`, and add
       regression coverage across catalogue, geography, and current content slugs.
 
-- [x] CAT-T23 (`CAT-035`) Add atomic `rebuild_slugs` maintenance command with
-      dry-run, scoped collision preflight, normal model-save regeneration, tests,
-      and operator documentation.
+- [x] CAT-T23 (`CAT-035`, `CAT-036`) Add canonical Intake with university/year/date validation while retaining Semester as a compatibility bridge.
+- [x] CAT-T24 (`CAT-037`–`CAT-039`) Add normalized, optionally language-aware OfferingFee and expand fee bases.
+- [x] CAT-T25 (`CAT-040`) Make normalized university JSON imports create Intake and structured fee rows while translating legacy fee columns during transition.
+- [x] CAT-T26 (`CAT-035`–`CAT-040`) Expose Intake and structured fees in Django Admin and document the v3 transition.

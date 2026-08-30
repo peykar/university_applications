@@ -1,7 +1,7 @@
 # University and program catalogue — traceability
 
 Status: IMPLEMENTED / LOCAL VERIFICATION REQUIRED
-Version: 2.6
+Version: 3.0
 
 | Requirement | Design | Tasks | Implementation | Verification |
 |---|---|---|---|---|
@@ -39,7 +39,6 @@ Version: 2.6
 | `CAT-032` | University catalogue JSON dump | `CAT-T20` | `apps/universities/management/commands/dump_university_data.py` | `UniversityDataDumpTests` |
 | `CAT-033` | Native Unicode localized slugs | `CAT-T21` | `apps/core/mixins.py`; existing `<str:slug>` catalogue routes; normalized importer model validation | `UnicodeLocalizedCatalogueSlugValidationTests`; `UnicodeCatalogueSlugRoutingTests` |
 | `CAT-034` | Automatic fill-only localized slug generation | `CAT-T22` | `apps/core/models.py::_populate_missing_slugs`; `apps/content/models.py::FAQCategory.key`; `apps/core/mixins.py::LocalizedSlugMixin` | `LocalizedSlugAutogenerationTests` |
-| `CAT-035` | Explicit safe slug rebuild | `CAT-T23` | `apps/core/management/commands/rebuild_slugs.py` | `RebuildSlugsCommandTests` |
 
 ## Verification status
 
@@ -50,3 +49,9 @@ must be re-run with local `make check` because the delivery sandbox does not hav
 the locked project dependencies installed. Legacy `Program.program_language` and
 `Program.duration` remain compatibility bridges while canonical fields are used
 by the importer and readers.
+| `CAT-035` | Canonical Intake | `CAT-T23` | `Intake`, `ProgramOffering.intake` | `tests/test_catalogue_v3.py` |
+| `CAT-036` | Intake invariants | `CAT-T23` | `Intake.clean`, `ProgramOffering.clean` | `tests/test_catalogue_v3.py` |
+| `CAT-037` | Normalized offering fees | `CAT-T24` | `OfferingFee`, `OfferingFeeType` | `tests/test_catalogue_v3.py` |
+| `CAT-038` | Language-aware/source-faithful fees | `CAT-T24` | `OfferingFee.language/label/notes` | `tests/test_catalogue_v3.py` |
+| `CAT-039` | Expanded fee basis | `CAT-T24` | `FeeBasis` | `tests/test_catalogue_v3.py` |
+| `CAT-040` | Compatibility/import transition | `CAT-T25` | normalized importer `_get_or_create_intake`, `_sync_structured_fees`; legacy fields retained | importer + catalogue v3 tests |

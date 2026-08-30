@@ -78,3 +78,9 @@ Catalogue/geography models that use `LocalizedNameMixin` + `LocalizedSlugMixin`
 auto-fill blank slug fields from the corresponding localized name before save.
 The same shared mechanism fills `FAQCategory.key` from `name_en`. The behavior is
 fill-only and never overwrites an explicit stored slug.
+
+## Catalogue v3 pricing/intakes
+
+`Intake` is now the canonical offering intake entity (for example Fall, Spring, September, or Academic Intake) and binds an `AcademicYear`, optionally to one University. `ProgramOffering.intake` is canonical; `semester` remains a deprecated compatibility bridge.
+
+`OfferingFee` is the canonical extensible fee component. It records fee type, optional source label, optional language, currency, amount and/or percentage, basis, notes, and active state. It supports list/discounted tuition, advance/cash payment, installment total, deposit, preparatory/foundation, application, registration, and other fees. Existing fixed ProgramOffering price columns remain during migration for current consumers.

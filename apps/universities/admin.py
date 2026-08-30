@@ -14,6 +14,8 @@ from .models import (
     AcademicUnit,
     AcademicYear,
     Department,
+    Intake,
+    OfferingFee,
     Program,
     ProgramInstructionLanguage,
     ProgramLanguage,
@@ -47,6 +49,7 @@ class ProgramOfferingAdminForm(forms.ModelForm):
         fields = (
             "program",
             "academic_year",
+            "intake",
             "semester",
             "fee_basis",
             "currency",
@@ -120,12 +123,30 @@ class ProgramInstructionLanguageInline(admin.TabularInline):
     autocomplete_fields = ("language",)
 
 
+class OfferingFeeInline(admin.TabularInline):
+    model = OfferingFee
+    extra = 0
+    fields = (
+        "fee_type",
+        "label",
+        "language",
+        "currency",
+        "amount",
+        "percentage",
+        "basis",
+        "notes",
+        "is_active",
+    )
+    autocomplete_fields = ("language",)
+
+
 class ProgramOfferingInline(admin.StackedInline):
     model = ProgramOffering
     form = ProgramOfferingAdminForm
     extra = 0
     fields = (
         "academic_year",
+        "intake",
         "semester",
         "fee_basis",
         "currency",
@@ -466,10 +487,11 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
 @admin.register(ProgramOffering)
 class ProgramOfferingAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
     form = ProgramOfferingAdminForm
+    inlines = (OfferingFeeInline,)
     list_display = (
         "program",
         "academic_year",
-        "semester",
+        "intake",
         "currency",
         "tuition",
         "tuition_discounted",
@@ -481,7 +503,7 @@ class ProgramOfferingAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin
     )
     list_filter = (
         "academic_year",
-        "semester",
+        "intake",
         "fee_basis",
         "currency",
         "preparation_included",
@@ -497,13 +519,14 @@ class ProgramOfferingAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin
     autocomplete_fields = (
         "program",
         "academic_year",
+        "intake",
         "semester",
         "source",
     )
     fieldsets = (
         (
             "Intake",
-            {"fields": ("program", "academic_year", "semester", "is_active")},
+            {"fields": ("program", "academic_year", "intake", "semester", "is_active")},
         ),
         (
             "Pricing",
@@ -552,3 +575,18 @@ class UniversityCatalogueSourceAdmin(AuditAdminMixin, admin.ModelAdmin):
     list_filter = ("university", "academic_year", "received_at")
     search_fields = ("title", "university__name_en", "notes")
     autocomplete_fields = ("university", "academic_year", "recorded_by")
+
+
+@admin.register(Intake)
+class IntakeAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
+    list_display = (
+        "name_en",
+        "university",
+        "academic_year",
+        "start_date",
+        "application_deadline",
+        "is_active",
+    )
+    list_filter = ("academic_year", "is_active", "university")
+    search_fields = ("name_en", "university__name_en", "academic_year__name_en")
+    autocomplete_fields = ("university", "academic_year")

@@ -244,6 +244,7 @@ class Command(BaseCommand):
         return {
             "id": str(offering.pk),
             "academic_year": self._named_reference(offering.academic_year),
+            "intake": self._named_reference(offering.intake),
             "semester": self._named_reference(offering.semester),
             "fee_basis": offering.fee_basis,
             "currency": offering.currency,
@@ -262,6 +263,20 @@ class Command(BaseCommand):
             "valid_until": self._date(offering.valid_until),
             "notes": offering.notes,
             "source": self._source_reference(offering.source),
+            "fees": [
+                {
+                    "fee_type": fee.fee_type,
+                    "label": fee.label,
+                    "language": self._named_reference(fee.language),
+                    "currency": fee.currency,
+                    "amount": self._decimal(fee.amount),
+                    "percentage": self._decimal(fee.percentage),
+                    "basis": fee.basis,
+                    "notes": fee.notes,
+                    "is_active": fee.is_active,
+                }
+                for fee in offering.fees.select_related("language").all()
+            ],
             "is_active": offering.is_active,
         }
 

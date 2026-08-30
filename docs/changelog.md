@@ -1,6 +1,6 @@
-- Fixed BUG-0021: preserve intentional Turkish dotless `ı` in the rebuild-slugs regression fixture with a narrow Ruff RUF001 suppression.
-- Added CHG-0006 / CAT-035: atomic `rebuild_slugs` maintenance command with dry-run and collision preflight for intentional stale-slug regeneration.
-- Fixed BUG-0020: corrected the Persian Unicode-slug importer fixture by removing a ZWNJ that Django correctly rejects in slug values; localized prose keeps proper Persian typography.
+
+- Fixed BUG-0023: Catalogue v3 no longer reintroduces a Persian ZWNJ into the native Unicode slug importer fixture; display prose retains correct Persian typography while explicit slug fixtures follow Django Unicode slug validation.
+- Fixed BUG-0022: narrow nullable Intake/Semester relations explicitly in `ProgramOffering.__str__` for django-stubs/mypy.
 - Fixed BUG-0019: avoid direct typed access to `SlugField.allow_unicode`; use a runtime `getattr` fallback so mypy passes without changing Unicode slug behavior.
 - Fixed BUG-0018: moved the slug helper below Django model `Meta`, `save()`, and `clean()` so the complete `BaseModel` ordering satisfies DJ012.\n- Fixed BUG-0017: reordered `LocalizedSlugMixin` declarations to satisfy Ruff DJ012 without changing model-level slug generation.
 - Added CAT-034 / FEAT-0009: admin/model saves now auto-generate missing localized slugs from matching names while preserving explicit slugs.
@@ -1224,3 +1224,5 @@
   verification before this importer extension.
 
 - BUG-0015: Fixed university data dump test fixture duplicating canonical instruction-language rows.
+
+- Catalogue v3: added canonical Intake and normalized, language-aware OfferingFee modelling; expanded fee bases; normalized imports now populate the new structures while preserving legacy compatibility fields.

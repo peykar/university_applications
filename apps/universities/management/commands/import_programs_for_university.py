@@ -19,6 +19,9 @@ from apps.universities.models import (
     DegreeType,
     Department,
     FeeBasis,
+    Intake,
+    OfferingFee,
+    OfferingFeeType,
     Program,
     ProgramInstructionLanguage,
     ProgramLanguage,
@@ -246,12 +249,14 @@ class Command(BaseCommand):
             row_path = f"{path}[{index}]"
             row = self._expect_object(raw_row, row_path)
             academic_year = self._required_text(row, "academic_year", path=row_path)
-            semester = self._required_text(row, "semester", path=row_path)
-            key = (academic_year, semester)
+            intake_name = str(row.get("intake") or row.get("semester") or "").strip()
+            if not intake_name:
+                raise CommandError(f"{row_path}.intake is required (legacy semester is accepted).")
+            key = (academic_year, intake_name)
             if key in seen_keys:
                 raise CommandError(
                     f"Duplicate offering for academic_year={academic_year!r}, "
-                    f"semester={semester!r} in {path}."
+                    f"intake={intake_name!r} in {path}."
                 )
             seen_keys.add(key)
 
@@ -488,11 +493,15 @@ class Command(BaseCommand):
         actor: Any,
     ) -> bool:
         academic_year = self._get_or_create_academic_year(str(row["academic_year"]), actor=actor)
-        semester = self._get_or_create_semester(str(row["semester"]), actor=actor)
+        intake_name = str(row.get("intake") or row.get("semester"))
+        intake = self._get_or_create_intake(
+            intake_name, academic_year=academic_year, university=program.university, actor=actor
+        )
+        semester = self._get_or_create_semester(intake_name, actor=actor)
         lookup = {
             "program": program,
             "academic_year": academic_year,
-            "semester": semester,
+            "intake": intake,
             "source": source,
         }
         matches = ProgramOffering.objects.filter(**lookup)
@@ -500,13 +509,14 @@ class Command(BaseCommand):
             raise CommandError(
                 "Multiple existing ProgramOffering rows match the import key "
                 f"program={program.slug_en!r}, academic_year={academic_year.name_en!r}, "
-                f"semester={semester.name_en!r}, source={source.id}. Resolve duplicates first."
+                f"intake={intake.name_en!r}, source={source.id}. Resolve duplicates first."
             )
         offering = matches.first()
         created = offering is None
         if offering is None:
             offering = ProgramOffering(**lookup, created_by=actor)
 
+        offering.semester = semester  # legacy compatibility bridge
         offering.fee_basis = str(row["fee_basis"])
         offering.currency = str(row["currency"])
         offering.tuition = self._required_decimal(row, "tuition", path="offering")
@@ -536,6 +546,7 @@ class Command(BaseCommand):
         offering.updated_by = actor
         offering.full_clean()
         offering.save()
+        self._sync_structured_fees(offering, row, actor=actor)
         return created
 
     def _get_or_create_academic_year(self, name: str, *, actor: Any) -> AcademicYear:
@@ -545,6 +556,75 @@ class Command(BaseCommand):
             academic_year.full_clean()
             academic_year.save()
         return academic_year
+
+    def _get_or_create_intake(
+        self,
+        name: str,
+        *,
+        academic_year: AcademicYear,
+        university: University,
+        actor: Any,
+    ) -> Intake:
+        intake = Intake.objects.filter(
+            university=university, academic_year=academic_year, name_en=name
+        ).first()
+        if intake is None:
+            intake = Intake(
+                university=university,
+                academic_year=academic_year,
+                name_en=name,
+                created_by=actor,
+                updated_by=actor,
+            )
+            intake.full_clean()
+            intake.save()
+        return intake
+
+    def _sync_structured_fees(
+        self, offering: ProgramOffering, row: dict[str, Any], *, actor: Any
+    ) -> None:
+        fee_rows = row.get("fees")
+        if fee_rows is None:
+            fee_rows = [
+                {"fee_type": "tuition", "amount": row.get("tuition")},
+                {"fee_type": "discounted_tuition", "amount": row.get("tuition_discounted")},
+                {"fee_type": "advance_payment", "amount": row.get("tuition_cash")},
+                {"fee_type": "installment_total", "amount": row.get("tuition_annual_installment")},
+                {"fee_type": "deposit", "amount": row.get("deposit")},
+                {"fee_type": "preparatory", "amount": row.get("preparatory_tuition")},
+            ]
+        OfferingFee.objects.filter(offering=offering).delete()
+        for fee_row in fee_rows:
+            amount = self._decimal_or_none(fee_row.get("amount"), path="offering.fees.amount")
+            percentage = self._decimal_or_none(
+                fee_row.get("percentage"), path="offering.fees.percentage"
+            )
+            if amount is None and percentage is None:
+                continue
+            fee_type = str(fee_row.get("fee_type") or "other")
+            if fee_type not in OfferingFeeType.values:
+                raise CommandError(f"Unsupported offering fee_type {fee_type!r}.")
+            language = None
+            language_slug = fee_row.get("language")
+            if language_slug:
+                language = ProgramLanguage.objects.filter(slug_en=str(language_slug)).first()
+                if language is None:
+                    raise CommandError(f"Unknown fee language slug {language_slug!r}.")
+            fee = OfferingFee(
+                offering=offering,
+                fee_type=fee_type,
+                label=str(fee_row.get("label") or ""),
+                language=language,
+                currency=str(fee_row.get("currency") or row["currency"]),
+                amount=amount,
+                percentage=percentage,
+                basis=str(fee_row.get("basis") or row["fee_basis"]),
+                notes=str(fee_row.get("notes") or ""),
+                created_by=actor,
+                updated_by=actor,
+            )
+            fee.full_clean()
+            fee.save()
 
     def _get_or_create_semester(self, name: str, *, actor: Any) -> Semester:
         semester = Semester.objects.filter(name_en=name).first()

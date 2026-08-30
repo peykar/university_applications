@@ -193,3 +193,12 @@ They do not need to be transliterated or copied from `slug_en`. The importer run
 normal Django model validation, so spaces and other non-slug punctuation remain
 invalid.
 
+
+
+## Catalogue v3 intake and fees
+
+New files should use `intake` for the offering name; legacy `semester` remains accepted during migration. The importer creates a canonical `Intake` bound to the University and AcademicYear.
+
+Offerings may include a `fees` array. Each fee accepts `fee_type`, optional `label`, optional language slug, `currency`, optional `amount`, optional `percentage`, `basis`, and optional `notes`. Supported types are `tuition`, `discounted_tuition`, `advance_payment`, `cash_payment`, `installment_total`, `deposit`, `preparatory`, `application`, `registration`, and `other`. At least amount or percentage is required. Preparatory fees can be repeated with different languages.
+
+Legacy fixed fee fields remain accepted and are translated into structured fees when `fees` is omitted.

@@ -1,0 +1,88 @@
+from decimal import Decimal
+
+from django.core.exceptions import ValidationError
+from django.test import TestCase
+
+from apps.geography.models import City, Country, Province
+from apps.universities.models import (
+    AcademicYear,
+    FeeBasis,
+    Intake,
+    OfferingFee,
+    OfferingFeeType,
+    Program,
+    ProgramLanguage,
+    ProgramOffering,
+    University,
+)
+
+
+class CatalogueV3Tests(TestCase):
+    def setUp(self):
+        country = Country.objects.create(
+            name_en="Türkiye", slug_en="turkiye", iso2="TR", iso3="TUR"
+        )
+        province = Province.objects.create(country=country, name_en="Istanbul", slug_en="istanbul")
+        city = City.objects.create(province=province, name_en="Istanbul", slug_en="istanbul")
+        self.university = University.objects.create(
+            name_en="Example University",
+            slug_en="example-university",
+            city=city,
+            university_type="private",
+        )
+        self.year = AcademicYear.objects.create(name_en="2026-2027")
+        self.intake = Intake.objects.create(
+            university=self.university, academic_year=self.year, name_en="Academic Intake"
+        )
+        self.program = Program.objects.create(
+            university=self.university, name_en="Medicine", slug_en="medicine", degree="bachelor"
+        )
+        self.offering = ProgramOffering.objects.create(
+            program=self.program,
+            academic_year=self.year,
+            intake=self.intake,
+            fee_basis=FeeBasis.ANNUAL,
+            currency="USD",
+            tuition=Decimal("44000"),
+        )
+
+    def test_intake_is_canonical_without_semester(self):
+        self.assertEqual(self.offering.intake.name_en, "Academic Intake")
+        self.assertIsNone(self.offering.semester)
+
+    def test_intake_date_order_is_validated(self):
+        intake = Intake(
+            university=self.university,
+            academic_year=self.year,
+            name_en="Fall",
+            application_open="2026-09-01",
+            application_deadline="2026-08-01",
+        )
+        with self.assertRaises(ValidationError):
+            intake.full_clean()
+
+    def test_language_specific_preparatory_fees_are_independent(self):
+        english = ProgramLanguage.objects.create(name_en="English", slug_en="english")
+        turkish = ProgramLanguage.objects.create(name_en="Turkish", slug_en="turkish")
+        OfferingFee.objects.create(
+            offering=self.offering,
+            fee_type=OfferingFeeType.PREPARATORY,
+            language=english,
+            currency="USD",
+            amount=Decimal("17000"),
+            basis=FeeBasis.ANNUAL,
+        )
+        OfferingFee.objects.create(
+            offering=self.offering,
+            fee_type=OfferingFeeType.PREPARATORY,
+            language=turkish,
+            currency="USD",
+            amount=Decimal("1390"),
+            basis=FeeBasis.ANNUAL,
+        )
+        self.assertEqual(self.offering.fees.filter(fee_type="preparatory").count(), 2)
+
+    def test_fee_basis_supports_real_world_shapes(self):
+        self.assertIn("semester", FeeBasis.values)
+        self.assertIn("per_credit", FeeBasis.values)
+        self.assertIn("one_time", FeeBasis.values)

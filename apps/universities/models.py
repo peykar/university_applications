@@ -160,6 +160,36 @@ class AcademicYear(BaseModel, ActiveMixin):
         return self.name_en
 
 
+class Intake(BaseModel, ActiveMixin):
+    university = models.ForeignKey(
+        University, on_delete=models.CASCADE, related_name="intakes", null=True, blank=True
+    )
+    academic_year = models.ForeignKey(
+        AcademicYear, on_delete=models.PROTECT, related_name="intakes"
+    )
+    name_en = models.CharField(max_length=100)
+    name_fa = models.CharField(max_length=100, blank=True)
+    name_tr = models.CharField(max_length=100, blank=True)
+    name_ar = models.CharField(max_length=100, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    application_open = models.DateField(null=True, blank=True)
+    application_deadline = models.DateField(null=True, blank=True)
+
+    def clean(self):
+        super().clean()
+        if (
+            self.application_open
+            and self.application_deadline
+            and self.application_deadline < self.application_open
+        ):
+            raise ValidationError(
+                {"application_deadline": _("Application deadline cannot precede opening date.")}
+            )
+
+    def __str__(self):
+        return f"{self.academic_year} — {self.name_en}"
+
+
 class Semester(BaseModel, ActiveMixin):
     name_en = models.CharField(max_length=100)
     name_fa = models.CharField(max_length=100, blank=True)
@@ -379,7 +409,23 @@ class Currency(models.TextChoices):
 
 class FeeBasis(models.TextChoices):
     ANNUAL = "annual", _("Annual")
+    SEMESTER = "semester", _("Per semester")
     WHOLE_PROGRAM = "whole_program", _("Total (Whole Program)")
+    PER_CREDIT = "per_credit", _("Per credit")
+    ONE_TIME = "one_time", _("One time")
+
+
+class OfferingFeeType(models.TextChoices):
+    TUITION = "tuition", _("Tuition / list fee")
+    DISCOUNTED_TUITION = "discounted_tuition", _("Discounted tuition")
+    ADVANCE_PAYMENT = "advance_payment", _("Advance payment")
+    CASH_PAYMENT = "cash_payment", _("Cash payment")
+    INSTALLMENT_TOTAL = "installment_total", _("Installment total")
+    DEPOSIT = "deposit", _("Deposit")
+    PREPARATORY = "preparatory", _("Preparatory / foundation tuition")
+    APPLICATION = "application", _("Application fee")
+    REGISTRATION = "registration", _("Registration fee")
+    OTHER = "other", _("Other")
 
 
 class UniversityCatalogueSource(BaseModel):
@@ -425,10 +471,21 @@ class ProgramOffering(BaseModel, ActiveMixin):
         on_delete=models.PROTECT,
         related_name="program_offerings",
     )
+    intake = models.ForeignKey(
+        Intake,
+        on_delete=models.PROTECT,
+        related_name="program_offerings",
+        null=True,
+        blank=True,
+        help_text=_("Canonical intake. Fall/Spring/Academic Intake are intake names."),
+    )
+    # Deprecated compatibility bridge. New catalogue data should use intake.
     semester = models.ForeignKey(
         Semester,
         on_delete=models.PROTECT,
         related_name="program_offerings",
+        null=True,
+        blank=True,
     )
 
     fee_basis = models.CharField(
@@ -496,6 +553,13 @@ class ProgramOffering(BaseModel, ActiveMixin):
     def clean(self):
         super().clean()
         errors = {}
+        if self.intake_id and self.program_id:
+            intake = self.intake
+            program = self.program
+            if intake is not None and intake.university_id not in (None, program.university_id):
+                errors["intake"] = _("Intake must belong to the offering program's university.")
+            if intake is not None and intake.academic_year_id != self.academic_year_id:
+                errors["intake"] = _("Intake academic year must match the offering academic year.")
         if self.valid_from and self.valid_until and self.valid_until < self.valid_from:
             errors["valid_until"] = _("Valid until cannot be earlier than valid from.")
         if self.source_id and self.program_id:
@@ -513,4 +577,46 @@ class ProgramOffering(BaseModel, ActiveMixin):
         return self.tuition_discounted or self.tuition
 
     def __str__(self):
-        return f"{self.program} - {self.academic_year} - {self.semester}"
+        intake = self.intake if self.intake_id else None
+        semester = self.semester if self.semester_id else None
+        intake_name = (
+            intake.name_en
+            if intake is not None
+            else (semester.name_en if semester is not None else "")
+        )
+        return f"{self.program} - {self.academic_year} - {intake_name}"
+
+
+class OfferingFee(BaseModel, ActiveMixin):
+    offering = models.ForeignKey(ProgramOffering, on_delete=models.CASCADE, related_name="fees")
+    fee_type = models.CharField(max_length=30, choices=OfferingFeeType.choices)
+    label = models.CharField(max_length=255, blank=True)
+    language = models.ForeignKey(
+        ProgramLanguage,
+        on_delete=models.PROTECT,
+        related_name="offering_fees",
+        null=True,
+        blank=True,
+    )
+    currency = models.CharField(max_length=3, choices=Currency.choices)
+    amount = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    percentage = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(Decimal("0")), MaxValueValidator(Decimal("100"))],
+    )
+    basis = models.CharField(max_length=30, choices=FeeBasis.choices, default=FeeBasis.ANNUAL)
+    notes = models.TextField(blank=True)
+
+    def clean(self):
+        super().clean()
+        if self.amount is None and self.percentage is None:
+            raise ValidationError(_("A fee must define an amount, a percentage, or both."))
+        if self.fee_type == OfferingFeeType.PREPARATORY and self.language_id is None:
+            # A generic preparatory fee remains valid when the source does not name a language.
+            return
+
+    def __str__(self):
+        return f"{self.offering} — {self.get_fee_type_display()}"

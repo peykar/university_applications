@@ -1,7 +1,7 @@
 # University and program catalogue
 
 Status: APPROVED
-Version: 2.6
+Version: 3.0
 
 ## Goal
 
@@ -178,16 +178,6 @@ Explicit slugs MUST never be overwritten merely because the related name changes
 Blank source names MUST leave their slug blank. Supported slug fields MUST be
 optional in admin/model forms so this generation path can be used.
 
-CAT-035 — TurkDemy MUST provide an explicit `rebuild_slugs` maintenance command
-that regenerates supported slug fields from their current related name fields,
-including existing non-empty/stale values. Normal model saves MUST remain fill-only
-per CAT-034. The command MUST support `--dry-run`, MUST preflight generated slug
-collisions using the catalogue/geography lookup scopes before writing, MUST perform
-the real rebuild atomically, and MUST leave an existing slug untouched when its
-related source name is blank. Rebuilding MUST use the same ASCII/Unicode slug rules
-as normal model-level generation and MUST invoke normal model `save()` rather than
-bulk database updates.
-
 ## Pricing vocabulary
 
 - **Standard/list tuition** — university/list tuition before an applicable offer.
@@ -217,3 +207,17 @@ provenance, and distinct tuition/cash/deposit semantics.
 - Admission-requirement modelling (CAT-024).
 - Commission, agent revenue, invoicing, or settlement accounting.
 - Automatic extraction/OCR of arbitrary university PDFs/Excel files.
+
+## Catalogue v3 — intake and extensible fees
+
+CAT-035 — ProgramOffering MUST use Intake as its canonical intake dimension. An Intake MUST bind an academic year and MAY be university-specific; names such as Fall, Spring, September, February, and Academic Intake are data, not enum values. The legacy Semester relation MAY remain temporarily as a compatibility bridge.
+
+CAT-036 — Intake application-open/application-deadline dates, when both known, MUST be chronologically valid. A university-specific Intake attached to an offering MUST belong to that Program's University and its academic year MUST match the offering academic year.
+
+CAT-037 — ProgramOffering MUST support normalized OfferingFee rows so university terminology is preserved without adding a new ProgramOffering column for every fee type. Supported fee semantics MUST include list tuition, discounted tuition, advance payment, cash payment, installment total, deposit, preparatory/foundation, application, registration, and other.
+
+CAT-038 — OfferingFee MUST support amount and/or percentage, ISO-supported currency, fee basis, source label/notes, and optional instruction/preparation language. Language-specific preparatory fees MUST therefore be representable independently.
+
+CAT-039 — Fee basis MUST support annual, semester, whole-program, per-credit, and one-time values.
+
+CAT-040 — Existing ProgramOffering pricing columns and Semester MAY remain as deprecated compatibility bridges while current UI/Application consumers migrate. New normalized imports MUST create canonical Intake and OfferingFee data and MUST preserve the source distinction between advance payment and deposit.
