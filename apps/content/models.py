@@ -6,7 +6,7 @@ from apps.core.validators import validate_phone_number
 
 
 class FAQCategory(BaseModel):
-    key = models.SlugField(max_length=100, unique=True)
+    key = models.SlugField(max_length=100, unique=True, blank=True)
     name_en = models.CharField(max_length=255)
     name_fa = models.CharField(max_length=255, blank=True)
     name_tr = models.CharField(max_length=255, blank=True)

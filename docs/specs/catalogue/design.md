@@ -1,7 +1,7 @@
 # University and program catalogue — technical design
 
 Status: APPROVED
-Version: 2.4
+Version: 2.5
 
 ## Domain shape
 
@@ -213,3 +213,19 @@ The normalized university-program JSON importer continues to use `slug_en` as it
 deterministic upsert key, while localized slug fields may carry native Persian,
 Turkish, or Arabic slugs. No transliteration or fallback to English is required.
 
+
+
+## Automatic localized slug generation
+
+Supported slug fields are optional input in admin forms. `BaseModel` inspects
+`SlugField`s and fills only missing values where the related name mapping is known.
+Localized `slug_<locale>` fields map to `name_<locale>`; conventional `slug` maps
+to `name`; and the existing `FAQCategory.key` maps to `name_en`. English uses
+Django `slugify(..., allow_unicode=False)` while Persian, Turkish, and Arabic
+localized fields use their field-level Unicode setting.
+
+Generation is fill-only: a non-empty slug is stable and is not regenerated when
+its name later changes. This avoids unexpected public URL changes. A localized
+name that is empty does not create a slug. `slug_en` remains the canonical ASCII
+identifier/import key; this automation primarily removes manual admin work and
+does not change normalized JSON import key semantics.

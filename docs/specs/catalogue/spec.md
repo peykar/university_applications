@@ -1,7 +1,7 @@
 # University and program catalogue
 
 Status: APPROVED
-Version: 2.4
+Version: 2.5
 
 ## Goal
 
@@ -166,6 +166,17 @@ Department, ProgramLanguage, Program, and their geography dependencies. Admin
 validation, normalized JSON import model validation, and public/API routing MUST
 accept valid native-script localized slugs without requiring transliteration to
 English.
+
+CAT-034 — When an admin/staff user saves a model with a supported slug field and
+a clear related name field, a blank slug MUST be generated from that name before
+persistence. For the shared localized catalogue/geography contract, `slug_en`,
+`slug_fa`, `slug_tr`, and `slug_ar` map to the matching `name_*`; English uses
+ASCII slug semantics while Persian, Turkish, and Arabic preserve valid Unicode.
+The same fill-only behavior MUST cover other current admin-managed slug fields
+with an explicit name mapping, including `FAQCategory.key` from `name_en`.
+Explicit slugs MUST never be overwritten merely because the related name changes.
+Blank source names MUST leave their slug blank. Supported slug fields MUST be
+optional in admin/model forms so this generation path can be used.
 
 ## Pricing vocabulary
 

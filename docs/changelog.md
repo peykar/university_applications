@@ -1,3 +1,7 @@
+- Fixed BUG-0020: corrected the Persian Unicode-slug importer fixture by removing a ZWNJ that Django correctly rejects in slug values; localized prose keeps proper Persian typography.
+- Fixed BUG-0019: avoid direct typed access to `SlugField.allow_unicode`; use a runtime `getattr` fallback so mypy passes without changing Unicode slug behavior.
+- Fixed BUG-0018: moved the slug helper below Django model `Meta`, `save()`, and `clean()` so the complete `BaseModel` ordering satisfies DJ012.\n- Fixed BUG-0017: reordered `LocalizedSlugMixin` declarations to satisfy Ruff DJ012 without changing model-level slug generation.
+- Added CAT-034 / FEAT-0009: admin/model saves now auto-generate missing localized slugs from matching names while preserving explicit slugs.
 - Fixed BUG-0016: preserve intentional Turkish dotless `ı` in Unicode slug tests with narrow Ruff RUF001 suppressions.
 ## 2026-08-30 — University dump Turkish fixture Ruff fix
 

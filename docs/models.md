@@ -70,3 +70,11 @@ policy also applies to catalogue geography records through `LocalizedSlugMixin`.
 domain-facing name for the historic `pre_school_fees` database column. Standard
 tuition, discounted/offered tuition, cash/advance-payment tuition, deposit, and
 preparatory tuition have distinct meanings.
+
+
+### Automatic localized slugs
+
+Catalogue/geography models that use `LocalizedNameMixin` + `LocalizedSlugMixin`
+auto-fill blank slug fields from the corresponding localized name before save.
+The same shared mechanism fills `FAQCategory.key` from `name_en`. The behavior is
+fill-only and never overwrites an explicit stored slug.

@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase, TestCase
 from django.urls import resolve, reverse
 
+from apps.content.models import FAQCategory
 from apps.core.audit import get_system_user
 from apps.geography.models import City, Country, Province
 from apps.universities.models import Program, University
@@ -129,3 +130,122 @@ class UnicodeLocalizedCatalogueSlugValidationTests(TestCase):
             self.assertFalse(model._meta.get_field("slug_en").allow_unicode)
             for field_name in ("slug_fa", "slug_tr", "slug_ar"):
                 self.assertTrue(model._meta.get_field(field_name).allow_unicode)
+
+
+class LocalizedSlugAutogenerationTests(TestCase):
+    def setUp(self):
+        self.actor = get_system_user()
+        self.country = Country.objects.create(
+            iso2="TR",
+            iso3="TUR",
+            name_en="Türkiye",
+            name_fa="ترکیه",
+            name_tr="Türkiye",
+            name_ar="تركيا",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        self.province = Province.objects.create(
+            country=self.country,
+            name_en="Istanbul",
+            name_fa="استانبول",
+            name_tr="İstanbul",
+            name_ar="إسطنبول",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        self.city = City.objects.create(
+            province=self.province,
+            name_en="Istanbul",
+            name_fa="استانبول",
+            name_tr="İstanbul",
+            name_ar="إسطنبول",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+
+    def test_shared_localized_slug_fields_are_optional_in_admin_forms(self):
+        for model in (University, Program, Country, Province, City):
+            for field_name in ("slug_en", "slug_fa", "slug_tr", "slug_ar"):
+                self.assertTrue(model._meta.get_field(field_name).blank)
+        self.assertTrue(FAQCategory._meta.get_field("key").blank)
+
+    def test_save_generates_missing_slugs_from_matching_localized_names(self):
+        university = University.objects.create(
+            city=self.city,
+            university_type="private",
+            name_en="Istanbul Medipol University",
+            name_fa="دانشگاه مدیپول استانبول",
+            name_tr="İstanbul Medipol Üniversitesi",
+            name_ar="جامعة إسطنبول ميديبول",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+
+        self.assertEqual(university.slug_en, "istanbul-medipol-university")
+        self.assertEqual(university.slug_fa, "دانشگاه-مدیپول-استانبول")
+        self.assertEqual(university.slug_tr, "istanbul-medipol-üniversitesi")
+        self.assertEqual(university.slug_ar, "جامعة-إسطنبول-ميديبول")
+
+    def test_geography_models_use_the_same_slug_generation_contract(self):
+        self.assertEqual(self.country.slug_en, "turkiye")
+        self.assertEqual(self.country.slug_fa, "ترکیه")
+        self.assertEqual(self.country.slug_tr, "türkiye")
+        self.assertEqual(self.country.slug_ar, "تركيا")
+        self.assertEqual(self.province.slug_fa, "استانبول")
+        self.assertEqual(self.city.slug_ar, "إسطنبول")
+
+    def test_program_generates_native_unicode_slugs_and_preserves_explicit_slug(self):
+        university = University.objects.create(
+            city=self.city,
+            university_type="private",
+            name_en="Istanbul Medipol",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        program = Program.objects.create(
+            university=university,
+            name_en="Medicine",
+            name_fa="پزشکی",
+            name_tr="Tıp",  # noqa: RUF001 -- intentional Turkish dotless i
+            name_ar="الطب",
+            slug_en="medicine-custom",
+            degree="bachelor",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+
+        self.assertEqual(program.slug_en, "medicine-custom")
+        self.assertEqual(program.slug_fa, "پزشکی")
+        self.assertEqual(program.slug_tr, "tıp")  # noqa: RUF001 -- intentional Turkish dotless i
+        self.assertEqual(program.slug_ar, "الطب")
+
+        program.name_en = "Medicine Updated"
+        program.save()
+        self.assertEqual(program.slug_en, "medicine-custom")
+
+    def test_non_catalogue_slug_field_uses_related_name_when_blank(self):
+        category = FAQCategory.objects.create(
+            name_en="Admissions and Applications",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+
+        self.assertEqual(category.key, "admissions-and-applications")
+
+    def test_full_clean_populates_slugs_before_admin_save(self):
+        university = University(
+            city=self.city,
+            university_type="private",
+            name_en="Medipol Test University",
+            name_fa="دانشگاه آزمایشی مدیپول",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+
+        university.full_clean()
+
+        self.assertEqual(university.slug_en, "medipol-test-university")
+        self.assertEqual(university.slug_fa, "دانشگاه-آزمایشی-مدیپول")
+        self.assertEqual(university.slug_tr, "")
+        self.assertEqual(university.slug_ar, "")

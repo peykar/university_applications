@@ -52,3 +52,8 @@ Version: 2.4
       localized slugs in the shared catalogue/geography slug contract, preserve
       ASCII validation for `slug_en`, document JSON-import behavior, and add
       model/admin-routing regression coverage.
+
+- [x] CAT-T22 (`CAT-034`) Make shared localized slug fields optional for admin entry,
+      auto-generate missing slugs from matching localized names during model
+      validation/save, preserve explicit slugs, cover `FAQCategory.key`, and add
+      regression coverage across catalogue, geography, and current content slugs.

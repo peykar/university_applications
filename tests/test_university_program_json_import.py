@@ -241,7 +241,7 @@ class UniversityProgramJsonImportTests(TestCase):
                 "name_fa": "مهندسی نرم‌افزار",
                 "name_tr": "Yazılım Mühendisliği",  # noqa: RUF001 -- intentional Turkish dotless i
                 "name_ar": "هندسة البرمجيات",
-                "slug_fa": "مهندسی-نرم‌افزار",
+                "slug_fa": "مهندسی-نرمافزار",
                 "slug_tr": "yazılım-mühendisliği",  # noqa: RUF001 -- intentional Turkish dotless i
                 "slug_ar": "هندسة-البرمجيات",
             }
@@ -252,7 +252,7 @@ class UniversityProgramJsonImportTests(TestCase):
         program = Program.objects.get(
             university=self.university, slug_en="software-engineering-english"
         )
-        self.assertEqual(program.slug_fa, "مهندسی-نرم‌افزار")
+        self.assertEqual(program.slug_fa, "مهندسی-نرمافزار")
         self.assertEqual(program.slug_tr, "yazılım-mühendisliği")  # noqa: RUF001 -- intentional Turkish dotless i
         self.assertEqual(program.slug_ar, "هندسة-البرمجيات")
 

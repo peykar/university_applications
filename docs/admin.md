@@ -130,3 +130,14 @@ The Django Admin header is:
 ```text
 TurkDemy Administration
 ```
+
+
+## Automatic slug generation
+
+For supported models, admins may leave slug fields empty. On validation/save
+TurkDemy fills each missing slug from its related name. Localized fields map
+`name_en/fa/tr/ar` to `slug_en/fa/tr/ar`; `FAQCategory.key` maps from `name_en`.
+English slugs are ASCII; Persian, Turkish, and Arabic localized slugs preserve
+valid Unicode. Existing/non-empty slugs are never automatically replaced when a
+name changes, so established URLs remain stable. If the source name is empty,
+its slug remains empty.
