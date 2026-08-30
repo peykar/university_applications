@@ -1,7 +1,7 @@
 # University and program catalogue — technical design
 
 Status: APPROVED
-Version: 2.2
+Version: 2.3
 
 ## Domain shape
 
@@ -182,3 +182,19 @@ to expose them. Tuition filters continue to constrain a coherent Offering row.
 ## Architecture decision
 
 See `docs/architecture/decisions/ADR-006-university-catalogue-v2.md`.
+
+## University catalogue JSON dump
+
+`dump_university_data <university-id>` produces a schema-v1 UTF-8 JSON snapshot
+for offline catalogue comparison and text enrichment. The command accepts one
+required positional argument; `--output` is an optional destination override.
+The default filename is `university_<uuid>_catalogue.json`.
+
+The export is deliberately catalogue-scoped rather than a database backup. It
+contains localized University/geography data, media metadata, AcademicUnits,
+Departments, catalogue sources, Programs (including internal notes), canonical
+instruction languages, and ProgramOfferings. It does not traverse Leads,
+Students, Applications, conversations, users, or other customer operational
+records. File/image fields are represented by their stored names rather than
+embedding binary content. Decimal values are emitted as strings to preserve
+precision and dates use ISO-8601 strings.

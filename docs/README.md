@@ -74,3 +74,5 @@ See also: [Agent applicant workspace](agent-applicant-workspace.md).
 ## Catalogue import
 
 - `university-program-json-import.md` — normalized per-University JSON format and import command.
+
+- `university-data-dump.md` — export one University catalogue as JSON for offline comparison and Rasa text enrichment.

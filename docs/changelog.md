@@ -1,3 +1,15 @@
+## 2026-08-30 — University dump Turkish fixture Ruff fix
+
+- Fixed `RUF001` failures on intentional Turkish dotless `ı` characters in university dump regression fixtures.
+- Preserved correct Turkish localized test data with line-scoped `# noqa: RUF001` suppressions rather than transliterating the content.
+- Added `BUG-0014`.
+
+## 2026-08-30 — University catalogue JSON dump
+
+- Added `dump_university_data <university-id>` for versioned offline catalogue exports.
+- Exports localized University/geography, media, academic units, departments, catalogue sources, Programs/internal notes, instruction languages, and offerings.
+- Deliberately excludes applicant/student/application/messaging/customer operational data.
+- Added Catalogue v2.3 requirement CAT-032, tests, and `docs/university-data-dump.md`.
 ## 2026-08-30 — Program internal notes
 
 - Advanced Catalogue SDD to v2.2 with `CAT-031`.
@@ -1202,3 +1214,5 @@
 - Added importer tests, complete format documentation, and an example JSON file.
 - Recorded the user's successful baseline `make check` and Catalogue v2 backfill
   verification before this importer extension.
+
+- BUG-0015: Fixed university data dump test fixture duplicating canonical instruction-language rows.

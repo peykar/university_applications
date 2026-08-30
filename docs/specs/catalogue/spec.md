@@ -1,7 +1,7 @@
 # University and program catalogue
 
 Status: APPROVED
-Version: 2.2
+Version: 2.3
 
 ## Goal
 
@@ -147,6 +147,16 @@ context that is distinct from localized customer-facing descriptions.
 through the public Program API serializer. Schema-v1 normalized programme JSON
 MAY provide `internal_notes`, and the importer MUST create/update that field when
 present.
+
+CAT-032 — TurkDemy MUST provide a `dump_university_data` management command whose
+only required input is a University ID. The command MUST write a versioned UTF-8
+JSON export of that University's catalogue-domain data, including localized
+University, geography, AcademicUnit, Department, Program, instruction-language,
+ProgramOffering, UniversityCatalogueSource, and UniversityMedia fields needed for
+offline comparison/enrichment. The export MUST include Program `internal_notes`
+for staff/import analysis, MUST preserve identifiers and structured catalogue
+values, and MUST exclude applicant, student, application, messaging, and other
+customer operational data.
 
 ## Pricing vocabulary
 

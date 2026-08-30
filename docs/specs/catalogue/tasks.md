@@ -1,7 +1,7 @@
 # University and program catalogue — tasks
 
 Status: APPROVED
-Version: 2.2
+Version: 2.3
 
 - [x] CAT-T01 (`CAT-007`, `CAT-008`, `CAT-020`) Add AcademicUnit model,
       validation, admin maintenance, and Program association.
@@ -42,3 +42,8 @@ Version: 2.2
 - [x] CAT-T19 (`CAT-031`) Add Program `internal_notes`, expose it only in staff
       maintenance/import paths, support it in schema-v1 JSON imports, and add
       regression coverage proving it is absent from public/customer/API surfaces.
+
+- [x] CAT-T20 (`CAT-032`) Add the one-ID `dump_university_data` command, versioned
+      catalogue export contract, documentation, and tests covering localized
+      programme text, catalogue relationships, default/custom output paths, and
+      unknown-University rejection.
