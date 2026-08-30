@@ -1,7 +1,7 @@
 # University and program catalogue — technical design
 
 Status: APPROVED
-Version: 2.3
+Version: 2.4
 
 ## Domain shape
 
@@ -198,3 +198,18 @@ Students, Applications, conversations, users, or other customer operational
 records. File/image fields are represented by their stored names rather than
 embedding binary content. Decimal values are emitted as strings to preserve
 precision and dates use ISO-8601 strings.
+## Localized Unicode slugs
+
+The shared `LocalizedSlugMixin` keeps `slug_en` as Django's default ASCII-only
+`SlugField` and enables `allow_unicode=True` only for `slug_fa`, `slug_tr`, and
+`slug_ar`. Because University, AcademicUnit, Department, ProgramLanguage, Program,
+and Country/Province/City share this mixin, model/admin/import validation now
+uses the same native-script policy everywhere. This is a validation/state change;
+it does not rewrite existing stored slugs.
+
+Public, application, and API detail routes already use the single-segment
+`<str:slug>` converter so persisted Unicode slugs can be reversed and resolved.
+The normalized university-program JSON importer continues to use `slug_en` as its
+deterministic upsert key, while localized slug fields may carry native Persian,
+Turkish, or Arabic slugs. No transliteration or fallback to English is required.
+

@@ -184,3 +184,12 @@ not already exist.
 - The command never infers missing tuition semantics, percentages, study mode,
   validity, or other ambiguous values.
 - The complete import runs in one database transaction.
+### Localized slug policy
+
+`slug_en` is the deterministic import key and remains ASCII-only. `slug_fa`,
+`slug_tr`, and `slug_ar` may use valid native Unicode slug characters, including
+Persian, Turkish, and Arabic letters, plus numbers, underscores, and hyphens.
+They do not need to be transliterated or copied from `slug_en`. The importer runs
+normal Django model validation, so spaces and other non-slug punctuation remain
+invalid.
+

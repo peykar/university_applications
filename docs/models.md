@@ -61,6 +61,11 @@ public/customer presentation and the public Program API. The old `program_langua
 and whole-year `duration` fields remain compatibility bridges for existing
 databases/import data and are not customer-facing canonical fields.
 
+Localized catalogue slugs use a split validation policy: `slug_en` stays
+ASCII-only and is the canonical deterministic import key, while `slug_fa`,
+`slug_tr`, and `slug_ar` accept native Unicode slug characters. This shared
+policy also applies to catalogue geography records through `LocalizedSlugMixin`.
+
 `ProgramOffering` owns intake/commercial data. `preparatory_tuition` is the
 domain-facing name for the historic `pre_school_fees` database column. Standard
 tuition, discounted/offered tuition, cash/advance-payment tuition, deposit, and

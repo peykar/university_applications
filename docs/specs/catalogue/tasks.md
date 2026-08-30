@@ -1,7 +1,7 @@
 # University and program catalogue — tasks
 
 Status: APPROVED
-Version: 2.3
+Version: 2.4
 
 - [x] CAT-T01 (`CAT-007`, `CAT-008`, `CAT-020`) Add AcademicUnit model,
       validation, admin maintenance, and Program association.
@@ -47,3 +47,8 @@ Version: 2.3
       catalogue export contract, documentation, and tests covering localized
       programme text, catalogue relationships, default/custom output paths, and
       unknown-University rejection.
+
+- [x] CAT-T21 (`CAT-033`) Enable Unicode validation for Persian/Turkish/Arabic
+      localized slugs in the shared catalogue/geography slug contract, preserve
+      ASCII validation for `slug_en`, document JSON-import behavior, and add
+      model/admin-routing regression coverage.

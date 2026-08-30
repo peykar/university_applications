@@ -34,6 +34,12 @@ data/rasa/
 | `active` | `University.is_active` |
 | `ranking` | currently `University.ranking_urap` as a temporary generic fallback |
 
+### Localized slugs
+
+English slugs remain ASCII-only. Persian, Turkish, and Arabic localized slugs may
+retain valid native-script values from Rasa/import data; they do not need to be
+transliterated to English.
+
 ## University images
 
 The downloader records downloaded files in `assets_manifest.json`.

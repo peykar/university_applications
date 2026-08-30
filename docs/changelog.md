@@ -1,5 +1,7 @@
+- Fixed BUG-0016: preserve intentional Turkish dotless `ı` in Unicode slug tests with narrow Ruff RUF001 suppressions.
 ## 2026-08-30 — University dump Turkish fixture Ruff fix
 
+- Catalogue v2.4: localized Persian/Turkish/Arabic slugs now accept native Unicode across catalogue/geography models while `slug_en` remains ASCII-only; admin/import validation is aligned with existing Unicode-capable routes.
 - Fixed `RUF001` failures on intentional Turkish dotless `ı` characters in university dump regression fixtures.
 - Preserved correct Turkish localized test data with line-scoped `# noqa: RUF001` suppressions rather than transliterating the content.
 - Added `BUG-0014`.

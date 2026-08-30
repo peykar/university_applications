@@ -4,7 +4,13 @@
     {
       "slug_en": "faculty-of-engineering",
       "name_en": "Faculty of Engineering",
-      "unit_type": "faculty"
+      "unit_type": "faculty",
+      "name_fa": "دانشکده مهندسی",
+      "name_tr": "Mühendislik Fakültesi",
+      "name_ar": "كلية الهندسة",
+      "slug_fa": "دانشکده-مهندسی",
+      "slug_tr": "mühendislik-fakültesi",
+      "slug_ar": "كلية-الهندسة"
     }
   ],
   "departments": [],
@@ -41,7 +47,13 @@
           "preparation_included": false,
           "notes": "Example normalized source row."
         }
-      ]
+      ],
+      "name_fa": "مهندسی نرم‌افزار",
+      "name_tr": "Yazılım Mühendisliği",
+      "name_ar": "هندسة البرمجيات",
+      "slug_fa": "مهندسی-نرم‌افزار",
+      "slug_tr": "yazılım-mühendisliği",
+      "slug_ar": "هندسة-البرمجيات"
     }
   ]
 }

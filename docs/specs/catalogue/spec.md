@@ -1,7 +1,7 @@
 # University and program catalogue
 
 Status: APPROVED
-Version: 2.3
+Version: 2.4
 
 ## Goal
 
@@ -157,6 +157,15 @@ offline comparison/enrichment. The export MUST include Program `internal_notes`
 for staff/import analysis, MUST preserve identifiers and structured catalogue
 values, and MUST exclude applicant, student, application, messaging, and other
 customer operational data.
+
+CAT-033 — Localized catalogue slugs MUST support native Unicode characters for
+Persian, Turkish, and Arabic values while `slug_en` MUST retain the existing
+ASCII slug validation. This rule applies consistently to catalogue entities that
+use the shared localized-slug contract, including University, AcademicUnit,
+Department, ProgramLanguage, Program, and their geography dependencies. Admin
+validation, normalized JSON import model validation, and public/API routing MUST
+accept valid native-script localized slugs without requiring transliteration to
+English.
 
 ## Pricing vocabulary
 

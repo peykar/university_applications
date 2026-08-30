@@ -13,9 +13,9 @@ class LocalizedNameMixin(models.Model):
 
 class LocalizedSlugMixin(models.Model):
     slug_en = models.SlugField(max_length=255)
-    slug_fa = models.SlugField(max_length=255, blank=True)
-    slug_tr = models.SlugField(max_length=255, blank=True)
-    slug_ar = models.SlugField(max_length=255, blank=True)
+    slug_fa = models.SlugField(max_length=255, blank=True, allow_unicode=True)
+    slug_tr = models.SlugField(max_length=255, blank=True, allow_unicode=True)
+    slug_ar = models.SlugField(max_length=255, blank=True, allow_unicode=True)
 
     class Meta:
         abstract = True

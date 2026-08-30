@@ -227,6 +227,35 @@ class UniversityProgramJsonImportTests(TestCase):
         self.assertFalse(Program.objects.filter(university=self.university).exists())
         self.assertFalse(AcademicUnit.objects.filter(university=self.university).exists())
 
+    def test_import_accepts_native_unicode_localized_slugs(self):
+        payload = self._payload()
+        payload["academic_units"][0].update(
+            {
+                "slug_fa": "دانشکده-مهندسی",
+                "slug_tr": "mühendislik-fakültesi",
+                "slug_ar": "كلية-الهندسة",
+            }
+        )
+        payload["programs"][0].update(
+            {
+                "name_fa": "مهندسی نرم‌افزار",
+                "name_tr": "Yazılım Mühendisliği",  # noqa: RUF001 -- intentional Turkish dotless i
+                "name_ar": "هندسة البرمجيات",
+                "slug_fa": "مهندسی-نرم‌افزار",
+                "slug_tr": "yazılım-mühendisliği",  # noqa: RUF001 -- intentional Turkish dotless i
+                "slug_ar": "هندسة-البرمجيات",
+            }
+        )
+
+        self._run(payload)
+
+        program = Program.objects.get(
+            university=self.university, slug_en="software-engineering-english"
+        )
+        self.assertEqual(program.slug_fa, "مهندسی-نرم‌افزار")
+        self.assertEqual(program.slug_tr, "yazılım-mühendisliği")  # noqa: RUF001 -- intentional Turkish dotless i
+        self.assertEqual(program.slug_ar, "هندسة-البرمجيات")
+
     def test_program_slugs_must_be_unique_inside_file(self):
         payload = self._payload()
         payload["programs"].append(dict(payload["programs"][0]))
