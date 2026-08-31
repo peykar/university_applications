@@ -61,3 +61,17 @@ class RebuildProgramSlugsCommandTests(TestCase):
         call_command("rebuild_program_slugs", "--dry-run", stdout=StringIO())
         self.program.refresh_from_db()
         self.assertEqual(self.program.slug_en, "nursing-bachelor-turkish")
+
+    def test_command_adds_thesis_type_to_graduate_slug(self):
+        self.program.degree = "master"
+        self.program.thesis_type = "non_thesis"
+        self.program.save()
+        Program.objects.filter(pk=self.program.pk).update(
+            slug_en="istanbul-atlas-university-business-administration-master-turkish"
+        )
+        call_command("rebuild_program_slugs", stdout=StringIO())
+        self.program.refresh_from_db()
+        self.assertEqual(
+            self.program.slug_en,
+            "istanbul-atlas-university-business-administration-master-non-thesis-turkish",
+        )

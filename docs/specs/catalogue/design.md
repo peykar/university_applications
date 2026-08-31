@@ -210,7 +210,11 @@ the canonical model.
 single-segment public/API route identifier. On validation/save, each populated
 localized Program slug is canonicalized to `<university localized slug>-<program
 slug part>`. Repeated saves strip an existing canonical prefix before rebuilding,
-so the operation is idempotent.
+so the operation is idempotent. Graduate variants with `thesis_type` are also
+canonicalized with `thesis` or `non-thesis` in the program-specific slug part.
+When the degree token is present, thesis type follows it, e.g.
+`business-administration-master-non-thesis-turkish`. This prevents thesis and
+non-thesis variants from sharing the same public identity.
 
 Program localized slugs have conditional database uniqueness constraints (blank
 localized values are excluded). The normalized university-program importer still

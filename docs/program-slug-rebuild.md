@@ -23,3 +23,10 @@ Example:
 nursing-bachelor-turkish
 -> istanbul-atlas-university-nursing-bachelor-turkish
 ```
+
+## Graduate thesis variants
+
+For Programs with `thesis_type`, rebuilding also ensures the program-specific slug
+contains `thesis` or `non-thesis`. Example:
+`istanbul-atlas-university-business-administration-master-non-thesis-turkish`.
+The command is idempotent and replaces a stale opposite thesis marker.

@@ -314,6 +314,21 @@ class ProgramCanonicalPublicSlugTests(TestCase):
             "istanbul-atlas-üniversitesi-hemşirelik-lisans-türkçe",
         )
 
+    def test_graduate_program_slug_includes_thesis_type(self):
+        program = Program.objects.create(
+            university=self.university,
+            name_en="Business Administration",
+            slug_en="business-administration-master-turkish",
+            degree="master",
+            thesis_type="thesis",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        self.assertEqual(
+            program.slug_en,
+            "istanbul-atlas-university-business-administration-master-thesis-turkish",
+        )
+
     def test_repeated_save_does_not_duplicate_university_prefix(self):
         program = Program.objects.create(
             university=self.university,

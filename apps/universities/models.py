@@ -320,11 +320,39 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
                 program_part = slugify(name, allow_unicode=locale != "en")
             if not program_part:
                 continue
+            program_part = self._program_slug_part_with_thesis_type(program_part)
             canonical = f"{university_slug}-{program_part}"
             if current != canonical:
                 setattr(self, field_name, canonical)
                 populated.add(field_name)
         return populated
+
+    def _program_slug_part_with_thesis_type(self, program_part: str) -> str:
+        """Ensure a graduate thesis variant is represented in the public slug."""
+        if self.thesis_type not in ThesisType.values:
+            return program_part
+
+        token = "thesis" if self.thesis_type == ThesisType.THESIS else "non-thesis"
+        padded = f"-{program_part}-"
+        has_non_thesis = "-non-thesis-" in padded
+        has_thesis = "-thesis-" in padded and not has_non_thesis
+        if (token == "non-thesis" and has_non_thesis) or (token == "thesis" and has_thesis):
+            return program_part
+
+        # A stale opposite thesis marker must not survive a thesis-type change.
+        opposite = "non-thesis" if token == "thesis" else "thesis"
+        program_part = program_part.replace(f"-{opposite}-", "-")
+        if program_part.endswith(f"-{opposite}"):
+            program_part = program_part[: -(len(opposite) + 1)]
+
+        degree_token = str(self.degree or "").strip()
+        marker = f"-{degree_token}-" if degree_token else ""
+        if marker and marker in f"-{program_part}-":
+            head, tail = program_part.split(f"-{degree_token}-", 1)
+            return f"{head}-{degree_token}-{token}-{tail}"
+        if degree_token and program_part.endswith(f"-{degree_token}"):
+            return f"{program_part}-{token}"
+        return f"{program_part}-{token}"
 
     def clean(self):
         super().clean()

@@ -428,13 +428,23 @@ class Command(BaseCommand):
             if source_slug_en.startswith(university_prefix)
             else f"{university_prefix}{source_slug_en}"
         )
+        slug_probe = Program(
+            university=university,
+            slug_en=canonical_slug_en,
+            degree=str(row["degree"]),
+            thesis_type=row.get("thesis_type") or None,
+        )
+        slug_probe._populate_missing_slugs()
+        thesis_aware_slug_en = slug_probe.slug_en
         matches = Program.objects.filter(university=university).filter(
-            Q(slug_en=canonical_slug_en) | Q(slug_en=source_slug_en)
+            Q(slug_en=thesis_aware_slug_en)
+            | Q(slug_en=canonical_slug_en)
+            | Q(slug_en=source_slug_en)
         )
         if matches.count() > 1:
             raise CommandError(
                 f"Multiple existing Program rows match source/canonical slug "
-                f"{source_slug_en!r}/{canonical_slug_en!r}. Resolve duplicates before importing."
+                f"{source_slug_en!r}/{thesis_aware_slug_en!r}. Resolve duplicates before importing."
             )
         instance = matches.first()
         created = instance is None

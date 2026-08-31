@@ -1271,3 +1271,11 @@
 - Normalized programme imports accept program-only source slugs but persist and
   re-match canonical prefixed slugs.
 - Added `rebuild_program_slugs` with `--dry-run` for existing databases.
+
+
+## 2026-08-31 — Thesis-aware Program public slugs
+
+- Refined CAT-050/CAT-T35 so graduate Program slugs include `thesis` or
+  `non-thesis` when `thesis_type` is populated.
+- `rebuild_program_slugs` now repairs existing graduate slugs to the same rule.
+- Added regression coverage for model canonicalization and existing-data rebuilds.

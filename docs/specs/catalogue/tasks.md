@@ -89,6 +89,7 @@ Version: 3.1
       existing databases can backfill missing v3 data before locally generated
       destructive migrations remove Catalogue v2 storage.
 - [x] CAT-T35 (`CAT-050`) Canonicalize localized Program public slugs with the
-      localized University prefix, make them globally unique, keep normalized
-      imports transition-safe/idempotent, add `rebuild_program_slugs --dry-run`,
+      localized University prefix, include thesis/non-thesis for graduate variants,
+      make them globally unique, keep normalized imports transition-safe/idempotent,
+      add `rebuild_program_slugs --dry-run`,
       document the rollout, and add regression coverage.

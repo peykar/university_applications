@@ -15,6 +15,8 @@ slugs must therefore include the localized University slug.
 
 - Each Program `slug_<locale>` is canonicalized as
   `<university.slug_<locale>>-<program-slug-part_<locale>>`.
+- Graduate Programs with `thesis_type` include `thesis` or `non-thesis` in the
+  program-specific slug, after the degree token when present.
 - Canonicalization is idempotent.
 - Program localized slugs are globally unique when non-blank.
 - Normalized imports may continue supplying source-native program-only slugs;
