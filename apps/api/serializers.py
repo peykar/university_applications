@@ -77,10 +77,25 @@ class ProgramSerializer(serializers.ModelSerializer):
 
 
 class ProgramOfferingSerializer(serializers.ModelSerializer):
-    program_name = serializers.CharField(
-        source="program.name_en",
-        read_only=True,
-    )
+    program_name = serializers.CharField(source="program.name_en", read_only=True)
+    intake_name = serializers.CharField(read_only=True)
+    fees = serializers.SerializerMethodField()
+
+    def get_fees(self, obj):
+        return [
+            {
+                "id": str(fee.id),
+                "fee_type": fee.fee_type,
+                "label": fee.label,
+                "language": fee.language.name_en if fee.language_id else None,
+                "currency": fee.currency,
+                "amount": fee.amount,
+                "percentage": fee.percentage,
+                "basis": fee.basis,
+                "notes": fee.notes,
+            }
+            for fee in obj.display_fees
+        ]
 
     class Meta:
         model = ProgramOffering
@@ -89,16 +104,9 @@ class ProgramOfferingSerializer(serializers.ModelSerializer):
             "program",
             "program_name",
             "academic_year",
-            "semester",
-            "currency",
-            "fee_basis",
-            "tuition",
-            "tuition_discounted",
-            "tuition_cash",
-            "tuition_annual_installment",
-            "deposit",
-            "preparatory_tuition",
-            "preparation_included",
+            "intake",
+            "intake_name",
+            "fees",
             "quota",
             "deadline",
             "valid_from",

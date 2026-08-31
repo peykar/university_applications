@@ -41,14 +41,18 @@ class CatalogueV3Tests(TestCase):
             program=self.program,
             academic_year=self.year,
             intake=self.intake,
-            fee_basis=FeeBasis.ANNUAL,
+        )
+        OfferingFee.objects.create(
+            offering=self.offering,
+            fee_type=OfferingFeeType.TUITION,
             currency="USD",
-            tuition=Decimal("44000"),
+            amount=Decimal("44000"),
+            basis=FeeBasis.ANNUAL,
         )
 
-    def test_intake_is_canonical_without_semester(self):
+    def test_intake_is_canonical(self):
         self.assertEqual(self.offering.intake.name_en, "Academic Intake")
-        self.assertIsNone(self.offering.semester)
+        self.assertEqual(self.offering.intake_name, "Academic Intake")
 
     def test_intake_date_order_is_validated(self):
         intake = Intake(
@@ -119,9 +123,6 @@ class CatalogueV3AdminPresentationTests(TestCase):
             program=self.program,
             academic_year=self.year,
             intake=self.intake,
-            fee_basis=FeeBasis.ANNUAL,
-            currency="USD",
-            tuition=Decimal("3250"),
         )
 
     def test_program_offering_admin_prioritizes_structured_fees(self):
@@ -136,8 +137,7 @@ class CatalogueV3AdminPresentationTests(TestCase):
 
         fieldsets = {title: options for title, options in admin_instance.fieldsets}
         self.assertIn("Structured fees", fieldsets)
-        self.assertIn("Legacy compatibility pricing", fieldsets)
-        self.assertEqual(fieldsets["Legacy compatibility pricing"].get("classes"), ("collapse",))
+        self.assertNotIn("Legacy compatibility pricing", fieldsets)
         self.assertIn("structured_fee_summary", fieldsets["Structured fees"]["fields"])
 
     def test_structured_fee_summary_uses_semantic_fee_order(self):
@@ -174,7 +174,7 @@ class CatalogueV3AdminPresentationTests(TestCase):
             summary.index("Preparatory / foundation tuition"),
         )
 
-    def test_program_inline_hides_legacy_pricing_behind_collapsed_section(self):
+    def test_program_inline_has_no_legacy_pricing_section(self):
         from django.contrib import admin
 
         from apps.universities.admin import ProgramOfferingInline
@@ -182,5 +182,5 @@ class CatalogueV3AdminPresentationTests(TestCase):
         inline = ProgramOfferingInline(Program, admin.site)
         fieldsets = {title: options for title, options in inline.fieldsets}
         self.assertIn("Structured fees", fieldsets)
-        self.assertEqual(fieldsets["Legacy compatibility pricing"].get("classes"), ("collapse",))
+        self.assertNotIn("Legacy compatibility pricing", fieldsets)
         self.assertIn("structured_fee_summary", inline.readonly_fields)

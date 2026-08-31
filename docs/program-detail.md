@@ -61,3 +61,10 @@ Minimum active tuition is included where available.
 `Program.internal_notes` is operational staff/import context and must never be
 rendered on the public Program Detail page. Public descriptive copy continues to
 come from the localized `description_*` fields.
+
+## Catalogue v3 offering presentation
+Programme offering cards use canonical `Intake` and active structured `OfferingFee`
+rows. The primary displayed tuition prefers an active discounted-tuition fee when
+present, otherwise list tuition; other structured fees are shown with their source
+label, language (when applicable), amount/percentage, and basis. Catalogue pricing
+is sourced only from canonical Intake and structured OfferingFee data.

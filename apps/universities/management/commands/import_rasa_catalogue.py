@@ -19,13 +19,17 @@ from apps.universities.models import (
     AcademicUnit,
     AcademicUnitType,
     AcademicYear,
+    Currency,
     DegreeType,
     Department,
+    FeeBasis,
+    Intake,
+    OfferingFee,
+    OfferingFeeType,
     Program,
     ProgramInstructionLanguage,
     ProgramLanguage,
     ProgramOffering,
-    Semester,
     StudyMode,
     University,
     UniversityMedia,
@@ -242,9 +246,11 @@ class Command(BaseCommand):
             help="Academic year used for imported ProgramOffering rows.",
         )
         parser.add_argument(
+            "--intake",
             "--semester",
+            dest="intake",
             default="Fall",
-            help="Semester used for imported ProgramOffering rows.",
+            help="Intake used for imported ProgramOffering rows.",
         )
         parser.add_argument(
             "--country",
@@ -275,7 +281,7 @@ class Command(BaseCommand):
 
         country = self._get_country(options["country"])
         academic_year = self._get_academic_year(options["academic_year"])
-        semester = self._get_semester(options["semester"])
+        intake_name = str(options["intake"])
 
         asset_manifest = load_asset_manifest(source)
         asset_index = build_asset_index(source, asset_manifest)
@@ -325,7 +331,7 @@ class Command(BaseCommand):
                 item,
                 program,
                 academic_year,
-                semester,
+                intake_name,
             )
             if offering is None:
                 continue
@@ -365,20 +371,6 @@ class Command(BaseCommand):
             actor=self.system_user,
         )
         return academic_year
-
-    def _get_semester(self, name: str) -> Semester:
-        semester, _ = audited_get_or_create(
-            Semester.objects,
-            lookup={"name_en": name},
-            defaults={
-                "name_fa": name,
-                "name_tr": name,
-                "name_ar": name,
-                "is_active": True,
-            },
-            actor=self.system_user,
-        )
-        return semester
 
     def _get_city(self, country: Country, city_name: str) -> City:
         province, _ = audited_get_or_create(
@@ -753,8 +745,6 @@ class Command(BaseCommand):
         degree = DEGREE_MAP.get(raw_degree, DegreeType.BACHELOR)
         thesis_type = THESIS_MAP.get(raw_degree)
 
-        language_specs = parse_instruction_languages(item.get("language"))
-        legacy_language = self._get_language(language_specs[0][0]) if language_specs else None
         department = self._get_department(item, university)
         academic_unit = self._get_academic_unit(item, university)
         raw_study_mode = str(item.get("study_mode") or "").strip().lower()
@@ -780,9 +770,7 @@ class Command(BaseCommand):
             "description_ar": str(item.get("description_ar") or ""),
             "degree": degree,
             "thesis_type": thesis_type,
-            "program_language": legacy_language,
             "study_mode": study_mode,
-            "duration": as_int(item.get("duration_years")),
             "duration_months": as_duration_months(item.get("duration_years")),
             "listing_priority": as_int(item.get("boost_score")) or 0,
             "is_active": bool(item.get("active", True)),
@@ -802,16 +790,22 @@ class Command(BaseCommand):
         item: dict[str, Any],
         program: Program,
         academic_year: AcademicYear,
-        semester: Semester,
+        intake_name: str,
     ) -> tuple[ProgramOffering | None, bool]:
         tuition = as_decimal(item.get("tuition_usd"))
-        discounted = as_decimal(item.get("tuition_discounted_usd"))
-        cash = as_decimal(item.get("tuition_cash_usd"))
-        installment = as_decimal(item.get("tuition_annual_installment_usd"))
-        discount_pct = as_decimal(item.get("discount_pct"))
-
         if tuition is None:
             return None, False
+
+        intake, _ = audited_get_or_create(
+            Intake.objects,
+            lookup={
+                "university": program.university,
+                "academic_year": academic_year,
+                "name_en": intake_name,
+            },
+            defaults={"is_active": True},
+            actor=self.system_user,
+        )
 
         raw_study_mode = str(item.get("study_mode") or "").strip()
         unmapped_note = ""
@@ -820,32 +814,70 @@ class Command(BaseCommand):
         source_note = str(item.get("offering_notes") or item.get("notes") or "").strip()
         notes = "\n".join(part for part in (source_note, unmapped_note) if part)
 
-        defaults = {
-            "fee_basis": "annual",
-            "currency": "USD",
-            "tuition": tuition,
-            "tuition_discount_percentage": discount_pct,
-            "tuition_discounted": discounted,
-            "tuition_cash": cash,
-            "tuition_annual_installment": installment,
-            "deposit": as_decimal(item.get("deposit_usd")),
-            "preparatory_tuition": as_decimal(item.get("preparatory_tuition_usd")),
-            "preparation_included": bool(item.get("preparation_included", False)),
-            "quota": as_int(item.get("quota")),
-            "deadline": item.get("deadline") or None,
-            "valid_from": item.get("valid_from") or None,
-            "valid_until": item.get("valid_until") or None,
-            "notes": notes,
-            "is_active": bool(item.get("active", True)),
-        }
-
-        return audited_update_or_create(
+        offering, created = audited_update_or_create(
             ProgramOffering.objects,
             lookup={
                 "program": program,
                 "academic_year": academic_year,
-                "semester": semester,
+                "intake": intake,
             },
-            defaults=defaults,
+            defaults={
+                "preparation_included": bool(item.get("preparation_included", False)),
+                "quota": as_int(item.get("quota")),
+                "deadline": item.get("deadline") or None,
+                "valid_from": item.get("valid_from") or None,
+                "valid_until": item.get("valid_until") or None,
+                "notes": notes,
+                "is_active": bool(item.get("active", True)),
+            },
             actor=self.system_user,
         )
+
+        fee_specs = (
+            (OfferingFeeType.TUITION, tuition, None, FeeBasis.ANNUAL),
+            (
+                OfferingFeeType.DISCOUNTED_TUITION,
+                as_decimal(item.get("tuition_discounted_usd")),
+                as_decimal(item.get("discount_pct")),
+                FeeBasis.ANNUAL,
+            ),
+            (
+                OfferingFeeType.CASH_PAYMENT,
+                as_decimal(item.get("tuition_cash_usd")),
+                None,
+                FeeBasis.ANNUAL,
+            ),
+            (
+                OfferingFeeType.INSTALLMENT_TOTAL,
+                as_decimal(item.get("tuition_annual_installment_usd")),
+                None,
+                FeeBasis.ANNUAL,
+            ),
+            (
+                OfferingFeeType.DEPOSIT,
+                as_decimal(item.get("deposit_usd")),
+                None,
+                FeeBasis.ONE_TIME,
+            ),
+            (
+                OfferingFeeType.PREPARATORY,
+                as_decimal(item.get("preparatory_tuition_usd")),
+                None,
+                FeeBasis.ANNUAL,
+            ),
+        )
+        OfferingFee.objects.filter(offering=offering).delete()
+        for fee_type, amount, percentage, basis in fee_specs:
+            if amount is None and percentage is None:
+                continue
+            OfferingFee.objects.create(
+                offering=offering,
+                fee_type=fee_type,
+                currency=Currency.USD,
+                amount=amount,
+                percentage=percentage,
+                basis=basis,
+                created_by=self.system_user,
+                updated_by=self.system_user,
+            )
+        return offering, created

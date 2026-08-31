@@ -14,7 +14,7 @@
       <div><dt>{% trans "Status" %}</dt><dd>{{ application.get_status_display }}</dd></div>
       <div><dt>{% trans "Tuition" %}</dt><dd>{{ application.tuition }}</dd></div>
       <div><dt>{% trans "Deposit" %}</dt><dd>{{ application.deposit|default:"—" }}</dd></div>
-      <div><dt>{% trans "Intake" %}</dt><dd>{{ application.program_offering.semester.name_en|default:"—" }} {{ application.program_offering.academic_year.name_en|default:"" }}</dd></div>
+      <div><dt>{% trans "Intake" %}</dt><dd>{{ application.program_offering.intake.name_en|default:"—" }} {{ application.program_offering.academic_year.name_en|default:"" }}</dd></div>
       <div><dt>{% trans "Last updated" %}</dt><dd>{{ application.updated_at|date:"Y-m-d H:i" }}</dd></div>
     </dl>
   </section>

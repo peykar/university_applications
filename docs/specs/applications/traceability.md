@@ -8,7 +8,7 @@ Status: BASELINED
 | `APP-002` | `apps/leads/services/conversion.py::finalize_lead`, `templates/agents/student_record_create.html` | `tests/test_lead_workflow.py`, `tests/test_agent_finalize_workflow.py` | Covered |
 | `APP-003` | `apps/agents/views.py::applicant_finalize`, `apps/leads/services/conversion.py::_validate_application_selections` | `tests/test_lead_workflow.py` | Covered |
 | `APP-004` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
-| `APP-005` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
+| `APP-005` | `apps/applications/services.py::create_student_application` | structured tuition/deposit snapshot and missing-tuition rejection | `LeadWorkflowTests.test_finalizing_lead_creates_student_and_selected_draft_application`; `test_finalization_requires_structured_tuition_fee`; `test_finalization_snapshots_structured_deposit` |
 | `APP-006` | `apps/leads/models.py::LeadProgramInterest`, `apps/applications/services.py::create_student_application` | `tests/test_student_application_workflow.py`, `tests/test_student_record_conversion_structure.py` | Covered |
 | `APP-007` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `APP-008` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |

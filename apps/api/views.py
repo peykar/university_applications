@@ -45,11 +45,15 @@ class ProgramDetailAPIView(generics.RetrieveAPIView):
 
 
 class ProgramOfferingListAPIView(generics.ListAPIView):
-    queryset = ProgramOffering.objects.filter(is_active=True).select_related(
-        "program",
-        "academic_year",
-        "semester",
-        "source",
+    queryset = (
+        ProgramOffering.objects.filter(is_active=True)
+        .select_related(
+            "program",
+            "academic_year",
+            "intake",
+            "source",
+        )
+        .prefetch_related("fees__language")
     )
     serializer_class = ProgramOfferingSerializer
 

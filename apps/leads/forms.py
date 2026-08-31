@@ -339,7 +339,7 @@ class ApplyProgramForm(forms.Form):
         offering_field.queryset = ProgramOffering.objects.filter(
             program=program,
             is_active=True,
-        ).select_related("academic_year", "semester")
+        ).select_related("academic_year", "intake")
 
     def clean(self):
         cleaned = super().clean() or {}

@@ -96,7 +96,7 @@ Application Admin is workflow-oriented and shows:
 - university
 - program
 - academic year
-- semester
+- intake
 - agent
 - status
 - tuition/deposit snapshots

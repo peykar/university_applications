@@ -14,3 +14,8 @@ uv run python manage.py migrate
 uv run python manage.py check
 uv run pytest
 ```
+
+For an **existing** database from a pre-CAT-044 revision, do not use the fresh
+setup sequence blindly. Follow [`catalogue-v3-cutover.md`](catalogue-v3-cutover.md)
+first so missing Intake/OfferingFee/language/duration data is preserved before
+locally generated migrations drop the legacy Catalogue v2 columns/tables.

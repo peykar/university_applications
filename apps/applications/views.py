@@ -22,7 +22,7 @@ def _customer_application(user, application_id):
             "program_offering__program",
             "program_offering__program__university",
             "program_offering__academic_year",
-            "program_offering__semester",
+            "program_offering__intake",
         ).prefetch_related("documents__student_document"),
         pk=application_id,
         student__user=user,

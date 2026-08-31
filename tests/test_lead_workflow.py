@@ -26,10 +26,13 @@ from apps.universities.models import (
     Currency,
     DegreeType,
     FeeBasis,
+    Intake,
+    OfferingFee,
+    OfferingFeeType,
     Program,
+    ProgramInstructionLanguage,
     ProgramLanguage,
     ProgramOffering,
-    Semester,
     University,
     UniversityType,
 )
@@ -121,7 +124,6 @@ class LeadWorkflowTests(TestCase):
         )
         self.program = Program.objects.create(
             university=university,
-            program_language=language,
             degree=DegreeType.BACHELOR,
             name_en="Business Administration",
             name_fa="",
@@ -134,12 +136,21 @@ class LeadWorkflowTests(TestCase):
             created_by=self.staff,
             updated_by=self.staff,
         )
+        ProgramInstructionLanguage.objects.create(
+            program=self.program,
+            language=language,
+            is_primary=True,
+            created_by=self.staff,
+            updated_by=self.staff,
+        )
         year = AcademicYear.objects.create(
             name_en="2026-2027",
             created_by=self.staff,
             updated_by=self.staff,
         )
-        semester = Semester.objects.create(
+        intake = Intake.objects.create(
+            university=university,
+            academic_year=year,
             name_en="Fall",
             created_by=self.staff,
             updated_by=self.staff,
@@ -147,10 +158,16 @@ class LeadWorkflowTests(TestCase):
         self.offering = ProgramOffering.objects.create(
             program=self.program,
             academic_year=year,
-            semester=semester,
-            fee_basis=FeeBasis.ANNUAL,
+            intake=intake,
+            created_by=self.staff,
+            updated_by=self.staff,
+        )
+        OfferingFee.objects.create(
+            offering=self.offering,
+            fee_type=OfferingFeeType.TUITION,
             currency=Currency.USD,
-            tuition=Decimal("8000"),
+            amount=Decimal("8000"),
+            basis=FeeBasis.ANNUAL,
             created_by=self.staff,
             updated_by=self.staff,
         )
@@ -254,11 +271,59 @@ class LeadWorkflowTests(TestCase):
         application = student.applications.get()
         self.assertEqual(application.status, "draft")
         self.assertEqual(application.program_offering, self.offering)
+        self.assertEqual(application.tuition, Decimal("8000"))
+        self.assertIsNone(application.deposit)
 
         lead.refresh_from_db()
         self.assertIsNotNone(lead.validated_at)
         self.assertEqual(lead.status, LeadStatus.FINALIZED)
         self.assertEqual(lead.converted_student, student)
+
+    def test_finalization_requires_structured_tuition_fee(self):
+        lead = self.make_lead()
+        selections = self.make_application_selection(
+            lead,
+            source=LeadProgramInterestSource.AGENT,
+        )
+        self.offering.fees.all().delete()
+
+        with self.assertRaises(ValidationError):
+            finalize_lead(
+                lead,
+                application_selections=selections,
+                performed_by=self.staff,
+            )
+
+        lead.refresh_from_db()
+        self.assertIsNone(lead.converted_student_id)
+        self.assertNotEqual(lead.status, LeadStatus.FINALIZED)
+        self.assertFalse(Student.objects.filter(user=self.user).exists())
+
+    def test_finalization_snapshots_structured_deposit(self):
+        OfferingFee.objects.create(
+            offering=self.offering,
+            fee_type=OfferingFeeType.DEPOSIT,
+            currency=Currency.USD,
+            amount=Decimal("500"),
+            basis=FeeBasis.ONE_TIME,
+            created_by=self.staff,
+            updated_by=self.staff,
+        )
+        lead = self.make_lead()
+        selections = self.make_application_selection(
+            lead,
+            source=LeadProgramInterestSource.AGENT,
+        )
+
+        student = finalize_lead(
+            lead,
+            application_selections=selections,
+            performed_by=self.staff,
+        )
+
+        application = student.applications.get()
+        self.assertEqual(application.tuition, Decimal("8000"))
+        self.assertEqual(application.deposit, Decimal("500"))
 
     def test_finalization_allows_zero_discussed_programs(self):
         lead = self.make_lead()

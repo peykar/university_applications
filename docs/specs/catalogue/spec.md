@@ -16,8 +16,8 @@ CAT-001 — A Program MUST belong to one University.
 
 CAT-002 — A Program Department, when present, MUST belong to the same University.
 
-CAT-003 — ProgramOffering MUST hold intake-specific academic year, semester,
-tuition and applicable quota/deadline data.
+CAT-003 — ProgramOffering MUST hold intake-specific academic year, canonical Intake,
+structured fee data and applicable quota/deadline data.
 
 CAT-004 — University recognition/approval flags MUST remain on University and
 MUST NOT be duplicated onto Program.
@@ -238,3 +238,46 @@ appear before advance-payment pricing, and preparatory/foundation pricing MUST
 appear after advance-payment pricing. Other supported fee types MUST have a
 stable business-readable position so fee tables scan consistently across
 universities.
+
+CAT-043 — All current public, customer, agent, Application-admin, and API presentation
+consumers MUST use Catalogue v3 Intake and OfferingFee as the canonical offering
+representation. Public filters MUST filter by Intake rather than legacy Semester,
+and tuition filtering/card/detail presentation MUST derive from active structured
+tuition fees. Legacy Semester and fixed ProgramOffering pricing columns MAY remain
+for import/backfill compatibility but MUST NOT be read by current UI presentation
+paths.
+
+## Catalogue v3 transition completion
+
+CAT-044 through CAT-048 supersede the temporary compatibility allowances in CAT-026, CAT-027, CAT-035, CAT-040, CAT-041, and CAT-043 now that the v3 transition is complete.
+
+
+CAT-044 — Catalogue v3 MUST be the only persisted catalogue representation. The
+legacy `Semester` model, `Program.program_language`, whole-year `Program.duration`,
+and fixed pricing/currency/basis fields on `ProgramOffering` MUST NOT remain in
+the active model schema.
+
+CAT-045 — Formal Application creation MUST snapshot tuition from the active
+structured OfferingFee representation, preferring discounted tuition over list
+tuition consistently with catalogue presentation. Application creation MUST fail
+when no active amount-bearing tuition fee exists. An active structured deposit
+fee, when present, MUST be snapshotted into `Application.deposit`.
+
+CAT-046 — The normalized university-program import contract MUST be v3-native:
+no legacy Semester or fixed ProgramOffering pricing fields may be persisted. The
+current schema MUST identify offerings by `intake` and carry pricing through a
+`fees` array whose rows define fee type, currency and basis explicitly.
+
+CAT-047 — The Rasa catalogue importer MUST create university/year-specific Intake
+and structured OfferingFee rows directly and MUST NOT recreate Catalogue v2
+compatibility data.
+
+CAT-048 — Catalogue maintenance and export surfaces MUST expose only the v3
+representation. Django Admin MUST not expose a legacy compatibility pricing
+section, and university catalogue dumps MUST export Intake and structured fees
+without legacy Program/ProgramOffering compatibility fields.
+
+CAT-049 — Existing databases MUST have a safe pre-migration cutover path before
+Catalogue v2 columns/tables are dropped. The cutover MUST preserve already
+canonical v3 data, backfill only missing Intake/language/duration/fee data, and
+MUST fail rather than drop an offering that still cannot be assigned an Intake.

@@ -28,7 +28,8 @@ program-interest/Application boundaries, or document layers.
 
 `create_student_application()` remains the canonical Application creation service.
 Lead finalization supplies the newly created/reused Student plus each explicitly
-selected source interest and concrete active offering. The service creates each
-record in DRAFT state, snapshots tuition/deposit, prevents active duplicates and
-links the source interest. Nested atomic blocks participate in the outer
-finalization transaction.
+selected concrete active offering. The service creates each record in DRAFT state,
+snapshots canonical structured tuition and any structured deposit, prevents active
+duplicates, and does not persist a LeadProgramInterest relation. Missing active
+amount-bearing tuition raises validation and the outer finalization transaction
+rolls back. Nested atomic blocks participate in that outer transaction.

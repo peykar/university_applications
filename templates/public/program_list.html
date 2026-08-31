@@ -143,11 +143,11 @@
           </div>
 
           <div class="filter-group">
-            <label>{% trans "Semester / intake" %}</label>
-            <select name="semester">
+            <label>{% trans "Intake" %}</label>
+            <select name="intake">
               <option value="">{% trans "Any intake" %}</option>
-              {% for semester in semester_choices %}
-                <option value="{{ semester.id }}"{% if filters.semester == semester.id|stringformat:"s" %} selected{% endif %}>{{ semester.name_en }}</option>
+              {% for intake in intake_choices %}
+                <option value="{{ intake.id }}"{% if filters.intake == intake.id|stringformat:"s" %} selected{% endif %}>{{ intake.name_en }}</option>
               {% endfor %}
             </select>
           </div>

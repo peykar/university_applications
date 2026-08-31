@@ -920,8 +920,8 @@ def _student_conversion_programs(lead: Lead, request) -> list[dict[str, object]]
     for interest in interests:
         offerings = list(
             ProgramOffering.objects.filter(program=interest.program, is_active=True)
-            .select_related("academic_year", "semester")
-            .order_by("academic_year__name_en", "semester__name_en")
+            .select_related("academic_year", "intake")
+            .order_by("academic_year__name_en", "intake__name_en")
         )
         selected_offering_id = ""
         if request.method == "POST":
@@ -1259,7 +1259,7 @@ def student_detail(request, student_id):
             "program__university",
             "program_offering",
             "program_offering__academic_year",
-            "program_offering__semester",
+            "program_offering__intake",
         ).order_by("-created_at")
         if source_lead is not None
         else []
@@ -1270,7 +1270,7 @@ def student_detail(request, student_id):
         "program_offering__program",
         "program_offering__program__university",
         "program_offering__academic_year",
-        "program_offering__semester",
+        "program_offering__intake",
     ).order_by("-updated_at")
 
     student_conversation = get_or_create_conversation(subject=student)

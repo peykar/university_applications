@@ -10,6 +10,7 @@ from apps.core.audit import get_system_user
 from apps.geography.models import City, Country, Province
 from apps.universities.models import (
     AcademicUnit,
+    OfferingFeeType,
     Program,
     ProgramOffering,
     University,
@@ -75,7 +76,7 @@ class UniversityProgramJsonImportTests(TestCase):
 
     def _payload(self):
         return {
-            "schema_version": 1,
+            "schema_version": 2,
             "academic_units": [
                 {
                     "slug_en": "faculty-of-engineering",
@@ -105,14 +106,39 @@ class UniversityProgramJsonImportTests(TestCase):
                     "offerings": [
                         {
                             "academic_year": "2026-2027",
-                            "semester": "Fall",
-                            "fee_basis": "annual",
-                            "currency": "USD",
-                            "tuition": "18000.00",
-                            "tuition_discounted": "12000.00",
-                            "tuition_cash": "11000.00",
-                            "deposit": "1000.00",
-                            "preparatory_tuition": "3500.00",
+                            "intake": "Fall",
+                            "fees": [
+                                {
+                                    "fee_type": "tuition",
+                                    "currency": "USD",
+                                    "amount": "18000.00",
+                                    "basis": "annual",
+                                },
+                                {
+                                    "fee_type": "discounted_tuition",
+                                    "currency": "USD",
+                                    "amount": "12000.00",
+                                    "basis": "annual",
+                                },
+                                {
+                                    "fee_type": "cash_payment",
+                                    "currency": "USD",
+                                    "amount": "11000.00",
+                                    "basis": "annual",
+                                },
+                                {
+                                    "fee_type": "deposit",
+                                    "currency": "USD",
+                                    "amount": "1000.00",
+                                    "basis": "one_time",
+                                },
+                                {
+                                    "fee_type": "preparatory",
+                                    "currency": "USD",
+                                    "amount": "3500.00",
+                                    "basis": "annual",
+                                },
+                            ],
                             "preparation_included": False,
                             "notes": "Scholarship label preserved from source.",
                         }
@@ -153,13 +179,14 @@ class UniversityProgramJsonImportTests(TestCase):
             program.internal_notes,
             "Normalized from the university tuition sheet.",
         )
-        self.assertEqual(program.program_language.slug_en, "english")
         self.assertEqual(program.instruction_language_display, "100% English")
-        self.assertEqual(offering.tuition, 18000)
-        self.assertEqual(offering.tuition_discounted, 12000)
-        self.assertEqual(offering.tuition_cash, 11000)
-        self.assertEqual(offering.deposit, 1000)
-        self.assertEqual(offering.preparatory_tuition, 3500)
+        self.assertEqual(offering.fees.get(fee_type=OfferingFeeType.TUITION).amount, 18000)
+        self.assertEqual(
+            offering.fees.get(fee_type=OfferingFeeType.DISCOUNTED_TUITION).amount, 12000
+        )
+        self.assertEqual(offering.fees.get(fee_type=OfferingFeeType.CASH_PAYMENT).amount, 11000)
+        self.assertEqual(offering.fees.get(fee_type=OfferingFeeType.DEPOSIT).amount, 1000)
+        self.assertEqual(offering.fees.get(fee_type=OfferingFeeType.PREPARATORY).amount, 3500)
         self.assertEqual(offering.source, self.source)
 
     def test_reimport_updates_program_and_offering_without_duplicates(self):
@@ -167,7 +194,7 @@ class UniversityProgramJsonImportTests(TestCase):
         self._run(payload)
         payload["programs"][0]["name_en"] = "Software Engineering Updated"
         payload["programs"][0]["internal_notes"] = "Updated internal import note."
-        payload["programs"][0]["offerings"][0]["tuition"] = "19000.00"
+        payload["programs"][0]["offerings"][0]["fees"][0]["amount"] = "19000.00"
         self._run(payload)
 
         programs = Program.objects.filter(
@@ -179,7 +206,7 @@ class UniversityProgramJsonImportTests(TestCase):
         self.assertEqual(program.internal_notes, "Updated internal import note.")
         offerings = ProgramOffering.objects.filter(program=program, source=self.source)
         self.assertEqual(offerings.count(), 1)
-        self.assertEqual(offerings.get().tuition, 19000)
+        self.assertEqual(offerings.get().fees.get(fee_type=OfferingFeeType.TUITION).amount, 19000)
 
     def test_reimport_without_internal_notes_preserves_existing_internal_notes(self):
         payload = self._payload()

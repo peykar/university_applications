@@ -137,10 +137,10 @@
               </p>
               <p class="request-program-tuition">
                 {% if interest.program_offering %}
-                  <strong>{{ interest.program_offering.tuition_discounted|default:interest.program_offering.tuition|currency_amount:interest.program_offering.currency }}</strong>
-                  <span>/ {{ interest.program_offering.get_fee_basis_display }}</span>
+                  <strong>{{ interest.program_offering.display_tuition_fee.amount|currency_amount:interest.program_offering.display_tuition_fee.currency }}</strong>
+                  <span>/ {{ interest.program_offering.display_tuition_fee.get_basis_display }}</span>
                 {% elif interest.program.customer_offerings %}
-                  {% with offering=interest.program.customer_offerings.0 %}<span>{% trans "From" %}</span> <strong>{{ offering.tuition_discounted|default:offering.tuition|currency_amount:offering.currency }}</strong> <span>/ {{ offering.get_fee_basis_display }}</span>{% endwith %}
+                  {% with offering=interest.program.customer_offerings.0 %}<span>{% trans "From" %}</span> <strong>{{ offering.display_tuition_fee.amount|currency_amount:offering.display_tuition_fee.currency }}</strong> <span>/ {{ offering.display_tuition_fee.get_basis_display }}</span>{% endwith %}
                 {% else %}<span>{% trans "Tuition not available" %}</span>{% endif %}
               </p>
               <div class="interest-source-line request-program-source">
@@ -167,12 +167,12 @@
                 <select id="offering-{{ interest.pk }}" name="program_offering" onchange="this.form.submit()">
                   <option value=""{% if not interest.program_offering_id %} selected{% endif %}>{% trans "Select intake" %}</option>
                   {% for offering in interest.program.customer_offerings %}
-                    <option value="{{ offering.pk }}"{% if interest.program_offering_id == offering.pk %} selected{% endif %}>{{ offering.semester.name_en }} {{ offering.academic_year.name_en }} — {{ offering.tuition_discounted|default:offering.tuition|currency_amount:offering.currency }}</option>
+                    <option value="{{ offering.pk }}"{% if interest.program_offering_id == offering.pk %} selected{% endif %}>{{ offering.intake.name_en }} {{ offering.academic_year.name_en }} — {{ offering.display_tuition_fee.amount|currency_amount:offering.display_tuition_fee.currency }}</option>
                   {% endfor %}
                 </select>
               </form>
             {% else %}
-              <strong class="request-program-intake-readonly">{% if interest.program_offering %}{{ interest.program_offering.semester.name_en }} {{ interest.program_offering.academic_year.name_en }}{% else %}{% trans "Not selected" %}{% endif %}</strong>
+              <strong class="request-program-intake-readonly">{% if interest.program_offering %}{{ interest.program_offering.intake.name_en }} {{ interest.program_offering.academic_year.name_en }}{% else %}{% trans "Not selected" %}{% endif %}</strong>
             {% endif %}
           </div>
           {% if lead.status != "finalized" %}

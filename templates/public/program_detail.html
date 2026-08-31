@@ -85,7 +85,7 @@
             <div class="offering-card-head">
               <div>
                 <strong>{{ offering.academic_year.name_en }}</strong>
-                <span>{{ offering.semester.name_en }}</span>
+                <span>{{ offering.intake.name_en }}</span>
               </div>
               {% if offering.deadline %}
                 {% if offering.deadline >= today %}
@@ -97,34 +97,22 @@
             </div>
 
             <div class="offering-price-block">
-              {% if offering.tuition_discounted %}
-                <span class="old-price">{{ offering.tuition|currency_amount_full:offering.currency }}</span>
-                <strong>{{ offering.tuition_discounted|currency_amount_full:offering.currency }}</strong>
-                {% if offering.tuition_discount_percentage %}
-                  <small>{{ offering.tuition_discount_percentage|floatformat:0 }}% {% trans "discount" %}</small>
+              {% with tuition_fee=offering.display_tuition_fee %}
+                {% if tuition_fee %}
+                  <strong>{{ tuition_fee.amount|currency_amount_full:tuition_fee.currency }}</strong>
+                  <span>{{ tuition_fee.get_basis_display }}</span>
+                {% else %}
+                  <strong>{% trans "Tuition not available" %}</strong>
                 {% endif %}
-              {% else %}
-                <strong>{{ offering.tuition|currency_amount_full:offering.currency }}</strong>
-              {% endif %}
-              <span>{{ offering.get_fee_basis_display }}</span>
+              {% endwith %}
             </div>
 
             <dl class="offering-facts">
-              {% if offering.tuition_cash %}
-                <div><dt>{% trans "Cash tuition" %}</dt><dd>{{ offering.tuition_cash|currency_amount_full:offering.currency }}</dd></div>
-              {% endif %}
-              {% if offering.tuition_annual_installment %}
-                <div><dt>{% trans "Installment tuition" %}</dt><dd>{{ offering.tuition_annual_installment|currency_amount_full:offering.currency }}</dd></div>
-              {% endif %}
-              {% if offering.deposit %}
-                <div><dt>{% trans "Deposit" %}</dt><dd>{{ offering.deposit|currency_amount_full:offering.currency }}</dd></div>
-              {% endif %}
-              {% if offering.preparatory_tuition %}
-                <div><dt>{% trans "Preparatory tuition" %}</dt><dd>{{ offering.preparatory_tuition|currency_amount_full:offering.currency }}</dd></div>
-              {% endif %}
-              {% if offering.preparation_included %}
-                <div><dt>{% trans "Preparation" %}</dt><dd>{% trans "Included" %}</dd></div>
-              {% endif %}
+              {% for fee in offering.display_fees %}
+                {% if fee != offering.display_tuition_fee %}
+                  <div><dt>{{ fee.label|default:fee.get_fee_type_display }}{% if fee.language %} · {{ fee.language.name_en }}{% endif %}</dt><dd>{% if fee.amount %}{{ fee.amount|currency_amount_full:fee.currency }}{% endif %}{% if fee.percentage %}{{ fee.percentage|floatformat:0 }}%{% endif %}</dd></div>
+                {% endif %}
+              {% endfor %}
               <div><dt>{% trans "Quota" %}</dt><dd>{{ offering.quota|default:"—" }}</dd></div>
               <div><dt>{% trans "Deadline" %}</dt><dd>{{ offering.deadline|default:"—" }}</dd></div>
             </dl>

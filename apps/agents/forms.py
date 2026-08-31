@@ -145,7 +145,7 @@ class StudentApplicationOfferingForm(forms.Form):
             "program",
             "program__university",
             "academic_year",
-            "semester",
+            "intake",
         )
         if program is not None:
             queryset = queryset.filter(program=program)
@@ -155,7 +155,7 @@ class StudentApplicationOfferingForm(forms.Form):
                 "program__university__name_en",
                 "program__name_en",
                 "academic_year__name_en",
-                "semester__name_en",
+                "intake__name_en",
             )
 
 

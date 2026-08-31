@@ -24,7 +24,13 @@ from apps.messaging.services import (
     send_message,
     unread_count_for_conversation,
 )
-from apps.universities.models import DegreeType, Program, ProgramOffering, UniversityType
+from apps.universities.models import (
+    DegreeType,
+    OfferingFee,
+    Program,
+    ProgramOffering,
+    UniversityType,
+)
 
 from .forms import (
     ApplyProgramForm,
@@ -116,10 +122,12 @@ def _lead_entity_context(*, request, lead, mark_read=False):
                 participant_role=ConversationParticipantRole.CUSTOMER,
             )
 
+    active_fees = OfferingFee.objects.filter(is_active=True).select_related("language")
     active_offerings = (
         ProgramOffering.objects.filter(is_active=True)
-        .select_related("academic_year", "semester")
-        .order_by("academic_year__name_en", "semester__name_en")
+        .select_related("academic_year", "intake")
+        .prefetch_related(Prefetch("fees", queryset=active_fees, to_attr="active_structured_fees"))
+        .order_by("academic_year__name_en", "intake__name_en")
     )
     interests = (
         lead.program_interests.select_related(
@@ -128,7 +136,7 @@ def _lead_entity_context(*, request, lead, mark_read=False):
             "program__academic_unit",
             "program_offering",
             "program_offering__academic_year",
-            "program_offering__semester",
+            "program_offering__intake",
         )
         .prefetch_related(
             "program__instruction_language_rows__language",

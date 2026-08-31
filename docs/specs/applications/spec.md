@@ -1,7 +1,7 @@
 # Formal applications
 
 Status: BASELINED
-Version: 1.2
+Version: 1.3
 
 ## Goal
 
@@ -23,7 +23,11 @@ a concrete active Offering before Application creation.
 APP-004 — Creation MUST prevent a second active Application for the same Student
 and ProgramOffering.
 
-APP-005 — Creation MUST snapshot Offering tuition and deposit.
+APP-005 — Creation MUST snapshot the selected ProgramOffering's active structured
+tuition amount, preferring discounted tuition over list tuition consistently with
+catalogue presentation, and MUST snapshot an active structured deposit when one
+exists. Creation MUST fail when the Offering has no active amount-bearing tuition
+fee.
 
 APP-006 — Application creation MUST NOT require or persist a direct
 LeadProgramInterest → Application relation. Discussion history and formal

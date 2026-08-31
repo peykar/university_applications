@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 
 from apps.students.models import Student
-from apps.universities.models import ProgramOffering
+from apps.universities.models import OfferingFeeType, ProgramOffering
 
 from .models import Application, ApplicationStatus
 
@@ -34,13 +34,29 @@ def create_student_application(
     if duplicate:
         raise ValidationError("An active application for this student and intake already exists.")
 
+    tuition_fee = offering.display_tuition_fee
+    if tuition_fee is None or tuition_fee.amount is None:
+        raise ValidationError(
+            "The selected program offering needs an active tuition fee before an "
+            "application can be created."
+        )
+    deposit_fee = (
+        offering.fees.filter(
+            is_active=True,
+            fee_type=OfferingFeeType.DEPOSIT,
+            amount__isnull=False,
+        )
+        .order_by("created_at", "pk")
+        .first()
+    )
+
     application = Application.objects.create(
         student=student,
         agent=student.agent,
         program_offering=offering,
         status=ApplicationStatus.DRAFT,
-        tuition=offering.tuition,
-        deposit=offering.deposit,
+        tuition=tuition_fee.amount,
+        deposit=deposit_fee.amount if deposit_fee is not None else None,
         created_by=performed_by,
         updated_by=performed_by,
     )

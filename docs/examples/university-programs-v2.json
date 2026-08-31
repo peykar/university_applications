@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "academic_units": [
     {
       "slug_en": "faculty-of-engineering",
@@ -36,16 +36,35 @@
       "offerings": [
         {
           "academic_year": "2026-2027",
-          "semester": "Fall",
-          "fee_basis": "annual",
-          "currency": "USD",
-          "tuition": "18000.00",
-          "tuition_discounted": "12000.00",
-          "tuition_cash": "11000.00",
-          "deposit": "1000.00",
-          "preparatory_tuition": null,
           "preparation_included": false,
-          "notes": "Example normalized source row."
+          "notes": "Example normalized source row.",
+          "intake": "Fall",
+          "fees": [
+            {
+              "fee_type": "tuition",
+              "currency": "USD",
+              "amount": "18000.00",
+              "basis": "annual"
+            },
+            {
+              "fee_type": "discounted_tuition",
+              "currency": "USD",
+              "amount": "12000.00",
+              "basis": "annual"
+            },
+            {
+              "fee_type": "cash_payment",
+              "currency": "USD",
+              "amount": "11000.00",
+              "basis": "annual"
+            },
+            {
+              "fee_type": "deposit",
+              "currency": "USD",
+              "amount": "1000.00",
+              "basis": "one_time"
+            }
+          ]
         }
       ],
       "name_fa": "مهندسی نرم‌افزار",

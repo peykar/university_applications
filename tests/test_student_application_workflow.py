@@ -38,8 +38,9 @@ class StudentApplicationWorkflowTests(SimpleTestCase):
         self.assertIn("program_offering=offering", self.service)
         self.assertIn("status=ApplicationStatus.DRAFT", self.service)
         self.assertIn("active application for this student and intake", self.service)
-        self.assertIn("tuition=offering.tuition", self.service)
-        self.assertIn("deposit=offering.deposit", self.service)
+        self.assertIn("tuition_fee = offering.display_tuition_fee", self.service)
+        self.assertIn("fee_type=OfferingFeeType.DEPOSIT", self.service)
+        self.assertIn("tuition=tuition_fee.amount", self.service)
 
     def test_application_service_does_not_persist_lead_interest_link(self):
         self.assertNotIn("source_interest", self.service)
@@ -67,6 +68,6 @@ class StudentApplicationWorkflowTests(SimpleTestCase):
             encoding="utf-8"
         )
         self.assertIn('"academic_year__name_en"', forms_source)
-        self.assertIn('"semester__name_en"', forms_source)
+        self.assertIn('"intake__name_en"', forms_source)
         self.assertNotIn('"academic_year__name"', forms_source)
-        self.assertNotIn('"semester__name"', forms_source)
+        self.assertNotIn('"intake__name"', forms_source)

@@ -19,7 +19,9 @@ class Command(BaseCommand):
             default="2026-2027",
         )
         parser.add_argument(
+            "--intake",
             "--semester",
+            dest="intake",
             default="Fall",
         )
         parser.add_argument(
@@ -39,7 +41,7 @@ class Command(BaseCommand):
                 "import_rasa_catalogue",
                 source,
                 academic_year=options["academic_year"],
-                semester=options["semester"],
+                intake=options["intake"],
             )
 
         if not options["skip_content"]:

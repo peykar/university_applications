@@ -39,7 +39,7 @@ Optional intake mapping:
 ```bash
 uv run python manage.py import_rasa_catalogue data/rasa \
   --academic-year 2026-2027 \
-  --semester Fall
+  --intake Fall
 ```
 
 The importer maps Rasa's flattened pricing/intake values into
@@ -67,9 +67,7 @@ University
 Program
 └── ProgramOffering
     ├── tuition
-    ├── tuition_discounted
-    ├── tuition_cash
-    ├── tuition_annual_installment
+    └── OfferingFee rows (tuition, discounted tuition, cash payment, installment, etc.)
     ├── quota
     └── deadline
 ```

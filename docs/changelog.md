@@ -1,3 +1,9 @@
+- Completed CAT-044–CAT-048 / FEAT-0012: removed Catalogue v2 persistence and compatibility paths; Intake + OfferingFee are now the sole catalogue offering representation, including imports, applications, Admin, and exports.
+- Added CAT-049 pre-migration Catalogue v3 cutover safety for existing databases, with dry-run support and operator documentation.
+
+
+- Fixed BUG-0026: reformatted Catalogue v3 UI structured-fee helpers and regression fixtures to satisfy the repository 100-character Ruff E501 limit without changing behavior.
+- Added CAT-043 / FEAT-0011: migrated current public/customer/agent/Application/API catalogue presentation from Catalogue v2 Semester/fixed pricing reads to Catalogue v3 Intake and structured OfferingFee data.
 - Fixed BUG-0025: give the Catalogue v3 admin structured-fee ordering regression test its own ProgramOffering fixture so it tests semantic ordering instead of failing with `AttributeError`.
 - Fixed BUG-0024: annotate the structured-fee semantic display-order mapping as `ClassVar[dict[str, int]]` so Ruff RUF012 accepts the intentional shared class constant.
 
@@ -1247,3 +1253,11 @@
 - Structured fee summaries now show tuition before advance payment and
   preparatory/foundation fees after advance payment instead of alphabetic ordering.
 - Added regression coverage; no persisted catalogue data or import semantics changed.
+
+## 2026-08-31 — Catalogue v3 UI regression-test alignment
+
+- BUG-0027: aligned three stale tests with the Catalogue v3 UI contract: Intake
+  replaces Semester in active UI/query fixtures, structured OfferingFee rows
+  drive tuition annotations, and customer currency display comes from the
+  canonical display tuition fee.
+- No production behavior changed.

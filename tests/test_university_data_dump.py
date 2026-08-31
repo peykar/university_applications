@@ -13,11 +13,14 @@ from apps.universities.models import (
     AcademicUnit,
     AcademicYear,
     Department,
+    FeeBasis,
+    Intake,
+    OfferingFee,
+    OfferingFeeType,
     Program,
     ProgramInstructionLanguage,
     ProgramLanguage,
     ProgramOffering,
-    Semester,
     University,
     UniversityCatalogueSource,
 )
@@ -95,8 +98,13 @@ class UniversityDataDumpTests(TestCase):
         academic_year = AcademicYear.objects.create(
             name_en="2026-2027", created_by=self.user, updated_by=self.user
         )
-        semester = Semester.objects.create(
-            name_en="Fall", name_tr="Güz", created_by=self.user, updated_by=self.user
+        intake = Intake.objects.create(
+            university=self.university,
+            academic_year=academic_year,
+            name_en="Fall",
+            name_tr="Güz",
+            created_by=self.user,
+            updated_by=self.user,
         )
         source = UniversityCatalogueSource.objects.create(
             university=self.university,
@@ -131,16 +139,30 @@ class UniversityDataDumpTests(TestCase):
             created_by=self.user,
             updated_by=self.user,
         )
-        ProgramOffering.objects.create(
+        offering = ProgramOffering.objects.create(
             program=program,
             academic_year=academic_year,
-            semester=semester,
-            fee_basis="annual",
-            currency="USD",
-            tuition="6500.00",
-            tuition_cash="5850.00",
+            intake=intake,
             notes="Offering note",
             source=source,
+            created_by=self.user,
+            updated_by=self.user,
+        )
+        OfferingFee.objects.create(
+            offering=offering,
+            fee_type=OfferingFeeType.TUITION,
+            currency="USD",
+            amount="6500.00",
+            basis=FeeBasis.ANNUAL,
+            created_by=self.user,
+            updated_by=self.user,
+        )
+        OfferingFee.objects.create(
+            offering=offering,
+            fee_type=OfferingFeeType.CASH_PAYMENT,
+            currency="USD",
+            amount="5850.00",
+            basis=FeeBasis.ANNUAL,
             created_by=self.user,
             updated_by=self.user,
         )
@@ -157,7 +179,7 @@ class UniversityDataDumpTests(TestCase):
             )
             payload = json.loads(output.read_text(encoding="utf-8"))
 
-        self.assertEqual(payload["schema_version"], 1)
+        self.assertEqual(payload["schema_version"], 2)
         self.assertEqual(payload["scope"], "university_catalogue")
         self.assertEqual(payload["university"]["name_fa"], "دانشگاه راسا")
         self.assertEqual(payload["university"]["city"]["province"]["country"]["iso2"], "TR")
@@ -170,7 +192,9 @@ class UniversityDataDumpTests(TestCase):
         self.assertEqual(program["description_fa"], "توضیحات برنامه")
         self.assertEqual(program["internal_notes"], "Internal Rasa mapping note")
         self.assertEqual(program["instruction_languages"][0]["language"]["name_tr"], "Türkçe")
-        self.assertEqual(program["offerings"][0]["tuition"], "6500.00")
+        fee_amounts = {fee["fee_type"]: fee["amount"] for fee in program["offerings"][0]["fees"]}
+        self.assertEqual(fee_amounts["tuition"], "6500.00")
+        self.assertEqual(fee_amounts["cash_payment"], "5850.00")
         self.assertEqual(program["offerings"][0]["source"]["title"], "Rasa import")
         self.assertIn("Programs=1", stdout.getvalue())
         self.assertIn(str(output), stdout.getvalue())

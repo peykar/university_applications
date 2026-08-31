@@ -17,4 +17,9 @@ baseline subject to the gap report.
 
 - [x] `APP-002` Create selected discussed programs as initial DRAFT Applications during Lead finalization.
 - [x] `APP-003` Require an active concrete offering for Program-level selections.
-- [x] `APP-006` Link every converted LeadProgramInterest to its created Application.
+- [x] `APP-006` Keep LeadProgramInterest discussion history separate from created Applications; do not persist a direct link.
+
+## CHANGE: Catalogue v3-only application pricing
+
+- [x] `APP-005` Snapshot active structured tuition/deposit fees and reject Application creation when no amount-bearing tuition fee exists.
+- [ ] Run the full local `make check` once locked dependencies are available.

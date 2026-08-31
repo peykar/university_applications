@@ -70,3 +70,21 @@ Version: 3.1
 - [x] CAT-T28 (`CAT-042`) Order Django Admin structured-fee summaries by stable
       fee semantics, including Tuition → Advance payment → Preparatory/Foundation,
       with regression coverage.
+
+- [x] CAT-T29 (`CAT-043`) Migrate public catalogue filters/detail/cards, customer
+      Request/Application displays, agent/student displays, Application admin, and
+      ProgramOffering API serialization from legacy Semester/fixed pricing reads to
+      canonical Intake/OfferingFee data; add regression coverage preventing v2 UI reads.
+
+- [x] CAT-T30 (`CAT-044`) Remove Semester, legacy Program language/duration fields,
+      fixed ProgramOffering pricing/currency/basis fields, compatibility fallback
+      code, the old backfill command, and Catalogue-v2 regression tests.
+- [x] CAT-T31 (`CAT-045`) Move Application tuition/deposit snapshots to active
+      structured OfferingFee data and reject Application creation without tuition.
+- [x] CAT-T32 (`CAT-046`, `CAT-047`) Make normalized JSON and Rasa catalogue
+      imports v3-native, using Intake + OfferingFee only.
+- [x] CAT-T33 (`CAT-048`) Remove legacy Admin/export presentation and update
+      catalogue/import/export documentation and regression coverage.
+- [x] CAT-T34 (`CAT-049`) Add `prepare_catalogue_v3_cutover` and operator docs so
+      existing databases can backfill missing v3 data before locally generated
+      destructive migrations remove Catalogue v2 storage.

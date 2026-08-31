@@ -76,27 +76,20 @@ Document attachment and document requirement are separate concepts.
 
 ## Catalogue
 
-Catalogue v2 is implemented. The canonical domain is:
+Catalogue v3 is the sole active catalogue representation. The canonical domain is:
 
 ```text
 University
- ├── AcademicUnit*
- ├── Department*
- ├── UniversityCatalogueSource*
- └── Program*
-      ├── AcademicUnit?
-      ├── Department?
-      ├── ProgramInstructionLanguage* -> ProgramLanguage
-      ├── study mode / duration
-      ├── internal_notes (staff/import only)
-      └── ProgramOffering*
-           ├── AcademicYear / Semester
-           ├── standard / offered / cash tuition / deposit
-           ├── preparatory tuition / preparation included
-           ├── quota / deadline / validity / notes
-           └── source? -> UniversityCatalogueSource
+ ├── AcademicUnit / Department
+ └── Program
+      ├── ProgramInstructionLanguage → ProgramLanguage
+      ├── study mode / duration_months
+      └── ProgramOffering
+           ├── AcademicYear / Intake
+           ├── OfferingFee[]
+           ├── quota / deadline / validity
+           └── UniversityCatalogueSource
 ```
 
-Legacy single-language and whole-year duration fields remain executable compatibility
-bridges during migration. Existing databases should run `backfill_catalogue_v2` after
-applying schema migrations. See `docs/specs/catalogue/` and ADR-006.
+Catalogue v2 compatibility models and fields have been removed. Importers, Admin,
+exports, UI/API consumers, and Application creation use Intake and OfferingFee.

@@ -29,7 +29,7 @@ Education agencies, their users, hierarchy, contact details and internal documen
 Country, province and city reference data.
 
 ### universities
-Universities, media, departments, languages, academic years, semesters, programs and offerings.
+Universities, media, departments, languages, academic years, intakes, programs, offerings and structured fees.
 
 ### students
 Student profile and reusable student documents.

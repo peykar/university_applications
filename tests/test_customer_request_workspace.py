@@ -645,7 +645,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
             '{% elif entity_tab == "documents" %}', 1
         )[0]
-        self.assertIn("interest.program_offering.semester.name_en", programs)
+        self.assertIn("interest.program_offering.intake.name_en", programs)
         self.assertIn("interest.program_offering.academic_year.name_en", programs)
         self.assertIn('{% trans "Select intake" %}', programs)
         self.assertNotIn('{% trans "Any intake / decide later" %}', programs)
@@ -680,13 +680,16 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
     def test_overview_programs_show_compact_comparison_data(self):
         self.assertIn("interest.program.get_degree_display", self.request_detail)
         self.assertIn("interest.program.instruction_language_display", self.request_detail)
-        self.assertIn("currency_amount:interest.program_offering.currency", self.request_detail)
+        self.assertIn(
+            "currency_amount:interest.program_offering.display_tuition_fee.currency",
+            self.request_detail,
+        )
         self.assertIn('{% trans "From" %}', self.request_detail)
 
     def test_program_tuition_is_offering_backed(self):
         self.assertIn('Prefetch("program__offerings"', self.views)
         self.assertIn("ProgramOffering.objects.filter(is_active=True)", self.views)
-        self.assertIn("interest.program_offering.tuition_discounted", self.request_section)
+        self.assertIn("interest.program_offering.display_tuition_fee.amount", self.request_section)
         self.assertNotIn("interest.program.tuition", self.request_section)
 
     def test_programs_tab_is_detailed_comparison_workspace(self):

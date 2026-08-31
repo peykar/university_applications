@@ -17,10 +17,11 @@ from apps.universities.models import (
     Currency,
     DegreeType,
     Department,
+    Intake,
+    OfferingFee,
     Program,
     ProgramLanguage,
     ProgramOffering,
-    Semester,
     StudyMode,
     University,
     UniversityMedia,
@@ -68,12 +69,12 @@ def _program_filter_options(*, university=None):
         )
         .distinct()
         .order_by("name_en"),
-        "semester_choices": Semester.objects.filter(
+        "intake_choices": Intake.objects.filter(
             is_active=True,
             program_offerings__program__in=base_programs,
         )
         .distinct()
-        .order_by("name_en"),
+        .order_by("academic_year__name_en", "name_en"),
         "currency_choices": Currency.choices,
     }
 
@@ -363,15 +364,15 @@ def _build_active_program_filters(request, options) -> list[dict[str, str]]:
     )
     add("academic_year", getattr(academic_year, "name_en", None))
 
-    semester = next(
+    intake = next(
         (
             item
-            for item in options.get("semester_choices", [])
-            if str(item.id) == request.GET.get("semester")
+            for item in options.get("intake_choices", [])
+            if str(item.id) == request.GET.get("intake")
         ),
         None,
     )
-    add("semester", getattr(semester, "name_en", None))
+    add("intake", getattr(intake, "name_en", None))
 
     boolean_labels = {
         "open": _("Open applications"),
@@ -453,18 +454,21 @@ def program_list(request):
 
 
 def program_detail(request, slug):
+    active_fees = OfferingFee.objects.filter(is_active=True).select_related("language")
     active_offerings = (
         ProgramOffering.objects.filter(
             is_active=True,
         )
         .select_related(
             "academic_year",
-            "semester",
+            "intake",
+        )
+        .prefetch_related(
+            Prefetch("fees", queryset=active_fees, to_attr="active_structured_fees"),
         )
         .order_by(
             "academic_year__name_en",
-            "semester__name_en",
-            "tuition",
+            "intake__name_en",
         )
     )
 

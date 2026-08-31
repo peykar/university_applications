@@ -25,13 +25,13 @@ Version: 3.0
 | `CAT-018` | Offering validity | `CAT-T07` | `valid_from`, `valid_until`, model validation | catalogue v2 model tests |
 | `CAT-019` | Offering maintenance | `CAT-T08` | expanded offering inline/admin fieldsets | catalogue v2 structural/admin coverage |
 | `CAT-020` | Program maintenance | `CAT-T01`–`CAT-T08` | Program admin + language inline | catalogue v2 structural/admin coverage |
-| `CAT-021` | Compatibility migration | `CAT-T02`, `CAT-T04`, `CAT-T05`, `CAT-T11` | legacy language/duration bridges, DB-column-preserving preparatory rename, `backfill_catalogue_v2` | `CatalogueV2Tests.test_legacy_fields_backfill_without_losing_meaning`; updated Rasa tests |
+| `CAT-021` | Historical compatibility migration (superseded by `CAT-044`/`CAT-049`) | `CAT-T02`, `CAT-T04`, `CAT-T05`, `CAT-T11` | historical bridge behavior; current safe cutover is `prepare_catalogue_v3_cutover` | `tests/test_catalogue_v3_only.py`; `tests/test_rasa_importers.py` |
 | `CAT-022` | Import mapping/no guessing | `CAT-T03`, `CAT-T04`, `CAT-T09` | Rasa mixed-language/fractional-duration/study-mode mappings and unmapped-note preservation | importer helper tests + `tests/test_rasa_importers.py` |
 | `CAT-023` | Canonical public consumers | `CAT-T03`, `CAT-T04`, `CAT-T10` | public filters/detail/cards, Request/Agent templates, API serializers | `tests/test_program_filters.py`, Request structural tests, catalogue v2 tests |
 | `CAT-024` | Admission-requirements boundary | `CAT-T13` | no admission-requirement fields added; `DISC-0001` records deferred capability | SDD/document review |
 | `CAT-025` | Normalized per-University JSON import | `CAT-T16` | `apps/universities/management/commands/import_programs_for_university.py` | `UniversityProgramJsonImportTests.test_source_must_belong_to_university_before_any_import_writes` |
-| `CAT-026` | Versioned JSON contract | `CAT-T16` | command schema validation; `docs/university-program-json-import.md`; `docs/examples/university-programs-v1.json` | university-program JSON importer tests |
-| `CAT-027` | Deterministic idempotent upserts | `CAT-T17` | Program/AcademicUnit/Department slug keys; Offering Program+year+semester+source key | `UniversityProgramJsonImportTests.test_reimport_updates_program_and_offering_without_duplicates` |
+| `CAT-026` | Versioned JSON contract | `CAT-T16` | command schema validation; `docs/university-program-json-import.md`; `docs/examples/university-programs-v2.json` | university-program JSON importer tests |
+| `CAT-027` | Deterministic idempotent upserts | `CAT-T17` | Program/AcademicUnit/Department slug keys; Offering Program+year+intake+source key | `UniversityProgramJsonImportTests.test_reimport_updates_program_and_offering_without_duplicates` |
 | `CAT-028` | Authoritative languages/source provenance | `CAT-T17` | `_sync_languages`; `_upsert_offering` source binding | `UniversityProgramJsonImportTests.test_import_creates_program_academic_unit_languages_and_source_bound_offering` |
 | `CAT-029` | Atomic validation/no deletion | `CAT-T16`, `CAT-T17` | `transaction.atomic`; schema/reference validation; duplicate-match guards | source mismatch + invalid percentage rollback tests |
 | `CAT-030` | Docs/example/tests | `CAT-T18` | importer docs/example + `tests/test_university_program_json_import.py` | named importer tests |
@@ -42,13 +42,10 @@ Version: 3.0
 
 ## Verification status
 
-The user verified the Catalogue v2 baseline with local `make check` after applying
-the required migrations/backfill. The normalized JSON-import extension has
-repository-level verification in the delivery sandbox; its Django/pytest tests
-must be re-run with local `make check` because the delivery sandbox does not have
-the locked project dependencies installed. Legacy `Program.program_language` and
-`Program.duration` remain compatibility bridges while canonical fields are used
-by the importer and readers.
+The Catalogue v3-only transition has repository-level source/SDD verification in
+the delivery sandbox. Full Django/pytest verification must be re-run with local
+`make check` because this delivery environment could not reach PyPI to install
+the locked project dependencies.
 | `CAT-035` | Canonical Intake | `CAT-T23` | `Intake`, `ProgramOffering.intake` | `tests/test_catalogue_v3.py` |
 | `CAT-036` | Intake invariants | `CAT-T23` | `Intake.clean`, `ProgramOffering.clean` | `tests/test_catalogue_v3.py` |
 | `CAT-037` | Normalized offering fees | `CAT-T24` | `OfferingFee`, `OfferingFeeType` | `tests/test_catalogue_v3.py` |
@@ -58,3 +55,10 @@ by the importer and readers.
 | `CAT-041` | Canonical structured-fee admin presentation | `CAT-T27` | `apps/universities/admin.py::StructuredFeeSummaryMixin`, `ProgramOfferingInline`, `ProgramOfferingAdmin`, `OfferingFeeAdmin` | `CatalogueV3AdminPresentationTests` |
 
 | `CAT-042` | Semantic structured-fee display order | `CAT-T28` | `apps/universities/admin.py::StructuredFeeSummaryMixin.FEE_TYPE_DISPLAY_ORDER` | `CatalogueV3AdminPresentationTests.test_structured_fee_summary_uses_semantic_fee_order` |
+| `CAT-043` | Catalogue v3 UI/API consumers | `CAT-T29` | `apps/public/services/program_filters.py`, `apps/public/views.py`, public/customer/agent templates, Application admin, ProgramOffering API serializer | `tests/test_catalogue_v3_ui.py`, `tests/test_program_filters.py`, customer Request structural tests |
+| `CAT-044` | Remove Catalogue v2 persistence | `CAT-T30` | `apps/universities/models.py`; removed `backfill_catalogue_v2` | `tests/test_catalogue_v3_only.py` |
+| `CAT-045` | Application snapshots structured fees | `CAT-T31` | `apps/applications/services.py::create_student_application` | `tests/test_student_application_workflow.py`; lead finalization workflow tests |
+| `CAT-046` | V3-native normalized JSON import | `CAT-T32` | `apps/universities/management/commands/import_programs_for_university.py` | `tests/test_university_program_json_import.py` |
+| `CAT-047` | V3-native Rasa import | `CAT-T32` | `apps/universities/management/commands/import_rasa_catalogue.py` | `tests/test_rasa_importers.py` |
+| `CAT-048` | V3-only Admin/export | `CAT-T33` | `apps/universities/admin.py`; `apps/universities/management/commands/dump_university_data.py` | `CatalogueV3AdminPresentationTests`; `UniversityDataDumpTests` |
+| `CAT-049` | Existing-database cutover safety | `CAT-T34` | `apps/universities/management/commands/prepare_catalogue_v3_cutover.py`; `docs/catalogue-v3-cutover.md` | `tests/test_catalogue_v3_only.py` source/command guard; operator dry-run before migration |

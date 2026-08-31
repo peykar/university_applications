@@ -8,7 +8,7 @@ from django.test import TestCase
 
 from apps.content.models import FAQ, FAQCategory
 from apps.geography.models import Country
-from apps.universities.models import Program, ProgramOffering, University
+from apps.universities.models import OfferingFeeType, Program, ProgramOffering, University
 
 
 class RasaImporterTests(TestCase):
@@ -112,13 +112,17 @@ class RasaImporterTests(TestCase):
             self.assertEqual(University.objects.count(), 1)
             self.assertEqual(Program.objects.count(), 1)
             program = Program.objects.get()
-            self.assertEqual(program.duration, 4)
             self.assertEqual(program.duration_months, 48)
             self.assertEqual(program.instruction_languages.count(), 1)
             self.assertEqual(program.listing_priority, 2)
             self.assertEqual(ProgramOffering.objects.count(), 1)
             offering = ProgramOffering.objects.get()
+            self.assertEqual(offering.intake.name_en, "Fall")
             self.assertEqual(offering.quota, 40)
+            self.assertEqual(offering.fees.get(fee_type=OfferingFeeType.TUITION).amount, 6000)
+            self.assertEqual(
+                offering.fees.get(fee_type=OfferingFeeType.DISCOUNTED_TUITION).amount, 5000
+            )
             self.assertEqual(FAQCategory.objects.count(), 1)
             self.assertEqual(FAQ.objects.count(), 1)
             self.assertEqual(FAQ.objects.get().category.key, "admissions")

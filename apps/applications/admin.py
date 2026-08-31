@@ -26,7 +26,7 @@ class ApplicationAdmin(AuditAdminMixin, admin.ModelAdmin):
         "university_name",
         "program_name",
         "academic_year",
-        "semester",
+        "intake",
         "agent",
         "status",
         "tuition",
@@ -37,7 +37,7 @@ class ApplicationAdmin(AuditAdminMixin, admin.ModelAdmin):
         "status",
         "program_offering__program__university",
         "program_offering__academic_year",
-        "program_offering__semester",
+        "program_offering__intake",
         "agent",
         "created_at",
     )
@@ -69,9 +69,9 @@ class ApplicationAdmin(AuditAdminMixin, admin.ModelAdmin):
     def academic_year(self, obj):
         return obj.program_offering.academic_year.name_en
 
-    @admin.display(description="Semester")
-    def semester(self, obj):
-        return obj.program_offering.semester.name_en
+    @admin.display(description="Intake")
+    def intake(self, obj):
+        return obj.program_offering.intake.name_en if obj.program_offering.intake_id else "—"
 
     @admin.action(description="Mark selected applications under review")
     def mark_under_review(self, request, queryset):

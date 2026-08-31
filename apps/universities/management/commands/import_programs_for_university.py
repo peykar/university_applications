@@ -26,14 +26,13 @@ from apps.universities.models import (
     ProgramInstructionLanguage,
     ProgramLanguage,
     ProgramOffering,
-    Semester,
     StudyMode,
     ThesisType,
     University,
     UniversityCatalogueSource,
 )
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 LOCALIZED_FIELDS = ("en", "fa", "tr", "ar")
 
 
@@ -249,9 +248,7 @@ class Command(BaseCommand):
             row_path = f"{path}[{index}]"
             row = self._expect_object(raw_row, row_path)
             academic_year = self._required_text(row, "academic_year", path=row_path)
-            intake_name = str(row.get("intake") or row.get("semester") or "").strip()
-            if not intake_name:
-                raise CommandError(f"{row_path}.intake is required (legacy semester is accepted).")
+            intake_name = self._required_text(row, "intake", path=row_path)
             key = (academic_year, intake_name)
             if key in seen_keys:
                 raise CommandError(
@@ -260,28 +257,30 @@ class Command(BaseCommand):
                 )
             seen_keys.add(key)
 
-            self._validate_choice(row, "fee_basis", set(FeeBasis.values), path=row_path)
-            self._validate_choice(row, "currency", set(Currency.values), path=row_path)
-            tuition = self._decimal_or_none(row.get("tuition"), path=f"{row_path}.tuition")
-            if tuition is None or tuition < 0:
-                raise CommandError(f"{row_path}.tuition must be a non-negative decimal value.")
-
-            for field in (
-                "tuition_discount_percentage",
-                "tuition_discounted",
-                "cash_discount_percentage",
-                "tuition_cash",
-                "tuition_annual_installment",
-                "deposit",
-                "preparatory_tuition",
-            ):
-                value = self._decimal_or_none(row.get(field), path=f"{row_path}.{field}")
-                if value is not None and value < 0:
-                    raise CommandError(f"{row_path}.{field} cannot be negative.")
-            for field in ("tuition_discount_percentage", "cash_discount_percentage"):
-                value = self._decimal_or_none(row.get(field), path=f"{row_path}.{field}")
-                if value is not None and value > Decimal("100"):
-                    raise CommandError(f"{row_path}.{field} cannot exceed 100.")
+            fees = self._expect_list(row, "fees", path=row_path)
+            for fee_index, raw_fee in enumerate(fees):
+                fee_path = f"{row_path}.fees[{fee_index}]"
+                fee = self._expect_object(raw_fee, fee_path)
+                self._validate_choice(fee, "fee_type", set(OfferingFeeType.values), path=fee_path)
+                self._validate_choice(fee, "currency", set(Currency.values), path=fee_path)
+                self._validate_choice(fee, "basis", set(FeeBasis.values), path=fee_path)
+                amount = self._decimal_or_none(fee.get("amount"), path=f"{fee_path}.amount")
+                percentage = self._decimal_or_none(
+                    fee.get("percentage"), path=f"{fee_path}.percentage"
+                )
+                if amount is None and percentage is None:
+                    raise CommandError(
+                        f"{fee_path} must provide at least one of amount or percentage."
+                    )
+                if amount is not None and amount < 0:
+                    raise CommandError(f"{fee_path}.amount cannot be negative.")
+                if percentage is not None and (
+                    percentage < Decimal("0") or percentage > Decimal("100")
+                ):
+                    raise CommandError(f"{fee_path}.percentage must be between 0 and 100.")
+                self._validate_optional_text(fee, "label", path=fee_path)
+                self._validate_optional_text(fee, "language", path=fee_path)
+                self._validate_optional_text(fee, "notes", path=fee_path)
 
             self._validate_optional_bool(row, "preparation_included", path=row_path)
             self._validate_optional_bool(row, "is_active", path=row_path)
@@ -398,8 +397,6 @@ class Command(BaseCommand):
     ) -> tuple[Program, bool]:
         academic_unit_slug = row.get("academic_unit")
         department_slug = row.get("department")
-        languages = self._expect_list(row, "instruction_languages")
-        legacy_language = self._legacy_language_for_rows(languages, actor=actor)
 
         defaults: dict[str, Any] = self._localized_defaults(row)
         defaults.update(
@@ -414,10 +411,8 @@ class Command(BaseCommand):
                 "department": departments.get(str(department_slug)) if department_slug else None,
                 "degree": row["degree"],
                 "thesis_type": row.get("thesis_type") or None,
-                "program_language": legacy_language,
                 "study_mode": row.get("study_mode", StudyMode.ON_CAMPUS),
                 "duration_months": row.get("duration_months"),
-                "duration": self._legacy_duration(row.get("duration_months")),
                 "listing_priority": int(row.get("listing_priority", 0)),
                 "is_active": bool(row.get("is_active", True)),
             }
@@ -455,15 +450,6 @@ class Command(BaseCommand):
             association.full_clean()
             association.save()
 
-    def _legacy_language_for_rows(self, rows: list[Any], *, actor: Any) -> ProgramLanguage | None:
-        normalized = [self._expect_object(row, "instruction_languages[]") for row in rows]
-        primary = [row for row in normalized if row.get("is_primary", False)]
-        if len(primary) == 1:
-            return self._get_or_create_language(primary[0], actor=actor)
-        if len(normalized) == 1:
-            return self._get_or_create_language(normalized[0], actor=actor)
-        return None
-
     def _get_or_create_language(self, row: dict[str, Any], *, actor: Any) -> ProgramLanguage:
         slug = str(row["slug"])
         language = ProgramLanguage.objects.filter(slug_en=slug).first()
@@ -493,11 +479,10 @@ class Command(BaseCommand):
         actor: Any,
     ) -> bool:
         academic_year = self._get_or_create_academic_year(str(row["academic_year"]), actor=actor)
-        intake_name = str(row.get("intake") or row.get("semester"))
+        intake_name = str(row["intake"])
         intake = self._get_or_create_intake(
             intake_name, academic_year=academic_year, university=program.university, actor=actor
         )
-        semester = self._get_or_create_semester(intake_name, actor=actor)
         lookup = {
             "program": program,
             "academic_year": academic_year,
@@ -516,24 +501,6 @@ class Command(BaseCommand):
         if offering is None:
             offering = ProgramOffering(**lookup, created_by=actor)
 
-        offering.semester = semester  # legacy compatibility bridge
-        offering.fee_basis = str(row["fee_basis"])
-        offering.currency = str(row["currency"])
-        offering.tuition = self._required_decimal(row, "tuition", path="offering")
-        for field in (
-            "tuition_discount_percentage",
-            "tuition_discounted",
-            "cash_discount_percentage",
-            "tuition_cash",
-            "tuition_annual_installment",
-            "deposit",
-            "preparatory_tuition",
-        ):
-            setattr(
-                offering,
-                field,
-                self._decimal_or_none(row.get(field), path=f"offering.{field}"),
-            )
         offering.preparation_included = bool(row.get("preparation_included", False))
         offering.quota = row.get("quota")
         offering.deadline = self._date_or_none(row.get("deadline"), path="offering.deadline")
@@ -583,27 +550,16 @@ class Command(BaseCommand):
     def _sync_structured_fees(
         self, offering: ProgramOffering, row: dict[str, Any], *, actor: Any
     ) -> None:
-        fee_rows = row.get("fees")
-        if fee_rows is None:
-            fee_rows = [
-                {"fee_type": "tuition", "amount": row.get("tuition")},
-                {"fee_type": "discounted_tuition", "amount": row.get("tuition_discounted")},
-                {"fee_type": "advance_payment", "amount": row.get("tuition_cash")},
-                {"fee_type": "installment_total", "amount": row.get("tuition_annual_installment")},
-                {"fee_type": "deposit", "amount": row.get("deposit")},
-                {"fee_type": "preparatory", "amount": row.get("preparatory_tuition")},
-            ]
+        fee_rows = self._expect_list(row, "fees", path="offering")
         OfferingFee.objects.filter(offering=offering).delete()
-        for fee_row in fee_rows:
-            amount = self._decimal_or_none(fee_row.get("amount"), path="offering.fees.amount")
-            percentage = self._decimal_or_none(
-                fee_row.get("percentage"), path="offering.fees.percentage"
+        for index, raw_fee in enumerate(fee_rows):
+            fee_row = self._expect_object(raw_fee, f"offering.fees[{index}]")
+            amount = self._decimal_or_none(
+                fee_row.get("amount"), path=f"offering.fees[{index}].amount"
             )
-            if amount is None and percentage is None:
-                continue
-            fee_type = str(fee_row.get("fee_type") or "other")
-            if fee_type not in OfferingFeeType.values:
-                raise CommandError(f"Unsupported offering fee_type {fee_type!r}.")
+            percentage = self._decimal_or_none(
+                fee_row.get("percentage"), path=f"offering.fees[{index}].percentage"
+            )
             language = None
             language_slug = fee_row.get("language")
             if language_slug:
@@ -612,27 +568,19 @@ class Command(BaseCommand):
                     raise CommandError(f"Unknown fee language slug {language_slug!r}.")
             fee = OfferingFee(
                 offering=offering,
-                fee_type=fee_type,
+                fee_type=str(fee_row["fee_type"]),
                 label=str(fee_row.get("label") or ""),
                 language=language,
-                currency=str(fee_row.get("currency") or row["currency"]),
+                currency=str(fee_row["currency"]),
                 amount=amount,
                 percentage=percentage,
-                basis=str(fee_row.get("basis") or row["fee_basis"]),
+                basis=str(fee_row["basis"]),
                 notes=str(fee_row.get("notes") or ""),
                 created_by=actor,
                 updated_by=actor,
             )
             fee.full_clean()
             fee.save()
-
-    def _get_or_create_semester(self, name: str, *, actor: Any) -> Semester:
-        semester = Semester.objects.filter(name_en=name).first()
-        if semester is None:
-            semester = Semester(name_en=name, created_by=actor, updated_by=actor)
-            semester.full_clean()
-            semester.save()
-        return semester
 
     def _upsert(
         self,
@@ -670,11 +618,6 @@ class Command(BaseCommand):
             else:
                 values[slug_field] = str(row.get(slug_field) or "")
         return values
-
-    def _legacy_duration(self, duration_months: Any) -> int | None:
-        if isinstance(duration_months, int) and duration_months > 0 and duration_months % 12 == 0:
-            return duration_months // 12
-        return None
 
     def _expect_list(
         self,

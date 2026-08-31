@@ -13,11 +13,11 @@ uv run --env-file .env python manage.py import_programs_for_university \
 The source must belong to the supplied University. The command is atomic: an
 invalid file or import error rolls back the whole import.
 
-## JSON schema version 1
+## JSON schema version 2
 
 The file root is an object with:
 
-- `schema_version`: required integer, currently `1`.
+- `schema_version`: required integer, currently `2`.
 - `academic_units`: optional array. Each row is upserted inside the supplied
   University by `slug_en`.
 - `departments`: optional array. Each row is upserted inside the supplied
@@ -132,17 +132,12 @@ are untouched.
 ```json
 {
   "academic_year": "2026-2027",
-  "semester": "Fall",
-  "fee_basis": "annual",
-  "currency": "USD",
-  "tuition": "30000.00",
-  "tuition_discount_percentage": null,
-  "tuition_discounted": "25000.00",
-  "cash_discount_percentage": null,
-  "tuition_cash": "23000.00",
-  "tuition_annual_installment": null,
-  "deposit": "1000.00",
-  "preparatory_tuition": null,
+  "intake": "Fall",
+  "fees": [
+    {"fee_type": "tuition", "currency": "USD", "amount": "30000.00", "basis": "annual"},
+    {"fee_type": "discounted_tuition", "currency": "USD", "amount": "25000.00", "basis": "annual"},
+    {"fee_type": "deposit", "currency": "USD", "amount": "1000.00", "basis": "one_time"}
+  ],
   "preparation_included": false,
   "quota": null,
   "deadline": null,
@@ -153,32 +148,21 @@ are untouched.
 }
 ```
 
-Allowed `fee_basis`: `annual`, `whole_program`.
+`intake` is required. `fees` is a required array and may be empty when pricing is
+unknown. Each fee explicitly supplies `fee_type`, `currency`, and `basis`, plus at
+least one of `amount` or `percentage`. Supported fee types are `tuition`,
+`discounted_tuition`, `advance_payment`, `cash_payment`, `installment_total`,
+`deposit`, `preparatory`, `application`, `registration`, and `other`. Supported
+bases are `annual`, `semester`, `whole_program`, `per_credit`, and `one_time`.
 
-Allowed `currency`: `USD`, `EUR`, `TRY`.
-
-Money and percentage values should be JSON strings so the source decimal value
-is preserved exactly. `tuition` is required. Optional monetary fields may be
-`null`. Date values use ISO `YYYY-MM-DD` or `null`.
-
-An Offering is upserted by the tuple:
-
-```text
-Program + AcademicYear + Semester + UniversityCatalogueSource
-```
-
-The `UniversityCatalogueSource` comes only from the command argument, so every
-offering imported by one command run has explicit provenance. If more than one
-existing Offering already matches that key, the command stops rather than
-choosing one silently.
-
-Academic years and semesters are looked up by `name_en` and created when they do
-not already exist.
+An Offering is upserted by Program + AcademicYear + Intake +
+UniversityCatalogueSource. Catalogue v2 `semester` and fixed pricing fields are
+not part of schema version 2.
 
 ## Update and safety rules
 
 - Programs, AcademicUnits and Departments are updated by stable English slug.
-- Offerings are updated by Program + AcademicYear + Semester + source.
+- Offerings are updated by Program + AcademicYear + Intake + source.
 - Re-running the same file is idempotent for those import keys.
 - Rows absent from a later JSON file are not deleted or deactivated.
 - The command never infers missing tuition semantics, percentages, study mode,
@@ -192,13 +176,3 @@ Persian, Turkish, and Arabic letters, plus numbers, underscores, and hyphens.
 They do not need to be transliterated or copied from `slug_en`. The importer runs
 normal Django model validation, so spaces and other non-slug punctuation remain
 invalid.
-
-
-
-## Catalogue v3 intake and fees
-
-New files should use `intake` for the offering name; legacy `semester` remains accepted during migration. The importer creates a canonical `Intake` bound to the University and AcademicYear.
-
-Offerings may include a `fees` array. Each fee accepts `fee_type`, optional `label`, optional language slug, `currency`, optional `amount`, optional `percentage`, `basis`, and optional `notes`. Supported types are `tuition`, `discounted_tuition`, `advance_payment`, `cash_payment`, `installment_total`, `deposit`, `preparatory`, `application`, `registration`, and `other`. At least amount or percentage is required. Preparatory fees can be repeated with different languages.
-
-Legacy fixed fee fields remain accepted and are translated into structured fees when `fees` is omitted.

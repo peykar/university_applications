@@ -13,10 +13,13 @@ from apps.public.services.program_filters import (
 from apps.universities.models import (
     AcademicYear,
     Department,
+    Intake,
+    OfferingFee,
+    OfferingFeeType,
     Program,
+    ProgramInstructionLanguage,
     ProgramLanguage,
     ProgramOffering,
-    Semester,
     University,
 )
 
@@ -109,12 +112,16 @@ class ProgramFilterTests(TestCase):
             created_by=user,
             updated_by=user,
         )
-        fall = Semester.objects.create(
+        fall = Intake.objects.create(
+            university=university,
+            academic_year=year,
             name_en="Fall",
             created_by=user,
             updated_by=user,
         )
-        spring = Semester.objects.create(
+        spring = Intake.objects.create(
+            university=university,
+            academic_year=year,
             name_en="Spring",
             created_by=user,
             updated_by=user,
@@ -123,7 +130,6 @@ class ProgramFilterTests(TestCase):
         self.program = Program.objects.create(
             university=university,
             department=department,
-            program_language=language,
             degree="bachelor",
             name_en="Computer Engineering",
             name_fa="",
@@ -136,26 +142,45 @@ class ProgramFilterTests(TestCase):
             created_by=user,
             updated_by=user,
         )
+        ProgramInstructionLanguage.objects.create(
+            program=self.program,
+            language=language,
+            is_primary=True,
+            created_by=user,
+            updated_by=user,
+        )
 
-        ProgramOffering.objects.create(
+        fall_offering = ProgramOffering.objects.create(
             program=self.program,
             academic_year=year,
-            semester=fall,
-            fee_basis="annual",
-            currency="USD",
-            tuition=Decimal("8000"),
+            intake=fall,
             deadline=timezone.localdate() + timedelta(days=30),
             created_by=user,
             updated_by=user,
         )
-        ProgramOffering.objects.create(
+        OfferingFee.objects.create(
+            offering=fall_offering,
+            fee_type=OfferingFeeType.TUITION,
+            currency="USD",
+            amount=Decimal("8000"),
+            basis="annual",
+            created_by=user,
+            updated_by=user,
+        )
+        spring_offering = ProgramOffering.objects.create(
             program=self.program,
             academic_year=year,
-            semester=spring,
-            fee_basis="annual",
-            currency="USD",
-            tuition=Decimal("12000"),
+            intake=spring,
             deadline=timezone.localdate() + timedelta(days=90),
+            created_by=user,
+            updated_by=user,
+        )
+        OfferingFee.objects.create(
+            offering=spring_offering,
+            fee_type=OfferingFeeType.TUITION,
+            currency="USD",
+            amount=Decimal("12000"),
+            basis="annual",
             created_by=user,
             updated_by=user,
         )
@@ -181,7 +206,7 @@ class ProgramFilterTests(TestCase):
         qs = apply_program_filters(
             Program.objects.all(),
             ProgramFilterState(
-                semester=str(self.spring.pk),
+                intake=str(self.spring.pk),
                 tuition_max="9000",
             ),
         )
@@ -191,9 +216,8 @@ class ProgramFilterTests(TestCase):
         qs = apply_program_filters(
             Program.objects.all(),
             ProgramFilterState(
-                semester=str(self.fall.pk),
+                intake=str(self.fall.pk),
                 tuition_max="9000",
-                currency="USD",
                 open_only=True,
             ),
         )
@@ -203,23 +227,31 @@ class ProgramFilterTests(TestCase):
         program = self.program
         ProgramOffering.objects.filter(program=program).delete()
 
-        ProgramOffering.objects.create(
+        usd_offering = ProgramOffering.objects.create(
             program=program,
             academic_year=self.year,
-            semester=self.fall,
-            fee_basis="annual",
-            currency="USD",
-            tuition=Decimal("15000"),
+            intake=self.fall,
             is_active=True,
         )
-        ProgramOffering.objects.create(
+        OfferingFee.objects.create(
+            offering=usd_offering,
+            fee_type=OfferingFeeType.TUITION,
+            currency="USD",
+            amount=Decimal("15000"),
+            basis="annual",
+        )
+        eur_offering = ProgramOffering.objects.create(
             program=program,
             academic_year=self.year,
-            semester=self.spring,
-            fee_basis="annual",
-            currency="EUR",
-            tuition=Decimal("12000"),
+            intake=self.spring,
             is_active=True,
+        )
+        OfferingFee.objects.create(
+            offering=eur_offering,
+            fee_type=OfferingFeeType.TUITION,
+            currency="EUR",
+            amount=Decimal("12000"),
+            basis="annual",
         )
 
         result = apply_program_filters(

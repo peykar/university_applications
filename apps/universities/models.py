@@ -190,16 +190,6 @@ class Intake(BaseModel, ActiveMixin):
         return f"{self.academic_year} — {self.name_en}"
 
 
-class Semester(BaseModel, ActiveMixin):
-    name_en = models.CharField(max_length=100)
-    name_fa = models.CharField(max_length=100, blank=True)
-    name_tr = models.CharField(max_length=100, blank=True)
-    name_ar = models.CharField(max_length=100, blank=True)
-
-    def __str__(self):
-        return self.name_en
-
-
 class DegreeType(models.TextChoices):
     ASSOCIATE = "associate", _("Associate")
     BACHELOR = "bachelor", _("Bachelor")
@@ -258,16 +248,6 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
             "Indicates whether a graduate program is thesis or non-thesis, when applicable."
         ),
     )
-    # Compatibility bridge for existing imported data. Canonical readers use
-    # instruction_languages through ProgramInstructionLanguage.
-    program_language = models.ForeignKey(
-        ProgramLanguage,
-        on_delete=models.PROTECT,
-        related_name="legacy_programs",
-        null=True,
-        blank=True,
-        help_text=_("Deprecated single-language compatibility field."),
-    )
     instruction_languages: "models.ManyToManyField[ProgramLanguage, ProgramLanguage]" = (
         models.ManyToManyField(
             ProgramLanguage,
@@ -278,11 +258,6 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
     )
     study_mode = models.CharField(
         max_length=20, choices=StudyMode.choices, default=StudyMode.ON_CAMPUS
-    )
-    # Compatibility bridge. Existing values represent years. New code stores
-    # duration canonically in months so fractional years are lossless.
-    duration = models.PositiveSmallIntegerField(
-        null=True, blank=True, help_text=_("Deprecated duration in whole years.")
     )
     duration_months = models.PositiveSmallIntegerField(null=True, blank=True)
     listing_priority = models.IntegerField(
@@ -305,19 +280,6 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
             errors["academic_unit"] = _("Academic unit must belong to the selected university.")
         if errors:
             raise ValidationError(errors)
-
-    def save(self, *args, **kwargs):
-        if self.duration_months is None and self.duration is not None:
-            self.duration_months = self.duration * 12
-        if self.duration is None and self.duration_months and self.duration_months % 12 == 0:
-            self.duration = self.duration_months // 12
-        super().save(*args, **kwargs)
-        if self.program_language_id and not self.instruction_language_rows.exists():
-            ProgramInstructionLanguage.objects.get_or_create(
-                program=self,
-                language_id=self.program_language_id,
-                defaults={"is_primary": True},
-            )
 
     @property
     def duration_display(self) -> str:
@@ -342,10 +304,6 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
                 "-is_primary", "language__name_en"
             )
         )
-        if not rows and self.program_language_id:
-            legacy_language = self.program_language
-            if legacy_language is not None:
-                return legacy_language.name_en
         parts = []
         for row in rows:
             if row.percentage is None:
@@ -475,52 +433,7 @@ class ProgramOffering(BaseModel, ActiveMixin):
         Intake,
         on_delete=models.PROTECT,
         related_name="program_offerings",
-        null=True,
-        blank=True,
         help_text=_("Canonical intake. Fall/Spring/Academic Intake are intake names."),
-    )
-    # Deprecated compatibility bridge. New catalogue data should use intake.
-    semester = models.ForeignKey(
-        Semester,
-        on_delete=models.PROTECT,
-        related_name="program_offerings",
-        null=True,
-        blank=True,
-    )
-
-    fee_basis = models.CharField(
-        max_length=30,
-        choices=FeeBasis.choices,
-        help_text=_(
-            "Specifies what period or unit the tuition amount applies to, "
-            "such as per year or for the full program."
-        ),
-    )
-    currency = models.CharField(max_length=3, choices=Currency.choices)
-    tuition = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        help_text=_("Standard tuition amount before discounts for this program offering."),
-    )
-    tuition_discount_percentage = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True, blank=True
-    )
-    tuition_discounted = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    cash_discount_percentage = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True, blank=True
-    )
-    tuition_cash = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    tuition_annual_installment = models.DecimalField(
-        max_digits=12, decimal_places=2, null=True, blank=True
-    )
-    deposit = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    preparatory_tuition = models.DecimalField(
-        db_column="pre_school_fees",
-        max_digits=12,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        help_text=_("Tuition for language/foundation preparatory study."),
     )
     preparation_included = models.BooleanField(
         default=False,
@@ -573,18 +486,46 @@ class ProgramOffering(BaseModel, ActiveMixin):
             raise ValidationError(errors)
 
     @property
-    def effective_tuition(self):
-        return self.tuition_discounted or self.tuition
+    def intake_name(self):
+        """Canonical intake label for UI/API consumers."""
+        return self.intake.name_en if self.intake_id and self.intake is not None else ""
+
+    @property
+    def display_tuition_fee(self):
+        """Return the canonical payable/list tuition fee for presentation."""
+        prefetched = getattr(self, "active_structured_fees", None)
+        fees = (
+            list(prefetched) if prefetched is not None else list(self.fees.filter(is_active=True))
+        )
+        for fee_type in (OfferingFeeType.DISCOUNTED_TUITION, OfferingFeeType.TUITION):
+            for fee in fees:
+                if fee.fee_type == fee_type and fee.amount is not None:
+                    return fee
+        return None
+
+    @property
+    def display_fees(self):
+        """Canonical active structured fees in stable business-readable order."""
+        prefetched = getattr(self, "active_structured_fees", None)
+        fees = (
+            list(prefetched) if prefetched is not None else list(self.fees.filter(is_active=True))
+        )
+        order = {
+            OfferingFeeType.TUITION: 10,
+            OfferingFeeType.DISCOUNTED_TUITION: 20,
+            OfferingFeeType.ADVANCE_PAYMENT: 30,
+            OfferingFeeType.CASH_PAYMENT: 40,
+            OfferingFeeType.INSTALLMENT_TOTAL: 50,
+            OfferingFeeType.DEPOSIT: 60,
+            OfferingFeeType.PREPARATORY: 70,
+            OfferingFeeType.APPLICATION: 80,
+            OfferingFeeType.REGISTRATION: 90,
+            OfferingFeeType.OTHER: 100,
+        }
+        return sorted(fees, key=lambda fee: (order.get(fee.fee_type, 999), fee.label, str(fee.pk)))
 
     def __str__(self):
-        intake = self.intake if self.intake_id else None
-        semester = self.semester if self.semester_id else None
-        intake_name = (
-            intake.name_en
-            if intake is not None
-            else (semester.name_en if semester is not None else "")
-        )
-        return f"{self.program} - {self.academic_year} - {intake_name}"
+        return f"{self.program} - {self.academic_year} - {self.intake.name_en}"
 
 
 class OfferingFee(BaseModel, ActiveMixin):

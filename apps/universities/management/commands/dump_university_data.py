@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from apps.universities.models import University
 
-EXPORT_SCHEMA_VERSION = 1
+EXPORT_SCHEMA_VERSION = 2
 LOCALIZED_LANGUAGES = ("en", "fa", "tr", "ar")
 
 
@@ -68,10 +68,10 @@ class Command(BaseCommand):
                     "catalogue_sources__academic_year",
                     "programs__academic_unit",
                     "programs__department",
-                    "programs__program_language",
                     "programs__instruction_language_rows__language",
                     "programs__offerings__academic_year",
-                    "programs__offerings__semester",
+                    "programs__offerings__intake",
+                    "programs__offerings__fees__language",
                     "programs__offerings__source",
                 )
                 .get(pk=university_id)
@@ -199,7 +199,7 @@ class Command(BaseCommand):
             "-is_primary", "language__name_en", "id"
         )
         offerings = program.offerings.all().order_by(
-            "academic_year__name_en", "semester__name_en", "id"
+            "academic_year__name_en", "intake__name_en", "id"
         )
         return {
             "id": str(program.pk),
@@ -213,8 +213,6 @@ class Command(BaseCommand):
             "thesis_type": program.thesis_type,
             "study_mode": program.study_mode,
             "duration_months": program.duration_months,
-            "legacy_duration_years": program.duration,
-            "legacy_program_language": self._language(program.program_language),
             "listing_priority": program.listing_priority,
             "is_active": program.is_active,
             "instruction_languages": [self._instruction_language(row) for row in language_rows],
@@ -245,17 +243,6 @@ class Command(BaseCommand):
             "id": str(offering.pk),
             "academic_year": self._named_reference(offering.academic_year),
             "intake": self._named_reference(offering.intake),
-            "semester": self._named_reference(offering.semester),
-            "fee_basis": offering.fee_basis,
-            "currency": offering.currency,
-            "tuition": self._decimal(offering.tuition),
-            "tuition_discount_percentage": self._decimal(offering.tuition_discount_percentage),
-            "tuition_discounted": self._decimal(offering.tuition_discounted),
-            "cash_discount_percentage": self._decimal(offering.cash_discount_percentage),
-            "tuition_cash": self._decimal(offering.tuition_cash),
-            "tuition_annual_installment": self._decimal(offering.tuition_annual_installment),
-            "deposit": self._decimal(offering.deposit),
-            "preparatory_tuition": self._decimal(offering.preparatory_tuition),
             "preparation_included": offering.preparation_included,
             "quota": offering.quota,
             "deadline": self._date(offering.deadline),

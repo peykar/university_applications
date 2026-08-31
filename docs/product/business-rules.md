@@ -62,8 +62,9 @@ Student workflow rather than editing the historical Lead.
 BR-PRG-001 — A Program belongs to one University. A referenced Department must
 belong to the same University.
 
-BR-PRG-002 — Intake-specific tuition, quota and deadline belong to
-ProgramOffering.
+BR-PRG-002 — Intake-specific quota/deadline belong to ProgramOffering.
+Intake-specific monetary terms belong to structured OfferingFee rows under that
+ProgramOffering; ProgramOffering itself does not store fixed price columns.
 
 BR-PRG-003 — LeadProgramInterest is exploratory. It is never itself a formal
 Application.
@@ -78,6 +79,10 @@ for the same program-level interest.
 
 BR-APP-001 — Formal relationship:
 `Student -> Application -> ProgramOffering -> Program -> University`.
+
+BR-APP-002 — Creating a formal Application requires an active amount-bearing
+structured tuition fee on the selected ProgramOffering. The Application snapshots
+the canonical payable tuition and any structured deposit present at creation time.
 
 BR-APP-002 — A formal Application belongs to the finalized Student and a concrete
 ProgramOffering. Finalization itself creates draft Applications for the discussed

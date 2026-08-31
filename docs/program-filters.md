@@ -21,7 +21,7 @@ The university is fixed by context. Available filters:
 - degree
 - language
 - academic year
-- semester/intake
+- intake
 - currency
 - minimum tuition
 - maximum tuition
@@ -42,7 +42,7 @@ The complete filter set:
 - minimum/maximum tuition
 - currency
 - academic year
-- semester/intake
+- intake
 - open/ongoing applications
 - MOE-approved university
 - MOH-approved university
@@ -51,8 +51,8 @@ The complete filter set:
 
 ## Offering-level correctness
 
-Tuition, currency, academic year, semester and open/deadline state are
-`ProgramOffering` properties.
+Tuition, currency, academic year, intake and open/deadline state are
+`ProgramOffering` properties derived from canonical offering/fee data.
 
 TurkDemy applies all selected offering-level conditions to one correlated
 `ProgramOffering` query. Thus:
@@ -83,9 +83,8 @@ provides them:
 - `university_type`: enum/code
 - `currency`: ISO-style currency code
 
-Academic year and semester use their model slug when available; otherwise
-their primary key remains the fallback until those reference models expose
-stable slugs.
+Academic year and intake use stable public values when available; otherwise
+their UUID primary key remains the reference value.
 
 This keeps URLs readable, shareable and less coupled to database IDs.
 
@@ -107,20 +106,20 @@ Filters are submitted as normal GET query parameters. They are not applied
 until the user presses **Apply filters**.
 
 On smaller screens, the filter panel returns to normal page scrolling.
-## Reference-model fallback
+## Reference-model identifiers
 
-Public filters use slugs where the referenced model actually provides a stable
-slug.
-
-The current `AcademicYear` and `Semester` models do not expose `slug_en`, so
-their public filter values use UUID primary-key strings. The filtering service
-parses and validates each value inside its filter block before applying the
-corresponding `_id` lookup.
+Public filters use slugs where the referenced model exposes a stable public slug.
+`AcademicYear` and `Intake` currently use UUID primary-key strings in filter URLs.
+The filtering service validates those identifiers before applying the corresponding
+`_id` lookup.
 
 ```python
 academic_year_id = state.academic_year
-semester_id = state.semester
+intake_id = state.intake
 ```
 
-This remains the fallback until those reference models gain stable public
-codes/slugs.
+## Catalogue v3 intake and tuition
+
+Current public programme filtering uses canonical `Intake` (`?intake=<uuid>`).
+Tuition range and displayed minimum tuition are derived exclusively from active
+structured `OfferingFee` tuition/discounted-tuition rows.

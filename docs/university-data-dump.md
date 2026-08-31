@@ -29,7 +29,7 @@ The University ID is the command's only required input.
 
 ## Export scope
 
-Schema version 1 exports the University and its catalogue relationships:
+Schema version 2 exports the University and its catalogue relationships:
 
 - localized University names, slugs, descriptions, flags, rankings and location;
 - nested City, Province and Country localized values;
@@ -37,11 +37,10 @@ Schema version 1 exports the University and its catalogue relationships:
 - AcademicUnits and Departments with localized names/slugs/descriptions;
 - UniversityCatalogueSources and their academic-year/validity/source notes;
 - Programs with localized names/slugs/descriptions, `internal_notes`, academic
-  structure, degree, thesis type, study mode, canonical duration and legacy
-  compatibility values;
+  structure, degree, thesis type, study mode, canonical duration;
 - canonical ProgramInstructionLanguage rows and referenced localized language;
-- ProgramOfferings with academic year/intake, pricing, quota/deadline, validity,
-  notes and catalogue-source reference.
+- ProgramOfferings with academic year/intake, structured fees, quota/deadline, validity,
+  notes and catalogue-source reference. Catalogue v2 compatibility fields are not exported.
 
 The command intentionally does **not** export Leads, Students, Applications,
 messages/conversations, customer accounts, or other admissions/customer data.

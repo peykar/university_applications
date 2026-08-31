@@ -41,9 +41,9 @@
                 <small class="request-overview-program-meta">
                   {{ interest.program.get_degree_display }} · {{ interest.program.instruction_language_display }}
                   {% if interest.program_offering %}
-                    · {{ interest.program_offering.tuition_discounted|default:interest.program_offering.tuition|currency_amount:interest.program_offering.currency }} / {{ interest.program_offering.get_fee_basis_display }}
+                    · {{ interest.program_offering.display_tuition_fee.amount|currency_amount:interest.program_offering.display_tuition_fee.currency }} / {{ interest.program_offering.display_tuition_fee.get_basis_display }}
                   {% elif interest.program.customer_offerings %}
-                    {% with offering=interest.program.customer_offerings.0 %}· {% trans "From" %} {{ offering.tuition_discounted|default:offering.tuition|currency_amount:offering.currency }} / {{ offering.get_fee_basis_display }}{% endwith %}
+                    {% with offering=interest.program.customer_offerings.0 %}· {% trans "From" %} {{ offering.display_tuition_fee.amount|currency_amount:offering.display_tuition_fee.currency }} / {{ offering.display_tuition_fee.get_basis_display }}{% endwith %}
                   {% endif %}
                 </small>
                 {% if interest.source == "agent" %}<em>{% trans "Suggested by your advisor" %}</em>{% else %}<em class="request-overview-program-source-user">{% trans "Added by you" %}</em>{% endif %}

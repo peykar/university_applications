@@ -21,7 +21,6 @@ from .models import (
     ProgramInstructionLanguage,
     ProgramLanguage,
     ProgramOffering,
-    Semester,
     University,
     UniversityCatalogueSource,
     UniversityMedia,
@@ -51,17 +50,6 @@ class ProgramOfferingAdminForm(forms.ModelForm):
             "program",
             "academic_year",
             "intake",
-            "semester",
-            "fee_basis",
-            "currency",
-            "tuition",
-            "tuition_discount_percentage",
-            "tuition_discounted",
-            "cash_discount_percentage",
-            "tuition_cash",
-            "tuition_annual_installment",
-            "deposit",
-            "preparatory_tuition",
             "preparation_included",
             "quota",
             "deadline",
@@ -227,8 +215,7 @@ class ProgramOfferingInline(StructuredFeeSummaryMixin, admin.StackedInline):
                 "fields": (
                     "academic_year",
                     "intake",
-                    "fee_basis",
-                    "currency",
+                    "preparation_included",
                     "is_active",
                 )
             },
@@ -256,30 +243,8 @@ class ProgramOfferingInline(StructuredFeeSummaryMixin, admin.StackedInline):
                 )
             },
         ),
-        (
-            "Legacy compatibility pricing",
-            {
-                "classes": ("collapse",),
-                "fields": (
-                    "semester",
-                    "tuition",
-                    "tuition_discount_percentage",
-                    "tuition_discounted",
-                    "cash_discount_percentage",
-                    "tuition_cash",
-                    "tuition_annual_installment",
-                    "deposit",
-                    "preparatory_tuition",
-                    "preparation_included",
-                ),
-                "description": (
-                    "Deprecated compatibility fields retained while older application/UI "
-                    "consumers migrate to Catalogue v3. Prefer the structured fee rows above."
-                ),
-            },
-        ),
     )
-    autocomplete_fields = ("academic_year", "intake", "semester", "source")
+    autocomplete_fields = ("academic_year", "intake", "source")
     show_change_link = True
 
 
@@ -494,13 +459,6 @@ class AcademicYearAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
     search_fields = ("name_en", "name_fa", "name_tr", "name_ar")
 
 
-@admin.register(Semester)
-class SemesterAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
-    list_display = ("name_en", "is_active")
-    list_filter = ("is_active",)
-    search_fields = ("name_en", "name_fa", "name_tr", "name_ar")
-
-
 @admin.register(Program)
 class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
     list_display = (
@@ -615,8 +573,6 @@ class ProgramOfferingAdmin(
     list_filter = (
         "academic_year",
         "intake",
-        "fee_basis",
-        "currency",
         "preparation_included",
         "is_active",
         "program__university",
@@ -631,7 +587,6 @@ class ProgramOfferingAdmin(
         "program",
         "academic_year",
         "intake",
-        "semester",
         "source",
     )
     fieldsets = (
@@ -642,8 +597,7 @@ class ProgramOfferingAdmin(
                     "program",
                     "academic_year",
                     "intake",
-                    "fee_basis",
-                    "currency",
+                    "preparation_included",
                     "is_active",
                 )
             },
@@ -669,29 +623,6 @@ class ProgramOfferingAdmin(
                     "source",
                     "notes",
                 )
-            },
-        ),
-        (
-            "Legacy compatibility pricing",
-            {
-                "classes": ("collapse",),
-                "fields": (
-                    "semester",
-                    "tuition",
-                    "tuition_discount_percentage",
-                    "tuition_discounted",
-                    "cash_discount_percentage",
-                    "tuition_cash",
-                    "tuition_annual_installment",
-                    "deposit",
-                    "preparatory_tuition",
-                    "preparation_included",
-                ),
-                "description": (
-                    "Deprecated compatibility fields retained while older consumers migrate. "
-                    "Do not treat tuition_cash as the canonical meaning of an advance-payment "
-                    "fee; use OfferingFee rows for source-faithful semantics."
-                ),
             },
         ),
     )

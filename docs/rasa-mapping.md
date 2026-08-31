@@ -82,8 +82,8 @@ Re-import behavior:
 | `description_en/fa/tr/ar` | corresponding `Program.description_*` |
 | `department_*` | `Department` + `Program.department` |
 | `degree` | `Program.degree` |
-| `language` | `ProgramLanguage` + one or more `ProgramInstructionLanguage` rows; legacy bridge is also populated |
-| `duration_years` | canonical `Program.duration_months`; whole-year legacy `Program.duration` populated when exact |
+| `language` | `ProgramLanguage` + one or more `ProgramInstructionLanguage` rows |
+| `duration_years` | canonical `Program.duration_months` |
 | `boost_score` | `Program.listing_priority` |
 | `study_mode` | `Program.study_mode` when explicitly recognized; unknown values are preserved in offering notes |
 | `academic_unit` / `faculty` / `school` / `institute` | `AcademicUnit` + `Program.academic_unit` when supplied |
@@ -108,12 +108,12 @@ normalizes them into `ProgramOffering`.
 | Rasa | TurkDemy |
 |---|---|
 | `tuition_usd` | `ProgramOffering.tuition` |
-| `tuition_discounted_usd` | `tuition_discounted` |
-| `tuition_cash_usd` | `tuition_cash` |
-| `tuition_annual_installment_usd` | `tuition_annual_installment` |
-| `discount_pct` | `tuition_discount_percentage` |
+| `tuition_discounted_usd` | `OfferingFee(DISCOUNTED_TUITION)` |
+| `tuition_cash_usd` | `OfferingFee(CASH_PAYMENT)` |
+| `tuition_annual_installment_usd` | `OfferingFee(INSTALLMENT_TOTAL)` |
+| `discount_pct` | percentage on discounted-tuition `OfferingFee` |
 | `deposit_usd` | `deposit` |
-| `preparatory_tuition_usd` | `preparatory_tuition` |
+| `preparatory_tuition_usd` | `OfferingFee(PREPARATORY)` |
 | `preparation_included` | `preparation_included` |
 | `quota` | `quota` |
 | `deadline` | `deadline` |
@@ -126,7 +126,7 @@ Current importer assumptions:
 currency      = USD
 fee_basis     = annual
 academic_year = command argument, default 2026-2027
-semester      = command argument, default Fall
+intake        = command argument, default Fall
 ```
 
 ## FAQCategory
@@ -179,7 +179,7 @@ Stable import keys are:
 ```text
 University        → slug_en
 Program           → university + slug_en
-ProgramOffering   → program + academic_year + semester
+ProgramOffering   → program + academic_year + intake
 FAQCategory       → key
 FAQ               → category + question_en
 UniversityMedia   → source fingerprint marker
@@ -266,16 +266,8 @@ FAQ.category (TurkDemy ForeignKey)
 The importer also supports numeric IDs, explicit category-key fields, and a
 nested category object as defensive fallbacks.
 
-### Catalogue v2 compatibility backfill
+### Catalogue v3 storage
 
-After generating/applying schema migrations on an existing database, run:
+Rasa imports write `Intake`, `ProgramInstructionLanguage`, `duration_months`, and
+structured `OfferingFee` rows directly. New imports do not create Catalogue v2 compatibility data. Existing databases that still contain v2 columns must use the documented pre-migration cutover before those columns are dropped.
 
-```bash
-uv run python manage.py backfill_catalogue_v2
-```
-
-The command is idempotent. It converts legacy whole-year durations to months and
-creates a canonical instruction-language association from each legacy
-`program_language` value. Mixed-language source strings such as `30% English &
-70% Turkish` are parsed into separate associations; invalid supplied percentage
-totals fail instead of being guessed.

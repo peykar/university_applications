@@ -20,7 +20,8 @@
 - ProgramLanguage
 - ProgramInstructionLanguage
 - AcademicYear
-- Semester
+- Intake
+- OfferingFee
 - Program
 - ProgramOffering
 - UniversityCatalogueSource
@@ -51,26 +52,19 @@ Agent → Student → Application
 Student → StudentDocument → ApplicationDocument → Application
 ```
 
-## Catalogue v2 notes
+## Catalogue v3 notes
 
 `Program` is the stable academic identity. Canonical programme dimensions are
 `academic_unit`, optional `department`, `degree`, `thesis_type`, `study_mode`,
-`duration_months`, and the `ProgramInstructionLanguage` through rows. Program also
-has `internal_notes` for staff/import context; it is deliberately excluded from
-public/customer presentation and the public Program API. The old `program_language`
-and whole-year `duration` fields remain compatibility bridges for existing
-databases/import data and are not customer-facing canonical fields.
+`duration_months`, and `ProgramInstructionLanguage` through rows. `internal_notes`
+is staff/import-only. Catalogue v2 compatibility fields have been removed.
 
-Localized catalogue slugs use a split validation policy: `slug_en` stays
-ASCII-only and is the canonical deterministic import key, while `slug_fa`,
-`slug_tr`, and `slug_ar` accept native Unicode slug characters. This shared
-policy also applies to catalogue geography records through `LocalizedSlugMixin`.
+`ProgramOffering` owns the academic year, canonical `Intake`, availability,
+provenance, and preparation-inclusion metadata. All prices, currencies,
+percentages, and fee bases are represented only by `OfferingFee` rows.
 
-`ProgramOffering` owns intake/commercial data. `preparatory_tuition` is the
-domain-facing name for the historic `pre_school_fees` database column. Standard
-tuition, discounted/offered tuition, cash/advance-payment tuition, deposit, and
-preparatory tuition have distinct meanings.
-
+Localized catalogue slugs use ASCII `slug_en` as the deterministic import key;
+localized Persian/Turkish/Arabic slugs may use native Unicode.
 
 ### Automatic localized slugs
 
@@ -81,14 +75,12 @@ fill-only and never overwrites an explicit stored slug.
 
 ## Catalogue v3 pricing/intakes
 
-`Intake` is now the canonical offering intake entity (for example Fall, Spring, September, or Academic Intake) and binds an `AcademicYear`, optionally to one University. `ProgramOffering.intake` is canonical; `semester` remains a deprecated compatibility bridge.
+`Intake` is the sole offering intake entity. `OfferingFee` is the sole monetary
+representation and supports list/discounted tuition, advance/cash payment,
+installment total, deposit, preparatory/foundation, application, registration,
+and other fees. Django Admin and UI/API readers use these canonical rows directly.
 
-`OfferingFee` is the canonical extensible fee component. It records fee type, optional source label, optional language, currency, amount and/or percentage, basis, notes, and active state. It supports list/discounted tuition, advance/cash payment, installment total, deposit, preparatory/foundation, application, registration, and other fees. Existing fixed ProgramOffering price columns remain during migration for current consumers.
-
-### Catalogue v3 admin pricing
-
-`OfferingFee` is the canonical staff-facing price representation for an offering.
-Django Admin shows these rows first. The fixed `ProgramOffering` tuition/cash/
-deposit/preparatory columns and `semester` remain compatibility fields and are
-grouped under a collapsed legacy section until remaining consumers migrate.
+Formal Application creation snapshots the active discounted tuition when present,
+otherwise list tuition, and snapshots an active structured deposit when present.
+An offering without an active amount-bearing tuition fee cannot start an Application.
 

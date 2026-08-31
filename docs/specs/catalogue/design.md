@@ -1,41 +1,30 @@
 # University and program catalogue — technical design
 
 Status: APPROVED
-Version: 2.5
+Version: 3.2
 
 ## Domain shape
 
 ```text
 University
  ├── AcademicUnit*
- │    └── type
  ├── Department*
  ├── UniversityCatalogueSource*
  └── Program*
-      ├── AcademicUnit? -> same University
-      ├── Department?   -> same University
-      ├── study_mode
-      ├── duration (unambiguous/fraction-safe)
-      ├── internal_notes (staff/import only)
-      ├── ProgramInstructionLanguage*
-      │    ├── ProgramLanguage
-      │    ├── percentage?
-      │    └── is_primary
+      ├── AcademicUnit? / Department?
+      ├── study_mode / duration_months / internal_notes
+      ├── ProgramInstructionLanguage* → ProgramLanguage
       └── ProgramOffering*
            ├── AcademicYear
-           ├── Semester
-           ├── fee_basis / currency
-           ├── tuition
-           ├── tuition_discounted
-           ├── tuition_cash
-           ├── deposit
-           ├── preparatory_tuition
+           ├── Intake
+           ├── OfferingFee*
            ├── preparation_included
-           ├── quota / deadline
-           ├── valid_from / valid_until
+           ├── quota / deadline / validity
            ├── notes
-           └── source? -> UniversityCatalogueSource
+           └── source? → UniversityCatalogueSource
 ```
+
+Catalogue v3 is the sole active persistence representation.
 
 ## Model design
 
@@ -57,9 +46,8 @@ Percentage-total validation belongs in model/service/form validation because a
 row cannot validate the aggregate alone. Null means "source did not state the
 share", not zero.
 
-The legacy `program_language` field is a migration bridge only: populate the
-through table first, update all readers/importers, then remove the legacy field
-in a later migration after compatibility tests pass.
+The earlier single-language compatibility field has been removed. All language
+readers and writers use `ProgramInstructionLanguage`.
 
 ### Program internal notes
 
@@ -80,12 +68,8 @@ source evidence.
 
 ### Duration
 
-Use a fraction-safe canonical representation. Preferred implementation is
-`duration_months` as a positive integer because it is unambiguous and supports
-1.5-year programmes exactly. Migration must explicitly translate the current
-legacy duration according to its documented/current unit. If investigation
-shows legacy duration is not consistently years, stop migration and record a
-CONFLICT rather than guessing.
+Use `duration_months` as the sole stored duration. It is unambiguous and supports
+fractional-year programmes such as 18 months without loss.
 
 ### UniversityCatalogueSource
 
@@ -97,16 +81,11 @@ relations according to existing file-retention conventions.
 
 ### ProgramOffering
 
-Retain the existing offering as the intake/commercial boundary. Do not move
-pricing onto Program. Keep existing numeric pricing fields and formally define
-their semantics in the spec. Rename `pre_school_fees` to
-`preparatory_tuition` with a data-preserving migration. Add
-`preparation_included`, `notes`, `valid_from`, `valid_until`, and optional
-`source`.
-
-Do not add a generic OfferingPrice table in v2. Current source samples are
-covered by standard, discounted/offered, cash/advance, deposit, and preparatory
-amounts; over-normalising now would add complexity without an approved need.
+`ProgramOffering` is the intake/availability/provenance boundary. It stores the
+canonical `Intake`, academic year, preparation-inclusion flag, quota/deadline,
+validity, notes, and source. Monetary values are not columns on ProgramOffering.
+Each price/percentage is an `OfferingFee` with explicit fee type, currency, basis,
+optional language, label, and notes.
 
 ## Admin/agent maintenance
 
@@ -118,50 +97,27 @@ AcademicUnit, Department, language composition, study mode and duration are
 Program-level inputs. Agent-facing validation must explain invalid mixed
 language percentages and cross-University selections.
 
-## Import and migration strategy
+## Import and transition strategy
 
-Implement in compatibility stages:
-
-1. Add new nullable/compatible structures and source model.
-2. Backfill one ProgramInstructionLanguage from each legacy single language.
-3. Backfill canonical duration without changing displayed meaning.
-4. Rename/copy preparatory fee data without loss.
-5. Update Rasa import and admin/read paths to write/read canonical structures.
-6. Update public filters/detail pages and admissions selectors.
-7. Remove/deprecate legacy language/duration paths only after regression tests
-   prove no remaining readers/writers.
-
-University-supplied sheets are evidence, not automatically trusted normalized
-input. Import code must not infer percentages, study mode, validity, or pricing
-semantics where the source is ambiguous; preserve the raw/source note instead.
+The compatibility transition is complete. New code must not create or read the
+removed Semester, single-language Program field, whole-year duration field, or
+fixed ProgramOffering price columns. Source ambiguity is preserved in notes rather
+than guessed.
 
 ### Normalized per-University JSON import
 
-`import_programs_for_university` is the deterministic ingestion boundary between
-manually/externally normalized university source material and Catalogue v2. It
-accepts exactly three required positional inputs: University UUID,
-UniversityCatalogueSource UUID, and schema-v1 JSON path. The JSON deliberately
-does not carry database IDs for University/source; those are explicit runtime
-arguments and the command verifies source ownership before any writes.
+`import_programs_for_university` accepts University UUID,
+UniversityCatalogueSource UUID, and a schema-v2 JSON path. Programs use `slug_en`
+as their deterministic key. Offerings use Program + AcademicYear + Intake + source.
+Instruction-language rows are authoritative for imported Programs, and each
+Offering carries a structured `fees` array. The whole import is atomic.
 
-Schema v1 contains top-level AcademicUnits and Departments referenced by stable
-`slug_en`, plus Programs keyed by `slug_en` within the target University. Programs
-carry canonical degree, thesis type, study mode, duration in months and one or
-more instruction-language rows. Offerings carry AcademicYear/Semester and the
-structured Catalogue v2 pricing/validity fields. The command forces the supplied
-UniversityCatalogueSource onto every imported Offering.
+### Rasa import
 
-Upsert keys are intentionally simple and source-stable: University + English
-slug for AcademicUnit/Department/Program, and Program + AcademicYear + Semester +
-source for Offering. Multiple existing rows matching an import key are treated as
-an ambiguity and fail the transaction. Absence from a later file never means
-delete/deactivate. For Programs that are present, instruction-language rows are
-synchronized exactly to the normalized file.
-
-The whole import is one transaction. Structural validation happens before writes
-where possible, and model validation runs before saves. This command consumes
-normalized JSON only; extracting or interpreting arbitrary PDFs/XLSX remains
-outside the management command and outside automatic OCR scope.
+Rasa source columns are normalized directly into `duration_months`,
+`ProgramInstructionLanguage`, university/year-specific `Intake`, and `OfferingFee`
+rows. The `--semester` command-line spelling is accepted only as an alias for
+`--intake`; it does not create a Semester model or compatibility data.
 
 ## Public catalogue
 
@@ -176,7 +132,7 @@ to expose them. Tuition filters continue to constrain a coherent Offering row.
 - Preserve existing LeadProgramInterest/Application relationships to Program and
   ProgramOffering.
 - Existing Applications must retain valid Offering references through migrations.
-- No admission workflow semantics change as part of catalogue v2.
+- Admission workflow semantics remain unchanged except that Application pricing snapshots now read canonical structured OfferingFee data.
 - Preserve i18n/RTL behavior and existing localized catalogue naming patterns.
 
 ## Architecture decision
@@ -185,7 +141,7 @@ See `docs/architecture/decisions/ADR-006-university-catalogue-v2.md`.
 
 ## University catalogue JSON dump
 
-`dump_university_data <university-id>` produces a schema-v1 UTF-8 JSON snapshot
+`dump_university_data <university-id>` produces a schema-v2 UTF-8 JSON snapshot
 for offline catalogue comparison and text enrichment. The command accepts one
 required positional argument; `--output` is an optional destination override.
 The default filename is `university_<uuid>_catalogue.json`.
@@ -229,3 +185,21 @@ its name later changes. This avoids unexpected public URL changes. A localized
 name that is empty does not create a slug. `slug_en` remains the canonical ASCII
 identifier/import key; this automation primarily removes manual admin work and
 does not change normalized JSON import key semantics.
+
+## Catalogue v3 transition completion
+
+Catalogue v3 is now the sole active persistence model. `Program` stores canonical
+`duration_months` and instruction-language through rows only. `ProgramOffering`
+stores its `Intake`, availability/provenance metadata, and preparation-inclusion
+flag; all monetary values, currencies, percentages and fee bases live in
+`OfferingFee`.
+
+Application creation is an explicit v3 consumer. It selects the same canonical
+payable tuition used for presentation (discounted tuition first, then list
+tuition), rejects offerings without an amount-bearing active tuition fee, and
+snapshots an active structured deposit when one exists.
+
+Normalized JSON import schema version 2 requires `intake` and a structured
+`fees` array. Rasa source columns are translated directly into OfferingFee rows.
+No importer writes a compatibility copy. Export and Admin likewise expose only
+the canonical model.
