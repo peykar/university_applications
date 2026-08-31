@@ -46,3 +46,13 @@ Academic Unit, Department, Program, degree, thesis type, and instruction languag
 Missing hierarchy relations are omitted and are never inferred solely for URL generation.
 The rebuild command and both catalogue importers preserve transition matching for
 pre-hierarchy canonical slugs so existing rows update rather than duplicate.
+
+## 2026-08-31 hierarchy localization hardening
+
+An existing Academic Unit or Department may have incomplete translations. Canonical
+slug generation must not silently drop that structured hierarchy component in such a
+locale, because doing so can collapse two otherwise distinct Programs to the same
+public slug. For hierarchy components only, resolution is now localized slug, then
+localized name, then English slug, then English name. A missing hierarchy relation is
+still omitted and no hierarchy is invented solely for URL generation.
+

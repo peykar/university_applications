@@ -349,14 +349,20 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
 
     @staticmethod
     def _related_slug_token(related, locale: str) -> str:
-        """Return a localized Academic Unit/Department token when present."""
+        """Return a hierarchy token, falling back to English when untranslated."""
         if related is None:
             return ""
         token = str(getattr(related, f"slug_{locale}", "") or "").strip()
         if token:
             return token
         name = str(getattr(related, f"name_{locale}", "") or "").strip()
-        return slugify(name, allow_unicode=locale != "en") if name else ""
+        if name:
+            return slugify(name, allow_unicode=locale != "en")
+        english_token = str(getattr(related, "slug_en", "") or "").strip()
+        if english_token:
+            return english_token
+        english_name = str(getattr(related, "name_en", "") or "").strip()
+        return slugify(english_name) if english_name else ""
 
     def _degree_slug_token(self, locale: str) -> str:
         """Return the canonical localized degree token used in public slugs."""

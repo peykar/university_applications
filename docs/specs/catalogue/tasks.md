@@ -90,6 +90,7 @@ Version: 3.1
       destructive migrations remove Catalogue v2 storage.
 - [x] CAT-T35 (`CAT-050`) Rebuild localized Program public slugs from structured University, optional Academic Unit/Department, Program name, degree, thesis type, and instruction-language data with the
       localized University prefix, include thesis/non-thesis for graduate variants,
-      make them globally unique, keep normalized imports transition-safe/idempotent,
-      add `rebuild_program_slugs --dry-run`,
+      make them globally unique, preserve existing hierarchy components with an
+      English fallback when a localized hierarchy translation is missing, keep
+      normalized imports transition-safe/idempotent, add `rebuild_program_slugs --dry-run`,
       document the rollout, and add regression coverage.

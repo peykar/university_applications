@@ -37,3 +37,7 @@ The rebuild ignores the existing Program slug as an input. It derives each local
 from the University localized slug, Program localized name, degree, thesis type
 when applicable, and structured instruction languages. All languages are included
 (primary first), so multilingual variants remain distinguishable.
+
+If an Academic Unit or Department exists but is untranslated in the target locale,
+its English slug (or English name as a final fallback) remains in the localized
+Program slug. This preserves the structured distinction until translations are filled.

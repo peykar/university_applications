@@ -348,6 +348,45 @@ class ProgramCanonicalPublicSlugTests(TestCase):
             "istanbul-atlas-üniversitesi-hemşirelik-lisans-türkçe",
         )
 
+    def test_hierarchy_slug_falls_back_to_english_when_locale_is_missing(self):
+        academic_unit = AcademicUnit.objects.create(
+            university=self.university,
+            unit_type="vocational_school",
+            name_en="Vocational School of Health Services",
+            slug_en="vocational-school-of-health-services",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        department = Department.objects.create(
+            university=self.university,
+            name_en="Department of Health Management",
+            slug_en="department-of-health-management",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        self.university.name_fa = "مدیپول استانبول"
+        self.university.slug_fa = "مدیپول-استانبول"
+        self.university.save()
+        self.turkish.name_fa = "ترکی"
+        self.turkish.slug_fa = "ترکی"
+        self.turkish.save()
+        program = Program.objects.create(
+            university=self.university,
+            academic_unit=academic_unit,
+            department=department,
+            name_en="Management of Health Institutions",
+            name_fa="مدیریت موسسات درمانی",
+            degree="associate",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        self._add_language(program, self.turkish)
+        self.assertEqual(
+            program.slug_fa,
+            "مدیپول-استانبول-vocational-school-of-health-services-"
+            "department-of-health-management-مدیریت-موسسات-درمانی-کاردانی-ترکی",
+        )
+
     def test_program_slug_includes_academic_unit_and_department_when_present(self):
         academic_unit = AcademicUnit.objects.create(
             university=self.university,

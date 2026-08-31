@@ -216,9 +216,12 @@ from structured catalogue data: localized University slug, localized Academic Un
 when present, localized Department when present, localized Program name,
 deterministic localized degree token, `thesis`/`non-thesis` when applicable, and
 the structured instruction-language variant. Missing Academic Unit/Department
-relations are omitted rather than inferred. Instruction languages are ordered
-primary-first and then deterministically, and every language in a multilingual
-variant is represented.
+relations are omitted rather than inferred. When an existing Academic Unit or
+Department lacks the requested locale, slug generation preserves that hierarchy
+component by falling back to its English slug, then English name. This prevents
+localized slug collisions caused only by incomplete hierarchy translations.
+Instruction languages are ordered primary-first and then deterministically, and
+every language in a multilingual variant is represented.
 
 `ProgramInstructionLanguage.save()` refreshes the parent Program so Admin/import
 inline changes also refresh public slugs. Repeated generation from the same

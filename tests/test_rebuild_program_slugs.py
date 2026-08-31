@@ -98,6 +98,35 @@ class RebuildProgramSlugsCommandTests(TestCase):
             "istanbul-atlas-university-faculty-of-health-sciences-nursing-bachelor-turkish",
         )
 
+    def test_command_preserves_untranslated_hierarchy_with_english_fallback(self):
+        unit = AcademicUnit.objects.create(
+            university=self.university,
+            unit_type="vocational_school",
+            name_en="Vocational School of Health Services",
+            slug_en="vocational-school-of-health-services",
+            created_by=get_system_user(),
+            updated_by=get_system_user(),
+        )
+        self.university.name_fa = "مدیپول استانبول"
+        self.university.slug_fa = "مدیپول-استانبول"
+        self.university.save()
+        self.program.name_fa = "مدیریت موسسات درمانی"
+        self.program.save()
+        self.turkish.name_fa = "ترکی"
+        self.turkish.slug_fa = "ترکی"
+        self.turkish.save()
+        Program.objects.filter(pk=self.program.pk).update(
+            academic_unit=unit,
+            slug_fa="مدیپول-استانبول-مدیریت-موسسات-درمانی-کارشناسی-ترکی",
+        )
+        call_command("rebuild_program_slugs", stdout=StringIO())
+        self.program.refresh_from_db()
+        self.assertEqual(
+            self.program.slug_fa,
+            "مدیپول-استانبول-vocational-school-of-health-services-"
+            "مدیریت-موسسات-درمانی-کارشناسی-ترکی",
+        )
+
     def test_command_adds_thesis_type_to_graduate_slug(self):
         self.program.name_en = "Business Administration"
         self.program.degree = "master"

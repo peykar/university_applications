@@ -163,4 +163,7 @@ BR-CAT-006 — Cash/advance-payment tuition is not a deposit, and preparatory
 tuition is not preschool tuition.
 
 BR-CAT-007 — A Program localized public slug is globally unique and is formed
-from the corresponding localized University slug plus the Program slug part.
+from canonical structured University, hierarchy, Program, degree, thesis, and
+instruction-language data. An existing Academic Unit or Department must remain
+represented in every locale; when its localized slug/name is missing, its English
+slug/name is used as the fallback rather than dropping the hierarchy component.

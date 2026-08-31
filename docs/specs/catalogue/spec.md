@@ -288,7 +288,7 @@ For each locale the canonical composition is `<University localized slug>-<Acade
 Unit localized slug when present>-<Department localized slug when present>-<Program
 localized name>-<degree>-<thesis type when applicable>-<instruction language
 variant>`. Academic Unit and Department components MUST be omitted when the
-corresponding structured relation is absent and MUST NOT be invented for slug generation. Degree tokens are deterministic per locale. Thesis variants MUST use
+corresponding structured relation is absent and MUST NOT be invented for slug generation. When an Academic Unit or Department relation exists but its requested locale is untranslated, that hierarchy component MUST still be preserved by falling back in order to its English slug and then its English name; localized hierarchy data takes precedence whenever available. Degree tokens are deterministic per locale. Thesis variants MUST use
 `thesis` or `non-thesis`. Instruction-language tokens MUST come from the structured
 `ProgramInstructionLanguage` rows, with the primary language first and remaining
 languages in deterministic order; a multilingual variant therefore preserves all

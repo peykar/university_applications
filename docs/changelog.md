@@ -1,5 +1,12 @@
-## 2026-08-31 — Structured Program slug re-import idempotency
+## 2026-08-31 — Program slug hierarchy locale fallback
 
+- Added CHG-0007 / CAT-050 hierarchy fallback: an existing Academic Unit or
+  Department remains represented when its target-locale translation is missing,
+  using English slug/name as the deterministic fallback.
+- Added regression coverage for localized hierarchy collision prevention and the
+  existing-database rebuild path.
+
+## 2026-08-31 — Structured Program slug re-import idempotency
 - Fixed BUG-0028: schema-v2 programme re-imports keep input `slug_en` as the
   stable source identity even though the persisted public slug is rebuilt from
   mutable structured Program data.
