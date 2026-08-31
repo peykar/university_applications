@@ -99,6 +99,7 @@
             <div class="offering-price-block">
               {% with tuition_fee=offering.display_tuition_fee %}
                 {% if tuition_fee %}
+                  <small class="offering-price-label">{{ tuition_fee.display_label }}{% if tuition_fee.language %} · {{ tuition_fee.language.name_en }}{% endif %}</small>
                   <strong>{{ tuition_fee.amount|currency_amount_full:tuition_fee.currency }}</strong>
                   <span>{{ tuition_fee.get_basis_display }}</span>
                 {% else %}
@@ -110,7 +111,13 @@
             <dl class="offering-facts">
               {% for fee in offering.display_fees %}
                 {% if fee != offering.display_tuition_fee %}
-                  <div><dt>{{ fee.label|default:fee.get_fee_type_display }}{% if fee.language %} · {{ fee.language.name_en }}{% endif %}</dt><dd>{% if fee.amount %}{{ fee.amount|currency_amount_full:fee.currency }}{% endif %}{% if fee.percentage %}{{ fee.percentage|floatformat:0 }}%{% endif %}</dd></div>
+                  <div>
+                    <dt>{{ fee.display_label }}{% if fee.language %} · {{ fee.language.name_en }}{% endif %}</dt>
+                    <dd>
+                      {% if fee.amount %}<span>{{ fee.amount|currency_amount_full:fee.currency }}</span>{% endif %}
+                      {% if fee.amount %}<small>{{ fee.get_basis_display }}</small>{% endif %}
+                    </dd>
+                  </div>
                 {% endif %}
               {% endfor %}
               <div><dt>{% trans "Quota" %}</dt><dd>{{ offering.quota|default:"—" }}</dd></div>

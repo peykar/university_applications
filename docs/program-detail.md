@@ -68,3 +68,16 @@ rows. The primary displayed tuition prefers an active discounted-tuition fee whe
 present, otherwise list tuition; other structured fees are shown with their source
 label, language (when applicable), amount/percentage, and basis. Catalogue pricing
 is sourced only from canonical Intake and structured OfferingFee data.
+
+## Structured fee presentation
+
+The offering headline uses the canonical payable tuition selection (discounted
+structured tuition when available, otherwise list tuition), but it must retain
+that `OfferingFee`'s source/canonical label. This prevents a scholarship or other
+discounted price from appearing as an unlabeled generic tuition amount.
+
+Structured percentages are displayed exactly once: a source label containing a
+percent sign is preserved as-is; otherwise the structured percentage is appended
+to the display label. Every amount-bearing fee also displays its canonical fee
+basis (annual, per semester, whole program, per credit, or one time). Public UI
+does not calculate or infer discounts between fee rows.

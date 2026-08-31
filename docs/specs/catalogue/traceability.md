@@ -17,7 +17,7 @@ Version: 3.0
 | `CAT-010` | Percentage validation | `CAT-T02` | validators, admin inline formset, importer guard | `CatalogueV2Tests.test_instruction_language_percentage_is_bounded` plus admin/import structural coverage |
 | `CAT-011` | Study mode | `CAT-T03` | `Program.study_mode`, filters/admin/importer/public detail | `CatalogueV2Tests.test_language_filter_matches_any_canonical_instruction_language` |
 | `CAT-012` | Fraction-safe duration | `CAT-T04` | `duration_months`, `duration_display`, importer conversion/backfill | `CatalogueV2Tests.test_import_helpers_preserve_fractional_duration_and_mixed_languages`; `test_legacy_fields_backfill_without_losing_meaning` |
-| `CAT-013` | Pricing semantics | `CAT-T07` | existing structured fields + explicit admin/API/public labels | `CatalogueV2Tests.test_source_and_offering_keep_pricing_semantics_and_provenance` |
+| `CAT-013` | Pricing semantics | `CAT-T07`, `CAT-T36` | structured fee types plus source-faithful public labels via `OfferingFee.display_label` | `CatalogueV2Tests.test_source_and_offering_keep_pricing_semantics_and_provenance`; `PublicStructuredFeePresentationTests` |
 | `CAT-014` | Preparatory tuition rename | `CAT-T05` | `preparatory_tuition` mapped to legacy DB column `pre_school_fees` | `CatalogueV2Tests.test_source_and_offering_keep_pricing_semantics_and_provenance` |
 | `CAT-015` | Preparation inclusion/notes | `CAT-T07` | `preparation_included`, `notes` | `CatalogueV2Tests.test_source_and_offering_keep_pricing_semantics_and_provenance` |
 | `CAT-016` | UniversityCatalogueSource | `CAT-T06` | model + admin/file/recorded-by support | `CatalogueV2Tests.test_source_and_offering_keep_pricing_semantics_and_provenance` |
@@ -48,14 +48,14 @@ the delivery sandbox. Full Django/pytest verification must be re-run with local
 the locked project dependencies.
 | `CAT-035` | Canonical Intake | `CAT-T23` | `Intake`, `ProgramOffering.intake` | `tests/test_catalogue_v3.py` |
 | `CAT-036` | Intake invariants | `CAT-T23` | `Intake.clean`, `ProgramOffering.clean` | `tests/test_catalogue_v3.py` |
-| `CAT-037` | Normalized offering fees | `CAT-T24` | `OfferingFee`, `OfferingFeeType` | `tests/test_catalogue_v3.py` |
-| `CAT-038` | Language-aware/source-faithful fees | `CAT-T24` | `OfferingFee.language/label/notes` | `tests/test_catalogue_v3.py` |
+| `CAT-037` | Normalized offering fees | `CAT-T24`, `CAT-T36` | `OfferingFee`, `OfferingFeeType`, public structured-fee presentation | `tests/test_catalogue_v3.py`; `PublicStructuredFeePresentationTests` |
+| `CAT-038` | Language-aware/source-faithful fees | `CAT-T24`, `CAT-T36` | `OfferingFee.language/label/notes`, `OfferingFee.display_label` | `tests/test_catalogue_v3.py`; `PublicStructuredFeePresentationTests` |
 | `CAT-039` | Expanded fee basis | `CAT-T24` | `FeeBasis` | `tests/test_catalogue_v3.py` |
 | `CAT-040` | Compatibility/import transition | `CAT-T25` | normalized importer `_get_or_create_intake`, `_sync_structured_fees`; legacy fields retained | importer + catalogue v3 tests |
 | `CAT-041` | Canonical structured-fee admin presentation | `CAT-T27` | `apps/universities/admin.py::StructuredFeeSummaryMixin`, `ProgramOfferingInline`, `ProgramOfferingAdmin`, `OfferingFeeAdmin` | `CatalogueV3AdminPresentationTests` |
 
 | `CAT-042` | Semantic structured-fee display order | `CAT-T28` | `apps/universities/admin.py::StructuredFeeSummaryMixin.FEE_TYPE_DISPLAY_ORDER` | `CatalogueV3AdminPresentationTests.test_structured_fee_summary_uses_semantic_fee_order` |
-| `CAT-043` | Catalogue v3 UI/API consumers | `CAT-T29` | `apps/public/services/program_filters.py`, `apps/public/views.py`, public/customer/agent templates, Application admin, ProgramOffering API serializer | `tests/test_catalogue_v3_ui.py`, `tests/test_program_filters.py`, customer Request structural tests |
+| `CAT-043` | Catalogue v3 UI/API consumers | `CAT-T29`, `CAT-T36` | `apps/public/services/program_filters.py`, `apps/public/views.py`, public/customer/agent templates, Application admin, ProgramOffering API serializer | `tests/test_catalogue_v3_ui.py` including rendered structured-fee presentation, `tests/test_program_filters.py`, customer Request structural tests |
 | `CAT-044` | Remove Catalogue v2 persistence | `CAT-T30` | `apps/universities/models.py`; removed `backfill_catalogue_v2` | `tests/test_catalogue_v3_only.py` |
 | `CAT-045` | Application snapshots structured fees | `CAT-T31` | `apps/applications/services.py::create_student_application` | `tests/test_student_application_workflow.py`; lead finalization workflow tests |
 | `CAT-046` | V3-native normalized JSON import | `CAT-T32` | `apps/universities/management/commands/import_programs_for_university.py` | `tests/test_university_program_json_import.py` |

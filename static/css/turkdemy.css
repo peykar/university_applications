@@ -369,11 +369,11 @@ th{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut
 .offering-open{background:#e7f7ef;color:#16643b}.offering-closed{background:#f5e9e9;color:#923434}
 .offering-price-block{display:flex;flex-direction:column;margin:22px 0 15px;padding:18px 0;border-block:1px solid var(--border)}
 .offering-price-block strong{font-size:1.75rem;line-height:1.1;color:#075948}
-.offering-price-block>span:last-child,.offering-price-block small{font-size:.77rem;color:var(--muted);margin-top:4px}
+.offering-price-block>span:last-child,.offering-price-block small{font-size:.77rem;color:var(--muted);margin-top:4px}.offering-price-block .offering-price-label{font-weight:700;color:var(--text);margin-top:0;margin-bottom:5px}
 .old-price{text-decoration:line-through;color:#9aa5b1;font-size:.86rem}
 .offering-facts{display:grid;gap:9px;margin:0}
 .offering-facts div{display:flex;justify-content:space-between;gap:14px}
-.offering-facts dt{color:var(--muted);font-size:.82rem}.offering-facts dd{margin:0;font-weight:700;font-size:.84rem;text-align:end}
+.offering-facts dt{color:var(--muted);font-size:.82rem}.offering-facts dd{margin:0;font-weight:700;font-size:.84rem;text-align:end;display:flex;flex-direction:column;align-items:flex-end}.offering-facts dd small{font-size:.72rem;font-weight:500;color:var(--muted);margin-top:2px}
 .university-showcase{padding:30px;border:1px solid var(--border);border-radius:20px;background:linear-gradient(135deg,#f5f8fa,#fff 60%,#fff4f5)}
 .university-showcase-header{display:flex;justify-content:space-between;gap:24px;align-items:center}
 .university-showcase-title{display:flex;gap:18px;align-items:center}

@@ -240,3 +240,23 @@ metadata for Programs it actually writes. This means legacy rows such as
 `altinbas-dentistry` normalize to a structured identity such as
 `altinbas-faculty-of-dentistry-dentistry-bachelor-english` when its Academic Unit,
 Program, and instruction-language data establish those values.
+
+## Source-faithful public fee presentation (CAT-013, CAT-037, CAT-038, CAT-043)
+
+The public Program detail page may continue to promote `display_tuition_fee` as
+its headline payable tuition (discounted tuition first, then list tuition), but
+promotion must not erase the selected `OfferingFee` semantic label. The headline
+therefore renders the fee's source label (or canonical fee-type label), amount,
+and basis together.
+
+`OfferingFee.display_label` is the presentation boundary for fee labels. It
+preserves a non-empty source label verbatim and falls back to the canonical
+fee-type display name. When a structured percentage exists and the chosen label
+does not already contain a percent sign, the percentage is appended once in
+parentheses. This prevents source labels such as `Scholarship fee (10%)` or
+`Advance payment (15%)` from producing duplicate percentage text while ensuring
+percentage-only semantics are not hidden when a source label omits the number.
+
+All remaining amount-bearing structured fees render their label, amount, and
+basis as one fact. The template does not recompute discounts or infer relations
+between fee rows; it only presents the source-faithful normalized data.

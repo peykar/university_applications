@@ -96,3 +96,8 @@ Version: 3.1
       make rebuild collisions resolve with deterministic numeric tails and report every resolution,
       make ordinary Program saves/import language synchronization allocate stable numeric tails instead of failing unique constraints,
       document the rollout, and add regression coverage.
+- [x] CAT-T36 (`CAT-013`, `CAT-037`, `CAT-038`, `CAT-043`) Preserve structured
+      fee semantics in the public offering price presentation: label the promoted
+      tuition price, show source/structured percentages exactly once, display fee
+      basis alongside every amount-bearing fee, and add rendered-page regression
+      coverage for list, scholarship/discounted, advance-payment, and deposit fees.

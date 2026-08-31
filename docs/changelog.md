@@ -1333,3 +1333,7 @@
 - Refined CAT-050/CAT-T35: Program public slugs are now deterministically rebuilt
   from structured University, localized Program name, degree, thesis type, and
   instruction-language data instead of historical Program slug text.
+
+- Fixed public Program offering pricing so promoted discounted/scholarship tuition
+  keeps its fee label, percentages are shown exactly once, and each monetary fee
+  displays its basis instead of presenting an ambiguous unlabeled annual amount.

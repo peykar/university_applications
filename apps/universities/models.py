@@ -749,5 +749,14 @@ class OfferingFee(BaseModel, ActiveMixin):
             # A generic preparatory fee remains valid when the source does not name a language.
             return
 
+    @property
+    def display_label(self) -> str:
+        """Return a source-faithful public label with percentage shown once."""
+        label = self.label.strip() or str(self.get_fee_type_display())
+        if self.percentage is None or "%" in label:
+            return label
+        percentage = format(self.percentage.normalize(), "f")
+        return f"{label} ({percentage}%)"
+
     def __str__(self):
         return f"{self.offering} — {self.get_fee_type_display()}"
