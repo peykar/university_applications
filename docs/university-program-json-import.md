@@ -13,6 +13,14 @@ uv run --env-file .env python manage.py import_programs_for_university \
 The source must belong to the supplied University. The command is atomic: an
 invalid file or import error rolls back the whole import.
 
+## Program slug collisions
+
+Program public slugs are generated from structured catalogue data. If two Programs resolve
+to the same localized canonical slug during an import, the first persisted owner keeps the
+base and later owners receive the smallest available numeric tail (`-2`, `-3`, ...). Valid
+existing tails are preserved on re-import. Use `rebuild_program_slugs` when a global,
+Program-ID-deterministic normalization of base/tail ownership is required.
+
 ## JSON schema version 2
 
 The file root is an object with:

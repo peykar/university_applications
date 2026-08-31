@@ -332,10 +332,42 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
             language_tokens = self._instruction_language_slug_tokens(language_rows, locale)
             parts.extend(language_tokens)
             canonical = "-".join(part for part in parts if part)
-            if getattr(self, field_name, "") != canonical:
-                setattr(self, field_name, canonical)
+            resolved = self._resolve_available_canonical_slug(field_name, canonical)
+            if getattr(self, field_name, "") != resolved:
+                setattr(self, field_name, resolved)
                 populated.add(field_name)
         return populated
+
+    def _resolve_available_canonical_slug(self, field_name: str, canonical: str) -> str:
+        """Keep canonical Program slugs unique during ordinary saves.
+
+        The first persisted owner keeps the canonical base. Later Programs that
+        resolve to the same localized canonical slug receive the smallest
+        available numeric tail (``-2``, ``-3``, ...). Existing valid tails are
+        preserved on subsequent saves so ordinary edits/imports do not churn
+        public URLs. ``rebuild_program_slugs`` remains the operator path that
+        can globally normalize ownership by deterministic Program-ID order.
+        """
+        queryset = type(self).objects.exclude(pk=self.pk) if self.pk else type(self).objects.all()
+        if not queryset.filter(**{field_name: canonical}).exists():
+            return canonical
+
+        current = str(getattr(self, field_name, "") or "").strip()
+        if current.startswith(f"{canonical}-"):
+            suffix = current.removeprefix(f"{canonical}-")
+            if (
+                suffix.isdigit()
+                and int(suffix) >= 2
+                and not queryset.filter(**{field_name: current}).exists()
+            ):
+                return current
+
+        numeric_suffix = 2
+        while True:
+            candidate = f"{canonical}-{numeric_suffix}"
+            if not queryset.filter(**{field_name: candidate}).exists():
+                return candidate
+            numeric_suffix += 1
 
     def _slug_instruction_language_rows(self):
         """Return instruction languages in deterministic public-slug order."""

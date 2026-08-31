@@ -287,6 +287,39 @@ class UniversityProgramJsonImportTests(TestCase):
         self.assertEqual(program.slug_tr, "yazılım-mühendisliği")  # noqa: RUF001
         self.assertEqual(program.slug_ar, "هندسة-البرمجيات")
 
+    def test_localized_canonical_slug_collision_gets_numeric_tail_during_import(self):
+        self.university.name_ar = "جامعة اختبار الاستيراد"
+        self.university.slug_ar = "جامعة-اختبار-الاستيراد"
+        self.university.save()
+
+        payload = self._payload()
+        payload["academic_units"][0].update({"name_ar": "كلية الهندسة", "slug_ar": "كلية-الهندسة"})
+        first = payload["programs"][0]
+        first["name_ar"] = "برنامج مشترك"
+        first["instruction_languages"][0]["name_ar"] = "الإنجليزية"
+        first["instruction_languages"][0]["slug_ar"] = "الإنجليزية"
+
+        second = json.loads(json.dumps(first))
+        second["slug_en"] = "computer-engineering-english"
+        second["name_en"] = "Computer Engineering"
+        second["offerings"] = []
+        payload["programs"].append(second)
+
+        self._run(payload)
+
+        programs = list(Program.objects.filter(university=self.university).order_by("name_en"))
+        self.assertEqual(len(programs), 2)
+        arabic_slugs = {program.slug_ar for program in programs}
+        base = "جامعة-اختبار-الاستيراد-كلية-الهندسة-برنامج-مشترك-بكالوريوس-الإنجليزية"
+        self.assertEqual(arabic_slugs, {base, f"{base}-2"})
+
+        self._run(payload)
+        self.assertEqual(Program.objects.filter(university=self.university).count(), 2)
+        self.assertEqual(
+            {program.slug_ar for program in Program.objects.filter(university=self.university)},
+            {base, f"{base}-2"},
+        )
+
     def test_program_slugs_must_be_unique_inside_file(self):
         payload = self._payload()
         payload["programs"].append(dict(payload["programs"][0]))

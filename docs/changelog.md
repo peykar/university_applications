@@ -1,3 +1,13 @@
+## 2026-08-31 — Program ordinary-save collision tails
+
+- Fixed BUG-0030 / CAT-050: ordinary Program canonical slug regeneration now resolves
+  localized collisions with the smallest available numeric tail instead of raising a
+  database `IntegrityError`.
+- Existing valid numeric tails remain stable during normal saves/re-imports; the explicit
+  `rebuild_program_slugs` command remains the deterministic Program-ID normalization path.
+- Added normalized-import regression coverage for an Arabic canonical collision and
+  idempotent re-import.
+
 ## 2026-08-31 — Program slug numeric-tail rebuild write fix
 
 - Fixed BUG-0029: the numeric-tail rebuild now writes its already-resolved slug targets
