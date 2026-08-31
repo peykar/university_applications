@@ -298,4 +298,7 @@ languages MUST refresh Program slugs. Public/API program routes MAY continue
 resolving a Program from one localized slug without a separate University route
 segment. TurkDemy MUST provide an operator command that can dry-run and rebuild
 existing Program slugs to this canonical form before uniqueness constraints are
-applied.
+applied. If multiple Programs would produce the same localized canonical slug, the
+operator command MUST report the conflicting locale, slug, and Program identifiers,
+MUST skip every Program participating in that collision, and MUST continue rebuilding
+non-conflicting Programs instead of aborting the whole run.

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from apps.core.audit import get_system_user
@@ -32,30 +32,48 @@ class Command(BaseCommand):
                 "department",
             ).order_by("id")
         )
-        planned: list[tuple[Program, dict[str, str]]] = []
-        seen: dict[str, dict[str, str]] = {locale: {} for locale in ("en", "fa", "tr", "ar")}
+        candidates: list[tuple[Program, dict[str, str]]] = []
+        targets: dict[str, dict[str, list[Program]]] = {
+            locale: {} for locale in ("en", "fa", "tr", "ar")
+        }
 
         for program in programs:
-            before = {locale: getattr(program, f"slug_{locale}") for locale in seen}
+            before = {locale: getattr(program, f"slug_{locale}") for locale in targets}
             program._populate_missing_slugs()
-            after = {locale: getattr(program, f"slug_{locale}") for locale in seen}
+            after = {locale: getattr(program, f"slug_{locale}") for locale in targets}
             for locale, slug in after.items():
-                if not slug:
-                    continue
-                owner = seen[locale].get(slug)
-                if owner and owner != str(program.pk):
-                    raise CommandError(
-                        f"Cannot rebuild: duplicate slug_{locale} {slug!r} would be produced "
-                        f"for Program {owner} and {program.pk}."
-                    )
-                seen[locale][slug] = str(program.pk)
+                if slug:
+                    targets[locale].setdefault(slug, []).append(program)
             changes = {
                 f"slug_{locale}": after[locale]
-                for locale in seen
+                for locale in targets
                 if before[locale] != after[locale]
             }
             if changes:
-                planned.append((program, changes))
+                candidates.append((program, changes))
+
+        conflicts: list[tuple[str, str, list[Program]]] = []
+        conflicting_program_ids: set[str] = set()
+        for locale, localized_targets in targets.items():
+            for slug, owners in localized_targets.items():
+                if len(owners) < 2:
+                    continue
+                conflicts.append((locale, slug, owners))
+                conflicting_program_ids.update(str(program.pk) for program in owners)
+
+        for locale, slug, owners in conflicts:
+            owner_ids = ", ".join(str(program.pk) for program in owners)
+            self.stdout.write(
+                self.style.WARNING(
+                    f"CONFLICT slug_{locale}={slug!r}; skipping Programs: {owner_ids}."
+                )
+            )
+
+        planned = [
+            (program, changes)
+            for program, changes in candidates
+            if str(program.pk) not in conflicting_program_ids
+        ]
 
         for program, changes in planned:
             rendered = ", ".join(f"{key}={value!r}" for key, value in changes.items())
@@ -67,5 +85,8 @@ class Command(BaseCommand):
                 program.save(update_fields=[*changes.keys(), "updated_by", "updated_at"])
 
         verb = "would update" if dry_run else "updated"
-        message = f"Program slug rebuild complete: {verb}={len(planned)}."
+        message = (
+            f"Program slug rebuild complete: {verb}={len(planned)}, "
+            f"conflicts={len(conflicts)}, skipped_programs={len(conflicting_program_ids)}."
+        )
         self.stdout.write(self.style.SUCCESS(message))

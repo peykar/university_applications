@@ -1,3 +1,12 @@
+## 2026-08-31 — Program slug rebuild conflict skip
+
+- Added CHG-0008 / CAT-050 operator safety: `rebuild_program_slugs` now reports
+  canonical slug collisions and skips every Program involved instead of aborting the
+  entire command.
+- Non-conflicting Program slugs continue rebuilding in the same run; no synthetic
+  collision suffix is generated.
+- Added regression coverage and updated the operator/SDD documentation.
+
 ## 2026-08-31 — Program slug hierarchy locale fallback
 
 - Added CHG-0007 / CAT-050 hierarchy fallback: an existing Academic Unit or

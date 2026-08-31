@@ -141,3 +141,61 @@ class RebuildProgramSlugsCommandTests(TestCase):
             self.program.slug_en,
             "istanbul-atlas-university-business-administration-master-non-thesis-turkish",
         )
+
+    def test_command_reports_and_skips_conflicting_programs_but_updates_others(self):
+        actor = get_system_user()
+        conflicting = Program.objects.create(
+            university=self.university,
+            name_en="Temporary Combined Nursing",
+            slug_en="temporary-combined-nursing",
+            degree="bachelor",
+            created_by=actor,
+            updated_by=actor,
+        )
+        ProgramInstructionLanguage.objects.create(
+            program=conflicting,
+            language=self.turkish,
+            is_primary=True,
+            created_by=actor,
+            updated_by=actor,
+        )
+        Program.objects.filter(pk=conflicting.pk).update(
+            name_en="Nursing",
+            slug_en="legacy-conflicting-nursing",
+        )
+
+        safe = Program.objects.create(
+            university=self.university,
+            name_en="Physiotherapy",
+            slug_en="physiotherapy-bachelor-turkish",
+            degree="bachelor",
+            created_by=actor,
+            updated_by=actor,
+        )
+        ProgramInstructionLanguage.objects.create(
+            program=safe,
+            language=self.turkish,
+            is_primary=True,
+            created_by=actor,
+            updated_by=actor,
+        )
+        Program.objects.filter(pk=safe.pk).update(slug_en="physiotherapy-bachelor-turkish")
+
+        stdout = StringIO()
+        call_command("rebuild_program_slugs", stdout=stdout)
+
+        self.program.refresh_from_db()
+        conflicting.refresh_from_db()
+        safe.refresh_from_db()
+        expected_conflict = "istanbul-atlas-university-nursing-bachelor-turkish"
+        self.assertEqual(self.program.slug_en, "nursing-bachelor-turkish")
+        self.assertEqual(conflicting.slug_en, "legacy-conflicting-nursing")
+        self.assertEqual(
+            safe.slug_en,
+            "istanbul-atlas-university-physiotherapy-bachelor-turkish",
+        )
+        output = stdout.getvalue()
+        self.assertIn(f"CONFLICT slug_en='{expected_conflict}'", output)
+        self.assertIn(str(self.program.pk), output)
+        self.assertIn(str(conflicting.pk), output)
+        self.assertIn("conflicts=1, skipped_programs=2", output)

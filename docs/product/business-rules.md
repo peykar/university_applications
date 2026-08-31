@@ -166,4 +166,7 @@ BR-CAT-007 — A Program localized public slug is globally unique and is formed
 from canonical structured University, hierarchy, Program, degree, thesis, and
 instruction-language data. An existing Academic Unit or Department must remain
 represented in every locale; when its localized slug/name is missing, its English
-slug/name is used as the fallback rather than dropping the hierarchy component.
+slug/name is used as the fallback rather than dropping the hierarchy component. The
+existing-database slug rebuild must not invent a suffix to resolve a collision: all
+Programs participating in a canonical collision are left unchanged and reported for
+manual catalogue review while non-conflicting Programs may continue rebuilding.
