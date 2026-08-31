@@ -47,6 +47,7 @@ Prefixes are stable:
 | PERM | Permissions |
 | NAV | Navigation/workspaces |
 | CRQ | Customer requests |
+| I18N | Application-wide localization |
 
 Do not renumber an accepted requirement merely because another requirement is
 inserted. Retired IDs remain reserved.
