@@ -142,7 +142,7 @@ class RebuildProgramSlugsCommandTests(TestCase):
             "istanbul-atlas-university-business-administration-master-non-thesis-turkish",
         )
 
-    def test_command_reports_and_skips_conflicting_programs_but_updates_others(self):
+    def test_command_adds_deterministic_numeric_tail_to_conflicting_slugs(self):
         actor = get_system_user()
         conflicting = Program.objects.create(
             university=self.university,
@@ -188,8 +188,13 @@ class RebuildProgramSlugsCommandTests(TestCase):
         conflicting.refresh_from_db()
         safe.refresh_from_db()
         expected_conflict = "istanbul-atlas-university-nursing-bachelor-turkish"
-        self.assertEqual(self.program.slug_en, "nursing-bachelor-turkish")
-        self.assertEqual(conflicting.slug_en, "legacy-conflicting-nursing")
+        owners = sorted([self.program, conflicting], key=lambda program: str(program.pk))
+        expected_by_id = {
+            owners[0].pk: expected_conflict,
+            owners[1].pk: f"{expected_conflict}-2",
+        }
+        self.assertEqual(self.program.slug_en, expected_by_id[self.program.pk])
+        self.assertEqual(conflicting.slug_en, expected_by_id[conflicting.pk])
         self.assertEqual(
             safe.slug_en,
             "istanbul-atlas-university-physiotherapy-bachelor-turkish",
@@ -198,4 +203,4 @@ class RebuildProgramSlugsCommandTests(TestCase):
         self.assertIn(f"CONFLICT slug_en='{expected_conflict}'", output)
         self.assertIn(str(self.program.pk), output)
         self.assertIn(str(conflicting.pk), output)
-        self.assertIn("conflicts=1, skipped_programs=2", output)
+        self.assertIn("conflicts_resolved=1", output)

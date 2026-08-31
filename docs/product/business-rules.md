@@ -167,6 +167,7 @@ from canonical structured University, hierarchy, Program, degree, thesis, and
 instruction-language data. An existing Academic Unit or Department must remain
 represented in every locale; when its localized slug/name is missing, its English
 slug/name is used as the fallback rather than dropping the hierarchy component. The
-existing-database slug rebuild must not invent a suffix to resolve a collision: all
-Programs participating in a canonical collision are left unchanged and reported for
-manual catalogue review while non-conflicting Programs may continue rebuilding.
+existing-database slug rebuild resolves a canonical collision deterministically: the
+first Program by Program ID keeps the unsuffixed slug and later Programs receive the
+smallest available numeric tail (`-2`, `-3`, ...). The collision and every resolved slug
+are reported.

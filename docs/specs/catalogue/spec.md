@@ -299,6 +299,8 @@ resolving a Program from one localized slug without a separate University route
 segment. TurkDemy MUST provide an operator command that can dry-run and rebuild
 existing Program slugs to this canonical form before uniqueness constraints are
 applied. If multiple Programs would produce the same localized canonical slug, the
-operator command MUST report the conflicting locale, slug, and Program identifiers,
-MUST skip every Program participating in that collision, and MUST continue rebuilding
-non-conflicting Programs instead of aborting the whole run.
+operator command MUST report the conflicting locale, base slug, Program identifiers,
+and resolved slugs. It MUST keep the first Program in deterministic Program-ID order on
+the unsuffixed canonical slug and assign the remaining Programs the smallest available
+numeric tails (`-2`, `-3`, ...), avoiding collisions with other canonical or already
+assigned targets. The rebuild MUST remain deterministic and idempotent.

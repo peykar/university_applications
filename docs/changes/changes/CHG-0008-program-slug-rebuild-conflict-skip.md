@@ -1,6 +1,6 @@
 # CHG-0008 — Program slug rebuild conflict reporting and skip
 
-Status: DONE
+Status: SUPERSEDED BY CHG-0009
 Classification: CHANGE
 Owning capability: catalogue
 Requirement: CAT-050

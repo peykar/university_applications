@@ -93,5 +93,5 @@ Version: 3.1
       make them globally unique, preserve existing hierarchy components with an
       English fallback when a localized hierarchy translation is missing, keep
       normalized imports transition-safe/idempotent, add `rebuild_program_slugs --dry-run`,
-      make rebuild collisions report-and-skip while non-conflicting Programs continue,
+      make rebuild collisions resolve with deterministic numeric tails and report every resolution,
       document the rollout, and add regression coverage.

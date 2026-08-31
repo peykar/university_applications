@@ -14,10 +14,11 @@ uv run --env-file .env python manage.py rebuild_program_slugs
 ```
 
 The command computes the complete target set before writing. If two or more Programs
-would receive the same localized slug, it reports the conflicting locale, slug, and
-Program IDs, leaves every Program in that collision unchanged, and continues rebuilding
-other Programs. A Program involved in a collision in any locale is skipped as a whole.
-No numeric, UUID, hash, or source-specific suffix is invented automatically. Run the
+would receive the same localized slug, it reports the conflicting locale, base slug,
+Program IDs, and resolved slugs. The first Program in deterministic Program-ID order
+keeps the unsuffixed canonical slug; later Programs receive the smallest available
+numeric tail (`-2`, `-3`, ...). Numeric tails also avoid any other canonical or already
+assigned target slug. Run the
 command before generating/applying the local Django migration that adds the Program
 slug uniqueness constraints.
 

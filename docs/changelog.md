@@ -1,3 +1,18 @@
+## 2026-08-31 — Program slug numeric-tail rebuild write fix
+
+- Fixed BUG-0029: the numeric-tail rebuild now writes its already-resolved slug targets
+  directly after the transactional clearing phase, so `Program.save()` cannot canonicalize
+  a `-2`/`-3` target back to the conflicting base slug.
+- Audit metadata and `updated_at` continue to be updated for rebuilt Programs.
+
+## 2026-08-31 — Program slug deterministic numeric collision tails
+
+- Added CHG-0009 / CAT-050 collision disambiguation: `rebuild_program_slugs` now
+  preserves the canonical base slug for the first Program in deterministic ID order and
+  assigns `-2`, `-3`, ... to later colliding Programs.
+- The command reports each conflicting base slug and every resolved Program slug.
+- Numeric tails avoid other canonical/assigned targets, and dry-run uses the same plan.
+
 ## 2026-08-31 — Program slug rebuild conflict skip
 
 - Added CHG-0008 / CAT-050 operator safety: `rebuild_program_slugs` now reports

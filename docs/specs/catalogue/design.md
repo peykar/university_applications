@@ -231,9 +231,10 @@ uniqueness constraints (blank localized values are excluded).
 `rebuild_program_slugs` is the existing-database operator path. It derives every
 target slug from current structured Program data and computes the complete target set
 before writes. When two or more Programs would receive the same localized canonical
-slug, the command reports the conflicting locale, slug, and Program identifiers, skips
-every Program participating in that collision, and continues with non-conflicting
-Programs. A collision in any locale skips the entire Program rather than partially
+slug, the command reports the conflicting locale, base slug, Program identifiers, and
+resolved slugs. The first Program in deterministic Program-ID order keeps the base slug;
+later Programs receive the smallest available numeric tail (`-2`, `-3`, ...), avoiding
+other canonical and already assigned targets. The command rebuilds all locales rather than partially
 rewriting its other localized slugs. The command supports `--dry-run` and updates audit
 metadata for Programs it actually writes. This means legacy rows such as
 `altinbas-dentistry` normalize to a structured identity such as
