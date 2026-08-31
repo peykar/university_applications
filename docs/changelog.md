@@ -1345,3 +1345,11 @@
 - Kept the existing minimum-active-tuition annotation, currency, filtering, and
   catalogue pricing semantics unchanged.
 - Added UI-0004, Catalogue task/traceability updates, and regression coverage.
+
+## 2026-09-01 — Persisted catalogue audit
+
+- Added CAT-051/CAT-T38 and the read-only `audit_catalogue` management command.
+- The audit checks the post-import Catalogue v3 database across university/program
+  completeness, languages, offerings, fees, ownership, duplicate identities,
+  public provenance leakage, numeric slug tails, and Application readiness.
+- Added human output plus optional JSON/CSV reports and opt-in `--fail-on-errors`.

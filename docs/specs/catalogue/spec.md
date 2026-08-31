@@ -304,3 +304,15 @@ and resolved slugs. It MUST keep the first Program in deterministic Program-ID o
 the unsuffixed canonical slug and assign the remaining Programs the smallest available
 numeric tails (`-2`, `-3`, ...), avoiding collisions with other canonical or already
 assigned targets. The rebuild MUST remain deterministic and idempotent.
+
+CAT-051 — TurkDemy MUST provide a read-only `audit_catalogue` management command
+for post-import Catalogue v3 verification. The audit MUST inspect persisted
+universities, Programs, structured instruction languages, ProgramOfferings,
+Intakes, catalogue sources, and OfferingFees without mutating catalogue data. It
+MUST report actionable ERROR/WARNING/INFO findings for public-data completeness,
+structured-language consistency, active-offering/Application readiness,
+offering/source/intake ownership, structured-fee anomalies, possible duplicate
+programme/offering identities, public-note provenance leakage, unused hierarchy,
+and numeric Program slug collision tails. It MUST print a human-readable summary,
+MUST support JSON and CSV report output, and MAY fail the process on ERROR findings
+only when the operator explicitly requests `--fail-on-errors`.

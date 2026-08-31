@@ -266,3 +266,16 @@ percentage-only semantics are not hidden when a source label omits the number.
 All remaining amount-bearing structured fees render their label, amount, and
 basis as one fact. The template does not recompute discounts or infer relations
 between fee rows; it only presents the source-faithful normalized data.
+
+## Persisted catalogue audit
+
+`audit_catalogue` is an operator-facing, read-only verification surface run after
+bulk catalogue imports. It audits the database state rather than source packages,
+so it catches cross-import collisions and stale/incomplete persisted records.
+Findings use ERROR, WARNING and INFO severities. ERROR means a broken invariant or
+an active offering that cannot safely create an Application; WARNING means data
+that deserves review but can be legitimate when the source is incomplete; INFO is
+used for expected-but-notable state such as numeric public-slug collision tails.
+The command never repairs data. Human output is the default; JSON and CSV are
+available for review/automation. `--fail-on-errors` is opt-in so an exploratory
+audit remains non-disruptive.

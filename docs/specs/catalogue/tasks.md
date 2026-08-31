@@ -105,3 +105,7 @@ Version: 3.1
       the existing minimum active tuition annotation as customer-facing “Tuition
       from” wording, without changing catalogue pricing/filter semantics, and add
       regression coverage that prevents the internal phrase from returning.
+- [x] CAT-T38 (`CAT-051`) Add a read-only persisted Catalogue v3 audit command with
+      human/JSON/CSV reports, optional error exit status, operator documentation,
+      and regression coverage for Application readiness, clean structured tuition,
+      and public provenance leakage.
