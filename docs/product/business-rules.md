@@ -161,3 +161,6 @@ source terminology must not be normalized by guessing.
 
 BR-CAT-006 — Cash/advance-payment tuition is not a deposit, and preparatory
 tuition is not preschool tuition.
+
+BR-CAT-007 — A Program localized public slug is globally unique and is formed
+from the corresponding localized University slug plus the Program slug part.

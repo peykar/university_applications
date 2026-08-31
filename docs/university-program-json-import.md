@@ -176,3 +176,14 @@ Persian, Turkish, and Arabic letters, plus numbers, underscores, and hyphens.
 They do not need to be transliterated or copied from `slug_en`. The importer runs
 normal Django model validation, so spaces and other non-slug punctuation remain
 invalid.
+
+## Program public slug canonicalization
+
+The JSON `programs[].slug_en` remains the source-native/program-only import key
+(e.g. `nursing-bachelor-turkish`). TurkDemy persists Program public slugs in the
+canonical globally unique form `<university-slug>-<program-slug>`. Re-imports
+match both the legacy program-only key and canonical key during the transition.
+Localized Program slugs are likewise prefixed with the corresponding localized
+University slug when that University slug is available.
+
+For existing databases, see `docs/program-slug-rebuild.md`.

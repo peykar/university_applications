@@ -4,6 +4,7 @@ from typing import ClassVar
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.mixins import ActiveMixin, LocalizedNameMixin, LocalizedSlugMixin
@@ -211,6 +212,31 @@ class StudyMode(models.TextChoices):
 
 class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
     university = models.ForeignKey(University, on_delete=models.CASCADE, related_name="programs")
+
+    class Meta:
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("slug_en",),
+                condition=~models.Q(slug_en=""),
+                name="uniq_program_slug_en",
+            ),
+            models.UniqueConstraint(
+                fields=("slug_fa",),
+                condition=~models.Q(slug_fa=""),
+                name="uniq_program_slug_fa",
+            ),
+            models.UniqueConstraint(
+                fields=("slug_tr",),
+                condition=~models.Q(slug_tr=""),
+                name="uniq_program_slug_tr",
+            ),
+            models.UniqueConstraint(
+                fields=("slug_ar",),
+                condition=~models.Q(slug_ar=""),
+                name="uniq_program_slug_ar",
+            ),
+        ]
+
     academic_unit = models.ForeignKey(
         AcademicUnit,
         on_delete=models.PROTECT,
@@ -268,6 +294,37 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
             "Higher values receive greater priority."
         ),
     )
+
+    def _populate_missing_slugs(self) -> set[str]:
+        """Build globally unique public slugs as university slug + program slug.
+
+        Program slugs are public route identifiers, so unlike other localized
+        catalogue slugs they are canonicalized even when a program-only slug was
+        supplied explicitly (for example by an importer or Django Admin).
+        """
+        populated: set[str] = set()
+        if not self.university_id:
+            return populated
+        university = self.university
+        for locale in ("en", "fa", "tr", "ar"):
+            field_name = f"slug_{locale}"
+            name = str(getattr(self, f"name_{locale}", "") or "").strip()
+            university_slug = str(getattr(university, field_name, "") or "").strip()
+            if not university_slug:
+                continue
+            current = str(getattr(self, field_name, "") or "").strip()
+            # Strip the canonical prefix first so repeated saves/imports are idempotent.
+            prefix = f"{university_slug}-"
+            program_part = current[len(prefix) :] if current.startswith(prefix) else current
+            if not program_part and name:
+                program_part = slugify(name, allow_unicode=locale != "en")
+            if not program_part:
+                continue
+            canonical = f"{university_slug}-{program_part}"
+            if current != canonical:
+                setattr(self, field_name, canonical)
+                populated.add(field_name)
+        return populated
 
     def clean(self):
         super().clean()

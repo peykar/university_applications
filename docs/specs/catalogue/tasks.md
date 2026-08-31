@@ -88,3 +88,7 @@ Version: 3.1
 - [x] CAT-T34 (`CAT-049`) Add `prepare_catalogue_v3_cutover` and operator docs so
       existing databases can backfill missing v3 data before locally generated
       destructive migrations remove Catalogue v2 storage.
+- [x] CAT-T35 (`CAT-050`) Canonicalize localized Program public slugs with the
+      localized University prefix, make them globally unique, keep normalized
+      imports transition-safe/idempotent, add `rebuild_program_slugs --dry-run`,
+      document the rollout, and add regression coverage.

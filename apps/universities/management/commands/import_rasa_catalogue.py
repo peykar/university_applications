@@ -11,6 +11,7 @@ from typing import Any
 from django.core.files import File
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from django.db.models import Q
 from django.utils.text import slugify
 
 from apps.core.audit import audited_get_or_create, audited_update_or_create, get_system_user
@@ -776,12 +777,28 @@ class Command(BaseCommand):
             "is_active": bool(item.get("active", True)),
         }
 
-        program, created = audited_update_or_create(
-            Program.objects,
-            lookup={"university": university, "slug_en": slug},
-            defaults=defaults,
-            actor=self.system_user,
+        university_prefix = f"{university.slug_en}-"
+        canonical_slug = (
+            slug if slug.startswith(university_prefix) else f"{university_prefix}{slug}"
         )
+        matches = Program.objects.filter(university=university).filter(
+            Q(slug_en=canonical_slug) | Q(slug_en=slug)
+        )
+        if matches.count() > 1:
+            raise CommandError(
+                "Multiple existing Program rows match Rasa source/canonical slug "
+                f"{slug!r}/{canonical_slug!r}. Resolve duplicates before importing."
+            )
+        program = matches.first()
+        created = program is None
+        if program is None:
+            program = Program(university=university, created_by=self.system_user)
+        for field, value in defaults.items():
+            setattr(program, field, value)
+        program.slug_en = canonical_slug
+        program.updated_by = self.system_user
+        program.full_clean()
+        program.save()
         self._sync_instruction_languages(program, item.get("language"))
         return program, created
 

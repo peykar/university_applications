@@ -281,3 +281,12 @@ CAT-049 — Existing databases MUST have a safe pre-migration cutover path befor
 Catalogue v2 columns/tables are dropped. The cutover MUST preserve already
 canonical v3 data, backfill only missing Intake/language/duration/fee data, and
 MUST fail rather than drop an offering that still cannot be assigned an Intake.
+
+CAT-050 — Program public slugs MUST be globally unique and MUST be canonicalized
+per locale as `<University.slug_LOCALE>-<program-slug-part_LOCALE>`. The same
+localized University prefix rule applies to English, Persian, Turkish, and Arabic.
+Canonicalization MUST be idempotent and MUST NOT duplicate an already-present
+University prefix. Public/API program routes MAY therefore continue resolving a
+Program from one localized slug without a separate University route segment.
+TurkDemy MUST provide an operator command that can dry-run and rebuild existing
+Program slugs to this canonical form before uniqueness constraints are applied.

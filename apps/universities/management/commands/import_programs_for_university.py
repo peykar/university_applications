@@ -9,6 +9,7 @@ from typing import Any
 from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from django.db.models import Q
 
 from apps.core.audit import get_system_user
 from apps.universities.models import (
@@ -420,12 +421,32 @@ class Command(BaseCommand):
         if "internal_notes" in row:
             defaults["internal_notes"] = str(row.get("internal_notes") or "")
 
-        return self._upsert(
-            Program,
-            lookup={"university": university, "slug_en": row["slug_en"]},
-            defaults=defaults,
-            actor=actor,
+        source_slug_en = str(row["slug_en"])
+        university_prefix = f"{university.slug_en}-"
+        canonical_slug_en = (
+            source_slug_en
+            if source_slug_en.startswith(university_prefix)
+            else f"{university_prefix}{source_slug_en}"
         )
+        matches = Program.objects.filter(university=university).filter(
+            Q(slug_en=canonical_slug_en) | Q(slug_en=source_slug_en)
+        )
+        if matches.count() > 1:
+            raise CommandError(
+                f"Multiple existing Program rows match source/canonical slug "
+                f"{source_slug_en!r}/{canonical_slug_en!r}. Resolve duplicates before importing."
+            )
+        instance = matches.first()
+        created = instance is None
+        if instance is None:
+            instance = Program(university=university, created_by=actor)
+        for field, value in defaults.items():
+            setattr(instance, field, value)
+        instance.slug_en = canonical_slug_en
+        instance.updated_by = actor
+        instance.full_clean()
+        instance.save()
+        return instance, created
 
     def _sync_languages(self, program: Program, raw_rows: Any, *, actor: Any) -> None:
         rows = self._expect_list({"rows": raw_rows}, "rows")

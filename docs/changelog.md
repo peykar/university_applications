@@ -1261,3 +1261,13 @@
   drive tuition annotations, and customer currency display comes from the
   canonical display tuition fee.
 - No production behavior changed.
+
+## 2026-08-31 — Globally unique Program public slugs
+
+- Added CAT-050/CAT-T35: Program public slugs now use
+  `<localized-university-slug>-<localized-program-slug>` so one-segment Program
+  routes remain unambiguous across universities.
+- Added conditional global uniqueness constraints for Program localized slugs.
+- Normalized programme imports accept program-only source slugs but persist and
+  re-match canonical prefixed slugs.
+- Added `rebuild_program_slugs` with `--dry-run` for existing databases.

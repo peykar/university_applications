@@ -169,7 +169,8 @@ class UniversityProgramJsonImportTests(TestCase):
             university=self.university, slug_en="faculty-of-engineering"
         )
         program = Program.objects.get(
-            university=self.university, slug_en="software-engineering-english"
+            university=self.university,
+            slug_en="json-import-university-software-engineering-english",
         )
         offering = ProgramOffering.objects.get(program=program, source=self.source)
 
@@ -198,7 +199,8 @@ class UniversityProgramJsonImportTests(TestCase):
         self._run(payload)
 
         programs = Program.objects.filter(
-            university=self.university, slug_en="software-engineering-english"
+            university=self.university,
+            slug_en="json-import-university-software-engineering-english",
         )
         self.assertEqual(programs.count(), 1)
         program = programs.get()
@@ -217,7 +219,8 @@ class UniversityProgramJsonImportTests(TestCase):
         self._run(payload)
 
         program = Program.objects.get(
-            university=self.university, slug_en="software-engineering-english"
+            university=self.university,
+            slug_en="json-import-university-software-engineering-english",
         )
         self.assertEqual(
             program.internal_notes,
@@ -266,10 +269,10 @@ class UniversityProgramJsonImportTests(TestCase):
         payload["programs"][0].update(
             {
                 "name_fa": "مهندسی نرم‌افزار",
-                "name_tr": "Yazılım Mühendisliği",  # noqa: RUF001 -- intentional Turkish dotless i
+                "name_tr": "Yazılım Mühendisliği",  # noqa: RUF001
                 "name_ar": "هندسة البرمجيات",
                 "slug_fa": "مهندسی-نرمافزار",
-                "slug_tr": "yazılım-mühendisliği",  # noqa: RUF001 -- intentional Turkish dotless i
+                "slug_tr": "yazılım-mühendisliği",  # noqa: RUF001
                 "slug_ar": "هندسة-البرمجيات",
             }
         )
@@ -277,10 +280,11 @@ class UniversityProgramJsonImportTests(TestCase):
         self._run(payload)
 
         program = Program.objects.get(
-            university=self.university, slug_en="software-engineering-english"
+            university=self.university,
+            slug_en="json-import-university-software-engineering-english",
         )
         self.assertEqual(program.slug_fa, "مهندسی-نرمافزار")
-        self.assertEqual(program.slug_tr, "yazılım-mühendisliği")  # noqa: RUF001 -- intentional Turkish dotless i
+        self.assertEqual(program.slug_tr, "yazılım-mühendisliği")  # noqa: RUF001
         self.assertEqual(program.slug_ar, "هندسة-البرمجيات")
 
     def test_program_slugs_must_be_unique_inside_file(self):

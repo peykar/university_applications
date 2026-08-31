@@ -200,6 +200,9 @@ class LocalizedSlugAutogenerationTests(TestCase):
             city=self.city,
             university_type="private",
             name_en="Istanbul Medipol",
+            name_fa="مدیپول استانبول",
+            name_tr="İstanbul Medipol",
+            name_ar="ميديبول إسطنبول",
             created_by=self.actor,
             updated_by=self.actor,
         )
@@ -215,14 +218,17 @@ class LocalizedSlugAutogenerationTests(TestCase):
             updated_by=self.actor,
         )
 
-        self.assertEqual(program.slug_en, "medicine-custom")
-        self.assertEqual(program.slug_fa, "پزشکی")
-        self.assertEqual(program.slug_tr, "tıp")  # noqa: RUF001 -- intentional Turkish dotless i
-        self.assertEqual(program.slug_ar, "الطب")
+        self.assertEqual(program.slug_en, "istanbul-medipol-medicine-custom")
+        self.assertEqual(program.slug_fa, "مدیپول-استانبول-پزشکی")
+        self.assertEqual(
+            program.slug_tr,
+            "istanbul-medipol-tıp",  # noqa: RUF001 -- intentional Turkish dotless i
+        )
+        self.assertEqual(program.slug_ar, "ميديبول-إسطنبول-الطب")
 
         program.name_en = "Medicine Updated"
         program.save()
-        self.assertEqual(program.slug_en, "medicine-custom")
+        self.assertEqual(program.slug_en, "istanbul-medipol-medicine-custom")
 
     def test_non_catalogue_slug_field_uses_related_name_when_blank(self):
         category = FAQCategory.objects.create(
@@ -249,3 +255,76 @@ class LocalizedSlugAutogenerationTests(TestCase):
         self.assertEqual(university.slug_fa, "دانشگاه-آزمایشی-مدیپول")
         self.assertEqual(university.slug_tr, "")
         self.assertEqual(university.slug_ar, "")
+
+
+class ProgramCanonicalPublicSlugTests(TestCase):
+    def setUp(self):
+        actor = get_system_user()
+        country = Country.objects.create(
+            iso2="TR",
+            iso3="TUR",
+            name_en="Türkiye",
+            slug_en="turkiye",
+            created_by=actor,
+            updated_by=actor,
+        )
+        province = Province.objects.create(
+            country=country,
+            name_en="Istanbul",
+            slug_en="istanbul",
+            created_by=actor,
+            updated_by=actor,
+        )
+        city = City.objects.create(
+            province=province,
+            name_en="Istanbul",
+            slug_en="istanbul",
+            created_by=actor,
+            updated_by=actor,
+        )
+        self.actor = actor
+        self.university = University.objects.create(
+            city=city,
+            university_type="private",
+            name_en="Istanbul Atlas University",
+            name_tr="İstanbul Atlas Üniversitesi",
+            slug_en="istanbul-atlas-university",
+            slug_tr="istanbul-atlas-üniversitesi",
+            created_by=actor,
+            updated_by=actor,
+        )
+
+    def test_program_slug_is_prefixed_with_localized_university_slug(self):
+        program = Program.objects.create(
+            university=self.university,
+            name_en="Nursing",
+            name_tr="Hemşirelik",
+            slug_en="nursing-bachelor-turkish",
+            slug_tr="hemşirelik-lisans-türkçe",
+            degree="bachelor",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        self.assertEqual(
+            program.slug_en,
+            "istanbul-atlas-university-nursing-bachelor-turkish",
+        )
+        self.assertEqual(
+            program.slug_tr,
+            "istanbul-atlas-üniversitesi-hemşirelik-lisans-türkçe",
+        )
+
+    def test_repeated_save_does_not_duplicate_university_prefix(self):
+        program = Program.objects.create(
+            university=self.university,
+            name_en="Nursing",
+            slug_en="nursing-bachelor-turkish",
+            degree="bachelor",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        expected = "istanbul-atlas-university-nursing-bachelor-turkish"
+        self.assertEqual(program.slug_en, expected)
+        program.save()
+        program.refresh_from_db()
+        self.assertEqual(program.slug_en, expected)

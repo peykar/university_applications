@@ -203,3 +203,22 @@ Normalized JSON import schema version 2 requires `intake` and a structured
 `fees` array. Rasa source columns are translated directly into OfferingFee rows.
 No importer writes a compatibility copy. Export and Admin likewise expose only
 the canonical model.
+
+## Globally unique Program public slugs (CAT-050)
+
+`Program` specializes the shared fill-only slug behavior because its slug is a
+single-segment public/API route identifier. On validation/save, each populated
+localized Program slug is canonicalized to `<university localized slug>-<program
+slug part>`. Repeated saves strip an existing canonical prefix before rebuilding,
+so the operation is idempotent.
+
+Program localized slugs have conditional database uniqueness constraints (blank
+localized values are excluded). The normalized university-program importer still
+accepts source-native program-only slugs, resolves either the legacy short key or
+the canonical key within the target University, and persists the canonical slug.
+This preserves idempotent re-imports across the transition.
+
+`rebuild_program_slugs` is the existing-database operator path. It computes all
+changes first, rejects any would-be collision before writes, supports `--dry-run`,
+and updates audit metadata. Operators should run the rebuild before generating or
+applying the migration that adds global Program slug uniqueness constraints.
