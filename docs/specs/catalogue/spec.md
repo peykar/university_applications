@@ -282,13 +282,18 @@ Catalogue v2 columns/tables are dropped. The cutover MUST preserve already
 canonical v3 data, backfill only missing Intake/language/duration/fee data, and
 MUST fail rather than drop an offering that still cannot be assigned an Intake.
 
-CAT-050 — Program public slugs MUST be globally unique and MUST be canonicalized
-per locale as `<University.slug_LOCALE>-<program-slug-part_LOCALE>`. For a Program
-with `thesis_type`, the program-specific part MUST contain the deterministic token
-`thesis` or `non-thesis`, placed after the degree token when that token is present.
-The same localized University prefix rule applies to English, Persian, Turkish,
-and Arabic. Canonicalization MUST be idempotent and MUST NOT duplicate an already-present
-University prefix. Public/API program routes MAY therefore continue resolving a
-Program from one localized slug without a separate University route segment.
-TurkDemy MUST provide an operator command that can dry-run and rebuild existing
-Program slugs to this canonical form before uniqueness constraints are applied.
+CAT-050 — Program public slugs MUST be globally unique and MUST be rebuilt
+from canonical structured data rather than historical/manual Program slug text.
+For each locale the canonical composition is `<University localized slug>-<Program
+localized name>-<degree>-<thesis type when applicable>-<instruction language
+variant>`. Degree tokens are deterministic per locale. Thesis variants MUST use
+`thesis` or `non-thesis`. Instruction-language tokens MUST come from the structured
+`ProgramInstructionLanguage` rows, with the primary language first and remaining
+languages in deterministic order; a multilingual variant therefore preserves all
+of its languages in the slug. The same rule applies to English, Persian, Turkish,
+and Arabic. Canonicalization MUST be idempotent. Changes to structured instruction
+languages MUST refresh Program slugs. Public/API program routes MAY continue
+resolving a Program from one localized slug without a separate University route
+segment. TurkDemy MUST provide an operator command that can dry-run and rebuild
+existing Program slugs to this canonical form before uniqueness constraints are
+applied.

@@ -5,7 +5,12 @@ from django.test import TestCase
 
 from apps.core.audit import get_system_user
 from apps.geography.models import City, Country, Province
-from apps.universities.models import Program, University
+from apps.universities.models import (
+    Program,
+    ProgramInstructionLanguage,
+    ProgramLanguage,
+    University,
+)
 
 
 class RebuildProgramSlugsCommandTests(TestCase):
@@ -49,6 +54,19 @@ class RebuildProgramSlugsCommandTests(TestCase):
             created_by=actor,
             updated_by=actor,
         )
+        self.turkish = ProgramLanguage.objects.create(
+            name_en="Turkish",
+            slug_en="turkish",
+            created_by=actor,
+            updated_by=actor,
+        )
+        ProgramInstructionLanguage.objects.create(
+            program=self.program,
+            language=self.turkish,
+            is_primary=True,
+            created_by=actor,
+            updated_by=actor,
+        )
         # Simulate a pre-change database row without going through Program.save().
         Program.objects.filter(pk=self.program.pk).update(slug_en="nursing-bachelor-turkish")
 
@@ -63,6 +81,7 @@ class RebuildProgramSlugsCommandTests(TestCase):
         self.assertEqual(self.program.slug_en, "nursing-bachelor-turkish")
 
     def test_command_adds_thesis_type_to_graduate_slug(self):
+        self.program.name_en = "Business Administration"
         self.program.degree = "master"
         self.program.thesis_type = "non_thesis"
         self.program.save()

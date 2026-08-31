@@ -32,6 +32,7 @@ from apps.universities.models import (
     ProgramLanguage,
     ProgramOffering,
     StudyMode,
+    ThesisType,
     University,
     UniversityMedia,
     UniversityType,
@@ -754,11 +755,12 @@ class Command(BaseCommand):
         raw_slug = str(item.get("slug") or item.get("name_en") or item.get("id") or "program")
         slug = normalize_slug(raw_slug, f"program-{item.get('id', '')}")
 
+        name_en = str(item.get("name_en") or raw_slug)
         defaults = {
             "university": university,
             "academic_unit": academic_unit,
             "department": department,
-            "name_en": str(item.get("name_en") or raw_slug),
+            "name_en": name_en,
             "name_fa": str(item.get("name_fa") or ""),
             "name_tr": str(item.get("name_tr") or ""),
             "name_ar": str(item.get("name_ar") or ""),
@@ -778,16 +780,31 @@ class Command(BaseCommand):
         }
 
         university_prefix = f"{university.slug_en}-"
-        canonical_slug = (
+        legacy_canonical_slug = (
             slug if slug.startswith(university_prefix) else f"{university_prefix}{slug}"
         )
+        structured_parts = [
+            university.slug_en,
+            normalize_slug(name_en, slug),
+            str(degree),
+        ]
+        if thesis_type == ThesisType.THESIS:
+            structured_parts.append("thesis")
+        elif thesis_type == ThesisType.NON_THESIS:
+            structured_parts.append("non-thesis")
+        language_specs = parse_instruction_languages(item.get("language"))
+        structured_parts.extend(
+            normalize_slug(language_name, language_name)
+            for language_name, _percentage in language_specs
+        )
+        structured_slug = "-".join(part for part in structured_parts if part)
         matches = Program.objects.filter(university=university).filter(
-            Q(slug_en=canonical_slug) | Q(slug_en=slug)
+            Q(slug_en=structured_slug) | Q(slug_en=legacy_canonical_slug) | Q(slug_en=slug)
         )
         if matches.count() > 1:
             raise CommandError(
                 "Multiple existing Program rows match Rasa source/canonical slug "
-                f"{slug!r}/{canonical_slug!r}. Resolve duplicates before importing."
+                f"{slug!r}/{structured_slug!r}. Resolve duplicates before importing."
             )
         program = matches.first()
         created = program is None
@@ -795,7 +812,7 @@ class Command(BaseCommand):
             program = Program(university=university, created_by=self.system_user)
         for field, value in defaults.items():
             setattr(program, field, value)
-        program.slug_en = canonical_slug
+        program.slug_en = structured_slug
         program.updated_by = self.system_user
         program.full_clean()
         program.save()

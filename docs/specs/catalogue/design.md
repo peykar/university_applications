@@ -180,11 +180,14 @@ to `name`; and the existing `FAQCategory.key` maps to `name_en`. English uses
 Django `slugify(..., allow_unicode=False)` while Persian, Turkish, and Arabic
 localized fields use their field-level Unicode setting.
 
-Generation is fill-only: a non-empty slug is stable and is not regenerated when
-its name later changes. This avoids unexpected public URL changes. A localized
-name that is empty does not create a slug. `slug_en` remains the canonical ASCII
-identifier/import key; this automation primarily removes manual admin work and
-does not change normalized JSON import key semantics.
+Generation is fill-only for the shared default slug behavior. `Program` is an
+intentional CAT-050 exception: its localized public slugs are canonical derived
+values and are rebuilt from University slug, localized Program name, degree,
+thesis type when applicable, and structured instruction languages. A Program
+name or variant change can therefore change its public slug. In normalized
+schema-v2 programme imports, input `slug_en` remains the stable source identity
+used to re-match the existing row; the persisted Program `slug_en` is the
+structured public slug rather than the source key.
 
 ## Catalogue v3 transition completion
 
@@ -206,23 +209,23 @@ the canonical model.
 
 ## Globally unique Program public slugs (CAT-050)
 
-`Program` specializes the shared fill-only slug behavior because its slug is a
-single-segment public/API route identifier. On validation/save, each populated
-localized Program slug is canonicalized to `<university localized slug>-<program
-slug part>`. Repeated saves strip an existing canonical prefix before rebuilding,
-so the operation is idempotent. Graduate variants with `thesis_type` are also
-canonicalized with `thesis` or `non-thesis` in the program-specific slug part.
-When the degree token is present, thesis type follows it, e.g.
-`business-administration-master-non-thesis-turkish`. This prevents thesis and
-non-thesis variants from sharing the same public identity.
+`Program` specializes shared slug behavior because its slug is a single-segment
+public/API route identifier. It does not treat an imported or manually edited
+Program slug as canonical input. Instead, each localized slug is reconstructed
+from structured catalogue data: localized University slug, localized Program
+name, deterministic localized degree token, `thesis`/`non-thesis` when applicable,
+and the structured instruction-language variant. Instruction languages are ordered
+primary-first and then deterministically, and every language in a multilingual
+variant is represented.
 
-Program localized slugs have conditional database uniqueness constraints (blank
-localized values are excluded). The normalized university-program importer still
-accepts source-native program-only slugs, resolves either the legacy short key or
-the canonical key within the target University, and persists the canonical slug.
-This preserves idempotent re-imports across the transition.
+`ProgramInstructionLanguage.save()` refreshes the parent Program so Admin/import
+inline changes also refresh public slugs. Repeated generation from the same
+structured state is idempotent. Program localized slugs retain conditional database
+uniqueness constraints (blank localized values are excluded).
 
-`rebuild_program_slugs` is the existing-database operator path. It computes all
-changes first, rejects any would-be collision before writes, supports `--dry-run`,
-and updates audit metadata. Operators should run the rebuild before generating or
-applying the migration that adds global Program slug uniqueness constraints.
+`rebuild_program_slugs` is the existing-database operator path. It derives every
+target slug from current structured Program data, computes all changes first,
+rejects any would-be collision before writes, supports `--dry-run`, and updates
+audit metadata. This means legacy rows such as `altinbas-dentistry` normalize to
+a structured identity such as `altinbas-dentistry-bachelor-english` when their
+Program and instruction-language data establish those values.

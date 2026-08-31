@@ -9,8 +9,8 @@ from apps.universities.models import Program
 
 class Command(BaseCommand):
     help = (
-        "Rebuild every Program localized public slug as "
-        "<university-slug>-<program-slug>, including thesis type when applicable."
+        "Rebuild every Program localized public slug from structured University, "
+        "Program name, degree, thesis type, and instruction-language data."
     )
 
     def add_arguments(self, parser):

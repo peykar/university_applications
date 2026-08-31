@@ -296,63 +296,101 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
     )
 
     def _populate_missing_slugs(self) -> set[str]:
-        """Build globally unique public slugs as university slug + program slug.
+        """Rebuild localized public slugs from canonical structured Program data.
 
-        Program slugs are public route identifiers, so unlike other localized
-        catalogue slugs they are canonicalized even when a program-only slug was
-        supplied explicitly (for example by an importer or Django Admin).
+        A Program public slug is derived from the localized University slug,
+        localized Program name, degree, thesis type when applicable, and the
+        structured instruction-language variant. Historical/manual Program slug
+        text is never used as an input to canonical generation.
         """
         populated: set[str] = set()
         if not self.university_id:
             return populated
         university = self.university
+        language_rows = self._slug_instruction_language_rows()
         for locale in ("en", "fa", "tr", "ar"):
             field_name = f"slug_{locale}"
-            name = str(getattr(self, f"name_{locale}", "") or "").strip()
             university_slug = str(getattr(university, field_name, "") or "").strip()
-            if not university_slug:
+            name = str(getattr(self, f"name_{locale}", "") or "").strip()
+            if not university_slug or not name or not self.degree:
                 continue
-            current = str(getattr(self, field_name, "") or "").strip()
-            # Strip the canonical prefix first so repeated saves/imports are idempotent.
-            prefix = f"{university_slug}-"
-            program_part = current[len(prefix) :] if current.startswith(prefix) else current
-            if not program_part and name:
-                program_part = slugify(name, allow_unicode=locale != "en")
-            if not program_part:
+            name_slug = slugify(name, allow_unicode=locale != "en")
+            if not name_slug:
                 continue
-            program_part = self._program_slug_part_with_thesis_type(program_part)
-            canonical = f"{university_slug}-{program_part}"
-            if current != canonical:
+            parts = [university_slug, name_slug, self._degree_slug_token(locale)]
+            thesis_token = self._thesis_slug_token()
+            if thesis_token:
+                parts.append(thesis_token)
+            language_tokens = self._instruction_language_slug_tokens(language_rows, locale)
+            parts.extend(language_tokens)
+            canonical = "-".join(part for part in parts if part)
+            if getattr(self, field_name, "") != canonical:
                 setattr(self, field_name, canonical)
                 populated.add(field_name)
         return populated
 
-    def _program_slug_part_with_thesis_type(self, program_part: str) -> str:
-        """Ensure a graduate thesis variant is represented in the public slug."""
-        if self.thesis_type not in ThesisType.values:
-            return program_part
+    def _slug_instruction_language_rows(self):
+        """Return instruction languages in deterministic public-slug order."""
+        if not self.pk:
+            return []
+        return list(
+            self.instruction_language_rows.select_related("language").order_by(
+                "-is_primary", "language__slug_en", "language__name_en"
+            )
+        )
 
-        token = "thesis" if self.thesis_type == ThesisType.THESIS else "non-thesis"
-        padded = f"-{program_part}-"
-        has_non_thesis = "-non-thesis-" in padded
-        has_thesis = "-thesis-" in padded and not has_non_thesis
-        if (token == "non-thesis" and has_non_thesis) or (token == "thesis" and has_thesis):
-            return program_part
+    def _degree_slug_token(self, locale: str) -> str:
+        """Return the canonical localized degree token used in public slugs."""
+        tokens: dict[str, dict[str, str]] = {
+            "en": {
+                str(DegreeType.ASSOCIATE): "associate",
+                str(DegreeType.BACHELOR): "bachelor",
+                str(DegreeType.MASTER): "master",
+                str(DegreeType.PHD): "phd",
+            },
+            "fa": {
+                str(DegreeType.ASSOCIATE): "کاردانی",
+                str(DegreeType.BACHELOR): "کارشناسی",
+                str(DegreeType.MASTER): "کارشناسی-ارشد",
+                str(DegreeType.PHD): "دکتری",
+            },
+            "tr": {
+                str(DegreeType.ASSOCIATE): "ön-lisans",
+                str(DegreeType.BACHELOR): "lisans",
+                str(DegreeType.MASTER): "yüksek-lisans",
+                str(DegreeType.PHD): "doktora",
+            },
+            "ar": {
+                str(DegreeType.ASSOCIATE): "دبلوم",
+                str(DegreeType.BACHELOR): "بكالوريوس",
+                str(DegreeType.MASTER): "ماجستير",
+                str(DegreeType.PHD): "دكتوراه",
+            },
+        }
+        return tokens.get(locale, tokens["en"]).get(self.degree, str(self.degree))
 
-        # A stale opposite thesis marker must not survive a thesis-type change.
-        opposite = "non-thesis" if token == "thesis" else "thesis"
-        program_part = program_part.replace(f"-{opposite}-", "-")
-        if program_part.endswith(f"-{opposite}"):
-            program_part = program_part[: -(len(opposite) + 1)]
+    def _thesis_slug_token(self) -> str:
+        if self.thesis_type == ThesisType.THESIS:
+            return "thesis"
+        if self.thesis_type == ThesisType.NON_THESIS:
+            return "non-thesis"
+        return ""
 
-        degree_token = str(self.degree or "").strip()
-        marker = f"-{degree_token}-" if degree_token else ""
-        if marker and marker in f"-{program_part}-":
-            head, tail = program_part.split(f"-{degree_token}-", 1)
-            return f"{head}-{degree_token}-{token}-{tail}"
-        if degree_token and program_part.endswith(f"-{degree_token}"):
-            return f"{program_part}-{token}"
-        return f"{program_part}-{token}"
+    @staticmethod
+    def _instruction_language_slug_tokens(language_rows, locale: str) -> list[str]:
+        """Return localized tokens for every structured instruction language."""
+        tokens: list[str] = []
+        for row in language_rows:
+            language = row.language
+            token = str(getattr(language, f"slug_{locale}", "") or "").strip()
+            if not token:
+                localized_name = str(
+                    getattr(language, f"name_{locale}", "") or language.name_en or ""
+                ).strip()
+                token = slugify(localized_name, allow_unicode=locale != "en")
+            if token and token not in tokens:
+                tokens.append(token)
+        return tokens
 
     def clean(self):
         super().clean()
@@ -439,6 +477,16 @@ class ProgramInstructionLanguage(BaseModel):
             raise ValidationError(
                 {"percentage": _("Instruction-language percentages cannot exceed 100%.")}
             )
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.program.save()
+
+    def delete(self, *args, **kwargs):
+        program = self.program
+        result = super().delete(*args, **kwargs)
+        program.save()
+        return result
 
     def __str__(self):
         return f"{self.program} — {self.language}"

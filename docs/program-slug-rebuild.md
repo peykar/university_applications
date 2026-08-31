@@ -30,3 +30,10 @@ For Programs with `thesis_type`, rebuilding also ensures the program-specific sl
 contains `thesis` or `non-thesis`. Example:
 `istanbul-atlas-university-business-administration-master-non-thesis-turkish`.
 The command is idempotent and replaces a stale opposite thesis marker.
+
+## Canonical structured inputs
+
+The rebuild ignores the existing Program slug as an input. It derives each locale
+from the University localized slug, Program localized name, degree, thesis type
+when applicable, and structured instruction languages. All languages are included
+(primary first), so multilingual variants remain distinguishable.

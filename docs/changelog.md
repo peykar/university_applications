@@ -1,3 +1,12 @@
+## 2026-08-31 — Structured Program slug re-import idempotency
+
+- Fixed BUG-0028: schema-v2 programme re-imports keep input `slug_en` as the
+  stable source identity even though the persisted public slug is rebuilt from
+  mutable structured Program data.
+- Renaming an imported Program now updates the existing row and regenerates its
+  canonical public slug instead of creating a duplicate.
+- Updated stale slug tests to the CAT-050 structured generation contract.
+
 - Completed CAT-044–CAT-048 / FEAT-0012: removed Catalogue v2 persistence and compatibility paths; Intake + OfferingFee are now the sole catalogue offering representation, including imports, applications, Admin, and exports.
 - Added CAT-049 pre-migration Catalogue v3 cutover safety for existing databases, with dry-run support and operator documentation.
 
@@ -1279,3 +1288,7 @@
   `non-thesis` when `thesis_type` is populated.
 - `rebuild_program_slugs` now repairs existing graduate slugs to the same rule.
 - Added regression coverage for model canonicalization and existing-data rebuilds.
+
+- Refined CAT-050/CAT-T35: Program public slugs are now deterministically rebuilt
+  from structured University, localized Program name, degree, thesis type, and
+  instruction-language data instead of historical Program slug text.

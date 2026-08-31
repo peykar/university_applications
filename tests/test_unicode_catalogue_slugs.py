@@ -5,7 +5,12 @@ from django.urls import resolve, reverse
 from apps.content.models import FAQCategory
 from apps.core.audit import get_system_user
 from apps.geography.models import City, Country, Province
-from apps.universities.models import Program, University
+from apps.universities.models import (
+    Program,
+    ProgramInstructionLanguage,
+    ProgramLanguage,
+    University,
+)
 
 
 class UnicodeCatalogueSlugRoutingTests(SimpleTestCase):
@@ -195,7 +200,7 @@ class LocalizedSlugAutogenerationTests(TestCase):
         self.assertEqual(self.province.slug_fa, "استانبول")
         self.assertEqual(self.city.slug_ar, "إسطنبول")
 
-    def test_program_generates_native_unicode_slugs_and_preserves_explicit_slug(self):
+    def test_program_rebuilds_native_unicode_slugs_from_structured_fields(self):
         university = University.objects.create(
             city=self.city,
             university_type="private",
@@ -218,17 +223,17 @@ class LocalizedSlugAutogenerationTests(TestCase):
             updated_by=self.actor,
         )
 
-        self.assertEqual(program.slug_en, "istanbul-medipol-medicine-custom")
-        self.assertEqual(program.slug_fa, "مدیپول-استانبول-پزشکی")
+        self.assertEqual(program.slug_en, "istanbul-medipol-medicine-bachelor")
+        self.assertEqual(program.slug_fa, "مدیپول-استانبول-پزشکی-کارشناسی")
         self.assertEqual(
             program.slug_tr,
-            "istanbul-medipol-tıp",  # noqa: RUF001 -- intentional Turkish dotless i
+            "istanbul-medipol-tıp-lisans",  # noqa: RUF001 -- intentional Turkish dotless i
         )
-        self.assertEqual(program.slug_ar, "ميديبول-إسطنبول-الطب")
+        self.assertEqual(program.slug_ar, "ميديبول-إسطنبول-الطب-بكالوريوس")
 
         program.name_en = "Medicine Updated"
         program.save()
-        self.assertEqual(program.slug_en, "istanbul-medipol-medicine-custom")
+        self.assertEqual(program.slug_en, "istanbul-medipol-medicine-updated-bachelor")
 
     def test_non_catalogue_slug_field_uses_related_name_when_blank(self):
         category = FAQCategory.objects.create(
@@ -293,18 +298,45 @@ class ProgramCanonicalPublicSlugTests(TestCase):
             created_by=actor,
             updated_by=actor,
         )
+        self.english = ProgramLanguage.objects.create(
+            name_en="English",
+            name_tr="İngilizce",
+            slug_en="english",
+            slug_tr="ingilizce",
+            created_by=actor,
+            updated_by=actor,
+        )
+        self.turkish = ProgramLanguage.objects.create(
+            name_en="Turkish",
+            name_tr="Türkçe",
+            slug_en="turkish",
+            slug_tr="türkçe",
+            created_by=actor,
+            updated_by=actor,
+        )
 
-    def test_program_slug_is_prefixed_with_localized_university_slug(self):
+    def _add_language(self, program, language, *, primary=True):
+        ProgramInstructionLanguage.objects.create(
+            program=program,
+            language=language,
+            is_primary=primary,
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        program.refresh_from_db()
+
+    def test_program_slug_is_derived_from_structured_fields(self):
         program = Program.objects.create(
             university=self.university,
             name_en="Nursing",
             name_tr="Hemşirelik",
-            slug_en="nursing-bachelor-turkish",
-            slug_tr="hemşirelik-lisans-türkçe",
+            slug_en="legacy-custom-slug",
+            slug_tr="eski-özel-slug",
             degree="bachelor",
             created_by=self.actor,
             updated_by=self.actor,
         )
+        self._add_language(program, self.turkish)
         self.assertEqual(
             program.slug_en,
             "istanbul-atlas-university-nursing-bachelor-turkish",
@@ -318,28 +350,42 @@ class ProgramCanonicalPublicSlugTests(TestCase):
         program = Program.objects.create(
             university=self.university,
             name_en="Business Administration",
-            slug_en="business-administration-master-turkish",
             degree="master",
             thesis_type="thesis",
             created_by=self.actor,
             updated_by=self.actor,
         )
+        self._add_language(program, self.turkish)
         self.assertEqual(
             program.slug_en,
             "istanbul-atlas-university-business-administration-master-thesis-turkish",
         )
 
-    def test_repeated_save_does_not_duplicate_university_prefix(self):
+    def test_multilingual_variant_contains_all_structured_languages(self):
         program = Program.objects.create(
             university=self.university,
-            name_en="Nursing",
-            slug_en="nursing-bachelor-turkish",
+            name_en="Translation and Interpreting",
             degree="bachelor",
             created_by=self.actor,
             updated_by=self.actor,
         )
+        self._add_language(program, self.english)
+        self._add_language(program, self.turkish, primary=False)
+        self.assertEqual(
+            program.slug_en,
+            "istanbul-atlas-university-translation-and-interpreting-bachelor-english-turkish",
+        )
+
+    def test_repeated_save_is_idempotent(self):
+        program = Program.objects.create(
+            university=self.university,
+            name_en="Nursing",
+            degree="bachelor",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        self._add_language(program, self.turkish)
         expected = "istanbul-atlas-university-nursing-bachelor-turkish"
-        self.assertEqual(program.slug_en, expected)
         program.save()
         program.refresh_from_db()
         self.assertEqual(program.slug_en, expected)

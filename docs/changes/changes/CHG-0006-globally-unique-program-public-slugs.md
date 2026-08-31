@@ -28,3 +28,11 @@ slugs must therefore include the localized University slug.
 Regression coverage: `ProgramCanonicalPublicSlugTests`,
 `RebuildProgramSlugsCommandTests`, and existing normalized importer tests.
 Repository verification uses `make format` and `make check`.
+
+## Structured canonical generation refinement
+
+Program slugs are no longer reconstructed by preserving the historical Program
+slug tail. They are generated from localized University slug, localized Program
+name, degree, thesis type when applicable, and structured instruction languages.
+This makes `rebuild_program_slugs` a true normalization command for legacy rows.
+

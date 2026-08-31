@@ -10,6 +10,7 @@ from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.db.models import Q
+from django.utils.text import slugify
 
 from apps.core.audit import get_system_user
 from apps.universities.models import (
@@ -423,28 +424,73 @@ class Command(BaseCommand):
 
         source_slug_en = str(row["slug_en"])
         university_prefix = f"{university.slug_en}-"
-        canonical_slug_en = (
+        legacy_canonical_slug_en = (
             source_slug_en
             if source_slug_en.startswith(university_prefix)
             else f"{university_prefix}{source_slug_en}"
         )
-        slug_probe = Program(
-            university=university,
-            slug_en=canonical_slug_en,
-            degree=str(row["degree"]),
-            thesis_type=row.get("thesis_type") or None,
+        language_rows = self._expect_list(row, "instruction_languages")
+        ordered_languages = sorted(
+            language_rows,
+            key=lambda language: (
+                not bool(language.get("is_primary", False)),
+                str(language.get("slug") or language.get("name_en") or ""),
+            ),
         )
-        slug_probe._populate_missing_slugs()
-        thesis_aware_slug_en = slug_probe.slug_en
+        language_tokens = [
+            str(language.get("slug") or "").strip()
+            for language in ordered_languages
+            if str(language.get("slug") or "").strip()
+        ]
+        degree_token = str(row["degree"])
+        thesis_type = row.get("thesis_type") or None
+        thesis_token = ""
+        if thesis_type == ThesisType.THESIS:
+            thesis_token = "thesis"
+        elif thesis_type == ThesisType.NON_THESIS:
+            thesis_token = "non-thesis"
+
+        structured_parts = [
+            university.slug_en,
+            slugify(str(row["name_en"])),
+            degree_token,
+        ]
+        if thesis_token:
+            structured_parts.append(thesis_token)
+        structured_parts.extend(language_tokens)
+        structured_slug_en = "-".join(part for part in structured_parts if part)
+
+        # ``slug_en`` in schema-v2 input is the stable source identity for
+        # re-imports. Program.slug_en itself is now rebuilt from mutable
+        # structured display data, so a renamed Program cannot be found from
+        # its current canonical slug alone. Reconstruct the canonical slug that
+        # the stable source identity would have produced and include it as a
+        # transition/upsert candidate.
+        source_identity_tail = source_slug_en.removeprefix(university_prefix)
+        suffix_tokens = [*language_tokens]
+        if thesis_token:
+            suffix_tokens.insert(0, thesis_token)
+        suffix_tokens.insert(0, degree_token)
+        for token in reversed(suffix_tokens):
+            suffix = f"-{token}"
+            if source_identity_tail.endswith(suffix):
+                source_identity_tail = source_identity_tail[: -len(suffix)]
+        source_identity_parts = [university.slug_en, source_identity_tail, degree_token]
+        if thesis_token:
+            source_identity_parts.append(thesis_token)
+        source_identity_parts.extend(language_tokens)
+        source_identity_canonical_slug_en = "-".join(part for part in source_identity_parts if part)
+
         matches = Program.objects.filter(university=university).filter(
-            Q(slug_en=thesis_aware_slug_en)
-            | Q(slug_en=canonical_slug_en)
+            Q(slug_en=structured_slug_en)
+            | Q(slug_en=source_identity_canonical_slug_en)
+            | Q(slug_en=legacy_canonical_slug_en)
             | Q(slug_en=source_slug_en)
         )
         if matches.count() > 1:
             raise CommandError(
                 f"Multiple existing Program rows match source/canonical slug "
-                f"{source_slug_en!r}/{thesis_aware_slug_en!r}. Resolve duplicates before importing."
+                f"{source_slug_en!r}/{structured_slug_en!r}. Resolve duplicates before importing."
             )
         instance = matches.first()
         created = instance is None
@@ -452,7 +498,7 @@ class Command(BaseCommand):
             instance = Program(university=university, created_by=actor)
         for field, value in defaults.items():
             setattr(instance, field, value)
-        instance.slug_en = canonical_slug_en
+        instance.slug_en = structured_slug_en
         instance.updated_by = actor
         instance.full_clean()
         instance.save()
