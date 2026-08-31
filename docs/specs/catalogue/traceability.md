@@ -55,3 +55,5 @@ by the importer and readers.
 | `CAT-038` | Language-aware/source-faithful fees | `CAT-T24` | `OfferingFee.language/label/notes` | `tests/test_catalogue_v3.py` |
 | `CAT-039` | Expanded fee basis | `CAT-T24` | `FeeBasis` | `tests/test_catalogue_v3.py` |
 | `CAT-040` | Compatibility/import transition | `CAT-T25` | normalized importer `_get_or_create_intake`, `_sync_structured_fees`; legacy fields retained | importer + catalogue v3 tests |
+| `CAT-041` | Canonical structured-fee admin presentation | `CAT-T27` | `apps/universities/admin.py::StructuredFeeSummaryMixin`, `ProgramOfferingInline`, `ProgramOfferingAdmin`, `OfferingFeeAdmin` | `CatalogueV3AdminPresentationTests` |
+

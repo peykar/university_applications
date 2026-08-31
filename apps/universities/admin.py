@@ -6,7 +6,7 @@ from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 from django.forms.models import BaseInlineFormSet
-from django.utils.html import format_html
+from django.utils.html import format_html, format_html_join
 
 from apps.core.admin import ActiveActionsMixin, AuditAdminMixin
 
@@ -140,34 +140,127 @@ class OfferingFeeInline(admin.TabularInline):
     autocomplete_fields = ("language",)
 
 
-class ProgramOfferingInline(admin.StackedInline):
+class StructuredFeeSummaryMixin:
+    @admin.display(description="Structured fees (Catalogue v3)")
+    def structured_fee_summary(self, obj):
+        if not obj or not obj.pk:
+            return "Save the offering first, then add structured fee rows."
+
+        fees = list(
+            obj.fees.select_related("language").order_by("fee_type", "language__name_en", "id")
+        )
+        if not fees:
+            return (
+                "No structured fees yet. Add them in the Offering fees section on the "
+                "offering change page."
+            )
+
+        rows = []
+        for fee in fees:
+            values = []
+            if fee.amount is not None:
+                values.append(f"{fee.currency} {fee.amount:,.2f}")
+            if fee.percentage is not None:
+                values.append(f"{fee.percentage:g}%")
+            value = " + ".join(values)
+            language_obj = fee.language if fee.language_id else None
+            language = language_obj.name_en if language_obj is not None else "—"
+            label = fee.label or "—"
+            status = "active" if fee.is_active else "inactive"
+            rows.append(
+                (
+                    fee.get_fee_type_display(),
+                    label,
+                    language,
+                    value,
+                    fee.get_basis_display(),
+                    status,
+                )
+            )
+
+        return format_html(
+            '<table style="width:100%;max-width:900px">'
+            "<thead><tr>"
+            '<th style="text-align:left">Type</th>'
+            '<th style="text-align:left">Source label</th>'
+            '<th style="text-align:left">Language</th>'
+            '<th style="text-align:left">Value</th>'
+            '<th style="text-align:left">Basis</th>'
+            '<th style="text-align:left">Status</th>'
+            "</tr></thead><tbody>{}</tbody></table>",
+            format_html_join(
+                "",
+                "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>",
+                rows,
+            ),
+        )
+
+
+class ProgramOfferingInline(StructuredFeeSummaryMixin, admin.StackedInline):
     model = ProgramOffering
     form = ProgramOfferingAdminForm
     extra = 0
-    fields = (
-        "academic_year",
-        "intake",
-        "semester",
-        "fee_basis",
-        "currency",
-        "tuition",
-        "tuition_discount_percentage",
-        "tuition_discounted",
-        "cash_discount_percentage",
-        "tuition_cash",
-        "tuition_annual_installment",
-        "deposit",
-        "preparatory_tuition",
-        "preparation_included",
-        "quota",
-        "deadline",
-        "valid_from",
-        "valid_until",
-        "source",
-        "notes",
-        "is_active",
+    readonly_fields = ("structured_fee_summary",)
+    fieldsets = (
+        (
+            "Canonical offering",
+            {
+                "fields": (
+                    "academic_year",
+                    "intake",
+                    "fee_basis",
+                    "currency",
+                    "is_active",
+                )
+            },
+        ),
+        (
+            "Structured fees",
+            {
+                "fields": ("structured_fee_summary",),
+                "description": (
+                    "Catalogue v3 fees are canonical. Use the Change link on this offering "
+                    "to add or edit individual OfferingFee rows."
+                ),
+            },
+        ),
+        (
+            "Availability and provenance",
+            {
+                "fields": (
+                    "quota",
+                    "deadline",
+                    "valid_from",
+                    "valid_until",
+                    "source",
+                    "notes",
+                )
+            },
+        ),
+        (
+            "Legacy compatibility pricing",
+            {
+                "classes": ("collapse",),
+                "fields": (
+                    "semester",
+                    "tuition",
+                    "tuition_discount_percentage",
+                    "tuition_discounted",
+                    "cash_discount_percentage",
+                    "tuition_cash",
+                    "tuition_annual_installment",
+                    "deposit",
+                    "preparatory_tuition",
+                    "preparation_included",
+                ),
+                "description": (
+                    "Deprecated compatibility fields retained while older application/UI "
+                    "consumers migrate to Catalogue v3. Prefer the structured fee rows above."
+                ),
+            },
+        ),
     )
-    autocomplete_fields = ("academic_year", "semester", "source")
+    autocomplete_fields = ("academic_year", "intake", "semester", "source")
     show_change_link = True
 
 
@@ -485,18 +578,17 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
 
 
 @admin.register(ProgramOffering)
-class ProgramOfferingAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
+class ProgramOfferingAdmin(
+    StructuredFeeSummaryMixin, AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin
+):
     form = ProgramOfferingAdminForm
     inlines = (OfferingFeeInline,)
+    readonly_fields = ("structured_fee_summary",)
     list_display = (
         "program",
         "academic_year",
         "intake",
-        "currency",
-        "tuition",
-        "tuition_discounted",
-        "tuition_cash",
-        "deposit",
+        "structured_fee_count",
         "quota",
         "deadline",
         "is_active",
@@ -525,25 +617,26 @@ class ProgramOfferingAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin
     )
     fieldsets = (
         (
-            "Intake",
-            {"fields": ("program", "academic_year", "intake", "semester", "is_active")},
-        ),
-        (
-            "Pricing",
+            "Canonical offering",
             {
                 "fields": (
+                    "program",
+                    "academic_year",
+                    "intake",
                     "fee_basis",
                     "currency",
-                    "tuition",
-                    "tuition_discount_percentage",
-                    "tuition_discounted",
-                    "cash_discount_percentage",
-                    "tuition_cash",
-                    "tuition_annual_installment",
-                    "deposit",
-                    "preparatory_tuition",
-                    "preparation_included",
+                    "is_active",
                 )
+            },
+        ),
+        (
+            "Structured fees",
+            {
+                "fields": ("structured_fee_summary",),
+                "description": (
+                    "Catalogue v3 OfferingFee rows are canonical. Add or edit them in the "
+                    "Offering fees inline below this form."
+                ),
             },
         ),
         (
@@ -559,7 +652,64 @@ class ProgramOfferingAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin
                 )
             },
         ),
+        (
+            "Legacy compatibility pricing",
+            {
+                "classes": ("collapse",),
+                "fields": (
+                    "semester",
+                    "tuition",
+                    "tuition_discount_percentage",
+                    "tuition_discounted",
+                    "cash_discount_percentage",
+                    "tuition_cash",
+                    "tuition_annual_installment",
+                    "deposit",
+                    "preparatory_tuition",
+                    "preparation_included",
+                ),
+                "description": (
+                    "Deprecated compatibility fields retained while older consumers migrate. "
+                    "Do not treat tuition_cash as the canonical meaning of an advance-payment "
+                    "fee; use OfferingFee rows for source-faithful semantics."
+                ),
+            },
+        ),
     )
+
+    @admin.display(description="Structured fees")
+    def structured_fee_count(self, obj):
+        return obj.fees.count()
+
+
+@admin.register(OfferingFee)
+class OfferingFeeAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
+    list_display = (
+        "offering",
+        "fee_type",
+        "label",
+        "language",
+        "currency",
+        "amount",
+        "percentage",
+        "basis",
+        "is_active",
+    )
+    list_filter = (
+        "fee_type",
+        "basis",
+        "currency",
+        "language",
+        "is_active",
+        "offering__program__university",
+    )
+    search_fields = (
+        "offering__program__name_en",
+        "offering__program__university__name_en",
+        "label",
+        "notes",
+    )
+    autocomplete_fields = ("offering", "language")
 
 
 @admin.register(UniversityCatalogueSource)

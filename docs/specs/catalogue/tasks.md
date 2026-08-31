@@ -1,7 +1,7 @@
 # University and program catalogue — tasks
 
 Status: APPROVED
-Version: 3.0
+Version: 3.1
 
 - [x] CAT-T01 (`CAT-007`, `CAT-008`, `CAT-020`) Add AcademicUnit model,
       validation, admin maintenance, and Program association.
@@ -62,3 +62,8 @@ Version: 3.0
 - [x] CAT-T24 (`CAT-037`–`CAT-039`) Add normalized, optionally language-aware OfferingFee and expand fee bases.
 - [x] CAT-T25 (`CAT-040`) Make normalized university JSON imports create Intake and structured fee rows while translating legacy fee columns during transition.
 - [x] CAT-T26 (`CAT-035`–`CAT-040`) Expose Intake and structured fees in Django Admin and document the v3 transition.
+- [x] CAT-T27 (`CAT-041`) Make structured OfferingFee data primary in Django Admin,
+      add a structured-fee summary to Program offering inlines, collapse legacy
+      fixed pricing/Semester fields into a clearly labelled compatibility section,
+      add direct OfferingFee administration, and cover the admin configuration.
+

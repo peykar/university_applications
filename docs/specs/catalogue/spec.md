@@ -1,7 +1,7 @@
 # University and program catalogue
 
 Status: APPROVED
-Version: 3.0
+Version: 3.1
 
 ## Goal
 
@@ -221,3 +221,13 @@ CAT-038 — OfferingFee MUST support amount and/or percentage, ISO-supported cur
 CAT-039 — Fee basis MUST support annual, semester, whole-program, per-credit, and one-time values.
 
 CAT-040 — Existing ProgramOffering pricing columns and Semester MAY remain as deprecated compatibility bridges while current UI/Application consumers migrate. New normalized imports MUST create canonical Intake and OfferingFee data and MUST preserve the source distinction between advance payment and deposit.
+
+CAT-041 — Django Admin MUST present Catalogue v3 `OfferingFee` rows as the
+canonical pricing representation for ProgramOffering maintenance. Program-level
+offering inlines MUST show a readable structured-fee summary and direct staff to
+the ProgramOffering change page for fee editing. Deprecated fixed pricing fields
+and legacy Semester MUST remain available during the transition but MUST be
+visually separated and collapsed under an explicit compatibility section so they
+are not mistaken for the canonical fee model. Staff MUST also be able to browse
+and edit OfferingFee rows directly in Admin.
+

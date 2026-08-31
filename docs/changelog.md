@@ -1226,3 +1226,15 @@
 - BUG-0015: Fixed university data dump test fixture duplicating canonical instruction-language rows.
 
 - Catalogue v3: added canonical Intake and normalized, language-aware OfferingFee modelling; expanded fee bases; normalized imports now populate the new structures while preserving legacy compatibility fields.
+## 2026-08-31 — Catalogue v3 admin fee presentation
+
+- Added CAT-041/CAT-T27 so Django Admin treats OfferingFee rows as the canonical
+  Catalogue v3 pricing representation.
+- Program offering inlines now show a structured-fee summary instead of leading
+  with deprecated fixed pricing columns.
+- ProgramOffering admin now shows structured fees prominently and edits them via
+  the OfferingFee inline; legacy Semester/fixed pricing fields remain in a
+  collapsed compatibility section.
+- Added a direct OfferingFee admin list/edit view and regression coverage for the
+  admin configuration.
+

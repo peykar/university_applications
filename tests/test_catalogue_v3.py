@@ -86,3 +86,32 @@ class CatalogueV3Tests(TestCase):
         self.assertIn("semester", FeeBasis.values)
         self.assertIn("per_credit", FeeBasis.values)
         self.assertIn("one_time", FeeBasis.values)
+
+
+class CatalogueV3AdminPresentationTests(TestCase):
+    def test_program_offering_admin_prioritizes_structured_fees(self):
+        from django.contrib import admin
+
+        from apps.universities.admin import OfferingFeeInline, ProgramOfferingAdmin
+
+        admin_instance = admin.site._registry[ProgramOffering]
+        self.assertIsInstance(admin_instance, ProgramOfferingAdmin)
+        self.assertEqual(admin_instance.inlines, (OfferingFeeInline,))
+        self.assertIn("structured_fee_summary", admin_instance.readonly_fields)
+
+        fieldsets = {title: options for title, options in admin_instance.fieldsets}
+        self.assertIn("Structured fees", fieldsets)
+        self.assertIn("Legacy compatibility pricing", fieldsets)
+        self.assertEqual(fieldsets["Legacy compatibility pricing"].get("classes"), ("collapse",))
+        self.assertIn("structured_fee_summary", fieldsets["Structured fees"]["fields"])
+
+    def test_program_inline_hides_legacy_pricing_behind_collapsed_section(self):
+        from django.contrib import admin
+
+        from apps.universities.admin import ProgramOfferingInline
+
+        inline = ProgramOfferingInline(Program, admin.site)
+        fieldsets = {title: options for title, options in inline.fieldsets}
+        self.assertIn("Structured fees", fieldsets)
+        self.assertEqual(fieldsets["Legacy compatibility pricing"].get("classes"), ("collapse",))
+        self.assertIn("structured_fee_summary", inline.readonly_fields)

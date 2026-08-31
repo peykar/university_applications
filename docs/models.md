@@ -84,3 +84,11 @@ fill-only and never overwrites an explicit stored slug.
 `Intake` is now the canonical offering intake entity (for example Fall, Spring, September, or Academic Intake) and binds an `AcademicYear`, optionally to one University. `ProgramOffering.intake` is canonical; `semester` remains a deprecated compatibility bridge.
 
 `OfferingFee` is the canonical extensible fee component. It records fee type, optional source label, optional language, currency, amount and/or percentage, basis, notes, and active state. It supports list/discounted tuition, advance/cash payment, installment total, deposit, preparatory/foundation, application, registration, and other fees. Existing fixed ProgramOffering price columns remain during migration for current consumers.
+
+### Catalogue v3 admin pricing
+
+`OfferingFee` is the canonical staff-facing price representation for an offering.
+Django Admin shows these rows first. The fixed `ProgramOffering` tuition/cash/
+deposit/preparatory columns and `semester` remain compatibility fields and are
+grouped under a collapsed legacy section until remaining consumers migrate.
+
