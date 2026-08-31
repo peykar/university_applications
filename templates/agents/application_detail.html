@@ -5,7 +5,7 @@
 {% include "includes/application_entity_header.html" %}
 <div class="agent-detail-grid">
 <section class="agent-panel">
- <div class="agent-panel-head"><div><h2>{{ application.program_offering.program.name_en }}</h2><p>{{ application.program_offering.program.university.name_en }}</p></div><span class="status-pill">{{ application.get_status_display }}</span></div>
+ <div class="agent-panel-head"><div><h2>{{ application.program_offering.program.localized_name }}</h2><p>{{ application.program_offering.program.university.localized_name }}</p></div><span class="status-pill">{{ application.get_status_display }}</span></div>
  <dl class="agent-facts">
   <div><dt>{% trans "Student" %}</dt><dd><a href="{% url 'agent-student-detail' application.student.pk %}">{{ application.student }}</a></dd></div>
   <div><dt>{% trans "Agent" %}</dt><dd>{{ application.agent|default:application.student.agent|default:"—" }}</dd></div>

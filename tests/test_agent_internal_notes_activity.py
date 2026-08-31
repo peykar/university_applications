@@ -40,7 +40,7 @@ class AgentInternalNotesActivityTests(SimpleTestCase):
 
     def test_internal_notes_are_not_applicant_profile_fields(self):
         form_block = self.forms.split(
-            "class AgentLeadEditForm(forms.ModelForm):",
+            "class AgentLeadEditForm(LocalizedFormMixin, forms.ModelForm):",
             1,
         )[1].split("class StudentRecordConversionForm", 1)[0]
         self.assertNotIn('"notes"', form_block)

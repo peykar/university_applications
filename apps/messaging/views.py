@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from .forms import MessageForm
@@ -72,7 +73,7 @@ def customer_conversation_send(request, conversation_id):
     )
     form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
-        messages.error(request, "Write a message or attach a file.")
+        messages.error(request, _("Write a message or attach a file."))
         return redirect("customer-conversation-detail", conversation_id=conversation.pk)
     send_message(
         conversation=conversation,

@@ -30,11 +30,11 @@
         </select>
         <select name="language" aria-label="{% trans 'Language' %}">
           <option value="">{% trans "Any language" %}</option>
-          {% for language in language_choices %}<option value="{{ language.slug_en }}">{{ language.name_en }}</option>{% endfor %}
+          {% for language in language_choices %}<option value="{{ language.slug_en }}">{{ language.localized_name }}</option>{% endfor %}
         </select>
         <select name="city" aria-label="{% trans 'City' %}">
           <option value="">{% trans "Any city" %}</option>
-          {% for city in city_choices %}<option value="{{ city.slug_en }}">{{ city.name_en }}</option>{% endfor %}
+          {% for city in city_choices %}<option value="{{ city.slug_en }}">{{ city.localized_name }}</option>{% endfor %}
         </select>
         <a class="advanced-filter-link" href="{% url 'program-list' %}">{% trans "Advanced filters" %} →</a>
       </div>
@@ -75,7 +75,7 @@
   <div class="field-chip-grid">
     {% for field in study_fields %}
       <a class="field-chip" href="{% url 'program-list' %}?field={{ field.slug_en|urlencode }}">
-        <span>{{ field.name_en }}</span>
+        <span>{{ field.localized_name }}</span>
         <small>{{ field.program_count }} {% trans "programs" %}</small>
       </a>
     {% endfor %}
@@ -93,8 +93,8 @@
     {% for program in popular_programs %}
       <a class="program-row" href="{% url 'program-detail' program.slug_en %}">
         <div>
-          <strong>{{ program.name_en }}</strong>
-          <span>{{ program.university.name_en }} · {{ program.get_degree_display }} · {{ program.instruction_language_display }}</span>
+          <strong>{{ program.localized_name }}</strong>
+          <span>{{ program.university.localized_name }} · {{ program.get_degree_display }} · {{ program.instruction_language_display }}</span>
         </div>
         <div class="program-row-meta">
           {% if program.min_tuition %}
@@ -151,8 +151,8 @@
   <div class="faq-list">
     {% for faq in faq_preview %}
       <details class="faq-item">
-        <summary>{{ faq.question_en|default:faq.question_fa }}</summary>
-        <div class="faq-answer">{{ faq.answer_en|default:faq.answer_fa }}</div>
+        <summary>{{ faq.localized_question }}</summary>
+        <div class="faq-answer">{{ faq.localized_answer }}</div>
       </details>
     {% endfor %}
   </div>

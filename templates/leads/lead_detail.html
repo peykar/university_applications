@@ -36,8 +36,8 @@
           {% for interest in interests %}
             <a class="request-overview-program" href="{% url 'program-detail' interest.program.slug_en %}">
               <span>
-                <strong>{{ interest.program.name_en }}</strong>
-                <small>{{ interest.program.university.name_en }}</small>
+                <strong>{{ interest.program.localized_name }}</strong>
+                <small>{{ interest.program.university.localized_name }}</small>
                 <small class="request-overview-program-meta">
                   {{ interest.program.get_degree_display }} · {{ interest.program.instruction_language_display }}
                   {% if interest.program_offering %}

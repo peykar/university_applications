@@ -1,3 +1,17 @@
+## 2026-09-01 — Application-wide localization integrity
+
+- Implemented I18N-001 / UI-0005 across every intentionally translation-enabled
+  TurkDemy product surface, not only public Catalogue pages.
+- Added canonical active-locale structured-value selection with English fallback and
+  no fabricated domain translations.
+- Updated translated templates, filters, forms, presentation messages and shared
+  components to prefer localized model values and gettext interface copy.
+- Added generated-form localization and removed hard-coded English JavaScript labels
+  from the searchable multiselect.
+- Completed Persian, Turkish and Arabic interface catalogues for current literal
+  product copy and added application-wide regression coverage.
+- Restored and release-gated the mandatory root `.env.example` in the project archive.
+
 ## 2026-08-31 — Program ordinary-save collision tails
 
 - Fixed BUG-0030 / CAT-050: ordinary Program canonical slug regeneration now resolves

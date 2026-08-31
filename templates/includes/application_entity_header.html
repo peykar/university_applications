@@ -11,14 +11,14 @@
       {% endif %}
     {% endif %}
     <span aria-hidden="true">/</span>
-    <span>{{ application.program_offering.program.name_en }}</span>
+    <span>{{ application.program_offering.program.localized_name }}</span>
   </nav>
   <div class="entity-context-title">
     <div>
       <p class="eyebrow">{% trans "Application" %}</p>
-      <h1>{{ application.program_offering.program.name_en }}</h1>
+      <h1>{{ application.program_offering.program.localized_name }}</h1>
       <p class="muted">
-        {{ application.program_offering.program.university.name_en }}
+        {{ application.program_offering.program.university.localized_name }}
         · {{ application.student }}
       </p>
       <span class="status-pill">{{ application.get_status_display }}</span>

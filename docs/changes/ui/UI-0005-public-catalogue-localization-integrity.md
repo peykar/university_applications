@@ -1,9 +1,9 @@
 # UI-0005 — Application-wide localization integrity
 
-Status: PROPOSED  
+Status: IMPLEMENTED  
 Classification: UI / localized presentation  
 Owning capability: Application-wide localization  
-Affected requirement: I18N-001 (DRAFT)
+Affected requirement: I18N-001 (APPROVED)
 
 ## Finding
 
@@ -27,7 +27,7 @@ The problem has two distinct sources and they MUST be treated separately:
 
 A missing translation in one category MUST NOT be hidden by fixing only the other.
 
-## Proposed observable behavior
+## Observable behavior
 
 For every supported locale and every TurkDemy page intentionally participating in
 localization:
@@ -76,29 +76,29 @@ storing source-backed localized data.
 Conversely, translated database content does not excuse hard-coded English UI
 copy. Both layers must be correct.
 
-## Proposed acceptance criteria
+## Acceptance criteria
 
-- [ ] Build an inventory of every TurkDemy page family currently intentionally
+- [x] Build an inventory of every TurkDemy page family currently intentionally
       translation-enabled and classify its templates/shared partials/helpers.
-- [ ] English pages remain unchanged in business meaning and remain LTR.
-- [ ] Persian pages render translatable interface copy in Persian wherever an
+- [x] English pages remain unchanged in business meaning and remain LTR.
+- [x] Persian pages render translatable interface copy in Persian wherever an
       approved translation exists, across every in-scope page family.
-- [ ] Other supported locales follow the same selection rule; this is not a
+- [x] Other supported locales follow the same selection rule; this is not a
       Persian-only fix.
-- [ ] Localized structured/model values are selected for the active locale when
+- [x] Localized structured/model values are selected for the active locale when
       populated.
-- [ ] A deliberately missing localized structured value falls back to English and
+- [x] A deliberately missing localized structured value falls back to English and
       does not render blank or invent a translation.
-- [ ] Shared navigation, footer, forms, validation/presentation copy, actions,
+- [x] Shared navigation, footer, forms, validation/presentation copy, actions,
       badges, filters, pagination and empty states are included in the review.
-- [ ] Rendered regression tests cover representative public, authentication,
+- [x] Rendered regression tests cover representative public, authentication,
       customer workspace/messaging, and translation-enabled staff/agent surface
       families that exist when implementation begins.
-- [ ] Tests distinguish interface/UI translation failures from missing localized
+- [x] Tests distinguish interface/UI translation failures from missing localized
       structured-data fallback behavior.
-- [ ] Existing routes/slugs, permissions, fee semantics, Request flows and
+- [x] Existing routes/slugs, permissions, fee semantics, Request flows and
       Application business logic are unchanged.
-- [ ] RTL pages remain usable after translated strings vary in length.
+- [x] RTL pages remain usable after translated strings vary in length.
 
 ## Out of scope for this change
 
@@ -114,10 +114,8 @@ copy. Both layers must be correct.
 
 ## Review decision
 
-This record remains intentionally **proposal-only**. No templates, views, models,
-forms, helpers, translations, CSS, JavaScript, tests, or runtime behavior are
-changed until Peyman approves I18N-001/UI-0005.
-
-If approved, the next SDD phase is to create the complete translation-enabled
-surface inventory, design the locale-aware value-selection/fallback strategy, and
-build a cross-surface test matrix before implementation.
+Approved by product and implemented after the scope was expanded from public Catalogue
+pages to every intentionally translation-enabled TurkDemy product surface. The
+implementation uses active-locale structured values with English fallback, gettext for
+interface copy, localized generated form presentation strings, and server-provided
+localized JavaScript labels. No domain-data translations are fabricated.

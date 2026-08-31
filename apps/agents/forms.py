@@ -3,6 +3,7 @@ from typing import ClassVar
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.forms import LocalizedFormMixin
 from apps.leads.models import (
     DocumentType,
     Lead,
@@ -13,7 +14,7 @@ from apps.students.models import Student, StudentDocument
 from apps.universities.models import ProgramOffering
 
 
-class DocumentReviewForm(forms.Form):
+class DocumentReviewForm(LocalizedFormMixin, forms.Form):
     review_status = forms.ChoiceField(
         choices=LeadDocumentReviewStatus.choices,
         label=_("Review decision"),
@@ -25,7 +26,7 @@ class DocumentReviewForm(forms.Form):
     )
 
 
-class PromoteChatAttachmentForm(forms.Form):
+class PromoteChatAttachmentForm(LocalizedFormMixin, forms.Form):
     document_type = forms.ChoiceField(
         choices=DocumentType.choices,
         label=_("Document type"),
@@ -38,7 +39,7 @@ class PromoteChatAttachmentForm(forms.Form):
     )
 
 
-class AgentLeadEditForm(forms.ModelForm):
+class AgentLeadEditForm(LocalizedFormMixin, forms.ModelForm):
     """Edit provisional applicant data from Agent Workspace."""
 
     class Meta:
@@ -83,7 +84,7 @@ class AgentLeadEditForm(forms.ModelForm):
             field.required = False
 
 
-class StudentRecordConversionForm(forms.ModelForm):
+class StudentRecordConversionForm(LocalizedFormMixin, forms.ModelForm):
     """Review/edit the Student data created from an Applicant Lead."""
 
     class Meta:
@@ -124,7 +125,7 @@ class StudentRecordConversionForm(forms.ModelForm):
         }
 
 
-class AgentLeadDocumentUploadForm(forms.ModelForm):
+class AgentLeadDocumentUploadForm(LocalizedFormMixin, forms.ModelForm):
     class Meta:
         model = LeadDocument
         fields = ("document_type", "file", "description")
@@ -133,7 +134,7 @@ class AgentLeadDocumentUploadForm(forms.ModelForm):
         }
 
 
-class StudentApplicationOfferingForm(forms.Form):
+class StudentApplicationOfferingForm(LocalizedFormMixin, forms.Form):
     offering = forms.ModelChoiceField(
         queryset=ProgramOffering.objects.none(),
         label=_("Program / intake"),
@@ -159,7 +160,7 @@ class StudentApplicationOfferingForm(forms.Form):
             )
 
 
-class StudentDocumentUploadForm(forms.ModelForm):
+class StudentDocumentUploadForm(LocalizedFormMixin, forms.ModelForm):
     class Meta:
         model = StudentDocument
         fields = ("document_type", "file", "short_description")
@@ -171,7 +172,7 @@ class StudentDocumentUploadForm(forms.ModelForm):
         )
 
 
-class ApplicationExistingDocumentForm(forms.Form):
+class ApplicationExistingDocumentForm(LocalizedFormMixin, forms.Form):
     student_document = forms.ModelChoiceField(
         queryset=StudentDocument.objects.none(),
         label=_("Student document"),

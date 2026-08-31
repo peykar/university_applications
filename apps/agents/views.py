@@ -11,6 +11,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import Resolver404, resolve, reverse
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from apps.applications.models import Application, ApplicationDocument, ApplicationStatus
@@ -409,7 +410,10 @@ def applicant_recommend_program(request, lead_id):
     if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
         messages.error(
             request,
-            "Program recommendations cannot be changed after the applicant is finalized or closed.",
+            _(
+                "Program recommendations cannot be changed after the applicant is "
+                "finalized or closed."
+            ),
         )
         return redirect("agent-applicant-programs", lead_id=lead.pk)
 
@@ -430,7 +434,7 @@ def applicant_recommend_program(request, lead_id):
         if interest.source == "user":
             messages.info(
                 request,
-                "This program is already on the applicant's list.",
+                _("This program is already on the applicant's list."),
             )
             return redirect("agent-applicant-programs", lead_id=lead.pk)
 
@@ -451,9 +455,9 @@ def applicant_recommend_program(request, lead_id):
                     "updated_at",
                 )
             )
-            messages.success(request, "Recommendation updated.")
+            messages.success(request, _("Recommendation updated."))
         else:
-            messages.info(request, "This program is already recommended.")
+            messages.info(request, _("This program is already recommended."))
         return redirect("agent-applicant-programs", lead_id=lead.pk)
 
     interest = LeadProgramInterest.objects.create(
@@ -468,7 +472,7 @@ def applicant_recommend_program(request, lead_id):
     LeadActivity.objects.create(
         lead=lead,
         activity_type=LeadActivityType.PROGRAM_SUGGESTED,
-        description=f"Program suggested: {program.name_en}.",
+        description=_("Program suggested: %(program)s.") % {"program": program.localized_name},
         metadata={
             "program_id": str(program.pk),
             "interest_id": str(interest.pk),
@@ -478,17 +482,21 @@ def applicant_recommend_program(request, lead_id):
         created_by=request.user,
         updated_by=request.user,
     )
-    recommendation_message = (
-        f"Your advisor recommended {program.name_en} at {program.university.name_en}."
-    )
+    recommendation_message = _("Your advisor recommended %(program)s at %(university)s.") % {
+        "program": program.localized_name,
+        "university": program.university.localized_name,
+    }
     if reason:
-        recommendation_message = f"{recommendation_message} Reason: {reason}"
+        recommendation_message = _("%(message)s Reason: %(reason)s") % {
+            "message": recommendation_message,
+            "reason": reason,
+        }
     send_system_message(
         lead,
         recommendation_message,
         performed_by=request.user,
     )
-    messages.success(request, "Program recommended to applicant.")
+    messages.success(request, _("Program recommended to applicant."))
     return redirect("agent-applicant-programs", lead_id=lead.pk)
 
 
@@ -499,7 +507,10 @@ def applicant_remove_recommendation(request, lead_id, interest_id):
     if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
         messages.error(
             request,
-            "Program recommendations cannot be changed after the applicant is finalized or closed.",
+            _(
+                "Program recommendations cannot be changed after the applicant is "
+                "finalized or closed."
+            ),
         )
         return redirect("agent-applicant-programs", lead_id=lead.pk)
 
@@ -508,7 +519,7 @@ def applicant_remove_recommendation(request, lead_id, interest_id):
         pk=interest_id,
         source="agent",
     )
-    program_name = interest.program.name_en
+    program_name = interest.program.localized_name
     interest.delete()
     LeadActivity.objects.create(
         lead=lead,
@@ -519,7 +530,7 @@ def applicant_remove_recommendation(request, lead_id, interest_id):
         created_by=request.user,
         updated_by=request.user,
     )
-    messages.success(request, "Program recommendation removed.")
+    messages.success(request, _("Program recommendation removed."))
     return redirect("agent-applicant-programs", lead_id=lead.pk)
 
 
@@ -596,14 +607,14 @@ def applicant_internal_notes(request, lead_id):
     if lead.status == LeadStatus.FINALIZED:
         messages.error(
             request,
-            "Internal Lead notes are read-only after finalization.",
+            _("Internal Lead notes are read-only after finalization."),
         )
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     new_notes = request.POST.get("notes", "")
     old_notes = lead.notes
     if new_notes == old_notes:
-        messages.info(request, "Internal notes were not changed.")
+        messages.info(request, _("Internal notes were not changed."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     lead.notes = new_notes
@@ -628,7 +639,7 @@ def applicant_internal_notes(request, lead_id):
         created_by=request.user,
         updated_by=request.user,
     )
-    messages.success(request, "Internal notes updated.")
+    messages.success(request, _("Internal notes updated."))
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 
@@ -649,7 +660,7 @@ def applicant_edit(request, lead_id):
     if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
         messages.error(
             request,
-            "Finalized or closed applicant data cannot be edited here.",
+            _("Finalized or closed applicant data cannot be edited here."),
         )
         return redirect("agent-applicant-profile", lead_id=lead.pk)
 
@@ -667,9 +678,9 @@ def applicant_edit(request, lead_id):
             form=form,
             actor=request.user,
         ):
-            messages.success(request, "Applicant data updated.")
+            messages.success(request, _("Applicant data updated."))
         else:
-            messages.info(request, "No applicant data changed.")
+            messages.info(request, _("No applicant data changed."))
         return redirect("agent-applicant-profile", lead_id=lead.pk)
 
     return render(
@@ -691,7 +702,7 @@ def applicant_document_upload(request, lead_id):
     if lead.status == LeadStatus.FINALIZED:
         messages.error(
             request,
-            "Upload documents to the Student record after finalization.",
+            _("Upload documents to the Student record after finalization."),
         )
         return redirect("agent-applicant-documents", lead_id=lead.pk)
 
@@ -700,7 +711,10 @@ def applicant_document_upload(request, lead_id):
         detail = " ".join(
             str(message) for field_messages in form.errors.values() for message in field_messages
         )
-        messages.error(request, f"Document was not uploaded. {detail}")
+        messages.error(
+            request,
+            _("Document was not uploaded. %(detail)s") % {"detail": detail},
+        )
         return redirect("agent-applicant-documents", lead_id=lead.pk)
 
     document = form.save(commit=False)
@@ -733,7 +747,7 @@ def applicant_document_upload(request, lead_id):
         created_by=request.user,
         updated_by=request.user,
     )
-    messages.success(request, "Document uploaded and approved.")
+    messages.success(request, _("Document uploaded and approved."))
     return redirect("agent-applicant-documents", lead_id=lead.pk)
 
 
@@ -746,7 +760,7 @@ def applicant_status(request, lead_id):
 
     if action == "close":
         if lead.status == LeadStatus.FINALIZED:
-            messages.error(request, "A finalized applicant cannot be closed.")
+            messages.error(request, _("A finalized applicant cannot be closed."))
             return redirect("agent-applicant-detail", lead_id=lead.pk)
         reason = (request.POST.get("close_reason") or "").strip()
         lead.status = LeadStatus.CLOSED
@@ -772,7 +786,7 @@ def applicant_status(request, lead_id):
             created_by=request.user,
             updated_by=request.user,
         )
-        messages.success(request, "Applicant closed.")
+        messages.success(request, _("Applicant closed."))
     elif action == "reopen" and lead.status == LeadStatus.CLOSED:
         lead.status = LeadStatus.ASSIGNED if lead.assigned_to_id else LeadStatus.NEW
         lead.closed_at = None
@@ -798,9 +812,9 @@ def applicant_status(request, lead_id):
             created_by=request.user,
             updated_by=request.user,
         )
-        messages.success(request, "Applicant reopened.")
+        messages.success(request, _("Applicant reopened."))
     else:
-        messages.error(request, "Invalid applicant status action.")
+        messages.error(request, _("Invalid applicant status action."))
 
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
@@ -842,15 +856,15 @@ def _assign_lead(lead, *, target_user, performed_by) -> None:
 def applicant_assign_to_me(request, lead_id):
     lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
-        messages.error(request, "This applicant can no longer be assigned.")
+        messages.error(request, _("This applicant can no longer be assigned."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     if lead.assigned_to_id == request.user.pk:
-        messages.info(request, "You are already responsible for this applicant.")
+        messages.info(request, _("You are already responsible for this applicant."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     if not lead.agent_id or not lead.agent.users.filter(pk=request.user.pk).exists():
-        messages.error(request, "You are not an active user of this applicant's agent.")
+        messages.error(request, _("You are not an active user of this applicant's agent."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     _assign_lead(
@@ -858,7 +872,7 @@ def applicant_assign_to_me(request, lead_id):
         target_user=request.user,
         performed_by=request.user,
     )
-    messages.success(request, "You are now responsible for this applicant.")
+    messages.success(request, _("You are now responsible for this applicant."))
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 
@@ -867,12 +881,12 @@ def applicant_assign_to_me(request, lead_id):
 def applicant_assign(request, lead_id):
     lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
-        messages.error(request, "This applicant can no longer be assigned.")
+        messages.error(request, _("This applicant can no longer be assigned."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     user_id = (request.POST.get("user_id") or "").strip()
     if not user_id or not lead.agent_id:
-        messages.error(request, "Choose a responsible agent user.")
+        messages.error(request, _("Choose a responsible agent user."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     target_user = lead.agent.users.filter(
@@ -882,12 +896,12 @@ def applicant_assign(request, lead_id):
     if target_user is None:
         messages.error(
             request,
-            "The selected user does not belong to this applicant's agent.",
+            _("The selected user does not belong to this applicant's agent."),
         )
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     if lead.assigned_to_id == target_user.pk:
-        messages.info(request, "This user is already responsible for the applicant.")
+        messages.info(request, _("This user is already responsible for the applicant."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     _assign_lead(
@@ -897,7 +911,8 @@ def applicant_assign(request, lead_id):
     )
     messages.success(
         request,
-        f"{_user_display_name(target_user)} is now responsible for this applicant.",
+        _("%(user)s is now responsible for this applicant.")
+        % {"user": _user_display_name(target_user)},
     )
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
@@ -954,15 +969,15 @@ def applicant_finalize(request, lead_id):
             list_url_name="agent-applicant-list",
         )
     if lead.status == LeadStatus.CLOSED:
-        messages.error(request, "Reopen this applicant before creating a Student record.")
+        messages.error(request, _("Reopen this applicant before creating a Student record."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
     if lead.status == LeadStatus.FINALIZED:
-        messages.info(request, "This applicant already has a Student record.")
+        messages.info(request, _("This applicant already has a Student record."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
     if lead.assigned_to_id != request.user.pk:
         messages.error(
             request,
-            "Assign this applicant to yourself before creating a Student record.",
+            _("Assign this applicant to yourself before creating a Student record."),
         )
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
@@ -1036,11 +1051,16 @@ def applicant_finalize(request, lead_id):
             else:
                 messages.success(
                     request,
-                    (
-                        f"Student record created for {student}. "
-                        f"Transferred {len(selected_document_ids)} document(s) and "
-                        f"created {len(selections)} draft application(s)."
-                    ),
+                    _(
+                        "Student record created for %(student)s. Transferred "
+                        "%(documents)s document(s) and created %(applications)s "
+                        "draft application(s)."
+                    )
+                    % {
+                        "student": student,
+                        "documents": len(selected_document_ids),
+                        "applications": len(selections),
+                    },
                 )
                 return redirect("agent-student-detail", student_id=student.pk)
         else:
@@ -1068,12 +1088,12 @@ def applicant_message(request, lead_id):
     lead = get_object_or_404(_agent_leads(request), pk=lead_id)
     conversation = ensure_conversation(lead)
     if conversation.is_closed:
-        messages.error(request, "This conversation is closed.")
+        messages.error(request, _("This conversation is closed."))
         return redirect("agent-applicant-messages", lead_id=lead.pk)
 
     form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
-        messages.error(request, "Write a message or attach a file.")
+        messages.error(request, _("Write a message or attach a file."))
         return redirect("agent-applicant-messages", lead_id=lead.pk)
 
     send_message(
@@ -1094,7 +1114,7 @@ def applicant_document_review(request, lead_id, document_id):
     form = DocumentReviewForm(request.POST)
 
     if not form.is_valid():
-        messages.error(request, "Choose a valid document review decision.")
+        messages.error(request, _("Choose a valid document review decision."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     review_status = form.cleaned_data["review_status"]
@@ -1144,7 +1164,7 @@ def applicant_document_review(request, lead_id, document_id):
         created_by=request.user,
         updated_by=request.user,
     )
-    messages.success(request, "Document review updated.")
+    messages.success(request, _("Document review updated."))
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 
@@ -1165,12 +1185,12 @@ def applicant_attachment_to_document(request, lead_id, attachment_id):
         raise PermissionDenied("Attachment does not belong to this applicant.")
 
     if hasattr(attachment, "promoted_document"):
-        messages.info(request, "This attachment is already in Documents.")
+        messages.info(request, _("This attachment is already in Documents."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     form = PromoteChatAttachmentForm(request.POST)
     if not form.is_valid():
-        messages.error(request, "Choose a document type before adding the attachment.")
+        messages.error(request, _("Choose a document type before adding the attachment."))
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
     attachment.file.open("rb")
@@ -1207,7 +1227,7 @@ def applicant_attachment_to_document(request, lead_id, attachment_id):
         created_by=request.user,
         updated_by=request.user,
     )
-    messages.success(request, "Attachment added to Documents and marked for review.")
+    messages.success(request, _("Attachment added to Documents and marked for review."))
     return redirect("agent-applicant-detail", lead_id=lead.pk)
 
 
@@ -1306,7 +1326,7 @@ def student_document_upload(request, student_id):
     student = get_object_or_404(_agent_students(request), pk=student_id)
     form = StudentDocumentUploadForm(request.POST, request.FILES)
     if not form.is_valid():
-        messages.error(request, "Could not upload document. Check the supplied fields.")
+        messages.error(request, _("Could not upload document. Check the supplied fields."))
         return redirect("agent-student-detail", student_id=student.pk)
 
     document = form.save(commit=False)
@@ -1314,7 +1334,7 @@ def student_document_upload(request, student_id):
     document.created_by = request.user
     document.updated_by = request.user
     document.save()
-    messages.success(request, "Student document uploaded.")
+    messages.success(request, _("Student document uploaded."))
     return redirect("agent-student-detail", student_id=student.pk)
 
 
@@ -1324,7 +1344,7 @@ def student_new_application(request, student_id):
     student = get_object_or_404(_agent_students(request), pk=student_id)
     form = StudentApplicationOfferingForm(request.POST)
     if not form.is_valid():
-        messages.error(request, "Choose a valid program intake.")
+        messages.error(request, _("Choose a valid program intake."))
         return redirect("agent-student-detail", student_id=student.pk)
 
     try:
@@ -1337,7 +1357,7 @@ def student_new_application(request, student_id):
         messages.error(request, " ".join(exc.messages))
         return redirect("agent-student-detail", student_id=student.pk)
 
-    messages.success(request, "Draft application created.")
+    messages.success(request, _("Draft application created."))
     return redirect("agent-application-detail", application_id=application.pk)
 
 
@@ -1347,7 +1367,7 @@ def student_start_discussed_application(request, student_id, interest_id):
     student = get_object_or_404(_agent_students(request), pk=student_id)
     source_lead = getattr(student, "source_lead", None)
     if source_lead is None:
-        messages.error(request, "This student has no originating applicant record.")
+        messages.error(request, _("This student has no originating applicant record."))
         return redirect("agent-student-detail", student_id=student.pk)
 
     interest = get_object_or_404(
@@ -1365,7 +1385,7 @@ def student_start_discussed_application(request, student_id, interest_id):
         if not form.is_valid():
             messages.error(
                 request,
-                "Choose a valid intake for the discussed program.",
+                _("Choose a valid intake for the discussed program."),
             )
             return redirect("agent-student-detail", student_id=student.pk)
         offering = form.cleaned_data["offering"]
@@ -1380,7 +1400,7 @@ def student_start_discussed_application(request, student_id, interest_id):
         messages.error(request, " ".join(exc.messages))
         return redirect("agent-student-detail", student_id=student.pk)
 
-    messages.success(request, "Discussed program converted to a draft application.")
+    messages.success(request, _("Discussed program converted to a draft application."))
     return redirect("agent-application-detail", application_id=application.pk)
 
 
@@ -1391,7 +1411,7 @@ def student_message(request, student_id):
     conversation = get_or_create_conversation(subject=student)
     form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
-        messages.error(request, "Write a message or attach a file.")
+        messages.error(request, _("Write a message or attach a file."))
         return redirect("agent-student-detail", student_id=student.pk)
     send_message(
         conversation=conversation,
@@ -1410,7 +1430,7 @@ def application_message(request, application_id):
     conversation = get_or_create_conversation(subject=application)
     form = MessageForm(request.POST, request.FILES)
     if not form.is_valid():
-        messages.error(request, "Write a message or attach a file.")
+        messages.error(request, _("Write a message or attach a file."))
         return redirect("agent-application-messages", application_id=application.pk)
     send_message(
         conversation=conversation,
@@ -1460,7 +1480,7 @@ def _agent_application_activity(application):
     events: list[dict[str, Any]] = [
         {
             "when": application.created_at,
-            "title": "Application created",
+            "title": _("Application created"),
             "detail": str(application.get_status_display()),
         },
     ]
@@ -1468,7 +1488,7 @@ def _agent_application_activity(application):
         events.append(
             {
                 "when": document.created_at,
-                "title": "Document added",
+                "title": _("Document added"),
                 "detail": str(document.student_document.get_document_type_display()),
             }
         )
@@ -1477,8 +1497,8 @@ def _agent_application_activity(application):
         events.append(
             {
                 "when": message.created_at,
-                "title": "Message",
-                "detail": message.body[:120] if message.body else "Attachment",
+                "title": _("Message"),
+                "detail": message.body[:120] if message.body else _("Attachment"),
             }
         )
     application_agent = application.agent or application.student.agent
@@ -1489,7 +1509,7 @@ def _agent_application_activity(application):
         events.append(
             {
                 "when": todo.updated_at,
-                "title": "TODO",
+                "title": _("TODO"),
                 "detail": f"{todo.title} · {todo.get_status_display()}",
             }
         )
@@ -1500,7 +1520,7 @@ def _agent_application_activity(application):
         events.append(
             {
                 "when": communication.occurred_at,
-                "title": "Communication Log",
+                "title": _("Communication Log"),
                 "detail": (
                     f"{communication.get_channel_display()} · {communication.summary[:120]}"
                 ),
@@ -1510,7 +1530,7 @@ def _agent_application_activity(application):
         events.append(
             {
                 "when": application.updated_at,
-                "title": "Application updated",
+                "title": _("Application updated"),
                 "detail": str(application.get_status_display()),
             }
         )
@@ -1645,7 +1665,7 @@ def application_add_existing_document(request, application_id):
         application=application,
     )
     if not form.is_valid():
-        messages.error(request, "Choose an available student document.")
+        messages.error(request, _("Choose an available student document."))
         return redirect("agent-application-documents", application_id=application.pk)
 
     ApplicationDocument.objects.create(
@@ -1655,7 +1675,7 @@ def application_add_existing_document(request, application_id):
         created_by=request.user,
         updated_by=request.user,
     )
-    messages.success(request, "Student document added to application.")
+    messages.success(request, _("Student document added to application."))
     return redirect("agent-application-documents", application_id=application.pk)
 
 
@@ -1668,7 +1688,7 @@ def application_upload_document(request, application_id):
     )
     form = ApplicationDocumentUploadForm(request.POST, request.FILES)
     if not form.is_valid():
-        messages.error(request, "Could not upload document. Check the supplied fields.")
+        messages.error(request, _("Could not upload document. Check the supplied fields."))
         return redirect("agent-application-documents", application_id=application.pk)
 
     student_document = form.save(commit=False)
@@ -1684,7 +1704,7 @@ def application_upload_document(request, application_id):
         created_by=request.user,
         updated_by=request.user,
     )
-    messages.success(request, "Document uploaded and added to application.")
+    messages.success(request, _("Document uploaded and added to application."))
     return redirect("agent-application-documents", application_id=application.pk)
 
 
@@ -1697,13 +1717,13 @@ def application_status(request, application_id):
     )
     status = request.POST.get("status")
     if status not in ApplicationStatus.values:
-        messages.error(request, "Invalid application status.")
+        messages.error(request, _("Invalid application status."))
         return redirect("agent-application-detail", application_id=application.pk)
 
     application.status = status
     application.updated_by = request.user
     application.save(update_fields=("status", "updated_by", "updated_at"))
-    messages.success(request, "Application status updated.")
+    messages.success(request, _("Application status updated."))
     return redirect("agent-application-detail", application_id=application.pk)
 
 
@@ -1774,7 +1794,7 @@ def todo_create(request):
     )
     form = TodoForm(request.POST, agent=agent)
     if not form.is_valid():
-        messages.error(request, "Could not create TODO. Check the supplied fields.")
+        messages.error(request, _("Could not create TODO. Check the supplied fields."))
         return _operation_redirect(subject)
     todo = create_todo(
         agent=agent,
@@ -1785,7 +1805,10 @@ def todo_create(request):
         assignee=form.cleaned_data["assignee"],
         subject=subject,
     )
-    messages.success(request, f"TODO created: {todo.title}.")
+    messages.success(
+        request,
+        _("TODO created: %(title)s.") % {"title": todo.title},
+    )
     return _operation_redirect(subject)
 
 
@@ -1812,7 +1835,7 @@ def todo_update(request, todo_id):
         assignee_marker=assignee_marker,
         assignee=assignee,
     )
-    messages.success(request, "TODO updated.")
+    messages.success(request, _("TODO updated."))
     return _operation_redirect(todo.subject)
 
 
@@ -1826,10 +1849,10 @@ def todo_comment(request, todo_id):
     )
     body = (request.POST.get("body") or "").strip()
     if not body:
-        messages.error(request, "Comment cannot be empty.")
+        messages.error(request, _("Comment cannot be empty."))
     else:
         add_todo_comment(todo=todo, actor=request.user, body=body)
-        messages.success(request, "Comment added.")
+        messages.success(request, _("Comment added."))
     return _operation_redirect(todo.subject)
 
 
@@ -1863,7 +1886,7 @@ def communication_create(request):
     if not form.is_valid():
         messages.error(
             request,
-            "Could not record communication. Check the supplied fields.",
+            _("Could not record communication. Check the supplied fields."),
         )
         return _communication_redirect(subject)
     communication = create_communication(
@@ -1874,7 +1897,7 @@ def communication_create(request):
     )
     messages.success(
         request,
-        f"{communication.get_channel_display()} communication recorded.",
+        _("%(channel)s communication recorded.") % {"channel": communication.get_channel_display()},
     )
     return _communication_redirect(subject)
 
@@ -1889,14 +1912,14 @@ def communication_edit(request, communication_id):
     )
     form = CommunicationLogForm(request.POST)
     if not form.is_valid():
-        messages.error(request, "Could not update communication.")
+        messages.error(request, _("Could not update communication."))
         return _communication_redirect(communication.subject)
     edit_communication(
         communication=communication,
         actor=request.user,
         values=form.cleaned_data,
     )
-    messages.success(request, "Communication updated; previous version retained.")
+    messages.success(request, _("Communication updated; previous version retained."))
     return _communication_redirect(communication.subject)
 
 
@@ -1910,7 +1933,9 @@ def communication_create_todo(request, communication_id):
     )
     title = (request.POST.get("title") or "").strip()
     if not title:
-        title = f"Follow up: {communication.get_channel_display()} communication"
+        title = _("Follow up: %(channel)s communication") % {
+            "channel": communication.get_channel_display()
+        }
     todo = create_todo(
         agent=communication.agent,
         actor=request.user,
@@ -1918,5 +1943,8 @@ def communication_create_todo(request, communication_id):
         description=communication.summary,
         subject=communication.subject,
     )
-    messages.success(request, f"TODO created: {todo.title}.")
+    messages.success(
+        request,
+        _("TODO created: %(title)s.") % {"title": todo.title},
+    )
     return _communication_redirect(communication.subject)

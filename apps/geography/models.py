@@ -21,18 +21,18 @@ class Country(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
         ordering = ("name_en",)
 
     def __str__(self):
-        return self.name_en
+        return self.localized_name
 
 
 class Province(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
     country = models.ForeignKey(Country, on_delete=models.PROTECT, related_name="provinces")
 
     def __str__(self):
-        return self.name_en
+        return self.localized_name
 
 
 class City(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
     province = models.ForeignKey(Province, on_delete=models.PROTECT, related_name="cities")
 
     def __str__(self):
-        return self.name_en
+        return self.localized_name

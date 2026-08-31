@@ -2,32 +2,32 @@
 <a
   class="program-discovery-card program-card-link"
   href="{% url 'program-detail' program.slug_en %}"
-  aria-label="{% blocktrans with program_name=program.name_en %}View {{ program_name }} program{% endblocktrans %}"
+  aria-label="{% blocktrans with program_name=program.localized_name %}View {{ program_name }} program{% endblocktrans %}"
 >
   <div class="program-card-topline">
     {% if not hide_university_brand %}
       <div class="program-university-brand">
         <div class="program-university-logo">
           {% if program.university.logo %}
-            <img src="{{ program.university.logo.url }}" alt="{{ program.university.name_en }}">
+            <img src="{{ program.university.logo.url }}" alt="{{ program.university.localized_name }}">
           {% else %}
-            <span>{{ program.university.name_en|slice:":1" }}</span>
+            <span>{{ program.university.localized_name|slice:":1" }}</span>
           {% endif %}
         </div>
         <div>
-          <span class="program-university-name">{{ program.university.name_en }}</span>
-          <span class="program-university-city">{{ program.university.city.name_en }}</span>
+          <span class="program-university-name">{{ program.university.localized_name }}</span>
+          <span class="program-university-city">{{ program.university.city.localized_name }}</span>
         </div>
       </div>
     {% endif %}
     <span class="program-degree-pill">{{ program.get_degree_display }}</span>
   </div>
   <div class="program-card-main">
-    <h2>{{ program.name_en }}</h2>
+    <h2>{{ program.localized_name }}</h2>
     <div class="program-meta-row">
       <span class="program-meta-chip">{{ program.instruction_language_display }}</span>
       {% if program.department %}
-        <span class="program-meta-chip">{{ program.department.name_en }}</span>
+        <span class="program-meta-chip">{{ program.department.localized_name }}</span>
       {% endif %}
       {% if program.duration_months %}
         <span class="program-meta-chip">{{ program.duration_display }}</span>

@@ -52,7 +52,7 @@ class CatalogueV3UIContractTests(SimpleTestCase):
         source = (ROOT / "templates/public/program_detail.html").read_text()
         self.assertIn("offering.display_tuition_fee", source)
         self.assertIn("offering.display_fees", source)
-        self.assertIn("offering.intake.name_en", source)
+        self.assertIn("offering.intake.localized_name", source)
         self.assertIn("tuition_fee.display_label", source)
         self.assertIn("fee.display_label", source)
 

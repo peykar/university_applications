@@ -1,7 +1,7 @@
 # Application-wide localization
 
-Status: DRAFT
-Version: 0.1
+Status: APPROVED
+Version: 1.0
 Owner: TurkDemy product/platform
 
 ## Problem
@@ -126,5 +126,5 @@ design-phase work after product approval.
 
 ## Approval
 
-- Product/spec: DRAFT
-- Technical design: NOT STARTED
+- Product/spec: APPROVED
+- Technical design: IMPLEMENTED

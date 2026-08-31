@@ -1,7 +1,25 @@
+# Arabic translations for TurkDemy.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the TurkDemy project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: TurkDemy\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\nPlural-Forms: nplurals=2; plural=(n != 1);\\n"
+"Project-Id-Version: TurkDemy 1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-09-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ar\n"
+"Language-Team: ar <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : "
+"n%100>=0 && n%100<=2 ? 4 : 5);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
 
+#, python-format
 msgid "%(provider)s disconnected."
 msgstr "تم فصل %(provider)s."
 
@@ -95,6 +113,7 @@ msgstr "التحقق من البريد الإلكتروني"
 msgid "Enter sign-in code"
 msgstr "أدخل رمز الدخول"
 
+#, python-format
 msgid "Enter the code sent to %(email)s."
 msgstr "أدخل الرمز المرسل إلى %(email)s."
 
@@ -209,9 +228,11 @@ msgstr "تحقق من هذا البريد قبل تعيينه كأساسي."
 msgid "Verify your email"
 msgstr "تحقق من بريدك الإلكتروني"
 
+#, python-format
 msgid "We sent a code to %(email)s."
 msgstr "أرسلنا رمزاً إلى %(email)s."
 
+#, python-format
 msgid "We sent a verification email to %(email)s."
 msgstr "أرسلنا رسالة تحقق إلى %(email)s."
 
@@ -221,38 +242,2828 @@ msgstr "مرحباً"
 msgid "You can sign back in using Google, Telegram, or an email code."
 msgstr "يمكنك تسجيل الدخول مجدداً عبر Google أو Telegram أو رمز البريد الإلكتروني."
 
-msgid "You currently have %(count)s usable sign-in method(s). TurkDemy will not let you remove your last one."
-msgstr "لديك حالياً %(count)s طريقة/طرق تسجيل دخول قابلة للاستخدام. لن يسمح TurkDemy بإزالة آخر طريقة لديك."
+#, python-format
+msgid ""
+"You currently have %(count)s usable sign-in method(s). TurkDemy will not let you remove your last"
+" one."
+msgstr ""
+"لديك حالياً %(count)s طريقة/طرق تسجيل دخول قابلة للاستخدام. لن يسمح TurkDemy بإزالة آخر طريقة "
+"لديك."
 
 msgid "or"
 msgstr "أو"
 
 msgid "Find your program"
-msgstr ""
+msgstr "اعثر على برنامجك"
 
 msgid "Explore universities and compare study options by field, degree, language, tuition and intake."
-msgstr ""
+msgstr "استكشف الجامعات وقارن خيارات الدراسة حسب المجال والدرجة واللغة والرسوم ودفعة القبول."
 
 msgid "Refine results"
-msgstr ""
+msgstr "تضييق النتائج"
 
 msgid "programs found"
-msgstr ""
+msgstr "برنامج تم العثور عليه"
 
 msgid "Reset filters"
 msgstr ""
 
 msgid "Tuition from"
-msgstr ""
+msgstr "الرسوم تبدأ من"
 
 msgid "Not available"
-msgstr ""
+msgstr "غير متاح"
 
 msgid "View program"
-msgstr ""
+msgstr "عرض البرنامج"
 
 msgid "Try broadening your search or clearing some filters."
-msgstr ""
+msgstr "جرّب توسيع البحث أو مسح بعض الفلاتر."
 
 msgid "TurkDemy"
 msgstr "ترك ديمي"
+
+msgid "About TurkDemy"
+msgstr "حول TurkDemy"
+
+msgid "TurkDemy helps students, agents, and staff manage university discovery and admissions workflows."
+msgstr "يساعد TurkDemy الطلاب والوكلاء والموظفين على إدارة اكتشاف الجامعات وإجراءات القبول."
+
+msgid "About the university"
+msgstr "عن الجامعة"
+
+msgid "About this program"
+msgstr "عن البرنامج"
+
+msgid "Academic unit"
+msgstr "الوحدة الأكاديمية"
+
+msgid "Academic year"
+msgstr "العام الأكاديمي"
+
+msgid "Active filters"
+msgstr "الفلاتر النشطة"
+
+msgid "Advanced filters"
+msgstr "فلاتر متقدمة"
+
+msgid "Any academic unit"
+msgstr "أي وحدة أكاديمية"
+
+msgid "Any academic year"
+msgstr "أي عام أكاديمي"
+
+msgid "Any city"
+msgstr "أي مدينة"
+
+msgid "Any currency"
+msgstr "أي عملة"
+
+msgid "Any degree"
+msgstr "أي درجة"
+
+msgid "Any field"
+msgstr "أي مجال"
+
+msgid "Any intake"
+msgstr "أي دفعة"
+
+msgid "Any language"
+msgstr "أي لغة"
+
+msgid "Any study mode"
+msgstr "أي نمط دراسة"
+
+msgid "Any type"
+msgstr "أي نوع"
+
+msgid "Any university"
+msgstr "أي جامعة"
+
+msgid "Apply filters"
+msgstr "تطبيق الفلاتر"
+
+msgid "Available"
+msgstr "متاح"
+
+msgid "Available offerings"
+msgstr "خيارات القبول المتاحة"
+
+msgid "Browse all fields"
+msgstr "تصفح جميع المجالات"
+
+msgid "Browse all programs"
+msgstr "تصفح جميع البرامج"
+
+msgid "Browse this university"
+msgstr "تصفح هذه الجامعة"
+
+msgid "Built for international students"
+msgstr "مصمم للطلاب الدوليين"
+
+msgid "Catalogue"
+msgstr "الدليل الأكاديمي"
+
+msgid "Choose one or more filters, then press Apply filters."
+msgstr "اختر فلترًا واحدًا أو أكثر ثم اضغط على تطبيق الفلاتر."
+
+msgid "City"
+msgstr "المدينة"
+
+msgid "Clear all"
+msgstr "مسح الكل"
+
+msgid "Clear all filters"
+msgstr "مسح جميع الفلاتر"
+
+msgid "Compare your options"
+msgstr "قارن خياراتك"
+
+msgid "Contact"
+msgstr "اتصل بنا"
+
+msgid "Contact TurkDemy"
+msgstr "تواصل مع TurkDemy"
+
+msgid "Contact TurkDemy for guidance about requirements, tuition and the application process."
+msgstr "تواصل مع TurkDemy للحصول على إرشاد حول المتطلبات والرسوم وإجراءات التقديم."
+
+msgid "Contact us"
+msgstr "تواصل معنا"
+
+msgid "Currency"
+msgstr "العملة"
+
+msgid "Deadline"
+msgstr "الموعد النهائي"
+
+msgid "Degree"
+msgstr "الدرجة"
+
+msgid "Dormitory"
+msgstr "السكن الجامعي"
+
+msgid "Duration"
+msgstr "المدة"
+
+msgid "English, Persian, Turkish and Arabic support."
+msgstr "دعم بالإنجليزية والفارسية والتركية والعربية."
+
+msgid "Explore alternatives"
+msgstr "استكشف البدائل"
+
+msgid "Explore universities"
+msgstr "استكشف الجامعات"
+
+msgid "Explore university"
+msgstr "استكشف الجامعة"
+
+msgid "FAQ"
+msgstr "الأسئلة الشائعة"
+
+msgid "Featured universities"
+msgstr "جامعات مميزة"
+
+msgid "Field"
+msgstr "المجال"
+
+msgid "Filters"
+msgstr "الفلاتر"
+
+msgid "Find a program"
+msgstr "ابحث عن برنامج"
+
+msgid "Find the right university and build your future."
+msgstr "اعثر على الجامعة المناسبة وابنِ مستقبلك."
+
+msgid "Find your direction"
+msgstr "اعثر على مسارك"
+
+msgid "Frequently asked questions"
+msgstr "الأسئلة الشائعة"
+
+msgid "From"
+msgstr "من"
+
+msgid "Get in touch"
+msgstr "تواصل معنا"
+
+msgid "Help center"
+msgstr "مركز المساعدة"
+
+msgid "Intake"
+msgstr "دفعة القبول"
+
+msgid "Intakes and tuition"
+msgstr "دفعات القبول والرسوم"
+
+msgid "Language"
+msgstr "اللغة"
+
+msgid "More programs at this university"
+msgstr "برامج أخرى في هذه الجامعة"
+
+msgid "Multilingual platform"
+msgstr "منصة متعددة اللغات"
+
+msgid "Need help choosing?"
+msgstr "هل تحتاج مساعدة في الاختيار؟"
+
+msgid "Need help?"
+msgstr "هل تحتاج مساعدة؟"
+
+msgid "Next"
+msgstr "التالي"
+
+msgid "No active offerings are currently available for this program."
+msgstr "لا توجد حاليًا خيارات قبول نشطة لهذا البرنامج."
+
+msgid "No programs available."
+msgstr "لا توجد برامج متاحة."
+
+msgid "No programs match your filters."
+msgstr "لا توجد برامج تطابق الفلاتر."
+
+msgid "No results."
+msgstr "لا توجد نتائج."
+
+msgid "Open"
+msgstr "مفتوح"
+
+msgid "Overview"
+msgstr "نظرة عامة"
+
+msgid "Popular choices"
+msgstr "خيارات شائعة"
+
+msgid "Popular programs"
+msgstr "برامج شائعة"
+
+msgid "Previous"
+msgstr "السابق"
+
+msgid "Program catalogue"
+msgstr "دليل البرامج"
+
+msgid "Program or university"
+msgstr "برنامج أو جامعة"
+
+msgid "Program overview"
+msgstr "نظرة عامة على البرنامج"
+
+msgid "Programs"
+msgstr "البرامج"
+
+msgid "Programs at this university"
+msgstr "برامج هذه الجامعة"
+
+msgid "Questions"
+msgstr "الأسئلة"
+
+msgid "Questions about this program?"
+msgstr "هل لديك أسئلة عن هذا البرنامج؟"
+
+msgid "Quota"
+msgstr "المقاعد"
+
+msgid "Recognized"
+msgstr "معترف بها"
+
+msgid "Search"
+msgstr "بحث"
+
+msgid "Search programs"
+msgstr "بحث عن البرامج"
+
+msgid "Search programs or universities"
+msgstr "بحث عن برنامج أو جامعة"
+
+msgid "Search universities"
+msgstr "ابحث عن الجامعات"
+
+msgid "See all university programs"
+msgstr "عرض جميع برامج الجامعة"
+
+msgid "Similar programs"
+msgstr "برامج مشابهة"
+
+msgid "Simple process"
+msgstr "إجراءات بسيطة"
+
+msgid "Study in Türkiye"
+msgstr "الدراسة في تركيا"
+
+msgid "Study mode"
+msgstr "نمط الدراسة"
+
+msgid "To"
+msgstr "إلى"
+
+msgid "Tuition"
+msgstr "الرسوم الدراسية"
+
+msgid "Tuition not available"
+msgstr "الرسوم غير متاحة"
+
+msgid "Universities"
+msgstr "الجامعات"
+
+msgid "University"
+msgstr "الجامعة"
+
+msgid "University recognition"
+msgstr "اعتماد الجامعة"
+
+msgid "University type"
+msgstr "نوع الجامعة"
+
+msgid "University website"
+msgstr "موقع الجامعة"
+
+msgid "View all"
+msgstr "عرض الكل"
+
+msgid "View all FAQ"
+msgstr "عرض جميع الأسئلة الشائعة"
+
+msgid "View more"
+msgstr "عرض المزيد"
+
+msgid "View university"
+msgstr "عرض الجامعة"
+
+msgid "What do you want to study?"
+msgstr "ماذا تريد أن تدرس؟"
+
+msgid "YÖK recognized"
+msgstr "معترف بها من YÖK"
+
+msgid "YÖK recognized university"
+msgstr "جامعة معترف بها من YÖK"
+
+msgid "active offerings"
+msgstr "خيارات قبول نشطة"
+
+msgid "programs"
+msgstr "برنامج"
+
+msgid "programs available"
+msgstr "برامج متاحة"
+
+msgid "universities"
+msgstr "جامعة"
+
+msgid "Associate"
+msgstr "دبلوم"
+
+msgid "Bachelor"
+msgstr "بكالوريوس"
+
+msgid "Master"
+msgstr "ماجستير"
+
+msgid "PhD"
+msgstr "دكتوراه"
+
+msgid "With Thesis"
+msgstr "مع أطروحة"
+
+msgid "Without Thesis"
+msgstr "بدون أطروحة"
+
+msgid "On campus"
+msgstr "في الحرم الجامعي"
+
+msgid "Distance learning"
+msgstr "تعليم عن بُعد"
+
+msgid "Online"
+msgstr "عبر الإنترنت"
+
+msgid "Hybrid"
+msgstr "هجين"
+
+msgid "Public"
+msgstr "حكومية"
+
+msgid "Private"
+msgstr "خاصة"
+
+msgid "Faculty"
+msgstr "كلية"
+
+msgid "School"
+msgstr "مدرسة"
+
+msgid "Institute"
+msgstr "معهد"
+
+msgid "Vocational School"
+msgstr "مدرسة مهنية"
+
+msgid "Conservatory"
+msgstr "كونسرفتوار"
+
+msgid "College"
+msgstr "كلية"
+
+msgid "Graduate School"
+msgstr "كلية الدراسات العليا"
+
+msgid "Other"
+msgstr "أخرى"
+
+msgid "Annual"
+msgstr "سنوي"
+
+msgid "Per semester"
+msgstr "لكل فصل"
+
+msgid "Total (Whole Program)"
+msgstr "الإجمالي (كامل البرنامج)"
+
+msgid "One time"
+msgstr "مرة واحدة"
+
+msgid "Per credit"
+msgstr "لكل ساعة معتمدة"
+
+msgid "Tuition / list fee"
+msgstr "الرسوم / السعر الأساسي"
+
+msgid "Discounted tuition"
+msgstr "رسوم مخفضة"
+
+msgid "Advance payment"
+msgstr "دفع مقدم"
+
+msgid "Cash payment"
+msgstr "دفع نقدي"
+
+msgid "Installment total"
+msgstr "إجمالي الأقساط"
+
+msgid "Deposit"
+msgstr "تأمين"
+
+msgid "Application fee"
+msgstr "رسوم التقديم"
+
+msgid "Registration fee"
+msgstr "رسوم التسجيل"
+
+msgid "My Requests"
+msgstr "طلباتي"
+
+msgid "Messages"
+msgstr "الرسائل"
+
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+msgid "About"
+msgstr "حول"
+
+msgid "Your account"
+msgstr "حسابك"
+
+msgid "Send message"
+msgstr "إرسال رسالة"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Documents"
+msgstr "المستندات"
+
+msgid "Preferences"
+msgstr "التفضيلات"
+
+msgid "Save changes"
+msgstr "حفظ التغييرات"
+
+msgid "Apply"
+msgstr "تقديم"
+
+msgid "Study preferences"
+msgstr "تفضيلات الدراسة"
+
+msgid "Study field"
+msgstr "مجال الدراسة"
+
+msgid "Cities"
+msgstr "المدن"
+
+msgid "Your advisor"
+msgstr "مستشارك"
+
+msgid "Your message has been sent."
+msgstr "تم إرسال رسالتك."
+
+msgid "Myself"
+msgstr "نفسي"
+
+msgid "Someone else"
+msgstr "شخص آخر"
+
+msgid "Who are you applying for?"
+msgstr "لمن تقدم الطلب؟"
+
+msgid "Search languages"
+msgstr "ابحث عن اللغات"
+
+msgid "Search cities"
+msgstr "ابحث عن المدن"
+
+msgid "Search study fields"
+msgstr "ابحث عن مجالات الدراسة"
+
+msgid "No preference"
+msgstr "لا تفضيل"
+
+msgid "Required"
+msgstr "مطلوب"
+
+msgid "Not required"
+msgstr "غير مطلوب"
+
+msgid "Write a message…"
+msgstr "اكتب رسالة…"
+
+msgid "Write a message or attach a file."
+msgstr "اكتب رسالة أو أرفق ملفًا."
+
+msgid "A quick view of your applicants, applications and conversations."
+msgstr "نظرة سريعة على المتقدمين والطلبات والمحادثات الخاصة بك."
+
+msgid "Add applicant"
+msgstr "إضافة متقدم"
+
+msgid "Applicants"
+msgstr "المتقدمون"
+
+msgid "Application management"
+msgstr "إدارة الطلبات"
+
+msgid "Applications"
+msgstr "الطلبات"
+
+msgid "Apply / I'm interested"
+msgstr "تقديم / أنا مهتم"
+
+msgid "Approved"
+msgstr "معتمد"
+
+msgid "Ask TurkDemy"
+msgstr "اسأل TurkDemy"
+
+msgid "Closed"
+msgstr "مغلق"
+
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+msgid "Erasmus+"
+msgstr "Erasmus+"
+
+msgid "Explore the catalogue or contact TurkDemy if you need help understanding your options."
+msgstr "استكشف الدليل أو تواصل مع TurkDemy إذا احتجت إلى مساعدة في فهم خياراتك."
+
+msgid "Filter programs offered by this university."
+msgstr "صفِّ البرامج التي تقدمها هذه الجامعة."
+
+msgid ""
+"Find universities and programs in Türkiye, compare tuition, and manage your application with "
+"TurkDemy."
+msgstr "اعثر على الجامعات والبرامج في تركيا، وقارن الرسوم، وأدر طلبك عبر TurkDemy."
+
+msgid "Follow your application status from one dashboard."
+msgstr "تابع حالة طلبك من لوحة تحكم واحدة."
+
+msgid "Free"
+msgstr "مجاني"
+
+msgid "From discovery to application."
+msgstr "من الاستكشاف إلى التقديم."
+
+msgid "Keep your personal information and documents together."
+msgstr "احتفظ بمعلوماتك الشخصية ومستنداتك في مكان واحد."
+
+msgid "MOE"
+msgstr "وزارة التعليم"
+
+msgid "MOE approved"
+msgstr "معتمد من وزارة التعليم"
+
+msgid "MOE approved university"
+msgstr "جامعة معتمدة من وزارة التعليم"
+
+msgid "MOH"
+msgstr "وزارة الصحة"
+
+msgid "MOH approved"
+msgstr "معتمد من وزارة الصحة"
+
+msgid "MOH approved university"
+msgstr "جامعة معتمدة من وزارة الصحة"
+
+msgid "MOE, MOH, YÖK and other university-level indicators where available."
+msgstr "مؤشرات على مستوى الجامعة مثل MOE وMOH وYÖK عند توفرها."
+
+msgid "MY TURKDEMY"
+msgstr "TurkDemy الخاص بي"
+
+msgid "Manage Google, Telegram and verified email access to your TurkDemy account."
+msgstr "أدر وصول Google وTelegram والبريد الإلكتروني الموثق إلى حساب TurkDemy الخاص بك."
+
+msgid "Manage your personal information and account access."
+msgstr "أدر معلوماتك الشخصية والوصول إلى حسابك."
+
+msgid "Medicine, dentistry, engineering, university…"
+msgstr "الطب، طب الأسنان، الهندسة، الجامعة…"
+
+msgid "No FAQ categories available."
+msgstr "لا توجد فئات للأسئلة الشائعة."
+
+msgid "No applicants yet."
+msgstr "لا يوجد متقدمون بعد."
+
+msgid "No formal applications yet."
+msgstr "لا توجد طلبات رسمية بعد."
+
+msgid "No questions in this category."
+msgstr "لا توجد أسئلة في هذه الفئة."
+
+msgid "No universities have been imported yet."
+msgstr "لم يتم استيراد أي جامعة بعد."
+
+msgid "Open/ongoing applications"
+msgstr "طلبات مفتوحة/جارية"
+
+msgid "Pagination"
+msgstr "ترقيم الصفحات"
+
+msgid "Personal information"
+msgstr "المعلومات الشخصية"
+
+msgid "Prepare your profile"
+msgstr "جهّز ملفك الشخصي"
+
+msgid "Programs, intakes, tuition and university information in a consistent format."
+msgstr "معلومات البرامج ودفعات القبول والرسوم والجامعات بصيغة متسقة."
+
+msgid "Review tuition, recognition, language, intake and university information."
+msgstr "راجع الرسوم والاعتماد واللغة ودفعة القبول ومعلومات الجامعة."
+
+msgid "Search universities and programs by field, language and degree."
+msgstr "ابحث عن الجامعات والبرامج حسب المجال واللغة والدرجة."
+
+msgid "Start with the right program."
+msgstr "ابدأ بالبرنامج المناسب."
+
+msgid "Structured catalogue"
+msgstr "دليل منظم"
+
+msgid "Track applications"
+msgstr "تابع الطلبات"
+
+msgid "Track programs, documents and status in your account."
+msgstr "تابع البرامج والمستندات والحالة من حسابك."
+
+msgid ""
+"TurkDemy brings program information, university recognition, tuition details and application "
+"management into one structured platform."
+msgstr "يجمع TurkDemy معلومات البرامج واعتماد الجامعات وتفاصيل الرسوم وإدارة الطلبات في منصة منظمة واحدة."
+
+msgid "TurkDemy catalogue statistics"
+msgstr "إحصاءات دليل TurkDemy"
+
+msgid "TurkDemy keeps your search, documents and application journey connected."
+msgstr "يحافظ TurkDemy على ترابط بحثك ومستنداتك ومسار طلبك."
+
+msgid "Useful information before you apply."
+msgstr "معلومات مفيدة قبل التقديم."
+
+msgid "YÖK"
+msgstr "YÖK"
+
+msgid "answered questions"
+msgstr "أسئلة تمت الإجابة عنها"
+
+msgid "for tuition"
+msgstr "للرسوم"
+
+msgid "from"
+msgstr "من"
+
+msgid "initial guidance"
+msgstr "إرشاد أولي"
+
+msgid "program interests"
+msgstr "اهتمامات البرامج"
+
+msgid "tuition unavailable"
+msgstr "الرسوم غير متاحة"
+
+msgid "Browse this university's programs"
+msgstr "تصفح برامج هذه الجامعة"
+
+msgid "Tuition fee"
+msgstr "الرسوم الدراسية"
+
+msgid "Scholarship fee"
+msgstr "رسوم المنحة"
+
+msgid "Scholarship fee (10%)"
+msgstr "رسوم المنحة (10٪)"
+
+msgid "Advance Payment"
+msgstr "الدفع المقدم"
+
+msgid "Advance Payment (15%)"
+msgstr "الدفع المقدم (15٪)"
+
+msgid "Deposit payment"
+msgstr "دفع التأمين"
+
+msgid "Annual Tuition"
+msgstr "الرسوم الدراسية السنوية"
+
+msgid "Cash Payment"
+msgstr "الدفع النقدي"
+
+#, python-format
+msgid "%(label)s (%(percentage)s%%)"
+msgstr "%(label)s (%(percentage)s٪)"
+
+msgid "ACCOUNT"
+msgstr "الحساب"
+
+msgid "Agent workspace"
+msgstr "مساحة عمل الوكيل"
+
+msgid "EXPLORE"
+msgstr "استكشف"
+
+msgid "Explore"
+msgstr "استكشف"
+
+msgid "My TurkDemy"
+msgstr "TurkDemy الخاص بي"
+
+msgid "SWITCH WORKSPACE"
+msgstr "تبديل مساحة العمل"
+
+msgid "WORKSPACES"
+msgstr "مساحات العمل"
+
+msgid "Study in Türkiye with clarity."
+msgstr "ادرس في تركيا بوضوح."
+
+msgid "University discovery and admissions support for international students in Türkiye."
+msgstr "استكشاف الجامعات ودعم القبول للطلاب الدوليين في تركيا."
+
+#, python-format
+msgid "%(years)s year"
+msgstr "%(years)s سنة"
+
+#, python-format
+msgid "%(years)s years"
+msgstr "%(years)s سنوات"
+
+#, python-format
+msgid "%(months)s months"
+msgstr "%(months)s أشهر"
+
+msgid "(optional)"
+msgstr "(اختياري)"
+
+msgid "A document needs replacement"
+msgstr "يوجد مستند يحتاج إلى استبدال"
+
+msgid "AGENT WORKSPACE"
+msgstr "مساحة عمل الوكيل"
+
+msgid "Academic background and English proficiency."
+msgstr "الخلفية الأكاديمية وإتقان اللغة الإنجليزية."
+
+msgid "Academic background and English-language test information."
+msgstr "الخلفية الأكاديمية ومعلومات اختبار اللغة الإنجليزية."
+
+msgid "Action required"
+msgstr "إجراء مطلوب"
+
+msgid "Active organization"
+msgstr "المؤسسة النشطة"
+
+msgid "Activity"
+msgstr "النشاط"
+
+msgid "Activity filters"
+msgstr "فلاتر النشاط"
+
+msgid "Activity pagination"
+msgstr "ترقيم صفحات النشاط"
+
+msgid "Add TODO"
+msgstr "إضافة مهمة"
+
+msgid "Add a document received outside TurkDemy, for example by email or in person."
+msgstr "أضف مستندًا تم استلامه خارج TurkDemy، مثلًا عبر البريد الإلكتروني أو حضوريًا."
+
+msgid "Add document"
+msgstr "إضافة مستند"
+
+msgid "Add existing student document"
+msgstr "إضافة مستند طالب موجود"
+
+msgid "Add immutable comment…"
+msgstr "إضافة تعليق غير قابل للتعديل…"
+
+msgid "Add internal context, follow-up reminders, or information collected outside the portal."
+msgstr "أضف سياقًا داخليًا أو تذكيرات للمتابعة أو معلومات جُمعت خارج البوابة."
+
+msgid "Add to documents"
+msgstr "إضافة إلى المستندات"
+
+msgid "Added by you"
+msgstr "أضفته أنت"
+
+msgid "Added from conversation"
+msgstr "أضيف من المحادثة"
+
+msgid "Added to documents"
+msgstr "تمت الإضافة إلى المستندات"
+
+msgid "Address"
+msgstr "العنوان"
+
+msgid "Agent"
+msgstr "الوكيل"
+
+msgid "Agent-suggested"
+msgstr "مقترح من الوكيل"
+
+msgid "Agent:"
+msgstr "الوكيل:"
+
+msgid "All"
+msgstr "الكل"
+
+msgid "All messages"
+msgstr "جميع الرسائل"
+
+msgid ""
+"All of these fields are optional. You can continue now, and our admissions team can collect "
+"anything missing later."
+msgstr "جميع هذه الحقول اختيارية. يمكنك المتابعة الآن، ويمكن لفريق القبول جمع أي معلومات ناقصة لاحقًا."
+
+msgid "All statuses"
+msgstr "جميع الحالات"
+
+msgid ""
+"All users of the agent can still see this applicant. This only changes who is responsible for "
+"working on it."
+msgstr "لا يزال بإمكان جميع مستخدمي الوكيل رؤية هذا المتقدم. هذا يغيّر فقط الشخص المسؤول عن متابعته."
+
+msgid "Applicant"
+msgstr "المتقدم"
+
+msgid "Applicant activity"
+msgstr "نشاط المتقدم"
+
+msgid "Applicant conversion"
+msgstr "تحويل المتقدم"
+
+msgid "Applicant data"
+msgstr "بيانات المتقدم"
+
+msgid "Applicant details"
+msgstr "تفاصيل المتقدم"
+
+msgid "Applicant documents"
+msgstr "مستندات المتقدم"
+
+msgid "Applicant navigation"
+msgstr "تنقل المتقدم"
+
+msgid "Applicant overview"
+msgstr "نظرة عامة على المتقدم"
+
+msgid "Applicant profile"
+msgstr "ملف المتقدم"
+
+msgid "Applicant programs"
+msgstr "برامج المتقدم"
+
+msgid "Applicant-specific communication"
+msgstr "تواصل خاص بالمتقدم"
+
+msgid "Application"
+msgstr "الطلب"
+
+msgid "Application activity"
+msgstr "نشاط الطلب"
+
+msgid "Application document"
+msgstr "مستند الطلب"
+
+msgid "Application documents"
+msgstr "مستندات الطلب"
+
+msgid "Application navigation"
+msgstr "تنقل الطلب"
+
+msgid "Application requirements"
+msgstr "متطلبات الطلب"
+
+msgid "Application status"
+msgstr "حالة الطلب"
+
+msgid "Application summary"
+msgstr "ملخص الطلب"
+
+msgid "Applications created after an applicant has been converted to a student."
+msgstr "طلبات تم إنشاؤها بعد تحويل المتقدم إلى طالب."
+
+msgid "Applications needing action"
+msgstr "طلبات تحتاج إلى إجراء"
+
+msgid "Applied for"
+msgstr "تم التقديم لـ"
+
+msgid "Apply / I"
+msgstr "تقديم / أنا"
+
+msgid "Apply / express interest"
+msgstr "تقديم / إبداء اهتمام"
+
+msgid "Approve"
+msgstr "اعتماد"
+
+msgid "Assign"
+msgstr "تعيين"
+
+msgid "Assign agent"
+msgstr "تعيين وكيل"
+
+msgid "Assign applicant"
+msgstr "تعيين المتقدم"
+
+msgid "Assign to me"
+msgstr "تعيينه لي"
+
+msgid "Assignee"
+msgstr "المكلّف"
+
+msgid "Assignment & status"
+msgstr "التعيين والحالة"
+
+msgid "Attach file"
+msgstr "إرفاق ملف"
+
+msgid "Attachment"
+msgstr "مرفق"
+
+msgid "Back to applicant"
+msgstr "العودة إلى المتقدم"
+
+msgid "Back to program"
+msgstr "العودة إلى البرنامج"
+
+msgid "Basic identity and contact details."
+msgstr "بيانات الهوية والاتصال الأساسية."
+
+msgid "Birthdate"
+msgstr "تاريخ الميلاد"
+
+msgid "Breadcrumb"
+msgstr "مسار التنقل"
+
+msgid "Budget"
+msgstr "الميزانية"
+
+msgid "CRM record of communication outside TurkDemy Messages."
+msgstr "سجل CRM للتواصل خارج رسائل TurkDemy."
+
+msgid "Cancel"
+msgstr "إلغاء"
+
+msgid "Cancelled"
+msgstr "ملغي"
+
+msgid "Changes are recorded in the applicant activity history after saving."
+msgstr "تُسجل التغييرات في سجل نشاط المتقدم بعد الحفظ."
+
+msgid "Changes, notes and workflow events"
+msgstr "التغييرات والملاحظات وأحداث سير العمل"
+
+msgid "Channel"
+msgstr "القناة"
+
+msgid "Choose a concrete program intake. The application starts as Draft."
+msgstr "اختر دفعة قبول محددة للبرنامج. يبدأ الطلب كمسودة."
+
+msgid "Choose an active user from this applicant"
+msgstr "اختر مستخدمًا نشطًا لهذا المتقدم"
+
+msgid "Choose an agent user"
+msgstr "اختر مستخدم وكيل"
+
+msgid "Choose an existing applicant, yourself, or create someone new."
+msgstr "اختر متقدمًا موجودًا أو نفسك، أو أنشئ شخصًا جديدًا."
+
+msgid "Choose an offering"
+msgstr "اختر خيار قبول"
+
+msgid "Choose an organization"
+msgstr "اختر مؤسسة"
+
+msgid "Choose as many options as you are open to."
+msgstr "اختر عدد الخيارات التي تناسبك."
+
+msgid "Choose intake"
+msgstr "اختر دفعة القبول"
+
+msgid "Choose intake & start"
+msgstr "اختر الدفعة وابدأ"
+
+msgid "Choose organization"
+msgstr "اختر المؤسسة"
+
+msgid "Choose replacement file"
+msgstr "اختر ملفًا بديلًا"
+
+msgid ""
+"Choose yourself to use the details we already know about your account, or someone else to enter "
+"their details."
+msgstr "اختر نفسك لاستخدام البيانات المعروفة عن حسابك، أو اختر شخصًا آخر لإدخال بياناته."
+
+msgid "City of residence"
+msgstr "مدينة الإقامة"
+
+msgid "Clear"
+msgstr "مسح"
+
+msgid "Close"
+msgstr "إغلاق"
+
+msgid "Close applicant"
+msgstr "إغلاق المتقدم"
+
+msgid "Close reason:"
+msgstr "سبب الإغلاق:"
+
+msgid "Close this lead when you no longer plan to continue working on it."
+msgstr "أغلق هذا المتقدم عندما لا تعتزم مواصلة العمل عليه."
+
+msgid "Comment"
+msgstr "تعليق"
+
+msgid "Communication Log"
+msgstr "سجل التواصل"
+
+msgid "Communications"
+msgstr "التواصلات"
+
+msgid "Completed"
+msgstr "مكتمل"
+
+msgid "Contact & residence"
+msgstr "الاتصال والإقامة"
+
+msgid "Continue application"
+msgstr "متابعة الطلب"
+
+msgid "Conversation"
+msgstr "المحادثة"
+
+msgid "Conversation attachment"
+msgstr "مرفق المحادثة"
+
+msgid ""
+"Correct the highlighted fields or selections and submit again. No conversion changes have been "
+"committed."
+msgstr "صحح الحقول أو الاختيارات المميزة ثم أرسل مرة أخرى. لم يتم اعتماد أي تغييرات في التحويل."
+
+msgid "Counterparty name"
+msgstr "اسم الطرف المقابل"
+
+msgid "Counterparty type"
+msgstr "نوع الطرف المقابل"
+
+msgid "Country of birth"
+msgstr "بلد الميلاد"
+
+msgid "Country of residence"
+msgstr "بلد الإقامة"
+
+msgid "Create Student Record"
+msgstr "إنشاء سجل الطالب"
+
+msgid "Create TODO"
+msgstr "إنشاء مهمة"
+
+msgid "Create draft application"
+msgstr "إنشاء طلب مسودة"
+
+msgid "Created"
+msgstr "تم الإنشاء"
+
+msgid "Current residence details."
+msgstr "تفاصيل الإقامة الحالية."
+
+msgid "Current status"
+msgstr "الحالة الحالية"
+
+msgid "Customer navigation"
+msgstr "تنقل العميل"
+
+msgid "Customer visible"
+msgstr "مرئي للعميل"
+
+msgid "Customer-added"
+msgstr "أضافه العميل"
+
+msgid "Date of expiry"
+msgstr "تاريخ الانتهاء"
+
+msgid "Date of issue"
+msgstr "تاريخ الإصدار"
+
+msgid "Decision"
+msgstr "القرار"
+
+msgid "Degree & university type"
+msgstr "الدرجة ونوع الجامعة"
+
+msgid "Departments"
+msgstr "الأقسام"
+
+msgid "Description"
+msgstr "الوصف"
+
+msgid "Discussed or recommended programs"
+msgstr "البرامج التي تمت مناقشتها أو التوصية بها"
+
+msgid "Document review"
+msgstr "مراجعة المستند"
+
+msgid "Document type"
+msgstr "نوع المستند"
+
+msgid "Done"
+msgstr "تم"
+
+msgid "Draft applications"
+msgstr "طلبات مسودة"
+
+msgid "Due"
+msgstr "موعد الاستحقاق"
+
+msgid "Due today"
+msgstr "مستحق اليوم"
+
+msgid "Edit"
+msgstr "تعديل"
+
+msgid "Edit applicant"
+msgstr "تعديل المتقدم"
+
+msgid "Edit internal notes"
+msgstr "تعديل الملاحظات الداخلية"
+
+msgid "Edit preferences"
+msgstr "تعديل التفضيلات"
+
+msgid "Edit profile"
+msgstr "تعديل الملف الشخصي"
+
+msgid "Editing"
+msgstr "جارٍ التعديل"
+
+msgid "Education & language"
+msgstr "التعليم واللغة"
+
+msgid "Educational background"
+msgstr "الخلفية التعليمية"
+
+msgid "English test score"
+msgstr "درجة اختبار الإنجليزية"
+
+msgid "English test type"
+msgstr "نوع اختبار الإنجليزية"
+
+msgid "Enter this code in the browser window where you started signing in."
+msgstr "أدخل هذا الرمز في نافذة المتصفح التي بدأت منها تسجيل الدخول."
+
+msgid "Erasmus"
+msgstr "إيراسموس"
+
+msgid "Facilities & exchange"
+msgstr "المرافق والتبادل"
+
+msgid "Family"
+msgstr "العائلة"
+
+msgid "File"
+msgstr "ملف"
+
+msgid "Filter"
+msgstr "تصفية"
+
+msgid "Finalize this applicant before creating formal applications."
+msgstr "قم بإنهاء هذا المتقدم قبل إنشاء طلبات رسمية."
+
+msgid "Find Programs"
+msgstr "العثور على برامج"
+
+msgid "Find a program to start your first request."
+msgstr "اعثر على برنامج لبدء طلبك الأول."
+
+msgid "Find programs"
+msgstr "العثور على برامج"
+
+msgid "Formal application"
+msgstr "طلب رسمي"
+
+msgid "Formal applications"
+msgstr "طلبات رسمية"
+
+msgid "Formal applications become available after this applicant is finalized as a student."
+msgstr "تصبح الطلبات الرسمية متاحة بعد إنهاء هذا المتقدم كطالب."
+
+msgid "Formal applications for a specific program intake."
+msgstr "طلبات رسمية لدفعة قبول محددة في برنامج."
+
+msgid "Gender"
+msgstr "الجنس"
+
+msgid "Get Help"
+msgstr "الحصول على مساعدة"
+
+msgid "Go to homepage"
+msgstr "الذهاب إلى الصفحة الرئيسية"
+
+msgid "High school GPA"
+msgstr "معدل الثانوية"
+
+msgid "High school GPA scale"
+msgstr "مقياس معدل الثانوية"
+
+msgid "How to reach the applicant and their current place of residence."
+msgstr "كيفية التواصل مع المتقدم ومكان إقامته الحالي."
+
+msgid "Identity & nationality"
+msgstr "الهوية والجنسية"
+
+msgid "Identity and personal details used throughout the admissions process."
+msgstr "بيانات الهوية والمعلومات الشخصية المستخدمة خلال إجراءات القبول."
+
+msgid "Identity, contact, residence and education"
+msgstr "الهوية والاتصال والإقامة والتعليم"
+
+msgid "If you"
+msgstr "إذا كنت"
+
+msgid "If you did not request this sign-in code, you can safely ignore this email."
+msgstr "إذا لم تطلب رمز تسجيل الدخول هذا، يمكنك تجاهل هذه الرسالة بأمان."
+
+msgid ""
+"If you followed a link from TurkDemy and think this is a mistake, return to the previous list and"
+" try again."
+msgstr "إذا وصلت عبر رابط من TurkDemy وتعتقد أن هذا خطأ، عد إلى القائمة السابقة وحاول مرة أخرى."
+
+msgid ""
+"If you select a document that is not verified, it will be approved as part of the successful "
+"conversion and copied to the Student document library. Unchecking an already verified document "
+"does not change its verification status."
+msgstr ""
+"إذا اخترت مستندًا غير موثّق فسيتم اعتماده ضمن التحويل الناجح ونسخه إلى مكتبة مستندات الطالب. "
+"إلغاء تحديد مستند موثّق مسبقًا لا يغيّر حالة توثيقه."
+
+msgid "In progress"
+msgstr "قيد التنفيذ"
+
+msgid "Inbox"
+msgstr "صندوق الوارد"
+
+msgid "Internal"
+msgstr "داخلي"
+
+msgid "Internal notes"
+msgstr "ملاحظات داخلية"
+
+msgid "Issuing authority"
+msgstr "جهة الإصدار"
+
+msgid "Keep pending"
+msgstr "إبقاؤه قيد الانتظار"
+
+msgid "Last reviewed by"
+msgstr "آخر مراجعة بواسطة"
+
+msgid "Last updated"
+msgstr "آخر تحديث"
+
+msgid "Lead lifecycle"
+msgstr "دورة حياة المتقدم"
+
+msgid "Leave the document waiting for review."
+msgstr "اترك المستند بانتظار المراجعة."
+
+msgid "Main navigation"
+msgstr "التنقل الرئيسي"
+
+msgid "Manage Google, Telegram, and email access from TurkDemy"
+msgstr "أدر الوصول عبر Google وTelegram والبريد الإلكتروني من TurkDemy"
+
+msgid "Message us on WhatsApp"
+msgstr "راسلنا على WhatsApp"
+
+msgid "Messages about this applicant"
+msgstr "رسائل حول هذا المتقدم"
+
+msgid "Messages about this application"
+msgstr "رسائل حول هذا الطلب"
+
+msgid "Messages with"
+msgstr "الرسائل مع"
+
+msgid "Messaging will become available once TurkDemy assigns an advisor to this Request."
+msgstr "ستصبح المراسلة متاحة عندما يعيّن TurkDemy مستشارًا لهذا الطلب."
+
+msgid "Mobile navigation"
+msgstr "تنقل الهاتف"
+
+msgid "My TODOs"
+msgstr "مهامي"
+
+msgid "Name"
+msgstr "الاسم"
+
+msgid "Nationality"
+msgstr "الجنسية"
+
+msgid "Need recommendations"
+msgstr "يحتاج إلى توصيات"
+
+msgid "Needs program recommendations"
+msgstr "يحتاج إلى توصيات برامج"
+
+msgid "Needs replacement"
+msgstr "يحتاج إلى استبدال"
+
+msgid "Needs review"
+msgstr "يحتاج إلى مراجعة"
+
+msgid "Needs your attention"
+msgstr "يحتاج إلى انتباهك"
+
+msgid "New applicants"
+msgstr "متقدمون جدد"
+
+msgid "New application"
+msgstr "طلب جديد"
+
+msgid "No TODOs in this scope."
+msgstr "لا توجد مهام في هذا النطاق."
+
+msgid "No active TODOs assigned to you."
+msgstr "لا توجد مهام نشطة مخصصة لك."
+
+msgid ""
+"No active offering is available for this discussed program, so it cannot be selected for a draft "
+"application."
+msgstr "لا يوجد خيار قبول نشط لهذا البرنامج الذي تمت مناقشته، لذلك لا يمكن اختياره لطلب مسودة."
+
+msgid "No activity matches this filter."
+msgstr "لا يوجد نشاط يطابق هذا الفلتر."
+
+msgid "No activity yet."
+msgstr "لا يوجد نشاط بعد."
+
+msgid "No applicant documents have been uploaded."
+msgstr "لم يتم رفع مستندات للمتقدم بعد."
+
+msgid "No applicant programs yet."
+msgstr "لا توجد برامج للمتقدم بعد."
+
+msgid "No applicants match these filters."
+msgstr "لا يوجد متقدمون يطابقون هذه الفلاتر."
+
+msgid "No application documents."
+msgstr "لا توجد مستندات للطلب."
+
+msgid "No applications yet."
+msgstr "لا توجد طلبات بعد."
+
+msgid "No communication has been logged in this scope."
+msgstr "لم يتم تسجيل تواصل في هذا النطاق."
+
+msgid "No communication logged yet."
+msgstr "لم يتم تسجيل تواصل بعد."
+
+msgid "No conversations yet."
+msgstr "لا توجد محادثات بعد."
+
+msgid "No documents have been attached to this application."
+msgstr "لم يتم إرفاق مستندات بهذا الطلب."
+
+msgid "No documents uploaded yet."
+msgstr "لم يتم رفع مستندات بعد."
+
+msgid "No documents yet."
+msgstr "لا توجد مستندات بعد."
+
+msgid "No documents."
+msgstr "لا توجد مستندات."
+
+msgid "No formal applications match these filters."
+msgstr "لا توجد طلبات رسمية تطابق هذه الفلاتر."
+
+msgid "No internal notes yet."
+msgstr "لا توجد ملاحظات داخلية بعد."
+
+msgid "No matching active programs found."
+msgstr "لم يتم العثور على برامج نشطة مطابقة."
+
+msgid "No messages yet."
+msgstr "لا توجد رسائل بعد."
+
+msgid "No program preferences added yet."
+msgstr "لم تتم إضافة تفضيلات برامج بعد."
+
+msgid "No programs added yet"
+msgstr "لم تتم إضافة برامج بعد"
+
+msgid "No programs are attached to this request yet."
+msgstr "لم يتم ربط برامج بهذا الطلب بعد."
+
+msgid "No programs have been added to this request yet."
+msgstr "لم تتم إضافة برامج إلى هذا الطلب بعد."
+
+msgid "No programs have been discussed. You can still create the Student record."
+msgstr "لم تتم مناقشة برامج بعد. لا يزال بإمكانك إنشاء سجل الطالب."
+
+msgid "No programs were discussed during the applicant stage."
+msgstr "لم تتم مناقشة برامج خلال مرحلة المتقدم."
+
+msgid "No programs yet."
+msgstr "لا توجد برامج بعد."
+
+msgid "No programs."
+msgstr "لا توجد برامج."
+
+msgid "No structured requirements have been added to this application yet."
+msgstr "لم تتم إضافة متطلبات منظمة لهذا الطلب بعد."
+
+msgid "No structured requirements have been added yet."
+msgstr "لم تتم إضافة متطلبات منظمة بعد."
+
+msgid "No student documents."
+msgstr "لا توجد مستندات للطالب."
+
+msgid "No study preferences."
+msgstr "لا توجد تفضيلات دراسية."
+
+msgid "No user-added programs yet."
+msgstr "لا توجد برامج أضافها المستخدم بعد."
+
+msgid "Not found"
+msgstr "غير موجود"
+
+msgid "Not selected"
+msgstr "غير محدد"
+
+msgid "Not verified"
+msgstr "غير موثّق"
+
+msgid "Notes"
+msgstr "الملاحظات"
+
+msgid "Occurred at"
+msgstr "وقت الحدوث"
+
+msgid "Offering"
+msgstr "خيار القبول"
+
+msgid "Open Documents to upload a replacement."
+msgstr "افتح المستندات لرفع بديل."
+
+msgid "Open Messages to review and reply."
+msgstr "افتح الرسائل للمراجعة والرد."
+
+msgid "Open conversation"
+msgstr "فتح المحادثة"
+
+msgid "Open dashboard"
+msgstr "فتح لوحة التحكم"
+
+msgid "Open document"
+msgstr "فتح المستند"
+
+msgid "Open document in a new tab"
+msgstr "فتح المستند في علامة تبويب جديدة"
+
+msgid "Open navigation"
+msgstr "فتح التنقل"
+
+msgid "Open workspace"
+msgstr "فتح مساحة العمل"
+
+msgid "Operations overview"
+msgstr "نظرة عامة على العمليات"
+
+msgid "Optional"
+msgstr "اختياري"
+
+msgid "Optional family information used when an application requires it."
+msgstr "معلومات عائلية اختيارية تُستخدم عندما يتطلبها الطلب."
+
+msgid "Optional internal review note"
+msgstr "ملاحظة مراجعة داخلية اختيارية"
+
+msgid "Optional note about this document"
+msgstr "ملاحظة اختيارية حول هذا المستند"
+
+msgid "Optional reason for the applicant"
+msgstr "سبب اختياري للمتقدم"
+
+msgid "Originating applicant"
+msgstr "المتقدم الأصلي"
+
+msgid "Other preferences"
+msgstr "تفضيلات أخرى"
+
+msgid "Overdue"
+msgstr "متأخر"
+
+msgid "Page not found"
+msgstr "الصفحة غير موجودة"
+
+msgid "Passport"
+msgstr "جواز السفر"
+
+msgid "Passport number"
+msgstr "رقم جواز السفر"
+
+msgid "Phone"
+msgstr "الهاتف"
+
+msgid "Please review the form."
+msgstr "يرجى مراجعة النموذج."
+
+msgid "Private work items shared by this Agent organization."
+msgstr "عناصر عمل خاصة مشتركة داخل مؤسسة الوكيل هذه."
+
+msgid "Program"
+msgstr "البرنامج"
+
+msgid "Program intake"
+msgstr "دفعة قبول البرنامج"
+
+msgid "Program preferences"
+msgstr "تفضيلات البرامج"
+
+msgid ""
+"Programs associated with applicants. User-added programs and advisor suggestions are shown "
+"separately from formal applications."
+msgstr ""
+"البرامج المرتبطة بالمتقدمين. تظهر البرامج التي أضافها المستخدم واقتراحات المستشار بشكل منفصل عن "
+"الطلبات الرسمية."
+
+msgid "Programs discussed during applicant stage"
+msgstr "البرامج التي نوقشت خلال مرحلة المتقدم"
+
+msgid "Programs discussed with or recommended to this applicant."
+msgstr "البرامج التي تمت مناقشتها مع هذا المتقدم أو التوصية بها له."
+
+msgid "Progress"
+msgstr "التقدم"
+
+msgid "Read"
+msgstr "مقروء"
+
+msgid "Reason"
+msgstr "السبب"
+
+msgid "Reassign"
+msgstr "إعادة تعيين"
+
+msgid "Reassign applicant"
+msgstr "إعادة تعيين المتقدم"
+
+msgid "Received"
+msgstr "مستلم"
+
+msgid "Recent applicants"
+msgstr "المتقدمون الأخيرون"
+
+msgid "Recent applications"
+msgstr "الطلبات الأخيرة"
+
+msgid "Recent communication"
+msgstr "التواصل الأخير"
+
+msgid "Recent messages"
+msgstr "الرسائل الأخيرة"
+
+msgid "Recent user-added programs"
+msgstr "البرامج الأخيرة التي أضافها المستخدم"
+
+msgid "Recommend"
+msgstr "توصية"
+
+msgid "Recommend a program"
+msgstr "التوصية ببرنامج"
+
+msgid "Recommend another program"
+msgstr "التوصية ببرنامج آخر"
+
+msgid "Recommend program"
+msgstr "التوصية ببرنامج"
+
+msgid "Recommendation reason"
+msgstr "سبب التوصية"
+
+msgid "Record communication"
+msgstr "تسجيل التواصل"
+
+msgid "Recorded"
+msgstr "مسجل"
+
+msgid "Remove program"
+msgstr "إزالة البرنامج"
+
+msgid "Remove recommendation"
+msgstr "إزالة التوصية"
+
+msgid "Remove this program from your Request?"
+msgstr "إزالة هذا البرنامج من طلبك؟"
+
+msgid "Reopen"
+msgstr "إعادة الفتح"
+
+msgid "Replace document"
+msgstr "استبدال المستند"
+
+msgid "Request context"
+msgstr "سياق الطلب"
+
+msgid "Request documents are read-only"
+msgstr "مستندات الطلب للقراءة فقط"
+
+msgid "Request navigation"
+msgstr "تنقل الطلب"
+
+msgid "Request received"
+msgstr "تم استلام الطلب"
+
+msgid "Request replacement"
+msgstr "طلب استبدال"
+
+msgid "Required document"
+msgstr "مستند مطلوب"
+
+msgid "Requirements"
+msgstr "المتطلبات"
+
+msgid "Residence"
+msgstr "الإقامة"
+
+msgid "Responsibility"
+msgstr "المسؤولية"
+
+msgid "Responsible agent"
+msgstr "الوكيل المسؤول"
+
+msgid "Responsible:"
+msgstr "المسؤول:"
+
+msgid "Reuse a document already stored for this student."
+msgstr "أعد استخدام مستند محفوظ مسبقًا لهذا الطالب."
+
+msgid "Review"
+msgstr "مراجعة"
+
+msgid "Review & create"
+msgstr "مراجعة وإنشاء"
+
+msgid "Review note"
+msgstr "ملاحظة المراجعة"
+
+msgid ""
+"Review the student information, choose which applicant documents to transfer, and optionally "
+"create draft applications from discussed programs."
+msgstr ""
+"راجع معلومات الطالب، واختر مستندات المتقدم المراد نقلها، وأنشئ اختياريًا طلبات مسودة من البرامج "
+"التي تمت مناقشتها."
+
+msgid "Save applicant"
+msgstr "حفظ المتقدم"
+
+msgid "Save notes"
+msgstr "حفظ الملاحظات"
+
+msgid "Save preferences"
+msgstr "حفظ التفضيلات"
+
+msgid "Save review"
+msgstr "حفظ المراجعة"
+
+msgid "Save revision"
+msgstr "حفظ المراجعة المعدلة"
+
+msgid "Search and select multiple options. Selected items appear as removable chips."
+msgstr "ابحث واختر عدة خيارات. تظهر العناصر المحددة كوسوم قابلة للإزالة."
+
+msgid "Search applicant or email"
+msgstr "البحث عن متقدم أو بريد إلكتروني"
+
+msgid "Search below to recommend a suitable program to this applicant."
+msgstr "ابحث أدناه للتوصية ببرنامج مناسب لهذا المتقدم."
+
+msgid "Search program or university…"
+msgstr "البحث عن برنامج أو جامعة…"
+
+msgid "Search the catalogue by program or university name, then send a recommendation."
+msgstr "ابحث في الدليل باسم البرنامج أو الجامعة ثم أرسل توصية."
+
+msgid "Secure sign in"
+msgstr "تسجيل دخول آمن"
+
+msgid "Select intake"
+msgstr "اختيار دفعة القبول"
+
+msgid "Select zero or more discussed programs. Every selected program requires an active offering."
+msgstr "اختر صفرًا أو أكثر من البرامج التي تمت مناقشتها. يتطلب كل برنامج محدد خيار قبول نشطًا."
+
+msgid "Send"
+msgstr "إرسال"
+
+msgid "Send a message to your advisor about this Request."
+msgstr "أرسل رسالة إلى مستشارك حول هذا الطلب."
+
+msgid "Send reply"
+msgstr "إرسال رد"
+
+msgid "Set a tuition range if you have one."
+msgstr "حدد نطاقًا للرسوم إذا كان لديك نطاق مفضل."
+
+msgid "Shared CRM history of communication outside the platform."
+msgstr "سجل CRM مشترك للتواصل خارج المنصة."
+
+msgid "Shared operational work across this organization."
+msgstr "عمل تشغيلي مشترك داخل هذه المؤسسة."
+
+msgid "Source"
+msgstr "المصدر"
+
+msgid "Start application"
+msgstr "بدء الطلب"
+
+msgid ""
+"Start with whatever information you have. Most fields are optional; our admissions team can "
+"collect the rest later."
+msgstr "ابدأ بالمعلومات المتوفرة لديك. معظم الحقول اختيارية ويمكن لفريق القبول جمع الباقي لاحقًا."
+
+msgid "Student"
+msgstr "الطالب"
+
+msgid "Student document"
+msgstr "مستند الطالب"
+
+msgid "Student documents"
+msgstr "مستندات الطالب"
+
+msgid "Student information"
+msgstr "معلومات الطالب"
+
+msgid "Study in Türkiye with TurkDemy."
+msgstr "ادرس في تركيا مع TurkDemy."
+
+msgid "Subject"
+msgstr "الموضوع"
+
+msgid "Suggested by your advisor"
+msgstr "مقترح من مستشارك"
+
+msgid "Suggested by your agent"
+msgstr "مقترح من وكيلك"
+
+msgid "Summary"
+msgstr "الملخص"
+
+msgid "Switch"
+msgstr "تبديل"
+
+msgid "Switch organization"
+msgstr "تبديل المؤسسة"
+
+msgid "System"
+msgstr "النظام"
+
+msgid "TODO status"
+msgstr "حالة المهمة"
+
+msgid "Tell us what you are looking for so TurkDemy can suggest suitable programs."
+msgstr "أخبرنا بما تبحث عنه حتى يتمكن TurkDemy من اقتراح برامج مناسبة."
+
+msgid "Tell us what you know"
+msgstr "أخبرنا بما تعرفه"
+
+msgid "The Student record was not created."
+msgstr "لم يتم إنشاء سجل الطالب."
+
+msgid ""
+"The Student, selected document transfers, draft applications, and applicant finalization are "
+"committed as one conversion workflow."
+msgstr ""
+"يتم اعتماد سجل الطالب ونقل المستندات المحددة والطلبات المسودة وإنهاء المتقدم كسير عمل واحد "
+"للتحويل."
+
+msgid "The applicant should provide another version."
+msgstr "ينبغي للمتقدم تقديم نسخة أخرى."
+
+msgid "The attachment will be copied into the applicant"
+msgstr "سيتم نسخ المرفق إلى مستندات المتقدم"
+
+msgid "The document is acceptable."
+msgstr "المستند مقبول."
+
+msgid "The file is stored as a reusable Student document and added to this application."
+msgstr "يتم حفظ الملف كمستند طالب قابل لإعادة الاستخدام وإضافته إلى هذا الطلب."
+
+msgid ""
+"The original filename is kept internally. The document type is what agents and applicants use to "
+"identify the document."
+msgstr "يتم الاحتفاظ باسم الملف الأصلي داخليًا. ويستخدم الوكلاء والمتقدمون نوع المستند للتعرف عليه."
+
+msgid "The page may have moved, the link may be outdated, or you may not have access to this item."
+msgstr "قد تكون الصفحة قد انتقلت أو الرابط قديمًا أو قد لا يكون لديك وصول إلى هذا العنصر."
+
+msgid "These notes are visible only to agent/staff users."
+msgstr "هذه الملاحظات مرئية فقط لمستخدمي الوكيل/الموظفين."
+
+msgid "These remain discussion history until an agent starts a formal application."
+msgstr "تبقى هذه ضمن سجل المناقشة حتى يبدأ الوكيل طلبًا رسميًا."
+
+msgid "This request is finalized, so document changes are managed by TurkDemy."
+msgstr "تم إنهاء هذا الطلب، لذلك يدير TurkDemy تغييرات المستندات."
+
+msgid "Tip"
+msgstr "نصيحة"
+
+msgid "Todos"
+msgstr "المهام"
+
+msgid "Track the people and programs you have asked TurkDemy to help with."
+msgstr "تابع الأشخاص والبرامج التي طلبت من TurkDemy مساعدتك بشأنها."
+
+msgid "Travel document details, if available."
+msgstr "تفاصيل وثيقة السفر إن وجدت."
+
+msgid "Travel document information required by later application workflows."
+msgstr "معلومات وثيقة السفر المطلوبة في مراحل لاحقة من الطلب."
+
+msgid "Try a program name such as Computer Engineering or a university name."
+msgstr "جرّب اسم برنامج مثل هندسة الحاسوب أو اسم جامعة."
+
+msgid "Unassigned"
+msgstr "غير معين"
+
+msgid "Under review"
+msgstr "قيد المراجعة"
+
+msgid "Unread messages"
+msgstr "رسائل غير مقروءة"
+
+msgid "Unverified documents"
+msgstr "مستندات غير موثقة"
+
+msgid "Upcoming"
+msgstr "قادم"
+
+msgid "Update"
+msgstr "تحديث"
+
+msgid "Update status"
+msgstr "تحديث الحالة"
+
+msgid "Updated"
+msgstr "محدّث"
+
+msgid "Upload"
+msgstr "رفع"
+
+msgid "Upload & add"
+msgstr "رفع وإضافة"
+
+msgid "Upload document"
+msgstr "رفع مستند"
+
+msgid "Upload new document"
+msgstr "رفع مستند جديد"
+
+msgid "Upload replacement"
+msgstr "رفع بديل"
+
+msgid "Upload the documents TurkDemy needs to process this Request."
+msgstr "ارفع المستندات التي يحتاجها TurkDemy لمعالجة هذا الطلب."
+
+msgid "Uploaded documents"
+msgstr "المستندات المرفوعة"
+
+msgid "User-added"
+msgstr "أضافه المستخدم"
+
+msgid "Values are prefilled from the applicant and can be corrected before conversion."
+msgstr "تُملأ القيم مسبقًا من بيانات المتقدم ويمكن تصحيحها قبل التحويل."
+
+msgid "Verified documents are selected by default. You may select or deselect any document."
+msgstr "يتم تحديد المستندات الموثقة افتراضيًا. يمكنك تحديد أي مستند أو إلغاء تحديده."
+
+msgid "View history"
+msgstr "عرض السجل"
+
+msgid "View student"
+msgstr "عرض الطالب"
+
+msgid "Visible only to agent/staff users."
+msgstr "مرئي فقط لمستخدمي الوكيل/الموظفين."
+
+msgid "We couldn"
+msgstr "لم نتمكن"
+
+msgid "When would you like to start?"
+msgstr "متى ترغب في البدء؟"
+
+msgid "Where & what to study"
+msgstr "أين وماذا تدرس"
+
+msgid "Why is this applicant being closed?"
+msgstr "لماذا يتم إغلاق هذا المتقدم؟"
+
+msgid "You"
+msgstr "أنت"
+
+msgid "You belong to more than one Agent. Choose the organization you want to work in."
+msgstr "أنت عضو في أكثر من وكيل. اختر المؤسسة التي تريد العمل ضمنها."
+
+msgid "Your advisor has not been assigned yet."
+msgstr "لم يتم تعيين مستشارك بعد."
+
+msgid "No requests yet"
+msgstr "لا توجد طلبات بعد"
+
+msgid "Open request"
+msgstr "فتح الطلب"
+
+msgid "Request profile"
+msgstr "ملف الطلب"
+
+msgid "This conversation is closed."
+msgstr "هذه المحادثة مغلقة."
+
+msgid "University preferences"
+msgstr "تفضيلات الجامعة"
+
+#, python-format
+msgid "%(document)s reviewed"
+msgstr "تمت مراجعة %(document)s"
+
+#, python-format
+msgid "%(document)s uploaded"
+msgstr "تم رفع %(document)s"
+
+#, python-format
+msgid "%(program)s added to the applicant programs."
+msgstr "تمت إضافة %(program)s إلى برامج المتقدم."
+
+#, python-format
+msgid "%(program)s added to your request"
+msgstr "تمت إضافة %(program)s إلى طلبك"
+
+msgid "A fee must define an amount, a percentage, or both."
+msgstr "يجب أن تحدد الرسوم مبلغًا أو نسبة أو كليهما."
+
+msgid "A finalized applicant cannot be closed."
+msgstr "لا يمكن إغلاق متقدم تم إنهاؤه."
+
+msgid "Accepted"
+msgstr "مقبول"
+
+msgid "Additional Documents Required"
+msgstr "مستندات إضافية مطلوبة"
+
+msgid "Additional study preferences or constraints."
+msgstr "تفضيلات أو قيود دراسية إضافية."
+
+msgid "Advisor assigned"
+msgstr "تم تعيين مستشار"
+
+msgid "Advisor changed"
+msgstr "تم تغيير المستشار"
+
+msgid "Agent hierarchy cannot contain a cycle."
+msgstr "لا يمكن أن يحتوي تسلسل الوكلاء على حلقة."
+
+msgid "Any intake / decide later"
+msgstr "أي دفعة / أقرر لاحقًا"
+
+msgid "Applicant closed."
+msgstr "تم إغلاق المتقدم."
+
+msgid "Applicant data updated"
+msgstr "تم تحديث بيانات المتقدم"
+
+msgid "Applicant data updated."
+msgstr "تم تحديث بيانات المتقدم."
+
+msgid "Applicant managed by you"
+msgstr "متقدم تديره أنت"
+
+msgid "Applicant profiles are managed separately because one account can manage multiple people."
+msgstr "تُدار ملفات المتقدمين بشكل منفصل لأن الحساب الواحد يمكنه إدارة عدة أشخاص."
+
+msgid "Applicant reopened."
+msgstr "تمت إعادة فتح المتقدم."
+
+msgid "Application deadline cannot precede opening date."
+msgstr "لا يمكن أن يكون الموعد النهائي قبل تاريخ فتح التقديم."
+
+msgid "Application status updated."
+msgstr "تم تحديث حالة الطلب."
+
+msgid "Assigned"
+msgstr "مُعيّن"
+
+msgid "Assignee must belong to the owning Agent organization."
+msgstr "يجب أن يكون المكلّف عضوًا في مؤسسة الوكيل المالكة."
+
+msgid "Attachment added to Documents and marked for review."
+msgstr "تمت إضافة المرفق إلى المستندات ووضع علامة للمراجعة."
+
+msgid "Authenticated account that owns and manages this applicant."
+msgstr "الحساب الموثق الذي يملك ويدير هذا المتقدم."
+
+msgid "Cambridge"
+msgstr "كامبريدج"
+
+msgid "Canonical intake. Fall/Spring/Academic Intake are intake names."
+msgstr "دفعة القبول الأساسية. الخريف/الربيع/الدفعة الأكاديمية هي أسماء للدفعات."
+
+msgid "Chat attachment this document was promoted from, when applicable."
+msgstr "مرفق المحادثة الذي تم تحويل هذا المستند منه، عند الاقتضاء."
+
+msgid "Choose a document type before adding the attachment."
+msgstr "اختر نوع المستند قبل إضافة المرفق."
+
+msgid "Choose a responsible agent user."
+msgstr "اختر مستخدم وكيل مسؤول."
+
+msgid "Choose a valid applicant."
+msgstr "اختر متقدمًا صالحًا."
+
+msgid "Choose a valid document review decision."
+msgstr "اختر قرار مراجعة مستند صالحًا."
+
+msgid "Choose a valid program intake."
+msgstr "اختر دفعة قبول برنامج صالحة."
+
+msgid "Choose an available student document."
+msgstr "اختر مستند طالب متاحًا."
+
+msgid "Choose who is applying."
+msgstr "اختر من يتقدم."
+
+msgid "City of residence as free text."
+msgstr "مدينة الإقامة كنص حر."
+
+msgid "Comment added."
+msgstr "تمت إضافة التعليق."
+
+msgid "Comment cannot be empty."
+msgstr "لا يمكن أن يكون التعليق فارغًا."
+
+msgid "Communication revisions are immutable."
+msgstr "مراجعات التواصل غير قابلة للتغيير."
+
+msgid "Communication updated; previous version retained."
+msgstr "تم تحديث التواصل مع الاحتفاظ بالإصدار السابق."
+
+msgid "Could not create TODO. Check the supplied fields."
+msgstr "تعذر إنشاء المهمة. تحقق من الحقول المدخلة."
+
+msgid "Could not update communication."
+msgstr "تعذر تحديث التواصل."
+
+msgid "Could not upload document. Check the supplied fields."
+msgstr "تعذر رفع المستند. تحقق من الحقول المدخلة."
+
+msgid "Create an applicant for another person."
+msgstr "أنشئ متقدمًا لشخص آخر."
+
+msgid "Customer"
+msgstr "العميل"
+
+msgid "Customer/agent messages require a sender."
+msgstr "تتطلب رسائل العميل/الوكيل مرسلًا."
+
+msgid "Degree codes such as bachelor, master or phd."
+msgstr "رموز الدرجات مثل bachelor أو master أو phd."
+
+msgid "Department must belong to the selected university."
+msgstr "يجب أن ينتمي القسم إلى الجامعة المحددة."
+
+msgid "Diploma"
+msgstr "دبلوم"
+
+msgid "Discussed program converted to a draft application."
+msgstr "تم تحويل البرنامج الذي تمت مناقشته إلى طلب مسودة."
+
+msgid "Document review updated."
+msgstr "تم تحديث مراجعة المستند."
+
+msgid "Document reviewed"
+msgstr "تمت مراجعة المستند"
+
+msgid "Document uploaded"
+msgstr "تم رفع المستند"
+
+msgid "Document uploaded and added to application."
+msgstr "تم رفع المستند وإضافته إلى الطلب."
+
+msgid "Document uploaded and approved."
+msgstr "تم رفع المستند واعتماده."
+
+msgid "Draft"
+msgstr "مسودة"
+
+msgid "Draft application created."
+msgstr "تم إنشاء طلب مسودة."
+
+msgid "Enter a phone number."
+msgstr "أدخل رقم هاتف."
+
+msgid "Enter a valid phone number, including the country code."
+msgstr "أدخل رقم هاتف صالحًا مع رمز البلد."
+
+msgid "Enter a valid phone number."
+msgstr "أدخل رقم هاتف صالحًا."
+
+msgid "Euro"
+msgstr "يورو"
+
+msgid "Female"
+msgstr "أنثى"
+
+msgid "Finalized"
+msgstr "تم الإنهاء"
+
+msgid "First name"
+msgstr "الاسم الأول"
+
+#, python-format
+msgid "From %(amount)s"
+msgstr "من %(amount)s"
+
+msgid "General"
+msgstr "عام"
+
+msgid "I am applying for"
+msgstr "أتقدم من أجل"
+
+msgid "ID Card"
+msgstr "بطاقة هوية"
+
+msgid "IELTS"
+msgstr "IELTS"
+
+msgid "ISO 3166-1 alpha-2 country code, for example NL, TR, or IR."
+msgstr "رمز البلد المكون من حرفين حسب ISO 3166-1، مثل NL أو TR أو IR."
+
+msgid "ISO 3166-1 alpha-3 country code, for example NLD, TUR, or IRN."
+msgstr "رمز البلد المكون من ثلاثة أحرف حسب ISO 3166-1، مثل NLD أو TUR أو IRN."
+
+msgid "In person"
+msgstr "حضوري"
+
+msgid "Instruction-language percentages cannot exceed 100%."
+msgstr "لا يمكن أن تتجاوز نسب لغات التدريس 100٪."
+
+msgid "Intake academic year must match the offering academic year."
+msgstr "يجب أن يطابق العام الأكاديمي لدفعة القبول العام الأكاديمي لخيار القبول."
+
+msgid "Internal description visible to staff users."
+msgstr "وصف داخلي مرئي للموظفين."
+
+msgid "Internal notes updated"
+msgstr "تم تحديث الملاحظات الداخلية"
+
+msgid "Internal notes updated."
+msgstr "تم تحديث الملاحظات الداخلية."
+
+msgid "Internal notes were not changed."
+msgstr "لم تتغير الملاحظات الداخلية."
+
+msgid "Internal notes."
+msgstr "ملاحظات داخلية."
+
+msgid "Internal staff user currently responsible for this lead."
+msgstr "الموظف الداخلي المسؤول حاليًا عن هذا المتقدم."
+
+msgid "Invalid applicant status action."
+msgstr "إجراء حالة المتقدم غير صالح."
+
+msgid "Invalid application status."
+msgstr "حالة الطلب غير صالحة."
+
+msgid "Language Certificate"
+msgstr "شهادة لغة"
+
+msgid "Last date on which an application can be submitted for this offering."
+msgstr "آخر تاريخ يمكن فيه تقديم طلب لخيار القبول هذا."
+
+msgid "Last name"
+msgstr "اسم العائلة"
+
+msgid "Last-read message must belong to this conversation."
+msgstr "يجب أن تنتمي آخر رسالة مقروءة إلى هذه المحادثة."
+
+msgid "Male"
+msgstr "ذكر"
+
+msgid "Maximum tuition must be greater than minimum tuition."
+msgstr "يجب أن تكون الرسوم القصوى أكبر من الحد الأدنى."
+
+msgid "Messaging will be available once an advisor is assigned."
+msgstr "ستصبح المراسلة متاحة بعد تعيين مستشار."
+
+msgid "New"
+msgstr "جديد"
+
+msgid "No applicant data changed."
+msgstr "لم تتغير بيانات المتقدم."
+
+msgid "Note"
+msgstr "ملاحظة"
+
+msgid "Number of admission places available for this offering, when known."
+msgstr "عدد مقاعد القبول المتاحة لهذا الخيار، إن كان معروفًا."
+
+msgid "Offering must belong to the selected program."
+msgstr "يجب أن ينتمي خيار القبول إلى البرنامج المحدد."
+
+msgid "One or more degree values are invalid."
+msgstr "قيمة واحدة أو أكثر للدرجة غير صالحة."
+
+msgid "One or more university types are invalid."
+msgstr "نوع واحد أو أكثر من أنواع الجامعات غير صالح."
+
+msgid "Open applications"
+msgstr "طلبات مفتوحة"
+
+msgid "PTE"
+msgstr "PTE"
+
+msgid "Passport Copy"
+msgstr "صورة جواز السفر"
+
+msgid "Passport Size Photo"
+msgstr "صورة شخصية بحجم جواز السفر"
+
+msgid "Preserve source footnotes, exceptional charges, or ambiguous terms here."
+msgstr "احتفظ هنا بحواشي المصدر أو الرسوم الاستثنائية أو المصطلحات الملتبسة."
+
+msgid "Profile updated"
+msgstr "تم تحديث الملف الشخصي"
+
+msgid "Program / intake"
+msgstr "البرنامج / الدفعة"
+
+msgid "Program added"
+msgstr "تمت إضافة البرنامج"
+
+msgid "Program added to your request"
+msgstr "تمت إضافة البرنامج إلى طلبك"
+
+#, python-format
+msgid "Program added: %(program)s."
+msgstr "تمت إضافة البرنامج: %(program)s."
+
+msgid "Program intake updated."
+msgstr "تم تحديث دفعة قبول البرنامج."
+
+#, python-format
+msgid "Program intake updated: %(program)s."
+msgstr "تم تحديث دفعة قبول البرنامج: %(program)s."
+
+msgid "Program recommendation removed."
+msgstr "تمت إزالة توصية البرنامج."
+
+msgid "Program recommended to applicant."
+msgstr "تمت التوصية بالبرنامج للمتقدم."
+
+msgid "Program removed from this Request."
+msgstr "تمت إزالة البرنامج من هذا الطلب."
+
+msgid "Program response"
+msgstr "رد البرنامج"
+
+msgid "Program response updated"
+msgstr "تم تحديث رد البرنامج"
+
+msgid "Program suggested"
+msgstr "تم اقتراح برنامج"
+
+#, python-format
+msgid "Program suggested: %(program)s."
+msgstr "تم اقتراح البرنامج: %(program)s."
+
+msgid "Reassigned"
+msgstr "تمت إعادة التعيين"
+
+msgid "Recommendation updated."
+msgstr "تم تحديث التوصية."
+
+msgid "Recommendations generated"
+msgstr "تم إنشاء التوصيات"
+
+msgid "Rejected"
+msgstr "مرفوض"
+
+msgid "Reopen this applicant before creating a Student record."
+msgstr "أعد فتح هذا المتقدم قبل إنشاء سجل الطالب."
+
+msgid "Reopened"
+msgstr "أعيد فتحه"
+
+msgid "Replacement file"
+msgstr "ملف بديل"
+
+msgid "Replacement requested"
+msgstr "تم طلب بديل"
+
+msgid "Replacement uploaded and sent for review."
+msgstr "تم رفع البديل وإرساله للمراجعة."
+
+msgid "Request closed"
+msgstr "تم إغلاق الطلب"
+
+msgid "Request completed"
+msgstr "تم إكمال الطلب"
+
+msgid "Request created"
+msgstr "تم إنشاء الطلب"
+
+msgid "Request reopened"
+msgstr "تمت إعادة فتح الطلب"
+
+msgid "Request reviewed"
+msgstr "تمت مراجعة الطلب"
+
+msgid "Request status updated"
+msgstr "تم تحديث حالة الطلب"
+
+msgid "Request updated"
+msgstr "تم تحديث الطلب"
+
+msgid "Review decision"
+msgstr "قرار المراجعة"
+
+msgid "Someone new"
+msgstr "شخص جديد"
+
+msgid "Staff"
+msgstr "الموظفون"
+
+msgid "Status changed"
+msgstr "تم تغيير الحالة"
+
+msgid "Student document added to application."
+msgstr "تمت إضافة مستند الطالب إلى الطلب."
+
+msgid "Student document uploaded."
+msgstr "تم رفع مستند الطالب."
+
+msgid "Submitted"
+msgstr "تم الإرسال"
+
+msgid "TODO comments are immutable after posting."
+msgstr "تعليقات المهام غير قابلة للتعديل بعد نشرها."
+
+msgid "TODO updated."
+msgstr "تم تحديث المهمة."
+
+msgid "TOEFL"
+msgstr "TOEFL"
+
+msgid "Telegram"
+msgstr "Telegram"
+
+msgid "This Request can no longer be changed."
+msgstr "لا يمكن تغيير هذا الطلب بعد الآن."
+
+msgid "This applicant already has a Student record."
+msgstr "لدى هذا المتقدم سجل طالب بالفعل."
+
+msgid "This applicant can no longer be assigned."
+msgstr "لا يمكن تعيين هذا المتقدم بعد الآن."
+
+msgid "This attachment is already in Documents."
+msgstr "هذا المرفق موجود بالفعل في المستندات."
+
+msgid "This program is already recommended."
+msgstr "تمت التوصية بهذا البرنامج بالفعل."
+
+msgid "This student has no originating applicant record."
+msgstr "لا يوجد لهذا الطالب سجل متقدم أصلي."
+
+msgid "This user is already responsible for the applicant."
+msgstr "هذا المستخدم مسؤول بالفعل عن المتقدم."
+
+msgid "Transcript"
+msgstr "كشف الدرجات"
+
+msgid "Turkish Lira"
+msgstr "الليرة التركية"
+
+msgid "Turkish Proficiency Certificate"
+msgstr "شهادة إتقان اللغة التركية"
+
+msgid "US Dollar"
+msgstr "الدولار الأمريكي"
+
+msgid "Under Review"
+msgstr "قيد المراجعة"
+
+msgid "University ranking position according to ARWU."
+msgstr "ترتيب الجامعة وفق ARWU."
+
+msgid "University ranking position according to QS World University Rankings."
+msgstr "ترتيب الجامعة وفق تصنيف QS العالمي للجامعات."
+
+msgid "University ranking position according to URAP."
+msgstr "ترتيب الجامعة وفق URAP."
+
+msgid "University type codes such as public or private."
+msgstr "رموز نوع الجامعة مثل public أو private."
+
+#, python-format
+msgid "Up to %(amount)s"
+msgstr "حتى %(amount)s"
+
+msgid "Use the details we already know about your account."
+msgstr "استخدم البيانات التي نعرفها بالفعل عن حسابك."
+
+msgid "Valid until cannot be earlier than valid from."
+msgstr "لا يمكن أن يكون تاريخ انتهاء الصلاحية قبل تاريخ بدايتها."
+
+msgid "Validated"
+msgstr "تم التحقق"
+
+msgid "Video call"
+msgstr "مكالمة فيديو"
+
+msgid "Website"
+msgstr "الموقع الإلكتروني"
+
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+msgid "Whether the quoted tuition includes preparatory study."
+msgstr "ما إذا كانت الرسوم المذكورة تشمل الدراسة التحضيرية."
+
+msgid "Whether the university participates in the Erasmus+ mobility programme."
+msgstr "ما إذا كانت الجامعة تشارك في برنامج التنقل Erasmus+."
+
+msgid "Withdrawn"
+msgstr "منسحب"
+
+msgid "You are already responsible for this applicant."
+msgstr "أنت مسؤول بالفعل عن هذا المتقدم."
+
+msgid "You are now responsible for this applicant."
+msgstr "أنت الآن مسؤول عن هذا المتقدم."
+
+#, python-format
+msgid "Your advisor suggested %(program)s"
+msgstr "اقترح مستشارك %(program)s"
+
+msgid "Your advisor suggested a program"
+msgstr "اقترح مستشارك برنامجًا"
+
+msgid "YÖK Equivalency Certificate"
+msgstr "شهادة معادلة YÖK"
+
+msgid "YÖK Recognition Certificate"
+msgstr "شهادة اعتراف YÖK"
+
+msgid "Applicant profile created."
+msgstr "تم إنشاء ملف المتقدم."
+
+msgid "Choose a replacement file."
+msgstr "اختر ملفًا بديلًا."
+
+msgid "Could not upload the document."
+msgstr "تعذر رفع المستند."
+
+msgid "Document uploaded."
+msgstr "تم رفع المستند."
+
+msgid "No profile data changed."
+msgstr "لم تتغير بيانات الملف الشخصي."
+
+msgid "Preparatory / foundation tuition"
+msgstr "رسوم السنة التحضيرية / التأسيسية"
+
+msgid "Profile updated."
+msgstr "تم تحديث الملف الشخصي."
+
+msgid "Study preferences updated."
+msgstr "تم تحديث تفضيلات الدراسة."
+
+#, python-format
+msgid "%(document_name)s needs to be replaced"
+msgstr "يجب استبدال %(document_name)s"
+
+#, python-format
+msgid "Open %(document_type)s"
+msgstr "فتح %(document_type)s"
+
+#, python-format
+msgid ""
+"Update %(applicant)s's personal, contact, passport and education information. Applicant fields "
+"can remain incomplete until finalization."
+msgstr ""
+"حدّث المعلومات الشخصية ومعلومات الاتصال وجواز السفر والتعليم الخاصة بـ %(applicant)s. يمكن أن "
+"تبقى حقول المتقدم غير مكتملة حتى الإنهاء."
+
+#, python-format
+msgid "%(count)s events"
+msgstr "%(count)s أحداث"
+
+#, python-format
+msgid "Page %(current)s of %(total)s"
+msgstr "الصفحة %(current)s من %(total)s"
+
+#, python-format
+msgid "Last updated by %(person)s · %(when)s"
+msgstr "آخر تحديث بواسطة %(person)s · %(when)s"
+
+#, python-format
+msgid "Last updated · %(when)s"
+msgstr "آخر تحديث · %(when)s"
+
+#, python-format
+msgid "Applicant record last updated by %(person)s · %(when)s"
+msgstr "آخر تحديث لسجل المتقدم بواسطة %(person)s · %(when)s"
+
+#, python-format
+msgid "Applicant record last updated · %(when)s"
+msgstr "آخر تحديث لسجل المتقدم · %(when)s"
+
+#, python-format
+msgid "%(program_name)s at %(university_name)s. %(degree)s, %(languages)s"
+msgstr "%(program_name)s في %(university_name)s. %(degree)s، %(languages)s"
+
+#, python-format
+msgid "View %(program_name)s program"
+msgstr "عرض برنامج %(program_name)s"
+
+#, python-format
+msgid "Explore %(name)s"
+msgstr "استكشف %(name)s"
+
+#, python-format
+msgid ""
+"Search %(program_count)s programs across %(university_count)s universities and compare your "
+"options in one place."
+msgstr "ابحث في %(program_count)s برنامجًا عبر %(university_count)s جامعة وقارن خياراتك في مكان واحد."
+
+#, python-format
+msgid "We sent a code to <bdi dir=\"ltr\">%(email)s</bdi>."
+msgstr "أرسلنا رمزًا إلى <bdi dir=\"ltr\">%(email)s</bdi>."
+
+#, python-format
+msgid "Enter the code sent to <bdi dir=\"ltr\">%(email)s</bdi>."
+msgstr "أدخل الرمز المرسل إلى <bdi dir=\"ltr\">%(email)s</bdi>."
+
+#, python-format
+msgid "Your %(brand)s sign-in code"
+msgstr "رمز تسجيل دخول %(brand)s الخاص بك"
+
+#, python-format
+msgid "You have %(counter)s unread message"
+msgid_plural "You have %(counter)s unread messages"
+msgstr[0] "لديك %(counter)s رسالة غير مقروءة"
+msgstr[1] "لديك %(counter)s رسائل غير مقروءة"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#, python-format
+msgid "%(counter)s unread message"
+msgid_plural "%(counter)s unread messages"
+msgstr[0] "%(counter)s رسالة غير مقروءة"
+msgstr[1] "%(counter)s رسائل غير مقروءة"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#, python-format
+msgid "%(count)s comment"
+msgid_plural "%(count)s comments"
+msgstr[0] "%(count)s تعليق"
+msgstr[1] "%(count)s تعليقات"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#, python-format
+msgid "%(count)s revision"
+msgid_plural "%(count)s revisions"
+msgstr[0] "%(count)s مراجعة"
+msgstr[1] "%(count)s مراجعات"
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+msgid "No matching options"
+msgstr "لا توجد خيارات مطابقة"
+
+msgid "Upload documents to the Student record after finalization."
+msgstr "بعد الإنهاء، حمّل المستندات إلى سجل الطالب."
+
+#, python-format
+msgid "Document was not uploaded. %(detail)s"
+msgstr "لم يتم تحميل المستند. %(detail)s"
+
+#, python-format
+msgid "TODO created: %(title)s."
+msgstr "تم إنشاء المهمة: %(title)s."
+
+#, python-format
+msgid "Follow up: %(channel)s communication"
+msgstr "متابعة تواصل %(channel)s"
+
+#, python-format
+msgid "%(channel)s communication recorded."
+msgstr "تم تسجيل التواصل عبر %(channel)s."
+
+#, python-format
+msgid "%(message)s Reason: %(reason)s"
+msgstr "%(message)s السبب: %(reason)s"
+
+#, python-format
+msgid "%(user)s is now responsible for this applicant."
+msgstr "أصبح %(user)s مسؤولًا عن مقدم الطلب هذا."
+
+msgid "Academic unit must belong to the selected university."
+msgstr "يجب أن تنتمي الوحدة الأكاديمية إلى الجامعة المحددة."
+
+msgid "Application created"
+msgstr "تم إنشاء طلب القبول"
+
+msgid "Application updated"
+msgstr "تم تحديث طلب القبول"
+
+msgid "Assign this applicant to yourself before creating a Student record."
+msgstr "عيّن مقدم الطلب هذا لنفسك قبل إنشاء سجل الطالب."
+
+msgid ""
+"Authenticated account that owns/manages this student record. One account may manage multiple "
+"students."
+msgstr "الحساب الموثق الذي يملك/يدير سجل الطالب هذا. يمكن لحساب واحد إدارة عدة طلاب."
+
+msgid "Catalogue source must belong to the offering program's university."
+msgstr "يجب أن ينتمي مصدر الكتالوج إلى جامعة البرنامج المعروض."
+
+msgid "Choose a valid intake for the discussed program."
+msgstr "اختر دفعة قبول صالحة للبرنامج الذي تمت مناقشته."
+
+msgid "Could not record communication. Check the supplied fields."
+msgstr "تعذر تسجيل التواصل. تحقق من الحقول المدخلة."
+
+msgid "Document added"
+msgstr "تمت إضافة المستند"
+
+msgid "Document must belong to the application student."
+msgstr "يجب أن يخص المستند الطالب المرتبط بطلب القبول."
+
+msgid "Finalized or closed applicant data cannot be edited here."
+msgstr "لا يمكن تعديل بيانات مقدم الطلب المنتهي أو المغلق هنا."
+
+msgid "Indicates whether a graduate program is thesis or non-thesis, when applicable."
+msgstr "يوضح، عند انطباق ذلك، ما إذا كان برنامج الدراسات العليا بأطروحة أو بدون أطروحة."
+
+msgid "Intake must belong to the offering program's university."
+msgstr "يجب أن تنتمي دفعة القبول إلى جامعة البرنامج المعروض."
+
+msgid "Internal Lead notes are read-only after finalization."
+msgstr "ملاحظات مقدم الطلب الداخلية للقراءة فقط بعد الإنهاء."
+
+msgid ""
+"Internal priority used to influence this item's position in listings. Higher values receive "
+"greater priority."
+msgstr "أولوية داخلية تؤثر في موضع هذا العنصر في القوائم. القيم الأعلى تحصل على أولوية أكبر."
+
+msgid "Internal staff/import notes. Never expose this field on public or customer-facing surfaces."
+msgstr "ملاحظات داخلية للموظفين/الاستيراد. لا تعرض هذا الحقل مطلقًا على الواجهات العامة أو واجهات العملاء."
+
+msgid ""
+"Maximum value of the grading scale used for the high-school grade or GPA, for example 20, 4, 10, "
+"or 100."
+msgstr "القيمة القصوى لمقياس الدرجات المستخدم لدرجة الثانوية أو المعدل، مثل 20 أو 4 أو 10 أو 100."
+
+msgid "Message"
+msgstr "رسالة"
+
+msgid "Program recommendations cannot be changed after the applicant is finalized or closed."
+msgstr "لا يمكن تغيير توصيات البرامج بعد إنهاء مقدم الطلب أو إغلاقه."
+
+msgid "Program recommendations updated"
+msgstr "تم تحديث توصيات البرامج"
+
+msgid "Replace documents on the student record after finalization."
+msgstr "بعد الإنهاء، استبدل المستندات في سجل الطالب."
+
+msgid ""
+"Specific intake/offering when known. Program-level interest is allowed without selecting an "
+"offering."
+msgstr "دفعة قبول/عرض محدد عند معرفته. يُسمح بالاهتمام على مستوى البرنامج دون اختيار عرض."
+
+#, python-format
+msgid ""
+"Student record created for %(student)s. Transferred %(documents)s document(s) and created "
+"%(applications)s draft application(s)."
+msgstr ""
+"تم إنشاء سجل الطالب لـ %(student)s. نُقل %(documents)s مستندًا وتم إنشاء %(applications)s طلب "
+"قبول كمسودة."
+
+msgid ""
+"Student's final high-school grade or GPA in the original grading system, for example 17.5 on a "
+"20-point scale or 3.5 on a 4-point scale."
+msgstr "الدرجة النهائية للثانوية أو المعدل في نظام الدرجات الأصلي، مثل 17.5 من 20 أو 3.5 من 4."
+
+msgid "TODO"
+msgstr "مهمة"
+
+msgid ""
+"The applicant is unsure which programs are suitable and wants TurkDemy staff/system to "
+"investigate and suggest options."
+msgstr "مقدم الطلب غير متأكد من البرامج المناسبة ويريد من موظفي/نظام TurkDemy البحث واقتراح الخيارات."
+
+msgid "The selected user does not belong to this applicant's agent."
+msgstr "المستخدم المحدد لا ينتمي إلى وكالة مقدم الطلب هذا."
+
+msgid "This Request profile can no longer be edited."
+msgstr "لم يعد من الممكن تعديل ملف هذا الطلب."
+
+msgid "This Request's preferences can no longer be edited."
+msgstr "لم يعد من الممكن تعديل تفضيلات هذا الطلب."
+
+msgid "This program is already on the applicant's list."
+msgstr "هذا البرنامج موجود بالفعل في قائمة مقدم الطلب."
+
+msgid "University ranking position according to Times Higher Education (THE)."
+msgstr "ترتيب الجامعة وفق Times Higher Education (THE)."
+
+msgid "Upload documents to the student record after finalization."
+msgstr "بعد الإنهاء، حمّل المستندات إلى سجل الطالب."
+
+msgid ""
+"Whether the university is approved by the relevant Ministry of Education for the target student "
+"market."
+msgstr "ما إذا كانت الجامعة معتمدة من وزارة التعليم المعنية لسوق الطلاب المستهدف."
+
+msgid ""
+"Whether the university is approved by the relevant Ministry of Health for the target student "
+"market."
+msgstr "ما إذا كانت الجامعة معتمدة من وزارة الصحة المعنية لسوق الطلاب المستهدف."
+
+msgid "Whether the university is recognized by YÖK (the Council of Higher Education of Türkiye)."
+msgstr "ما إذا كانت الجامعة معترفًا بها من YÖK (مجلس التعليم العالي في تركيا)."
+
+msgid "Whether the university provides or officially offers student dormitory accommodation."
+msgstr "ما إذا كانت الجامعة توفر أو تقدم رسميًا سكنًا طلابيًا."
+
+msgid "You are not an active user of this applicant's agent."
+msgstr "أنت لست مستخدمًا نشطًا في وكالة مقدم الطلب هذا."
+
+#, python-format
+msgid "Your advisor recommended %(program)s at %(university)s."
+msgstr "أوصى مستشارك ببرنامج %(program)s في %(university)s."
+

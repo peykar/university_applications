@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.core.localization import localized_value
+
 
 class LocalizedNameMixin(models.Model):
     name_en = models.CharField(max_length=255)
@@ -9,6 +11,14 @@ class LocalizedNameMixin(models.Model):
 
     class Meta:
         abstract = True
+
+    @property
+    def localized_name(self):
+        return localized_value(self, "name")
+
+    @property
+    def localized_description(self):
+        return localized_value(self, "description")
 
 
 class LocalizedSlugMixin(models.Model):

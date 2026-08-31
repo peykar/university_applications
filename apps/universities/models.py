@@ -5,8 +5,10 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.text import slugify
+from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.localization import localized_value
 from apps.core.mixins import ActiveMixin, LocalizedNameMixin, LocalizedSlugMixin
 from apps.core.models import BaseModel
 from apps.geography.models import City
@@ -94,7 +96,7 @@ class University(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin)
     )
 
     def __str__(self):
-        return self.name_en
+        return self.localized_name
 
 
 class UniversityMedia(BaseModel):
@@ -113,7 +115,7 @@ class Department(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin)
     description_ar = models.TextField(blank=True)
 
     def __str__(self):
-        return self.name_en
+        return self.localized_name
 
 
 class AcademicUnitType(models.TextChoices):
@@ -138,7 +140,7 @@ class AcademicUnit(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixi
     description_ar = models.TextField(blank=True)
 
     def __str__(self):
-        return self.name_en
+        return self.localized_name
 
 
 class ProgramLanguage(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
@@ -148,7 +150,7 @@ class ProgramLanguage(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveM
     description_ar = models.TextField(blank=True)
 
     def __str__(self):
-        return self.name_en
+        return self.localized_name
 
 
 class AcademicYear(BaseModel, ActiveMixin):
@@ -157,8 +159,12 @@ class AcademicYear(BaseModel, ActiveMixin):
     name_tr = models.CharField(max_length=50, blank=True)
     name_ar = models.CharField(max_length=50, blank=True)
 
+    @property
+    def localized_name(self):
+        return localized_value(self, "name")
+
     def __str__(self):
-        return self.name_en
+        return self.localized_name
 
 
 class Intake(BaseModel, ActiveMixin):
@@ -187,8 +193,12 @@ class Intake(BaseModel, ActiveMixin):
                 {"application_deadline": _("Application deadline cannot precede opening date.")}
             )
 
+    @property
+    def localized_name(self):
+        return localized_value(self, "name")
+
     def __str__(self):
-        return f"{self.academic_year} — {self.name_en}"
+        return f"{self.academic_year} — {self.localized_name}"
 
 
 class DegreeType(models.TextChoices):
@@ -486,15 +496,16 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
         )
         parts = []
         for row in rows:
+            language_name = row.language.localized_name
             if row.percentage is None:
-                parts.append(row.language.name_en)
+                parts.append(language_name)
             else:
                 percentage = format(row.percentage.normalize(), "f")
-                parts.append(f"{percentage}% {row.language.name_en}")
+                parts.append(f"{percentage}% {language_name}")
         return " · ".join(parts)
 
     def __str__(self):
-        return self.name_en
+        return self.localized_name
 
 
 class ProgramInstructionLanguage(BaseModel):
@@ -751,12 +762,16 @@ class OfferingFee(BaseModel, ActiveMixin):
 
     @property
     def display_label(self) -> str:
-        """Return a source-faithful public label with percentage shown once."""
-        label = self.label.strip() or str(self.get_fee_type_display())
+        """Return a localized public label while preserving the source label semantics."""
+        source_label = self.label.strip()
+        label = gettext(source_label) if source_label else str(self.get_fee_type_display())
         if self.percentage is None or "%" in label:
             return label
         percentage = format(self.percentage.normalize(), "f")
-        return f"{label} ({percentage}%)"
+        return _("%(label)s (%(percentage)s%%)") % {
+            "label": label,
+            "percentage": percentage,
+        }
 
     def __str__(self):
         return f"{self.offering} — {self.get_fee_type_display()}"

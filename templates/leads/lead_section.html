@@ -86,16 +86,16 @@
       <div class="request-preferences-section-heading"><h2>{% trans "Study preferences" %}</h2></div>
       <dl class="entity-facts-grid request-preferences-facts">
         <div><dt>{% trans "Degree" %}</dt><dd>{% if preferred_degrees %}{% for item in preferred_degrees %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
-        <div><dt>{% trans "Study field" %}</dt><dd>{% if preferred_departments %}{% for item in preferred_departments %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
-        <div><dt>{% trans "Language" %}</dt><dd>{% if preferred_languages %}{% for item in preferred_languages %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
+        <div><dt>{% trans "Study field" %}</dt><dd>{% if preferred_departments %}{% for item in preferred_departments %}{{ item.localized_name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
+        <div><dt>{% trans "Language" %}</dt><dd>{% if preferred_languages %}{% for item in preferred_languages %}{{ item.localized_name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
       </dl>
     </section>
 
     <section class="request-preferences-section">
       <div class="request-preferences-section-heading"><h2>{% trans "University preferences" %}</h2></div>
       <dl class="entity-facts-grid request-preferences-facts">
-        <div><dt>{% trans "Cities" %}</dt><dd>{% if preferred_cities %}{% for item in preferred_cities %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
-        <div><dt>{% trans "Universities" %}</dt><dd>{% if preferred_universities %}{% for item in preferred_universities %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
+        <div><dt>{% trans "Cities" %}</dt><dd>{% if preferred_cities %}{% for item in preferred_cities %}{{ item.localized_name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
+        <div><dt>{% trans "Universities" %}</dt><dd>{% if preferred_universities %}{% for item in preferred_universities %}{{ item.localized_name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
         <div><dt>{% trans "University type" %}</dt><dd>{% if preferred_university_types %}{% for item in preferred_university_types %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</dd></div>
       </dl>
     </section>
@@ -128,8 +128,8 @@
         <article class="lead-interest-card request-program-card">
           <a class="request-program-detail-link" href="{% url 'program-detail' interest.program.slug_en %}">
             <div class="request-program-copy">
-              <h3>{{ interest.program.name_en }}</h3>
-              <p class="request-program-university">{{ interest.program.university.name_en }}</p>
+              <h3>{{ interest.program.localized_name }}</h3>
+              <p class="request-program-university">{{ interest.program.university.localized_name }}</p>
               <p class="request-program-meta">
                 <span>{{ interest.program.get_degree_display }}</span><span aria-hidden="true">·</span>
                 <span>{{ interest.program.instruction_language_display }}</span>
@@ -167,12 +167,12 @@
                 <select id="offering-{{ interest.pk }}" name="program_offering" onchange="this.form.submit()">
                   <option value=""{% if not interest.program_offering_id %} selected{% endif %}>{% trans "Select intake" %}</option>
                   {% for offering in interest.program.customer_offerings %}
-                    <option value="{{ offering.pk }}"{% if interest.program_offering_id == offering.pk %} selected{% endif %}>{{ offering.intake.name_en }} {{ offering.academic_year.name_en }} — {{ offering.display_tuition_fee.amount|currency_amount:offering.display_tuition_fee.currency }}</option>
+                    <option value="{{ offering.pk }}"{% if interest.program_offering_id == offering.pk %} selected{% endif %}>{{ offering.intake.localized_name }} {{ offering.academic_year.localized_name }} — {{ offering.display_tuition_fee.amount|currency_amount:offering.display_tuition_fee.currency }}</option>
                   {% endfor %}
                 </select>
               </form>
             {% else %}
-              <strong class="request-program-intake-readonly">{% if interest.program_offering %}{{ interest.program_offering.intake.name_en }} {{ interest.program_offering.academic_year.name_en }}{% else %}{% trans "Not selected" %}{% endif %}</strong>
+              <strong class="request-program-intake-readonly">{% if interest.program_offering %}{{ interest.program_offering.intake.localized_name }} {{ interest.program_offering.academic_year.localized_name }}{% else %}{% trans "Not selected" %}{% endif %}</strong>
             {% endif %}
           </div>
           {% if lead.status != "finalized" %}
@@ -272,7 +272,7 @@
     <div class="entity-list">
       {% for application in applications %}
         <a class="entity-list-row" href="{% url 'customer-application-detail' application.pk %}">
-          <span><strong>{{ application.program_offering.program.name_en }}</strong><small>{{ application.program_offering.program.university.name_en }}</small></span>
+          <span><strong>{{ application.program_offering.program.localized_name }}</strong><small>{{ application.program_offering.program.university.localized_name }}</small></span>
           <span class="status-pill">{{ application.get_status_display }}</span>
         </a>
       {% empty %}

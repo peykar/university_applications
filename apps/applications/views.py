@@ -4,6 +4,7 @@ from typing import Any
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from apps.messaging.forms import MessageForm
@@ -33,7 +34,7 @@ def _application_activity(application):
     events: list[dict[str, Any]] = [
         {
             "when": application.created_at,
-            "title": "Application created",
+            "title": _("Application created"),
             "detail": str(application.get_status_display()),
         },
     ]
@@ -41,7 +42,7 @@ def _application_activity(application):
         events.append(
             {
                 "when": document.created_at,
-                "title": "Document added",
+                "title": _("Document added"),
                 "detail": str(document.student_document.get_document_type_display()),
             }
         )
@@ -50,15 +51,15 @@ def _application_activity(application):
         events.append(
             {
                 "when": message.created_at,
-                "title": "Message",
-                "detail": message.body[:120] if message.body else "Attachment",
+                "title": _("Message"),
+                "detail": message.body[:120] if message.body else _("Attachment"),
             }
         )
     if application.updated_at != application.created_at:
         events.append(
             {
                 "when": application.updated_at,
-                "title": "Application updated",
+                "title": _("Application updated"),
                 "detail": str(application.get_status_display()),
             }
         )

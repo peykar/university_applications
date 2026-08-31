@@ -45,7 +45,7 @@
           <div class="request-program-list">
             {% for interest in card.programs %}
               <span class="request-program-item">
-                <span>{{ interest.program.name_en }}{% if interest.program.university %} — {{ interest.program.university.name_en }}{% endif %}</span>
+                <span>{{ interest.program.localized_name }}{% if interest.program.university %} — {{ interest.program.university.localized_name }}{% endif %}</span>
                 {% if interest.source == "agent" %}
                   <small class="request-suggested-tip">{% trans "Suggested by your agent" %}</small>
                 {% endif %}

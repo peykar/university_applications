@@ -277,7 +277,7 @@ def _build_active_program_filters(request, options) -> list[dict[str, str]]:
         ),
         None,
     )
-    add("field", getattr(field, "name_en", None))
+    add("field", getattr(field, "localized_name", None))
 
     degree_value = request.GET.get("degree")
     add(
@@ -296,7 +296,7 @@ def _build_active_program_filters(request, options) -> list[dict[str, str]]:
         ),
         None,
     )
-    add("language", getattr(language, "name_en", None))
+    add("language", getattr(language, "localized_name", None))
 
     study_mode_label = dict(StudyMode.choices).get(request.GET.get("study_mode"))
     add("study_mode", study_mode_label)
@@ -309,7 +309,7 @@ def _build_active_program_filters(request, options) -> list[dict[str, str]]:
         ),
         None,
     )
-    add("academic_unit", getattr(academic_unit, "name_en", None))
+    add("academic_unit", getattr(academic_unit, "localized_name", None))
 
     university = next(
         (
@@ -319,7 +319,7 @@ def _build_active_program_filters(request, options) -> list[dict[str, str]]:
         ),
         None,
     )
-    add("university", getattr(university, "name_en", None))
+    add("university", getattr(university, "localized_name", None))
 
     city = next(
         (
@@ -329,7 +329,7 @@ def _build_active_program_filters(request, options) -> list[dict[str, str]]:
         ),
         None,
     )
-    add("city", getattr(city, "name_en", None))
+    add("city", getattr(city, "localized_name", None))
 
     university_type_value = request.GET.get("university_type")
     add(
@@ -362,7 +362,7 @@ def _build_active_program_filters(request, options) -> list[dict[str, str]]:
         ),
         None,
     )
-    add("academic_year", getattr(academic_year, "name_en", None))
+    add("academic_year", getattr(academic_year, "localized_name", None))
 
     intake = next(
         (
@@ -372,7 +372,7 @@ def _build_active_program_filters(request, options) -> list[dict[str, str]]:
         ),
         None,
     )
-    add("intake", getattr(intake, "name_en", None))
+    add("intake", getattr(intake, "localized_name", None))
 
     boolean_labels = {
         "open": _("Open applications"),
@@ -581,7 +581,7 @@ def contact(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Your message has been sent.")
+            messages.success(request, _("Your message has been sent."))
             return redirect("contact")
     else:
         form = ContactForm()
@@ -607,6 +607,9 @@ def dashboard(request):
 def profile(request):
     messages.info(
         request,
-        "Applicant profiles are managed separately because one account can manage multiple people.",
+        _(
+            "Applicant profiles are managed separately because one account can "
+            "manage multiple people."
+        ),
     )
     return redirect("lead-list")

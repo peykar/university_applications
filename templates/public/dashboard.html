@@ -37,10 +37,10 @@
         <div>
           <strong>
             <a href="{% url 'customer-application-detail' application.pk %}">
-              {{ application.student }} — {{ application.program_offering.program.name_en }}
+              {{ application.student }} — {{ application.program_offering.program.localized_name }}
             </a>
           </strong>
-          <span>{{ application.program_offering.program.university.name_en }} · {{ application.get_status_display }}</span>
+          <span>{{ application.program_offering.program.university.localized_name }} · {{ application.get_status_display }}</span>
         </div>
       </div>
     {% empty %}

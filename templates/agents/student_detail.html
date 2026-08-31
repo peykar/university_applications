@@ -36,10 +36,10 @@
      <div class="agent-list-row student-application-row">
       <span>
        <a href="{% url 'agent-application-detail' application.pk %}">
-        <strong>{{ application.program_offering.program.name_en }}</strong>
+        <strong>{{ application.program_offering.program.localized_name }}</strong>
        </a>
        <small>
-        {{ application.program_offering.program.university.name_en }}
+        {{ application.program_offering.program.university.localized_name }}
         · {{ application.program_offering.academic_year }}
         · {{ application.program_offering.intake }}
        </small>
@@ -64,9 +64,9 @@
     {% for interest in discussed_programs %}
      <div class="agent-list-row discussed-program-row">
       <span>
-       <strong>{{ interest.program.name_en }}</strong>
+       <strong>{{ interest.program.localized_name }}</strong>
        <small>
-        {{ interest.program.university.name_en }}
+        {{ interest.program.university.localized_name }}
         · {% if interest.source == "agent" %}{% trans "Agent-suggested" %}{% else %}{% trans "User-added" %}{% endif %}
         {% if interest.program_offering %} · {{ interest.program_offering }}{% endif %}
        </small>
@@ -92,8 +92,8 @@
         <div class="agent-modal-head">
          <div>
           <span class="eyebrow">{% trans "Start application" %}</span>
-          <h2>{{ interest.program.name_en }}</h2>
-          <p>{{ interest.program.university.name_en }}</p>
+          <h2>{{ interest.program.localized_name }}</h2>
+          <p>{{ interest.program.university.localized_name }}</p>
          </div>
          <button type="button" class="modal-close button-reset" aria-label="{% trans 'Close' %}">×</button>
         </div>

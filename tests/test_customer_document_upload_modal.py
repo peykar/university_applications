@@ -14,7 +14,7 @@ class CustomerDocumentUploadModalTests(SimpleTestCase):
 
     def test_customer_upload_form_does_not_ask_for_document_name(self):
         form_block = self.form_source.split(
-            "class LeadDocumentForm(forms.ModelForm):",
+            "class LeadDocumentForm(LocalizedFormMixin, forms.ModelForm):",
             1,
         )[1].split("class LeadDocumentReplacementForm", 1)[0]
         self.assertIn(

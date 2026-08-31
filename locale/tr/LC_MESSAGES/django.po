@@ -1,7 +1,24 @@
+# Turkish translations for TurkDemy.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the TurkDemy project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: TurkDemy\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\nPlural-Forms: nplurals=2; plural=(n != 1);\\n"
+"Project-Id-Version: TurkDemy 1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-09-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: tr\n"
+"Language-Team: tr <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
 
+#, python-format
 msgid "%(provider)s disconnected."
 msgstr "%(provider)s bağlantısı kesildi."
 
@@ -95,6 +112,7 @@ msgstr "E-posta doğrulama"
 msgid "Enter sign-in code"
 msgstr "Giriş kodunu girin"
 
+#, python-format
 msgid "Enter the code sent to %(email)s."
 msgstr "%(email)s adresine gönderilen kodu girin."
 
@@ -209,9 +227,11 @@ msgstr "Birincil yapmadan önce bu e-posta adresini doğrulayın."
 msgid "Verify your email"
 msgstr "E-postanızı doğrulayın"
 
+#, python-format
 msgid "We sent a code to %(email)s."
 msgstr "%(email)s adresine bir kod gönderdik."
 
+#, python-format
 msgid "We sent a verification email to %(email)s."
 msgstr "%(email)s adresine doğrulama e-postası gönderdik."
 
@@ -221,38 +241,2851 @@ msgstr "Hoş geldiniz"
 msgid "You can sign back in using Google, Telegram, or an email code."
 msgstr "Google, Telegram veya e-posta koduyla tekrar giriş yapabilirsiniz."
 
-msgid "You currently have %(count)s usable sign-in method(s). TurkDemy will not let you remove your last one."
-msgstr "Şu anda %(count)s kullanılabilir giriş yönteminiz var. TurkDemy son yönteminizi kaldırmanıza izin vermez."
+#, python-format
+msgid ""
+"You currently have %(count)s usable sign-in method(s). TurkDemy will not let you remove your last"
+" one."
+msgstr ""
+"Şu anda %(count)s kullanılabilir giriş yönteminiz var. TurkDemy son yönteminizi kaldırmanıza izin"
+" vermez."
 
 msgid "or"
 msgstr "veya"
 
 msgid "Find your program"
-msgstr ""
+msgstr "Programınızı bulun"
 
 msgid "Explore universities and compare study options by field, degree, language, tuition and intake."
 msgstr ""
+"Üniversiteleri keşfedin; alan, derece, dil, öğrenim ücreti ve kabul dönemine göre seçenekleri "
+"karşılaştırın."
 
 msgid "Refine results"
-msgstr ""
+msgstr "Sonuçları daralt"
 
 msgid "programs found"
-msgstr ""
+msgstr "program bulundu"
 
 msgid "Reset filters"
 msgstr ""
 
 msgid "Tuition from"
-msgstr ""
+msgstr "Başlangıç öğrenim ücreti"
 
 msgid "Not available"
-msgstr ""
+msgstr "Mevcut değil"
 
 msgid "View program"
-msgstr ""
+msgstr "Programı gör"
 
 msgid "Try broadening your search or clearing some filters."
-msgstr ""
+msgstr "Aramanızı genişletmeyi veya bazı filtreleri temizlemeyi deneyin."
 
 msgid "TurkDemy"
 msgstr "TurkDemy"
+
+msgid "About TurkDemy"
+msgstr "TurkDemy Hakkında"
+
+msgid "TurkDemy helps students, agents, and staff manage university discovery and admissions workflows."
+msgstr ""
+"TurkDemy; öğrencilerin, acentelerin ve personelin üniversite keşfi ve kabul süreçlerini "
+"yönetmesine yardımcı olur."
+
+msgid "About the university"
+msgstr "Üniversite hakkında"
+
+msgid "About this program"
+msgstr "Bu program hakkında"
+
+msgid "Academic unit"
+msgstr "Akademik birim"
+
+msgid "Academic year"
+msgstr "Akademik yıl"
+
+msgid "Active filters"
+msgstr "Etkin filtreler"
+
+msgid "Advanced filters"
+msgstr "Gelişmiş filtreler"
+
+msgid "Any academic unit"
+msgstr "Tüm akademik birimler"
+
+msgid "Any academic year"
+msgstr "Tüm akademik yıllar"
+
+msgid "Any city"
+msgstr "Tüm şehirler"
+
+msgid "Any currency"
+msgstr "Tüm para birimleri"
+
+msgid "Any degree"
+msgstr "Tüm dereceler"
+
+msgid "Any field"
+msgstr "Tüm alanlar"
+
+msgid "Any intake"
+msgstr "Tüm dönemler"
+
+msgid "Any language"
+msgstr "Tüm diller"
+
+msgid "Any study mode"
+msgstr "Tüm eğitim türleri"
+
+msgid "Any type"
+msgstr "Tüm türler"
+
+msgid "Any university"
+msgstr "Tüm üniversiteler"
+
+msgid "Apply filters"
+msgstr "Filtreleri uygula"
+
+msgid "Available"
+msgstr "Mevcut"
+
+msgid "Available offerings"
+msgstr "Mevcut başvuru seçenekleri"
+
+msgid "Browse all fields"
+msgstr "Tüm alanlara göz at"
+
+msgid "Browse all programs"
+msgstr "Tüm programlara göz at"
+
+msgid "Browse this university"
+msgstr "Bu üniversiteye göz at"
+
+msgid "Built for international students"
+msgstr "Uluslararası öğrenciler için tasarlandı"
+
+msgid "Catalogue"
+msgstr "Katalog"
+
+msgid "Choose one or more filters, then press Apply filters."
+msgstr "Bir veya daha fazla filtre seçin, ardından Filtreleri uygula düğmesine basın."
+
+msgid "City"
+msgstr "Şehir"
+
+msgid "Clear all"
+msgstr "Tümünü temizle"
+
+msgid "Clear all filters"
+msgstr "Tüm filtreleri temizle"
+
+msgid "Compare your options"
+msgstr "Seçeneklerinizi karşılaştırın"
+
+msgid "Contact"
+msgstr "İletişim"
+
+msgid "Contact TurkDemy"
+msgstr "TurkDemy ile iletişime geçin"
+
+msgid "Contact TurkDemy for guidance about requirements, tuition and the application process."
+msgstr "Koşullar, öğrenim ücreti ve başvuru süreci hakkında rehberlik için TurkDemy ile iletişime geçin."
+
+msgid "Contact us"
+msgstr "Bize ulaşın"
+
+msgid "Currency"
+msgstr "Para birimi"
+
+msgid "Deadline"
+msgstr "Son tarih"
+
+msgid "Degree"
+msgstr "Derece"
+
+msgid "Dormitory"
+msgstr "Yurt"
+
+msgid "Duration"
+msgstr "Süre"
+
+msgid "English, Persian, Turkish and Arabic support."
+msgstr "İngilizce, Farsça, Türkçe ve Arapça destek."
+
+msgid "Explore alternatives"
+msgstr "Alternatifleri keşfet"
+
+msgid "Explore universities"
+msgstr "Üniversiteleri keşfet"
+
+msgid "Explore university"
+msgstr "Üniversiteyi keşfet"
+
+msgid "FAQ"
+msgstr "Sık sorulan sorular"
+
+msgid "Featured universities"
+msgstr "Öne çıkan üniversiteler"
+
+msgid "Field"
+msgstr "Alan"
+
+msgid "Filters"
+msgstr "Filtreler"
+
+msgid "Find a program"
+msgstr "Program bul"
+
+msgid "Find the right university and build your future."
+msgstr "Doğru üniversiteyi bulun ve geleceğinizi kurun."
+
+msgid "Find your direction"
+msgstr "Yönünüzü bulun"
+
+msgid "Frequently asked questions"
+msgstr "Sık sorulan sorular"
+
+msgid "From"
+msgstr "Başlangıç"
+
+msgid "Get in touch"
+msgstr "İletişime geçin"
+
+msgid "Help center"
+msgstr "Yardım merkezi"
+
+msgid "Intake"
+msgstr "Kabul dönemi"
+
+msgid "Intakes and tuition"
+msgstr "Kabul dönemleri ve öğrenim ücreti"
+
+msgid "Language"
+msgstr "Dil"
+
+msgid "More programs at this university"
+msgstr "Bu üniversitedeki diğer programlar"
+
+msgid "Multilingual platform"
+msgstr "Çok dilli platform"
+
+msgid "Need help choosing?"
+msgstr "Seçim yapmak için yardıma mı ihtiyacınız var?"
+
+msgid "Need help?"
+msgstr "Yardıma mı ihtiyacınız var?"
+
+msgid "Next"
+msgstr "Sonraki"
+
+msgid "No active offerings are currently available for this program."
+msgstr "Bu program için şu anda aktif başvuru seçeneği yok."
+
+msgid "No programs available."
+msgstr "Program bulunmuyor."
+
+msgid "No programs match your filters."
+msgstr "Filtrelerinize uyan program yok."
+
+msgid "No results."
+msgstr "Sonuç bulunamadı."
+
+msgid "Open"
+msgstr "Açık"
+
+msgid "Overview"
+msgstr "Genel bakış"
+
+msgid "Popular choices"
+msgstr "Popüler seçenekler"
+
+msgid "Popular programs"
+msgstr "Popüler programlar"
+
+msgid "Previous"
+msgstr "Önceki"
+
+msgid "Program catalogue"
+msgstr "Program kataloğu"
+
+msgid "Program or university"
+msgstr "Program veya üniversite"
+
+msgid "Program overview"
+msgstr "Programa genel bakış"
+
+msgid "Programs"
+msgstr "Programlar"
+
+msgid "Programs at this university"
+msgstr "Bu üniversitedeki programlar"
+
+msgid "Questions"
+msgstr "Sorular"
+
+msgid "Questions about this program?"
+msgstr "Bu program hakkında sorunuz mu var?"
+
+msgid "Quota"
+msgstr "Kontenjan"
+
+msgid "Recognized"
+msgstr "Tanınmış"
+
+msgid "Search"
+msgstr "Ara"
+
+msgid "Search programs"
+msgstr "Program ara"
+
+msgid "Search programs or universities"
+msgstr "Program veya üniversite ara"
+
+msgid "Search universities"
+msgstr "Üniversite ara"
+
+msgid "See all university programs"
+msgstr "Üniversitenin tüm programlarını gör"
+
+msgid "Similar programs"
+msgstr "Benzer programlar"
+
+msgid "Simple process"
+msgstr "Basit süreç"
+
+msgid "Study in Türkiye"
+msgstr "Türkiye'de eğitim"
+
+msgid "Study mode"
+msgstr "Eğitim şekli"
+
+msgid "To"
+msgstr "Bitiş"
+
+msgid "Tuition"
+msgstr "Öğrenim ücreti"
+
+msgid "Tuition not available"
+msgstr "Öğrenim ücreti bilgisi yok"
+
+msgid "Universities"
+msgstr "Üniversiteler"
+
+msgid "University"
+msgstr "Üniversite"
+
+msgid "University recognition"
+msgstr "Üniversite tanınırlığı"
+
+msgid "University type"
+msgstr "Üniversite türü"
+
+msgid "University website"
+msgstr "Üniversite web sitesi"
+
+msgid "View all"
+msgstr "Tümünü gör"
+
+msgid "View all FAQ"
+msgstr "Tüm SSS'leri gör"
+
+msgid "View more"
+msgstr "Daha fazla gör"
+
+msgid "View university"
+msgstr "Üniversiteyi gör"
+
+msgid "What do you want to study?"
+msgstr "Ne okumak istiyorsunuz?"
+
+msgid "YÖK recognized"
+msgstr "YÖK tarafından tanınmış"
+
+msgid "YÖK recognized university"
+msgstr "YÖK tarafından tanınan üniversite"
+
+msgid "active offerings"
+msgstr "aktif başvuru seçeneği"
+
+msgid "programs"
+msgstr "program"
+
+msgid "programs available"
+msgstr "mevcut program"
+
+msgid "universities"
+msgstr "üniversite"
+
+msgid "Associate"
+msgstr "Ön lisans"
+
+msgid "Bachelor"
+msgstr "Lisans"
+
+msgid "Master"
+msgstr "Yüksek lisans"
+
+msgid "PhD"
+msgstr "Doktora"
+
+msgid "With Thesis"
+msgstr "Tezli"
+
+msgid "Without Thesis"
+msgstr "Tezsiz"
+
+msgid "On campus"
+msgstr "Kampüste"
+
+msgid "Distance learning"
+msgstr "Uzaktan eğitim"
+
+msgid "Online"
+msgstr "Çevrimiçi"
+
+msgid "Hybrid"
+msgstr "Hibrit"
+
+msgid "Public"
+msgstr "Devlet"
+
+msgid "Private"
+msgstr "Vakıf/Özel"
+
+msgid "Faculty"
+msgstr "Fakülte"
+
+msgid "School"
+msgstr "Yüksekokul"
+
+msgid "Institute"
+msgstr "Enstitü"
+
+msgid "Vocational School"
+msgstr "Meslek Yüksekokulu"
+
+msgid "Conservatory"
+msgstr "Konservatuvar"
+
+msgid "College"
+msgstr "Yüksekokul"
+
+msgid "Graduate School"
+msgstr "Lisansüstü Eğitim Enstitüsü"
+
+msgid "Other"
+msgstr "Diğer"
+
+msgid "Annual"
+msgstr "Yıllık"
+
+msgid "Per semester"
+msgstr "Dönemlik"
+
+msgid "Total (Whole Program)"
+msgstr "Toplam (Tüm program)"
+
+msgid "One time"
+msgstr "Tek seferlik"
+
+msgid "Per credit"
+msgstr "Kredi başına"
+
+msgid "Tuition / list fee"
+msgstr "Öğrenim ücreti / liste ücreti"
+
+msgid "Discounted tuition"
+msgstr "İndirimli öğrenim ücreti"
+
+msgid "Advance payment"
+msgstr "Peşin ödeme"
+
+msgid "Cash payment"
+msgstr "Nakit ödeme"
+
+msgid "Installment total"
+msgstr "Taksit toplamı"
+
+msgid "Deposit"
+msgstr "Depozito"
+
+msgid "Application fee"
+msgstr "Başvuru ücreti"
+
+msgid "Registration fee"
+msgstr "Kayıt ücreti"
+
+msgid "My Requests"
+msgstr "Taleplerim"
+
+msgid "Messages"
+msgstr "Mesajlar"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Logout"
+msgstr "Çıkış"
+
+msgid "Login"
+msgstr "Giriş"
+
+msgid "About"
+msgstr "Hakkımızda"
+
+msgid "Your account"
+msgstr "Hesabınız"
+
+msgid "Send message"
+msgstr "Mesaj gönder"
+
+msgid "Status"
+msgstr "Durum"
+
+msgid "Documents"
+msgstr "Belgeler"
+
+msgid "Preferences"
+msgstr "Tercihler"
+
+msgid "Save changes"
+msgstr "Değişiklikleri kaydet"
+
+msgid "Apply"
+msgstr "Başvur"
+
+msgid "Study preferences"
+msgstr "Eğitim tercihleri"
+
+msgid "Study field"
+msgstr "Eğitim alanı"
+
+msgid "Cities"
+msgstr "Şehirler"
+
+msgid "Your advisor"
+msgstr "Danışmanınız"
+
+msgid "Your message has been sent."
+msgstr "Mesajınız gönderildi."
+
+msgid "Myself"
+msgstr "Kendim"
+
+msgid "Someone else"
+msgstr "Başka biri"
+
+msgid "Who are you applying for?"
+msgstr "Kimin için başvuruyorsunuz?"
+
+msgid "Search languages"
+msgstr "Dil ara"
+
+msgid "Search cities"
+msgstr "Şehir ara"
+
+msgid "Search study fields"
+msgstr "Eğitim alanı ara"
+
+msgid "No preference"
+msgstr "Tercih yok"
+
+msgid "Required"
+msgstr "Gerekli"
+
+msgid "Not required"
+msgstr "Gerekli değil"
+
+msgid "Write a message…"
+msgstr "Mesaj yazın…"
+
+msgid "Write a message or attach a file."
+msgstr "Bir mesaj yazın veya dosya ekleyin."
+
+msgid "A quick view of your applicants, applications and conversations."
+msgstr "Başvuru sahipleriniz, başvurularınız ve görüşmeleriniz için hızlı bir görünüm."
+
+msgid "Add applicant"
+msgstr "Başvuru sahibi ekle"
+
+msgid "Applicants"
+msgstr "Başvuru sahipleri"
+
+msgid "Application management"
+msgstr "Başvuru yönetimi"
+
+msgid "Applications"
+msgstr "Başvurular"
+
+msgid "Apply / I'm interested"
+msgstr "Başvur / İlgileniyorum"
+
+msgid "Approved"
+msgstr "Onaylandı"
+
+msgid "Ask TurkDemy"
+msgstr "TurkDemy’ye sor"
+
+msgid "Closed"
+msgstr "Kapalı"
+
+msgid "Dashboard"
+msgstr "Kontrol paneli"
+
+msgid "Erasmus+"
+msgstr "Erasmus+"
+
+msgid "Explore the catalogue or contact TurkDemy if you need help understanding your options."
+msgstr "Seçeneklerinizi anlamak için kataloğu inceleyin veya TurkDemy ile iletişime geçin."
+
+msgid "Filter programs offered by this university."
+msgstr "Bu üniversitenin sunduğu programları filtreleyin."
+
+msgid ""
+"Find universities and programs in Türkiye, compare tuition, and manage your application with "
+"TurkDemy."
+msgstr ""
+"Türkiye’deki üniversite ve programları bulun, öğrenim ücretlerini karşılaştırın ve başvurunuzu "
+"TurkDemy ile yönetin."
+
+msgid "Follow your application status from one dashboard."
+msgstr "Başvuru durumunuzu tek bir panelden takip edin."
+
+msgid "Free"
+msgstr "Ücretsiz"
+
+msgid "From discovery to application."
+msgstr "Keşiften başvuruya."
+
+msgid "Keep your personal information and documents together."
+msgstr "Kişisel bilgilerinizi ve belgelerinizi bir arada tutun."
+
+msgid "MOE"
+msgstr "Eğitim Bakanlığı"
+
+msgid "MOE approved"
+msgstr "Eğitim Bakanlığı onaylı"
+
+msgid "MOE approved university"
+msgstr "Eğitim Bakanlığı onaylı üniversite"
+
+msgid "MOH"
+msgstr "Sağlık Bakanlığı"
+
+msgid "MOH approved"
+msgstr "Sağlık Bakanlığı onaylı"
+
+msgid "MOH approved university"
+msgstr "Sağlık Bakanlığı onaylı üniversite"
+
+msgid "MOE, MOH, YÖK and other university-level indicators where available."
+msgstr "Mevcut olduğunda MOE, MOH, YÖK ve diğer üniversite düzeyi göstergeler."
+
+msgid "MY TURKDEMY"
+msgstr "TURKDEMY’M"
+
+msgid "Manage Google, Telegram and verified email access to your TurkDemy account."
+msgstr "TurkDemy hesabınıza Google, Telegram ve doğrulanmış e-posta erişimini yönetin."
+
+msgid "Manage your personal information and account access."
+msgstr "Kişisel bilgilerinizi ve hesap erişiminizi yönetin."
+
+msgid "Medicine, dentistry, engineering, university…"
+msgstr "Tıp, diş hekimliği, mühendislik, üniversite…"
+
+msgid "No FAQ categories available."
+msgstr "SSS kategorisi bulunmuyor."
+
+msgid "No applicants yet."
+msgstr "Henüz başvuru sahibi yok."
+
+msgid "No formal applications yet."
+msgstr "Henüz resmi başvuru yok."
+
+msgid "No questions in this category."
+msgstr "Bu kategoride soru yok."
+
+msgid "No universities have been imported yet."
+msgstr "Henüz üniversite içe aktarılmadı."
+
+msgid "Open/ongoing applications"
+msgstr "Açık/devam eden başvurular"
+
+msgid "Pagination"
+msgstr "Sayfalama"
+
+msgid "Personal information"
+msgstr "Kişisel bilgiler"
+
+msgid "Prepare your profile"
+msgstr "Profilinizi hazırlayın"
+
+msgid "Programs, intakes, tuition and university information in a consistent format."
+msgstr "Program, kabul dönemi, öğrenim ücreti ve üniversite bilgileri tutarlı bir formatta."
+
+msgid "Review tuition, recognition, language, intake and university information."
+msgstr "Öğrenim ücreti, tanınırlık, dil, kabul dönemi ve üniversite bilgilerini inceleyin."
+
+msgid "Search universities and programs by field, language and degree."
+msgstr "Üniversite ve programları alan, dil ve dereceye göre arayın."
+
+msgid "Start with the right program."
+msgstr "Doğru programla başlayın."
+
+msgid "Structured catalogue"
+msgstr "Yapılandırılmış katalog"
+
+msgid "Track applications"
+msgstr "Başvuruları takip et"
+
+msgid "Track programs, documents and status in your account."
+msgstr "Programları, belgeleri ve durumu hesabınızdan takip edin."
+
+msgid ""
+"TurkDemy brings program information, university recognition, tuition details and application "
+"management into one structured platform."
+msgstr ""
+"TurkDemy program bilgilerini, üniversite tanınırlığını, öğrenim ücretlerini ve başvuru yönetimini"
+" tek bir yapılandırılmış platformda birleştirir."
+
+msgid "TurkDemy catalogue statistics"
+msgstr "TurkDemy katalog istatistikleri"
+
+msgid "TurkDemy keeps your search, documents and application journey connected."
+msgstr "TurkDemy aramanızı, belgelerinizi ve başvuru yolculuğunuzu birbirine bağlı tutar."
+
+msgid "Useful information before you apply."
+msgstr "Başvurmadan önce faydalı bilgiler."
+
+msgid "YÖK"
+msgstr "YÖK"
+
+msgid "answered questions"
+msgstr "yanıtlanmış soru"
+
+msgid "for tuition"
+msgstr "öğrenim ücreti için"
+
+msgid "from"
+msgstr "başlangıç"
+
+msgid "initial guidance"
+msgstr "ilk rehberlik"
+
+msgid "program interests"
+msgstr "program ilgi alanları"
+
+msgid "tuition unavailable"
+msgstr "öğrenim ücreti bilgisi yok"
+
+msgid "Browse this university's programs"
+msgstr "Bu üniversitenin programlarını incele"
+
+msgid "Tuition fee"
+msgstr "Öğrenim ücreti"
+
+msgid "Scholarship fee"
+msgstr "Burslu öğrenim ücreti"
+
+msgid "Scholarship fee (10%)"
+msgstr "Burslu öğrenim ücreti (%10)"
+
+msgid "Advance Payment"
+msgstr "Peşin ödeme"
+
+msgid "Advance Payment (15%)"
+msgstr "Peşin ödeme (%15)"
+
+msgid "Deposit payment"
+msgstr "Depozito ödemesi"
+
+msgid "Annual Tuition"
+msgstr "Yıllık öğrenim ücreti"
+
+msgid "Cash Payment"
+msgstr "Nakit ödeme"
+
+#, python-format
+msgid "%(label)s (%(percentage)s%%)"
+msgstr "%(label)s (%%%(percentage)s)"
+
+msgid "ACCOUNT"
+msgstr "HESAP"
+
+msgid "Agent workspace"
+msgstr "Acente çalışma alanı"
+
+msgid "EXPLORE"
+msgstr "KEŞFET"
+
+msgid "Explore"
+msgstr "Keşfet"
+
+msgid "My TurkDemy"
+msgstr "TurkDemy’m"
+
+msgid "SWITCH WORKSPACE"
+msgstr "ÇALIŞMA ALANINI DEĞİŞTİR"
+
+msgid "WORKSPACES"
+msgstr "ÇALIŞMA ALANLARI"
+
+msgid "Study in Türkiye with clarity."
+msgstr "Türkiye’de eğitiminizi netlikle planlayın."
+
+msgid "University discovery and admissions support for international students in Türkiye."
+msgstr "Türkiye’de uluslararası öğrenciler için üniversite keşfi ve kabul desteği."
+
+#, python-format
+msgid "%(years)s year"
+msgstr "%(years)s yıl"
+
+#, python-format
+msgid "%(years)s years"
+msgstr "%(years)s yıl"
+
+#, python-format
+msgid "%(months)s months"
+msgstr "%(months)s ay"
+
+msgid "(optional)"
+msgstr "(isteğe bağlı)"
+
+msgid "A document needs replacement"
+msgstr "Bir belgenin değiştirilmesi gerekiyor"
+
+msgid "AGENT WORKSPACE"
+msgstr "ACENTE ÇALIŞMA ALANI"
+
+msgid "Academic background and English proficiency."
+msgstr "Akademik geçmiş ve İngilizce yeterliliği."
+
+msgid "Academic background and English-language test information."
+msgstr "Akademik geçmiş ve İngilizce sınav bilgileri."
+
+msgid "Action required"
+msgstr "İşlem gerekli"
+
+msgid "Active organization"
+msgstr "Etkin kuruluş"
+
+msgid "Activity"
+msgstr "Etkinlik"
+
+msgid "Activity filters"
+msgstr "Etkinlik filtreleri"
+
+msgid "Activity pagination"
+msgstr "Etkinlik sayfalaması"
+
+msgid "Add TODO"
+msgstr "Görev ekle"
+
+msgid "Add a document received outside TurkDemy, for example by email or in person."
+msgstr "TurkDemy dışında, örneğin e-posta ile veya yüz yüze alınmış bir belge ekleyin."
+
+msgid "Add document"
+msgstr "Belge ekle"
+
+msgid "Add existing student document"
+msgstr "Mevcut öğrenci belgesini ekle"
+
+msgid "Add immutable comment…"
+msgstr "Değiştirilemez yorum ekle…"
+
+msgid "Add internal context, follow-up reminders, or information collected outside the portal."
+msgstr "Portal dışında toplanan dahili bağlamı, takip hatırlatmalarını veya bilgileri ekleyin."
+
+msgid "Add to documents"
+msgstr "Belgelere ekle"
+
+msgid "Added by you"
+msgstr "Sizin tarafınızdan eklendi"
+
+msgid "Added from conversation"
+msgstr "Görüşmeden eklendi"
+
+msgid "Added to documents"
+msgstr "Belgelere eklendi"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Agent"
+msgstr "Acente"
+
+msgid "Agent-suggested"
+msgstr "Acente önerisi"
+
+msgid "Agent:"
+msgstr "Acente:"
+
+msgid "All"
+msgstr "Tümü"
+
+msgid "All messages"
+msgstr "Tüm mesajlar"
+
+msgid ""
+"All of these fields are optional. You can continue now, and our admissions team can collect "
+"anything missing later."
+msgstr ""
+"Bu alanların tümü isteğe bağlıdır. Şimdi devam edebilirsiniz; eksik bilgileri kabul ekibimiz daha"
+" sonra toplayabilir."
+
+msgid "All statuses"
+msgstr "Tüm durumlar"
+
+msgid ""
+"All users of the agent can still see this applicant. This only changes who is responsible for "
+"working on it."
+msgstr ""
+"Acentenin tüm kullanıcıları bu başvuru sahibini görmeye devam eder. Bu yalnızca kimin sorumlu "
+"olduğunu değiştirir."
+
+msgid "Applicant"
+msgstr "Başvuru sahibi"
+
+msgid "Applicant activity"
+msgstr "Başvuru sahibi etkinliği"
+
+msgid "Applicant conversion"
+msgstr "Başvuru sahibi dönüşümü"
+
+msgid "Applicant data"
+msgstr "Başvuru sahibi verileri"
+
+msgid "Applicant details"
+msgstr "Başvuru sahibi ayrıntıları"
+
+msgid "Applicant documents"
+msgstr "Başvuru sahibi belgeleri"
+
+msgid "Applicant navigation"
+msgstr "Başvuru sahibi gezinmesi"
+
+msgid "Applicant overview"
+msgstr "Başvuru sahibine genel bakış"
+
+msgid "Applicant profile"
+msgstr "Başvuru sahibi profili"
+
+msgid "Applicant programs"
+msgstr "Başvuru sahibi programları"
+
+msgid "Applicant-specific communication"
+msgstr "Başvuru sahibine özel iletişim"
+
+msgid "Application"
+msgstr "Başvuru"
+
+msgid "Application activity"
+msgstr "Başvuru etkinliği"
+
+msgid "Application document"
+msgstr "Başvuru belgesi"
+
+msgid "Application documents"
+msgstr "Başvuru belgeleri"
+
+msgid "Application navigation"
+msgstr "Başvuru gezinmesi"
+
+msgid "Application requirements"
+msgstr "Başvuru gereklilikleri"
+
+msgid "Application status"
+msgstr "Başvuru durumu"
+
+msgid "Application summary"
+msgstr "Başvuru özeti"
+
+msgid "Applications created after an applicant has been converted to a student."
+msgstr "Başvuru sahibi öğrenciye dönüştürüldükten sonra oluşturulan başvurular."
+
+msgid "Applications needing action"
+msgstr "İşlem gerektiren başvurular"
+
+msgid "Applied for"
+msgstr "Başvurulan"
+
+msgid "Apply / I"
+msgstr "Başvur / Ben"
+
+msgid "Apply / express interest"
+msgstr "Başvur / ilgi bildir"
+
+msgid "Approve"
+msgstr "Onayla"
+
+msgid "Assign"
+msgstr "Ata"
+
+msgid "Assign agent"
+msgstr "Acente ata"
+
+msgid "Assign applicant"
+msgstr "Başvuru sahibini ata"
+
+msgid "Assign to me"
+msgstr "Bana ata"
+
+msgid "Assignee"
+msgstr "Atanan kişi"
+
+msgid "Assignment & status"
+msgstr "Atama ve durum"
+
+msgid "Attach file"
+msgstr "Dosya ekle"
+
+msgid "Attachment"
+msgstr "Ek"
+
+msgid "Back to applicant"
+msgstr "Başvuru sahibine dön"
+
+msgid "Back to program"
+msgstr "Programa dön"
+
+msgid "Basic identity and contact details."
+msgstr "Temel kimlik ve iletişim bilgileri."
+
+msgid "Birthdate"
+msgstr "Doğum tarihi"
+
+msgid "Breadcrumb"
+msgstr "Gezinti yolu"
+
+msgid "Budget"
+msgstr "Bütçe"
+
+msgid "CRM record of communication outside TurkDemy Messages."
+msgstr "TurkDemy Mesajları dışındaki iletişimin CRM kaydı."
+
+msgid "Cancel"
+msgstr "İptal"
+
+msgid "Cancelled"
+msgstr "İptal edildi"
+
+msgid "Changes are recorded in the applicant activity history after saving."
+msgstr "Değişiklikler kaydedildikten sonra başvuru sahibi etkinlik geçmişine işlenir."
+
+msgid "Changes, notes and workflow events"
+msgstr "Değişiklikler, notlar ve iş akışı olayları"
+
+msgid "Channel"
+msgstr "Kanal"
+
+msgid "Choose a concrete program intake. The application starts as Draft."
+msgstr "Belirli bir program kabul dönemi seçin. Başvuru Taslak olarak başlar."
+
+msgid "Choose an active user from this applicant"
+msgstr "Bu başvuru sahibi için etkin bir kullanıcı seçin"
+
+msgid "Choose an agent user"
+msgstr "Bir acente kullanıcısı seçin"
+
+msgid "Choose an existing applicant, yourself, or create someone new."
+msgstr "Mevcut bir başvuru sahibini veya kendinizi seçin ya da yeni bir kişi oluşturun."
+
+msgid "Choose an offering"
+msgstr "Bir başvuru seçeneği seçin"
+
+msgid "Choose an organization"
+msgstr "Bir kuruluş seçin"
+
+msgid "Choose as many options as you are open to."
+msgstr "Değerlendirebileceğiniz kadar seçenek seçin."
+
+msgid "Choose intake"
+msgstr "Kabul dönemi seçin"
+
+msgid "Choose intake & start"
+msgstr "Kabul dönemini seç ve başlat"
+
+msgid "Choose organization"
+msgstr "Kuruluş seçin"
+
+msgid "Choose replacement file"
+msgstr "Yedek dosya seçin"
+
+msgid ""
+"Choose yourself to use the details we already know about your account, or someone else to enter "
+"their details."
+msgstr ""
+"Hesabınızda bildiğimiz bilgileri kullanmak için kendinizi seçin veya başka birinin bilgilerini "
+"girmek için onu seçin."
+
+msgid "City of residence"
+msgstr "İkamet şehri"
+
+msgid "Clear"
+msgstr "Temizle"
+
+msgid "Close"
+msgstr "Kapat"
+
+msgid "Close applicant"
+msgstr "Başvuru sahibini kapat"
+
+msgid "Close reason:"
+msgstr "Kapatma nedeni:"
+
+msgid "Close this lead when you no longer plan to continue working on it."
+msgstr "Artık bu başvuru sahibi üzerinde çalışmayı planlamıyorsanız kaydı kapatın."
+
+msgid "Comment"
+msgstr "Yorum"
+
+msgid "Communication Log"
+msgstr "İletişim Kaydı"
+
+msgid "Communications"
+msgstr "İletişimler"
+
+msgid "Completed"
+msgstr "Tamamlandı"
+
+msgid "Contact & residence"
+msgstr "İletişim ve ikamet"
+
+msgid "Continue application"
+msgstr "Başvuruya devam et"
+
+msgid "Conversation"
+msgstr "Görüşme"
+
+msgid "Conversation attachment"
+msgstr "Görüşme eki"
+
+msgid ""
+"Correct the highlighted fields or selections and submit again. No conversion changes have been "
+"committed."
+msgstr ""
+"Vurgulanan alanları veya seçimleri düzeltip yeniden gönderin. Herhangi bir dönüşüm değişikliği "
+"kaydedilmedi."
+
+msgid "Counterparty name"
+msgstr "Karşı taraf adı"
+
+msgid "Counterparty type"
+msgstr "Karşı taraf türü"
+
+msgid "Country of birth"
+msgstr "Doğum ülkesi"
+
+msgid "Country of residence"
+msgstr "İkamet ülkesi"
+
+msgid "Create Student Record"
+msgstr "Öğrenci Kaydı Oluştur"
+
+msgid "Create TODO"
+msgstr "Görev oluştur"
+
+msgid "Create draft application"
+msgstr "Taslak başvuru oluştur"
+
+msgid "Created"
+msgstr "Oluşturuldu"
+
+msgid "Current residence details."
+msgstr "Mevcut ikamet bilgileri."
+
+msgid "Current status"
+msgstr "Mevcut durum"
+
+msgid "Customer navigation"
+msgstr "Müşteri gezinmesi"
+
+msgid "Customer visible"
+msgstr "Müşteriye görünür"
+
+msgid "Customer-added"
+msgstr "Müşteri tarafından eklendi"
+
+msgid "Date of expiry"
+msgstr "Son geçerlilik tarihi"
+
+msgid "Date of issue"
+msgstr "Düzenlenme tarihi"
+
+msgid "Decision"
+msgstr "Karar"
+
+msgid "Degree & university type"
+msgstr "Derece ve üniversite türü"
+
+msgid "Departments"
+msgstr "Bölümler"
+
+msgid "Description"
+msgstr "Açıklama"
+
+msgid "Discussed or recommended programs"
+msgstr "Görüşülen veya önerilen programlar"
+
+msgid "Document review"
+msgstr "Belge incelemesi"
+
+msgid "Document type"
+msgstr "Belge türü"
+
+msgid "Done"
+msgstr "Tamamlandı"
+
+msgid "Draft applications"
+msgstr "Taslak başvurular"
+
+msgid "Due"
+msgstr "Son tarih"
+
+msgid "Due today"
+msgstr "Bugün sona eriyor"
+
+msgid "Edit"
+msgstr "Düzenle"
+
+msgid "Edit applicant"
+msgstr "Başvuru sahibini düzenle"
+
+msgid "Edit internal notes"
+msgstr "Dahili notları düzenle"
+
+msgid "Edit preferences"
+msgstr "Tercihleri düzenle"
+
+msgid "Edit profile"
+msgstr "Profili düzenle"
+
+msgid "Editing"
+msgstr "Düzenleniyor"
+
+msgid "Education & language"
+msgstr "Eğitim ve dil"
+
+msgid "Educational background"
+msgstr "Eğitim geçmişi"
+
+msgid "English test score"
+msgstr "İngilizce sınav puanı"
+
+msgid "English test type"
+msgstr "İngilizce sınav türü"
+
+msgid "Enter this code in the browser window where you started signing in."
+msgstr "Bu kodu giriş yapmaya başladığınız tarayıcı penceresine girin."
+
+msgid "Erasmus"
+msgstr "Erasmus"
+
+msgid "Facilities & exchange"
+msgstr "Olanaklar ve değişim"
+
+msgid "Family"
+msgstr "Aile"
+
+msgid "File"
+msgstr "Dosya"
+
+msgid "Filter"
+msgstr "Filtrele"
+
+msgid "Finalize this applicant before creating formal applications."
+msgstr "Resmi başvurular oluşturmadan önce bu başvuru sahibini kesinleştirin."
+
+msgid "Find Programs"
+msgstr "Program Bul"
+
+msgid "Find a program to start your first request."
+msgstr "İlk talebinizi başlatmak için bir program bulun."
+
+msgid "Find programs"
+msgstr "Program bul"
+
+msgid "Formal application"
+msgstr "Resmi başvuru"
+
+msgid "Formal applications"
+msgstr "Resmi başvurular"
+
+msgid "Formal applications become available after this applicant is finalized as a student."
+msgstr "Bu başvuru sahibi öğrenci olarak kesinleştirildikten sonra resmi başvurular kullanılabilir olur."
+
+msgid "Formal applications for a specific program intake."
+msgstr "Belirli bir program kabul dönemi için resmi başvurular."
+
+msgid "Gender"
+msgstr "Cinsiyet"
+
+msgid "Get Help"
+msgstr "Yardım Al"
+
+msgid "Go to homepage"
+msgstr "Ana sayfaya git"
+
+msgid "High school GPA"
+msgstr "Lise not ortalaması"
+
+msgid "High school GPA scale"
+msgstr "Lise not ortalaması ölçeği"
+
+msgid "How to reach the applicant and their current place of residence."
+msgstr "Başvuru sahibine nasıl ulaşılacağı ve mevcut ikamet yeri."
+
+msgid "Identity & nationality"
+msgstr "Kimlik ve uyruk"
+
+msgid "Identity and personal details used throughout the admissions process."
+msgstr "Kabul süreci boyunca kullanılan kimlik ve kişisel bilgiler."
+
+msgid "Identity, contact, residence and education"
+msgstr "Kimlik, iletişim, ikamet ve eğitim"
+
+msgid "If you"
+msgstr "Eğer siz"
+
+msgid "If you did not request this sign-in code, you can safely ignore this email."
+msgstr "Bu giriş kodunu istemediyseniz bu e-postayı güvenle yok sayabilirsiniz."
+
+msgid ""
+"If you followed a link from TurkDemy and think this is a mistake, return to the previous list and"
+" try again."
+msgstr ""
+"TurkDemy bağlantısından geldiyseniz ve bunun bir hata olduğunu düşünüyorsanız önceki listeye "
+"dönüp tekrar deneyin."
+
+msgid ""
+"If you select a document that is not verified, it will be approved as part of the successful "
+"conversion and copied to the Student document library. Unchecking an already verified document "
+"does not change its verification status."
+msgstr ""
+"Doğrulanmamış bir belge seçerseniz başarılı dönüşümün parçası olarak onaylanır ve Öğrenci belge "
+"arşivine kopyalanır. Önceden doğrulanmış bir belgenin seçimini kaldırmak doğrulama durumunu "
+"değiştirmez."
+
+msgid "In progress"
+msgstr "Devam ediyor"
+
+msgid "Inbox"
+msgstr "Gelen kutusu"
+
+msgid "Internal"
+msgstr "Dahili"
+
+msgid "Internal notes"
+msgstr "Dahili notlar"
+
+msgid "Issuing authority"
+msgstr "Düzenleyen makam"
+
+msgid "Keep pending"
+msgstr "Beklemede tut"
+
+msgid "Last reviewed by"
+msgstr "Son inceleyen"
+
+msgid "Last updated"
+msgstr "Son güncelleme"
+
+msgid "Lead lifecycle"
+msgstr "Başvuru sahibi yaşam döngüsü"
+
+msgid "Leave the document waiting for review."
+msgstr "Belgeyi inceleme için beklemede bırakın."
+
+msgid "Main navigation"
+msgstr "Ana gezinme"
+
+msgid "Manage Google, Telegram, and email access from TurkDemy"
+msgstr "Google, Telegram ve e-posta erişimini TurkDemy üzerinden yönetin"
+
+msgid "Message us on WhatsApp"
+msgstr "WhatsApp'tan mesaj gönderin"
+
+msgid "Messages about this applicant"
+msgstr "Bu başvuru sahibiyle ilgili mesajlar"
+
+msgid "Messages about this application"
+msgstr "Bu başvuruyla ilgili mesajlar"
+
+msgid "Messages with"
+msgstr "Mesajlaştığınız kişi"
+
+msgid "Messaging will become available once TurkDemy assigns an advisor to this Request."
+msgstr "TurkDemy bu Talebe bir danışman atadığında mesajlaşma kullanılabilir olacaktır."
+
+msgid "Mobile navigation"
+msgstr "Mobil gezinme"
+
+msgid "My TODOs"
+msgstr "Görevlerim"
+
+msgid "Name"
+msgstr "Ad"
+
+msgid "Nationality"
+msgstr "Uyruk"
+
+msgid "Need recommendations"
+msgstr "Öneri gerekli"
+
+msgid "Needs program recommendations"
+msgstr "Program önerisi gerekiyor"
+
+msgid "Needs replacement"
+msgstr "Değiştirme gerekiyor"
+
+msgid "Needs review"
+msgstr "İnceleme gerekiyor"
+
+msgid "Needs your attention"
+msgstr "İlginiz gerekiyor"
+
+msgid "New applicants"
+msgstr "Yeni başvuru sahipleri"
+
+msgid "New application"
+msgstr "Yeni başvuru"
+
+msgid "No TODOs in this scope."
+msgstr "Bu kapsamda görev yok."
+
+msgid "No active TODOs assigned to you."
+msgstr "Size atanmış aktif görev yok."
+
+msgid ""
+"No active offering is available for this discussed program, so it cannot be selected for a draft "
+"application."
+msgstr "Bu görüşülen program için aktif başvuru seçeneği yok; bu nedenle taslak başvuru için seçilemez."
+
+msgid "No activity matches this filter."
+msgstr "Bu filtreye uyan etkinlik yok."
+
+msgid "No activity yet."
+msgstr "Henüz etkinlik yok."
+
+msgid "No applicant documents have been uploaded."
+msgstr "Henüz başvuru sahibi belgesi yüklenmedi."
+
+msgid "No applicant programs yet."
+msgstr "Henüz başvuru sahibi programı yok."
+
+msgid "No applicants match these filters."
+msgstr "Bu filtrelere uyan başvuru sahibi yok."
+
+msgid "No application documents."
+msgstr "Başvuru belgesi yok."
+
+msgid "No applications yet."
+msgstr "Henüz başvuru yok."
+
+msgid "No communication has been logged in this scope."
+msgstr "Bu kapsamda iletişim kaydı yok."
+
+msgid "No communication logged yet."
+msgstr "Henüz iletişim kaydedilmedi."
+
+msgid "No conversations yet."
+msgstr "Henüz görüşme yok."
+
+msgid "No documents have been attached to this application."
+msgstr "Bu başvuruya belge eklenmedi."
+
+msgid "No documents uploaded yet."
+msgstr "Henüz belge yüklenmedi."
+
+msgid "No documents yet."
+msgstr "Henüz belge yok."
+
+msgid "No documents."
+msgstr "Belge yok."
+
+msgid "No formal applications match these filters."
+msgstr "Bu filtrelere uyan resmi başvuru yok."
+
+msgid "No internal notes yet."
+msgstr "Henüz dahili not yok."
+
+msgid "No matching active programs found."
+msgstr "Eşleşen aktif program bulunamadı."
+
+msgid "No messages yet."
+msgstr "Henüz mesaj yok."
+
+msgid "No program preferences added yet."
+msgstr "Henüz program tercihi eklenmedi."
+
+msgid "No programs added yet"
+msgstr "Henüz program eklenmedi"
+
+msgid "No programs are attached to this request yet."
+msgstr "Bu talebe henüz program eklenmedi."
+
+msgid "No programs have been added to this request yet."
+msgstr "Bu talebe henüz program eklenmedi."
+
+msgid "No programs have been discussed. You can still create the Student record."
+msgstr "Henüz program görüşülmedi. Yine de Öğrenci kaydını oluşturabilirsiniz."
+
+msgid "No programs were discussed during the applicant stage."
+msgstr "Başvuru sahibi aşamasında program görüşülmedi."
+
+msgid "No programs yet."
+msgstr "Henüz program yok."
+
+msgid "No programs."
+msgstr "Program yok."
+
+msgid "No structured requirements have been added to this application yet."
+msgstr "Bu başvuruya henüz yapılandırılmış gereklilik eklenmedi."
+
+msgid "No structured requirements have been added yet."
+msgstr "Henüz yapılandırılmış gereklilik eklenmedi."
+
+msgid "No student documents."
+msgstr "Öğrenci belgesi yok."
+
+msgid "No study preferences."
+msgstr "Eğitim tercihi yok."
+
+msgid "No user-added programs yet."
+msgstr "Henüz kullanıcı tarafından program eklenmedi."
+
+msgid "Not found"
+msgstr "Bulunamadı"
+
+msgid "Not selected"
+msgstr "Seçilmedi"
+
+msgid "Not verified"
+msgstr "Doğrulanmadı"
+
+msgid "Notes"
+msgstr "Notlar"
+
+msgid "Occurred at"
+msgstr "Gerçekleşme zamanı"
+
+msgid "Offering"
+msgstr "Başvuru seçeneği"
+
+msgid "Open Documents to upload a replacement."
+msgstr "Yedek belge yüklemek için Belgeler'i açın."
+
+msgid "Open Messages to review and reply."
+msgstr "İncelemek ve yanıtlamak için Mesajlar'ı açın."
+
+msgid "Open conversation"
+msgstr "Görüşmeyi aç"
+
+msgid "Open dashboard"
+msgstr "Kontrol panelini aç"
+
+msgid "Open document"
+msgstr "Belgeyi aç"
+
+msgid "Open document in a new tab"
+msgstr "Belgeyi yeni sekmede aç"
+
+msgid "Open navigation"
+msgstr "Gezinmeyi aç"
+
+msgid "Open workspace"
+msgstr "Çalışma alanını aç"
+
+msgid "Operations overview"
+msgstr "Operasyonlara genel bakış"
+
+msgid "Optional"
+msgstr "İsteğe bağlı"
+
+msgid "Optional family information used when an application requires it."
+msgstr "Bir başvuru gerektirdiğinde kullanılan isteğe bağlı aile bilgileri."
+
+msgid "Optional internal review note"
+msgstr "İsteğe bağlı dahili inceleme notu"
+
+msgid "Optional note about this document"
+msgstr "Bu belgeyle ilgili isteğe bağlı not"
+
+msgid "Optional reason for the applicant"
+msgstr "Başvuru sahibi için isteğe bağlı neden"
+
+msgid "Originating applicant"
+msgstr "Kaynak başvuru sahibi"
+
+msgid "Other preferences"
+msgstr "Diğer tercihler"
+
+msgid "Overdue"
+msgstr "Gecikmiş"
+
+msgid "Page not found"
+msgstr "Sayfa bulunamadı"
+
+msgid "Passport"
+msgstr "Pasaport"
+
+msgid "Passport number"
+msgstr "Pasaport numarası"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Please review the form."
+msgstr "Lütfen formu kontrol edin."
+
+msgid "Private work items shared by this Agent organization."
+msgstr "Bu Acente kuruluşunda paylaşılan özel çalışma öğeleri."
+
+msgid "Program"
+msgstr "Program"
+
+msgid "Program intake"
+msgstr "Program kabul dönemi"
+
+msgid "Program preferences"
+msgstr "Program tercihleri"
+
+msgid ""
+"Programs associated with applicants. User-added programs and advisor suggestions are shown "
+"separately from formal applications."
+msgstr ""
+"Başvuru sahipleriyle ilişkili programlar. Kullanıcı tarafından eklenen programlar ve danışman "
+"önerileri resmi başvurulardan ayrı gösterilir."
+
+msgid "Programs discussed during applicant stage"
+msgstr "Başvuru sahibi aşamasında görüşülen programlar"
+
+msgid "Programs discussed with or recommended to this applicant."
+msgstr "Bu başvuru sahibiyle görüşülen veya ona önerilen programlar."
+
+msgid "Progress"
+msgstr "İlerleme"
+
+msgid "Read"
+msgstr "Okundu"
+
+msgid "Reason"
+msgstr "Neden"
+
+msgid "Reassign"
+msgstr "Yeniden ata"
+
+msgid "Reassign applicant"
+msgstr "Başvuru sahibini yeniden ata"
+
+msgid "Received"
+msgstr "Alındı"
+
+msgid "Recent applicants"
+msgstr "Son başvuru sahipleri"
+
+msgid "Recent applications"
+msgstr "Son başvurular"
+
+msgid "Recent communication"
+msgstr "Son iletişim"
+
+msgid "Recent messages"
+msgstr "Son mesajlar"
+
+msgid "Recent user-added programs"
+msgstr "Kullanıcının son eklediği programlar"
+
+msgid "Recommend"
+msgstr "Öner"
+
+msgid "Recommend a program"
+msgstr "Program öner"
+
+msgid "Recommend another program"
+msgstr "Başka program öner"
+
+msgid "Recommend program"
+msgstr "Program öner"
+
+msgid "Recommendation reason"
+msgstr "Öneri nedeni"
+
+msgid "Record communication"
+msgstr "İletişimi kaydet"
+
+msgid "Recorded"
+msgstr "Kaydedildi"
+
+msgid "Remove program"
+msgstr "Programı kaldır"
+
+msgid "Remove recommendation"
+msgstr "Öneriyi kaldır"
+
+msgid "Remove this program from your Request?"
+msgstr "Bu program Talebinizden kaldırılsın mı?"
+
+msgid "Reopen"
+msgstr "Yeniden aç"
+
+msgid "Replace document"
+msgstr "Belgeyi değiştir"
+
+msgid "Request context"
+msgstr "Talep bağlamı"
+
+msgid "Request documents are read-only"
+msgstr "Talep belgeleri salt okunurdur"
+
+msgid "Request navigation"
+msgstr "Talep gezinmesi"
+
+msgid "Request received"
+msgstr "Talep alındı"
+
+msgid "Request replacement"
+msgstr "Yenileme iste"
+
+msgid "Required document"
+msgstr "Gerekli belge"
+
+msgid "Requirements"
+msgstr "Gereklilikler"
+
+msgid "Residence"
+msgstr "İkamet"
+
+msgid "Responsibility"
+msgstr "Sorumluluk"
+
+msgid "Responsible agent"
+msgstr "Sorumlu acente"
+
+msgid "Responsible:"
+msgstr "Sorumlu:"
+
+msgid "Reuse a document already stored for this student."
+msgstr "Bu öğrenci için daha önce kaydedilmiş bir belgeyi yeniden kullanın."
+
+msgid "Review"
+msgstr "İncele"
+
+msgid "Review & create"
+msgstr "İncele ve oluştur"
+
+msgid "Review note"
+msgstr "İnceleme notu"
+
+msgid ""
+"Review the student information, choose which applicant documents to transfer, and optionally "
+"create draft applications from discussed programs."
+msgstr ""
+"Öğrenci bilgilerini inceleyin, aktarılacak başvuru sahibi belgelerini seçin ve isterseniz "
+"görüşülen programlardan taslak başvurular oluşturun."
+
+msgid "Save applicant"
+msgstr "Başvuru sahibini kaydet"
+
+msgid "Save notes"
+msgstr "Notları kaydet"
+
+msgid "Save preferences"
+msgstr "Tercihleri kaydet"
+
+msgid "Save review"
+msgstr "İncelemeyi kaydet"
+
+msgid "Save revision"
+msgstr "Revizyonu kaydet"
+
+msgid "Search and select multiple options. Selected items appear as removable chips."
+msgstr "Arayın ve birden fazla seçenek seçin. Seçilen öğeler kaldırılabilir etiketler olarak görünür."
+
+msgid "Search applicant or email"
+msgstr "Başvuru sahibi veya e-posta ara"
+
+msgid "Search below to recommend a suitable program to this applicant."
+msgstr "Bu başvuru sahibine uygun bir program önermek için aşağıda arayın."
+
+msgid "Search program or university…"
+msgstr "Program veya üniversite ara…"
+
+msgid "Search the catalogue by program or university name, then send a recommendation."
+msgstr "Kataloğu program veya üniversite adına göre arayın, ardından öneriyi gönderin."
+
+msgid "Secure sign in"
+msgstr "Güvenli giriş"
+
+msgid "Select intake"
+msgstr "Kabul dönemi seç"
+
+msgid "Select zero or more discussed programs. Every selected program requires an active offering."
+msgstr ""
+"Sıfır veya daha fazla görüşülen program seçin. Seçilen her program için aktif bir başvuru "
+"seçeneği gerekir."
+
+msgid "Send"
+msgstr "Gönder"
+
+msgid "Send a message to your advisor about this Request."
+msgstr "Bu Talep hakkında danışmanınıza mesaj gönderin."
+
+msgid "Send reply"
+msgstr "Yanıt gönder"
+
+msgid "Set a tuition range if you have one."
+msgstr "Varsa öğrenim ücreti aralığınızı belirleyin."
+
+msgid "Shared CRM history of communication outside the platform."
+msgstr "Platform dışındaki iletişimin paylaşılan CRM geçmişi."
+
+msgid "Shared operational work across this organization."
+msgstr "Bu kuruluş genelinde paylaşılan operasyonel işler."
+
+msgid "Source"
+msgstr "Kaynak"
+
+msgid "Start application"
+msgstr "Başvuruyu başlat"
+
+msgid ""
+"Start with whatever information you have. Most fields are optional; our admissions team can "
+"collect the rest later."
+msgstr ""
+"Elinizdeki bilgilerle başlayın. Çoğu alan isteğe bağlıdır; kalan bilgileri kabul ekibimiz daha "
+"sonra toplayabilir."
+
+msgid "Student"
+msgstr "Öğrenci"
+
+msgid "Student document"
+msgstr "Öğrenci belgesi"
+
+msgid "Student documents"
+msgstr "Öğrenci belgeleri"
+
+msgid "Student information"
+msgstr "Öğrenci bilgileri"
+
+msgid "Study in Türkiye with TurkDemy."
+msgstr "TurkDemy ile Türkiye'de eğitim alın."
+
+msgid "Subject"
+msgstr "Konu"
+
+msgid "Suggested by your advisor"
+msgstr "Danışmanınızın önerisi"
+
+msgid "Suggested by your agent"
+msgstr "Acentenizin önerisi"
+
+msgid "Summary"
+msgstr "Özet"
+
+msgid "Switch"
+msgstr "Değiştir"
+
+msgid "Switch organization"
+msgstr "Kuruluş değiştir"
+
+msgid "System"
+msgstr "Sistem"
+
+msgid "TODO status"
+msgstr "Görev durumu"
+
+msgid "Tell us what you are looking for so TurkDemy can suggest suitable programs."
+msgstr "TurkDemy'nin uygun programlar önerebilmesi için ne aradığınızı bize anlatın."
+
+msgid "Tell us what you know"
+msgstr "Bildiğiniz kadarını anlatın"
+
+msgid "The Student record was not created."
+msgstr "Öğrenci kaydı oluşturulmadı."
+
+msgid ""
+"The Student, selected document transfers, draft applications, and applicant finalization are "
+"committed as one conversion workflow."
+msgstr ""
+"Öğrenci kaydı, seçilen belge aktarımları, taslak başvurular ve başvuru sahibinin "
+"kesinleştirilmesi tek bir dönüşüm iş akışı olarak kaydedilir."
+
+msgid "The applicant should provide another version."
+msgstr "Başvuru sahibi başka bir sürüm sağlamalıdır."
+
+msgid "The attachment will be copied into the applicant"
+msgstr "Ek, başvuru sahibinin belgelerine kopyalanacak"
+
+msgid "The document is acceptable."
+msgstr "Belge kabul edilebilir."
+
+msgid "The file is stored as a reusable Student document and added to this application."
+msgstr "Dosya yeniden kullanılabilir bir Öğrenci belgesi olarak saklanır ve bu başvuruya eklenir."
+
+msgid ""
+"The original filename is kept internally. The document type is what agents and applicants use to "
+"identify the document."
+msgstr ""
+"Orijinal dosya adı dahili olarak korunur. Acenteler ve başvuru sahipleri belgeyi tanımlamak için "
+"belge türünü kullanır."
+
+msgid "The page may have moved, the link may be outdated, or you may not have access to this item."
+msgstr "Sayfa taşınmış, bağlantı güncel olmayabilir veya bu öğeye erişiminiz olmayabilir."
+
+msgid "These notes are visible only to agent/staff users."
+msgstr "Bu notlar yalnızca acente/personel kullanıcıları tarafından görülebilir."
+
+msgid "These remain discussion history until an agent starts a formal application."
+msgstr "Bir acente resmi başvuru başlatana kadar bunlar görüşme geçmişi olarak kalır."
+
+msgid "This request is finalized, so document changes are managed by TurkDemy."
+msgstr "Bu Talep kesinleştirildi; bu nedenle belge değişiklikleri TurkDemy tarafından yönetilir."
+
+msgid "Tip"
+msgstr "İpucu"
+
+msgid "Todos"
+msgstr "Görevler"
+
+msgid "Track the people and programs you have asked TurkDemy to help with."
+msgstr "TurkDemy'den yardım istediğiniz kişileri ve programları takip edin."
+
+msgid "Travel document details, if available."
+msgstr "Varsa seyahat belgesi bilgileri."
+
+msgid "Travel document information required by later application workflows."
+msgstr "Sonraki başvuru iş akışlarında gereken seyahat belgesi bilgileri."
+
+msgid "Try a program name such as Computer Engineering or a university name."
+msgstr "Bilgisayar Mühendisliği gibi bir program adı veya üniversite adı deneyin."
+
+msgid "Unassigned"
+msgstr "Atanmamış"
+
+msgid "Under review"
+msgstr "İncelemede"
+
+msgid "Unread messages"
+msgstr "Okunmamış mesajlar"
+
+msgid "Unverified documents"
+msgstr "Doğrulanmamış belgeler"
+
+msgid "Upcoming"
+msgstr "Yaklaşan"
+
+msgid "Update"
+msgstr "Güncelle"
+
+msgid "Update status"
+msgstr "Durumu güncelle"
+
+msgid "Updated"
+msgstr "Güncellendi"
+
+msgid "Upload"
+msgstr "Yükle"
+
+msgid "Upload & add"
+msgstr "Yükle ve ekle"
+
+msgid "Upload document"
+msgstr "Belge yükle"
+
+msgid "Upload new document"
+msgstr "Yeni belge yükle"
+
+msgid "Upload replacement"
+msgstr "Yedek belge yükle"
+
+msgid "Upload the documents TurkDemy needs to process this Request."
+msgstr "TurkDemy'nin bu Talebi işlemek için ihtiyaç duyduğu belgeleri yükleyin."
+
+msgid "Uploaded documents"
+msgstr "Yüklenen belgeler"
+
+msgid "User-added"
+msgstr "Kullanıcı tarafından eklendi"
+
+msgid "Values are prefilled from the applicant and can be corrected before conversion."
+msgstr "Değerler başvuru sahibinden önceden doldurulur ve dönüşümden önce düzeltilebilir."
+
+msgid "Verified documents are selected by default. You may select or deselect any document."
+msgstr ""
+"Doğrulanmış belgeler varsayılan olarak seçilir. İstediğiniz belgeyi seçebilir veya seçimini "
+"kaldırabilirsiniz."
+
+msgid "View history"
+msgstr "Geçmişi gör"
+
+msgid "View student"
+msgstr "Öğrenciyi gör"
+
+msgid "Visible only to agent/staff users."
+msgstr "Yalnızca acente/personel kullanıcılarına görünür."
+
+msgid "We couldn"
+msgstr "Yapamadık"
+
+msgid "When would you like to start?"
+msgstr "Ne zaman başlamak istersiniz?"
+
+msgid "Where & what to study"
+msgstr "Nerede ve ne okumalı"
+
+msgid "Why is this applicant being closed?"
+msgstr "Bu başvuru sahibi neden kapatılıyor?"
+
+msgid "You"
+msgstr "Siz"
+
+msgid "You belong to more than one Agent. Choose the organization you want to work in."
+msgstr "Birden fazla Acenteye bağlısınız. Çalışmak istediğiniz kuruluşu seçin."
+
+msgid "Your advisor has not been assigned yet."
+msgstr "Henüz danışmanınız atanmadı."
+
+msgid "No requests yet"
+msgstr "Henüz talep yok"
+
+msgid "Open request"
+msgstr "Talebi aç"
+
+msgid "Request profile"
+msgstr "Talep profili"
+
+msgid "This conversation is closed."
+msgstr "Bu görüşme kapalı."
+
+msgid "University preferences"
+msgstr "Üniversite tercihleri"
+
+#, python-format
+msgid "%(document)s reviewed"
+msgstr "%(document)s incelendi"
+
+#, python-format
+msgid "%(document)s uploaded"
+msgstr "%(document)s yüklendi"
+
+#, python-format
+msgid "%(program)s added to the applicant programs."
+msgstr "%(program)s başvuru sahibinin programlarına eklendi."
+
+#, python-format
+msgid "%(program)s added to your request"
+msgstr "%(program)s talebinize eklendi"
+
+msgid "A fee must define an amount, a percentage, or both."
+msgstr "Bir ücret için tutar, yüzde veya her ikisi tanımlanmalıdır."
+
+msgid "A finalized applicant cannot be closed."
+msgstr "Kesinleştirilmiş başvuru sahibi kapatılamaz."
+
+msgid "Accepted"
+msgstr "Kabul edildi"
+
+msgid "Additional Documents Required"
+msgstr "Ek Belgeler Gerekli"
+
+msgid "Additional study preferences or constraints."
+msgstr "Ek eğitim tercihleri veya kısıtlamalar."
+
+msgid "Advisor assigned"
+msgstr "Danışman atandı"
+
+msgid "Advisor changed"
+msgstr "Danışman değiştirildi"
+
+msgid "Agent hierarchy cannot contain a cycle."
+msgstr "Acente hiyerarşisi döngü içeremez."
+
+msgid "Any intake / decide later"
+msgstr "Herhangi bir dönem / sonra karar ver"
+
+msgid "Applicant closed."
+msgstr "Başvuru sahibi kapatıldı."
+
+msgid "Applicant data updated"
+msgstr "Başvuru sahibi verileri güncellendi"
+
+msgid "Applicant data updated."
+msgstr "Başvuru sahibi verileri güncellendi."
+
+msgid "Applicant managed by you"
+msgstr "Sizin yönettiğiniz başvuru sahibi"
+
+msgid "Applicant profiles are managed separately because one account can manage multiple people."
+msgstr "Bir hesap birden fazla kişiyi yönetebildiği için başvuru sahibi profilleri ayrı yönetilir."
+
+msgid "Applicant reopened."
+msgstr "Başvuru sahibi yeniden açıldı."
+
+msgid "Application deadline cannot precede opening date."
+msgstr "Başvuru son tarihi açılış tarihinden önce olamaz."
+
+msgid "Application status updated."
+msgstr "Başvuru durumu güncellendi."
+
+msgid "Assigned"
+msgstr "Atandı"
+
+msgid "Assignee must belong to the owning Agent organization."
+msgstr "Atanan kişi, sahibi olan Acente kuruluşuna bağlı olmalıdır."
+
+msgid "Attachment added to Documents and marked for review."
+msgstr "Ek, Belgeler bölümüne eklendi ve inceleme için işaretlendi."
+
+msgid "Authenticated account that owns and manages this applicant."
+msgstr "Bu başvuru sahibinin sahibi ve yöneticisi olan kimliği doğrulanmış hesap."
+
+msgid "Cambridge"
+msgstr "Cambridge"
+
+msgid "Canonical intake. Fall/Spring/Academic Intake are intake names."
+msgstr "Standart kabul dönemi. Güz/Bahar/Akademik Kabul adları kabul dönemi adlarıdır."
+
+msgid "Chat attachment this document was promoted from, when applicable."
+msgstr "Varsa bu belgenin oluşturulduğu sohbet eki."
+
+msgid "Choose a document type before adding the attachment."
+msgstr "Eki eklemeden önce belge türü seçin."
+
+msgid "Choose a responsible agent user."
+msgstr "Sorumlu bir acente kullanıcısı seçin."
+
+msgid "Choose a valid applicant."
+msgstr "Geçerli bir başvuru sahibi seçin."
+
+msgid "Choose a valid document review decision."
+msgstr "Geçerli bir belge inceleme kararı seçin."
+
+msgid "Choose a valid program intake."
+msgstr "Geçerli bir program kabul dönemi seçin."
+
+msgid "Choose an available student document."
+msgstr "Mevcut bir öğrenci belgesi seçin."
+
+msgid "Choose who is applying."
+msgstr "Kimin başvurduğunu seçin."
+
+msgid "City of residence as free text."
+msgstr "İkamet şehri serbest metin olarak."
+
+msgid "Comment added."
+msgstr "Yorum eklendi."
+
+msgid "Comment cannot be empty."
+msgstr "Yorum boş olamaz."
+
+msgid "Communication revisions are immutable."
+msgstr "İletişim revizyonları değiştirilemez."
+
+msgid "Communication updated; previous version retained."
+msgstr "İletişim güncellendi; önceki sürüm korundu."
+
+msgid "Could not create TODO. Check the supplied fields."
+msgstr "Görev oluşturulamadı. Girilen alanları kontrol edin."
+
+msgid "Could not update communication."
+msgstr "İletişim güncellenemedi."
+
+msgid "Could not upload document. Check the supplied fields."
+msgstr "Belge yüklenemedi. Girilen alanları kontrol edin."
+
+msgid "Create an applicant for another person."
+msgstr "Başka bir kişi için başvuru sahibi oluşturun."
+
+msgid "Customer"
+msgstr "Müşteri"
+
+msgid "Customer/agent messages require a sender."
+msgstr "Müşteri/acente mesajlarında gönderici gereklidir."
+
+msgid "Degree codes such as bachelor, master or phd."
+msgstr "bachelor, master veya phd gibi derece kodları."
+
+msgid "Department must belong to the selected university."
+msgstr "Bölüm seçilen üniversiteye ait olmalıdır."
+
+msgid "Diploma"
+msgstr "Diploma"
+
+msgid "Discussed program converted to a draft application."
+msgstr "Görüşülen program taslak başvuruya dönüştürüldü."
+
+msgid "Document review updated."
+msgstr "Belge incelemesi güncellendi."
+
+msgid "Document reviewed"
+msgstr "Belge incelendi"
+
+msgid "Document uploaded"
+msgstr "Belge yüklendi"
+
+msgid "Document uploaded and added to application."
+msgstr "Belge yüklendi ve başvuruya eklendi."
+
+msgid "Document uploaded and approved."
+msgstr "Belge yüklendi ve onaylandı."
+
+msgid "Draft"
+msgstr "Taslak"
+
+msgid "Draft application created."
+msgstr "Taslak başvuru oluşturuldu."
+
+msgid "Enter a phone number."
+msgstr "Telefon numarası girin."
+
+msgid "Enter a valid phone number, including the country code."
+msgstr "Ülke kodu dahil geçerli bir telefon numarası girin."
+
+msgid "Enter a valid phone number."
+msgstr "Geçerli bir telefon numarası girin."
+
+msgid "Euro"
+msgstr "Euro"
+
+msgid "Female"
+msgstr "Kadın"
+
+msgid "Finalized"
+msgstr "Kesinleştirildi"
+
+msgid "First name"
+msgstr "Ad"
+
+#, python-format
+msgid "From %(amount)s"
+msgstr "%(amount)s başlangıç"
+
+msgid "General"
+msgstr "Genel"
+
+msgid "I am applying for"
+msgstr "Şunun için başvuruyorum"
+
+msgid "ID Card"
+msgstr "Kimlik Kartı"
+
+msgid "IELTS"
+msgstr "IELTS"
+
+msgid "ISO 3166-1 alpha-2 country code, for example NL, TR, or IR."
+msgstr "ISO 3166-1 iki harfli ülke kodu; örneğin NL, TR veya IR."
+
+msgid "ISO 3166-1 alpha-3 country code, for example NLD, TUR, or IRN."
+msgstr "ISO 3166-1 üç harfli ülke kodu; örneğin NLD, TUR veya IRN."
+
+msgid "In person"
+msgstr "Yüz yüze"
+
+msgid "Instruction-language percentages cannot exceed 100%."
+msgstr "Eğitim dili yüzdeleri %100’ü aşamaz."
+
+msgid "Intake academic year must match the offering academic year."
+msgstr "Kabul döneminin akademik yılı, başvuru seçeneğinin akademik yılıyla eşleşmelidir."
+
+msgid "Internal description visible to staff users."
+msgstr "Personel kullanıcılarına görünür dahili açıklama."
+
+msgid "Internal notes updated"
+msgstr "Dahili notlar güncellendi"
+
+msgid "Internal notes updated."
+msgstr "Dahili notlar güncellendi."
+
+msgid "Internal notes were not changed."
+msgstr "Dahili notlar değişmedi."
+
+msgid "Internal notes."
+msgstr "Dahili notlar."
+
+msgid "Internal staff user currently responsible for this lead."
+msgstr "Bu başvuru sahibinden şu anda sorumlu dahili personel kullanıcısı."
+
+msgid "Invalid applicant status action."
+msgstr "Geçersiz başvuru sahibi durumu işlemi."
+
+msgid "Invalid application status."
+msgstr "Geçersiz başvuru durumu."
+
+msgid "Language Certificate"
+msgstr "Dil Sertifikası"
+
+msgid "Last date on which an application can be submitted for this offering."
+msgstr "Bu başvuru seçeneği için başvurunun gönderilebileceği son tarih."
+
+msgid "Last name"
+msgstr "Soyad"
+
+msgid "Last-read message must belong to this conversation."
+msgstr "Son okunan mesaj bu görüşmeye ait olmalıdır."
+
+msgid "Male"
+msgstr "Erkek"
+
+msgid "Maximum tuition must be greater than minimum tuition."
+msgstr "Maksimum öğrenim ücreti minimumdan büyük olmalıdır."
+
+msgid "Messaging will be available once an advisor is assigned."
+msgstr "Bir danışman atandığında mesajlaşma kullanılabilir olacaktır."
+
+msgid "New"
+msgstr "Yeni"
+
+msgid "No applicant data changed."
+msgstr "Başvuru sahibi verileri değişmedi."
+
+msgid "Note"
+msgstr "Not"
+
+msgid "Number of admission places available for this offering, when known."
+msgstr "Biliniyorsa bu başvuru seçeneği için mevcut kontenjan sayısı."
+
+msgid "Offering must belong to the selected program."
+msgstr "Başvuru seçeneği seçilen programa ait olmalıdır."
+
+msgid "One or more degree values are invalid."
+msgstr "Bir veya daha fazla derece değeri geçersiz."
+
+msgid "One or more university types are invalid."
+msgstr "Bir veya daha fazla üniversite türü geçersiz."
+
+msgid "Open applications"
+msgstr "Açık başvurular"
+
+msgid "PTE"
+msgstr "PTE"
+
+msgid "Passport Copy"
+msgstr "Pasaport Kopyası"
+
+msgid "Passport Size Photo"
+msgstr "Vesikalık Fotoğraf"
+
+msgid "Preserve source footnotes, exceptional charges, or ambiguous terms here."
+msgstr "Kaynak dipnotlarını, istisnai ücretleri veya belirsiz terimleri burada koruyun."
+
+msgid "Profile updated"
+msgstr "Profil güncellendi"
+
+msgid "Program / intake"
+msgstr "Program / kabul dönemi"
+
+msgid "Program added"
+msgstr "Program eklendi"
+
+msgid "Program added to your request"
+msgstr "Program talebinize eklendi"
+
+#, python-format
+msgid "Program added: %(program)s."
+msgstr "Program eklendi: %(program)s."
+
+msgid "Program intake updated."
+msgstr "Program kabul dönemi güncellendi."
+
+#, python-format
+msgid "Program intake updated: %(program)s."
+msgstr "Program kabul dönemi güncellendi: %(program)s."
+
+msgid "Program recommendation removed."
+msgstr "Program önerisi kaldırıldı."
+
+msgid "Program recommended to applicant."
+msgstr "Program başvuru sahibine önerildi."
+
+msgid "Program removed from this Request."
+msgstr "Program bu Talepten kaldırıldı."
+
+msgid "Program response"
+msgstr "Program yanıtı"
+
+msgid "Program response updated"
+msgstr "Program yanıtı güncellendi"
+
+msgid "Program suggested"
+msgstr "Program önerildi"
+
+#, python-format
+msgid "Program suggested: %(program)s."
+msgstr "Program önerildi: %(program)s."
+
+msgid "Reassigned"
+msgstr "Yeniden atandı"
+
+msgid "Recommendation updated."
+msgstr "Öneri güncellendi."
+
+msgid "Recommendations generated"
+msgstr "Öneriler oluşturuldu"
+
+msgid "Rejected"
+msgstr "Reddedildi"
+
+msgid "Reopen this applicant before creating a Student record."
+msgstr "Öğrenci kaydı oluşturmadan önce bu başvuru sahibini yeniden açın."
+
+msgid "Reopened"
+msgstr "Yeniden açıldı"
+
+msgid "Replacement file"
+msgstr "Yedek dosya"
+
+msgid "Replacement requested"
+msgstr "Yedek istendi"
+
+msgid "Replacement uploaded and sent for review."
+msgstr "Yedek dosya yüklendi ve incelemeye gönderildi."
+
+msgid "Request closed"
+msgstr "Talep kapatıldı"
+
+msgid "Request completed"
+msgstr "Talep tamamlandı"
+
+msgid "Request created"
+msgstr "Talep oluşturuldu"
+
+msgid "Request reopened"
+msgstr "Talep yeniden açıldı"
+
+msgid "Request reviewed"
+msgstr "Talep incelendi"
+
+msgid "Request status updated"
+msgstr "Talep durumu güncellendi"
+
+msgid "Request updated"
+msgstr "Talep güncellendi"
+
+msgid "Review decision"
+msgstr "İnceleme kararı"
+
+msgid "Someone new"
+msgstr "Yeni biri"
+
+msgid "Staff"
+msgstr "Personel"
+
+msgid "Status changed"
+msgstr "Durum değişti"
+
+msgid "Student document added to application."
+msgstr "Öğrenci belgesi başvuruya eklendi."
+
+msgid "Student document uploaded."
+msgstr "Öğrenci belgesi yüklendi."
+
+msgid "Submitted"
+msgstr "Gönderildi"
+
+msgid "TODO comments are immutable after posting."
+msgstr "Görev yorumları gönderildikten sonra değiştirilemez."
+
+msgid "TODO updated."
+msgstr "Görev güncellendi."
+
+msgid "TOEFL"
+msgstr "TOEFL"
+
+msgid "Telegram"
+msgstr "Telegram"
+
+msgid "This Request can no longer be changed."
+msgstr "Bu Talep artık değiştirilemez."
+
+msgid "This applicant already has a Student record."
+msgstr "Bu başvuru sahibinin zaten bir Öğrenci kaydı var."
+
+msgid "This applicant can no longer be assigned."
+msgstr "Bu başvuru sahibi artık atanamaz."
+
+msgid "This attachment is already in Documents."
+msgstr "Bu ek zaten Belgeler bölümünde."
+
+msgid "This program is already recommended."
+msgstr "Bu program zaten önerildi."
+
+msgid "This student has no originating applicant record."
+msgstr "Bu öğrencinin kaynak başvuru sahibi kaydı yok."
+
+msgid "This user is already responsible for the applicant."
+msgstr "Bu kullanıcı zaten başvuru sahibinden sorumlu."
+
+msgid "Transcript"
+msgstr "Transkript"
+
+msgid "Turkish Lira"
+msgstr "Türk Lirası"
+
+msgid "Turkish Proficiency Certificate"
+msgstr "Türkçe Yeterlilik Belgesi"
+
+msgid "US Dollar"
+msgstr "ABD Doları"
+
+msgid "Under Review"
+msgstr "İncelemede"
+
+msgid "University ranking position according to ARWU."
+msgstr "ARWU’ya göre üniversite sıralaması."
+
+msgid "University ranking position according to QS World University Rankings."
+msgstr "QS Dünya Üniversite Sıralamalarına göre üniversite sıralaması."
+
+msgid "University ranking position according to URAP."
+msgstr "URAP’a göre üniversite sıralaması."
+
+msgid "University type codes such as public or private."
+msgstr "public veya private gibi üniversite türü kodları."
+
+#, python-format
+msgid "Up to %(amount)s"
+msgstr "%(amount)s değerine kadar"
+
+msgid "Use the details we already know about your account."
+msgstr "Hesabınız hakkında bildiğimiz bilgileri kullanın."
+
+msgid "Valid until cannot be earlier than valid from."
+msgstr "Geçerlilik bitişi, başlangıç tarihinden önce olamaz."
+
+msgid "Validated"
+msgstr "Doğrulandı"
+
+msgid "Video call"
+msgstr "Görüntülü görüşme"
+
+msgid "Website"
+msgstr "Web sitesi"
+
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+msgid "Whether the quoted tuition includes preparatory study."
+msgstr "Belirtilen öğrenim ücretinin hazırlık eğitimini içerip içermediği."
+
+msgid "Whether the university participates in the Erasmus+ mobility programme."
+msgstr "Üniversitenin Erasmus+ hareketlilik programına katılıp katılmadığı."
+
+msgid "Withdrawn"
+msgstr "Geri çekildi"
+
+msgid "You are already responsible for this applicant."
+msgstr "Bu başvuru sahibinden zaten siz sorumlusunuz."
+
+msgid "You are now responsible for this applicant."
+msgstr "Artık bu başvuru sahibinden siz sorumlusunuz."
+
+#, python-format
+msgid "Your advisor suggested %(program)s"
+msgstr "Danışmanınız %(program)s programını önerdi"
+
+msgid "Your advisor suggested a program"
+msgstr "Danışmanınız bir program önerdi"
+
+msgid "YÖK Equivalency Certificate"
+msgstr "YÖK Denklik Belgesi"
+
+msgid "YÖK Recognition Certificate"
+msgstr "YÖK Tanıma Belgesi"
+
+msgid "Applicant profile created."
+msgstr "Başvuru sahibi profili oluşturuldu."
+
+msgid "Choose a replacement file."
+msgstr "Yedek dosya seçin."
+
+msgid "Could not upload the document."
+msgstr "Belge yüklenemedi."
+
+msgid "Document uploaded."
+msgstr "Belge yüklendi."
+
+msgid "No profile data changed."
+msgstr "Profil verileri değişmedi."
+
+msgid "Preparatory / foundation tuition"
+msgstr "Hazırlık / temel eğitim ücreti"
+
+msgid "Profile updated."
+msgstr "Profil güncellendi."
+
+msgid "Study preferences updated."
+msgstr "Eğitim tercihleri güncellendi."
+
+#, python-format
+msgid "%(document_name)s needs to be replaced"
+msgstr "%(document_name)s değiştirilmelidir"
+
+#, python-format
+msgid "Open %(document_type)s"
+msgstr "%(document_type)s belgesini aç"
+
+#, python-format
+msgid ""
+"Update %(applicant)s's personal, contact, passport and education information. Applicant fields "
+"can remain incomplete until finalization."
+msgstr ""
+"%(applicant)s için kişisel, iletişim, pasaport ve eğitim bilgilerini güncelleyin. Başvuru sahibi "
+"alanları kesinleştirmeye kadar eksik kalabilir."
+
+#, python-format
+msgid "%(count)s events"
+msgstr "%(count)s olay"
+
+#, python-format
+msgid "Page %(current)s of %(total)s"
+msgstr "Sayfa %(current)s / %(total)s"
+
+#, python-format
+msgid "Last updated by %(person)s · %(when)s"
+msgstr "Son güncelleyen %(person)s · %(when)s"
+
+#, python-format
+msgid "Last updated · %(when)s"
+msgstr "Son güncelleme · %(when)s"
+
+#, python-format
+msgid "Applicant record last updated by %(person)s · %(when)s"
+msgstr "Başvuru sahibi kaydını son güncelleyen %(person)s · %(when)s"
+
+#, python-format
+msgid "Applicant record last updated · %(when)s"
+msgstr "Başvuru sahibi kaydı son güncelleme · %(when)s"
+
+#, python-format
+msgid "%(program_name)s at %(university_name)s. %(degree)s, %(languages)s"
+msgstr "%(university_name)s bünyesinde %(program_name)s. %(degree)s, %(languages)s"
+
+#, python-format
+msgid "View %(program_name)s program"
+msgstr "%(program_name)s programını gör"
+
+#, python-format
+msgid "Explore %(name)s"
+msgstr "%(name)s keşfet"
+
+#, python-format
+msgid ""
+"Search %(program_count)s programs across %(university_count)s universities and compare your "
+"options in one place."
+msgstr ""
+"%(university_count)s üniversitedeki %(program_count)s programı arayın ve seçeneklerinizi tek "
+"yerde karşılaştırın."
+
+#, python-format
+msgid "We sent a code to <bdi dir=\"ltr\">%(email)s</bdi>."
+msgstr "<bdi dir=\"ltr\">%(email)s</bdi> adresine bir kod gönderdik."
+
+#, python-format
+msgid "Enter the code sent to <bdi dir=\"ltr\">%(email)s</bdi>."
+msgstr "<bdi dir=\"ltr\">%(email)s</bdi> adresine gönderilen kodu girin."
+
+#, python-format
+msgid "Your %(brand)s sign-in code"
+msgstr "%(brand)s giriş kodunuz"
+
+#, python-format
+msgid "You have %(counter)s unread message"
+msgid_plural "You have %(counter)s unread messages"
+msgstr[0] "%(counter)s okunmamış mesajınız var"
+
+#, python-format
+msgid "%(counter)s unread message"
+msgid_plural "%(counter)s unread messages"
+msgstr[0] "%(counter)s okunmamış mesaj"
+
+#, python-format
+msgid "%(count)s comment"
+msgid_plural "%(count)s comments"
+msgstr[0] "%(count)s yorum"
+
+#, python-format
+msgid "%(count)s revision"
+msgid_plural "%(count)s revisions"
+msgstr[0] "%(count)s revizyon"
+
+msgid "No matching options"
+msgstr "Eşleşen seçenek yok"
+
+msgid "Upload documents to the Student record after finalization."
+msgstr "Sonlandırmadan sonra belgeleri Öğrenci kaydına yükleyin."
+
+#, python-format
+msgid "Document was not uploaded. %(detail)s"
+msgstr "Belge yüklenmedi. %(detail)s"
+
+#, python-format
+msgid "TODO created: %(title)s."
+msgstr "Yapılacak iş oluşturuldu: %(title)s."
+
+#, python-format
+msgid "Follow up: %(channel)s communication"
+msgstr "%(channel)s iletişimini takip et"
+
+#, python-format
+msgid "%(channel)s communication recorded."
+msgstr "%(channel)s iletişimi kaydedildi."
+
+#, python-format
+msgid "%(message)s Reason: %(reason)s"
+msgstr "%(message)s Neden: %(reason)s"
+
+#, python-format
+msgid "%(user)s is now responsible for this applicant."
+msgstr "%(user)s artık bu başvuru sahibinden sorumlu."
+
+msgid "Academic unit must belong to the selected university."
+msgstr "Akademik birim seçilen üniversiteye ait olmalıdır."
+
+msgid "Application created"
+msgstr "Başvuru oluşturuldu"
+
+msgid "Application updated"
+msgstr "Başvuru güncellendi"
+
+msgid "Assign this applicant to yourself before creating a Student record."
+msgstr "Öğrenci kaydı oluşturmadan önce bu başvuru sahibini kendinize atayın."
+
+msgid ""
+"Authenticated account that owns/manages this student record. One account may manage multiple "
+"students."
+msgstr ""
+"Bu öğrenci kaydını sahiplenen/yöneten doğrulanmış hesap. Bir hesap birden fazla öğrenciyi "
+"yönetebilir."
+
+msgid "Catalogue source must belong to the offering program's university."
+msgstr "Katalog kaynağı, sunulan programın üniversitesine ait olmalıdır."
+
+msgid "Choose a valid intake for the discussed program."
+msgstr "Görüşülen program için geçerli bir öğrenci alımı seçin."
+
+msgid "Could not record communication. Check the supplied fields."
+msgstr "İletişim kaydedilemedi. Girilen alanları kontrol edin."
+
+msgid "Document added"
+msgstr "Belge eklendi"
+
+msgid "Document must belong to the application student."
+msgstr "Belge, başvurudaki öğrenciye ait olmalıdır."
+
+msgid "Finalized or closed applicant data cannot be edited here."
+msgstr "Sonlandırılmış veya kapatılmış başvuru sahibi verileri burada düzenlenemez."
+
+msgid "Indicates whether a graduate program is thesis or non-thesis, when applicable."
+msgstr "Uygun olduğunda lisansüstü programın tezli mi tezsiz mi olduğunu belirtir."
+
+msgid "Intake must belong to the offering program's university."
+msgstr "Öğrenci alımı, sunulan programın üniversitesine ait olmalıdır."
+
+msgid "Internal Lead notes are read-only after finalization."
+msgstr "Dahili başvuru sahibi notları sonlandırmadan sonra salt okunurdur."
+
+msgid ""
+"Internal priority used to influence this item's position in listings. Higher values receive "
+"greater priority."
+msgstr ""
+"Listelerdeki konumu etkilemek için kullanılan dahili öncelik. Daha yüksek değerler daha yüksek "
+"öncelik alır."
+
+msgid "Internal staff/import notes. Never expose this field on public or customer-facing surfaces."
+msgstr ""
+"Dahili personel/içe aktarma notları. Bu alanı hiçbir zaman genel veya müşteri yüzeylerinde "
+"göstermeyin."
+
+msgid ""
+"Maximum value of the grading scale used for the high-school grade or GPA, for example 20, 4, 10, "
+"or 100."
+msgstr "Lise notu veya GPA için kullanılan not ölçeğinin azami değeri; örneğin 20, 4, 10 veya 100."
+
+msgid "Message"
+msgstr "Mesaj"
+
+msgid "Program recommendations cannot be changed after the applicant is finalized or closed."
+msgstr "Başvuru sahibi sonlandırıldıktan veya kapatıldıktan sonra program önerileri değiştirilemez."
+
+msgid "Program recommendations updated"
+msgstr "Program önerileri güncellendi"
+
+msgid "Replace documents on the student record after finalization."
+msgstr "Sonlandırmadan sonra belgeleri öğrenci kaydında değiştirin."
+
+msgid ""
+"Specific intake/offering when known. Program-level interest is allowed without selecting an "
+"offering."
+msgstr "Biliniyorsa belirli öğrenci alımı/sunum. Bir sunum seçmeden program düzeyinde ilgi belirtilebilir."
+
+#, python-format
+msgid ""
+"Student record created for %(student)s. Transferred %(documents)s document(s) and created "
+"%(applications)s draft application(s)."
+msgstr ""
+"%(student)s için öğrenci kaydı oluşturuldu. %(documents)s belge aktarıldı ve %(applications)s "
+"taslak başvuru oluşturuldu."
+
+msgid ""
+"Student's final high-school grade or GPA in the original grading system, for example 17.5 on a "
+"20-point scale or 3.5 on a 4-point scale."
+msgstr ""
+"Öğrencinin özgün not sistemindeki nihai lise notu veya GPA değeri; örneğin 20 üzerinden 17,5 veya"
+" 4 üzerinden 3,5."
+
+msgid "TODO"
+msgstr "Yapılacak iş"
+
+msgid ""
+"The applicant is unsure which programs are suitable and wants TurkDemy staff/system to "
+"investigate and suggest options."
+msgstr ""
+"Başvuru sahibi hangi programların uygun olduğundan emin değil ve TurkDemy personelinin/sisteminin"
+" seçenekleri inceleyip önermesini istiyor."
+
+msgid "The selected user does not belong to this applicant's agent."
+msgstr "Seçilen kullanıcı bu başvuru sahibinin acentesine ait değil."
+
+msgid "This Request profile can no longer be edited."
+msgstr "Bu Talep profili artık düzenlenemez."
+
+msgid "This Request's preferences can no longer be edited."
+msgstr "Bu Talebin tercihleri artık düzenlenemez."
+
+msgid "This program is already on the applicant's list."
+msgstr "Bu program zaten başvuru sahibinin listesinde."
+
+msgid "University ranking position according to Times Higher Education (THE)."
+msgstr "Times Higher Education (THE) sıralamasına göre üniversitenin konumu."
+
+msgid "Upload documents to the student record after finalization."
+msgstr "Sonlandırmadan sonra belgeleri öğrenci kaydına yükleyin."
+
+msgid ""
+"Whether the university is approved by the relevant Ministry of Education for the target student "
+"market."
+msgstr ""
+"Üniversitenin hedef öğrenci pazarı için ilgili Eğitim Bakanlığı tarafından onaylanıp "
+"onaylanmadığı."
+
+msgid ""
+"Whether the university is approved by the relevant Ministry of Health for the target student "
+"market."
+msgstr ""
+"Üniversitenin hedef öğrenci pazarı için ilgili Sağlık Bakanlığı tarafından onaylanıp "
+"onaylanmadığı."
+
+msgid "Whether the university is recognized by YÖK (the Council of Higher Education of Türkiye)."
+msgstr "Üniversitenin YÖK (Türkiye Yükseköğretim Kurulu) tarafından tanınıp tanınmadığı."
+
+msgid "Whether the university provides or officially offers student dormitory accommodation."
+msgstr "Üniversitenin öğrenci yurdu sağladığı veya resmi olarak sunduğu bilgisi."
+
+msgid "You are not an active user of this applicant's agent."
+msgstr "Bu başvuru sahibinin acentesinde aktif kullanıcı değilsiniz."
+
+#, python-format
+msgid "Your advisor recommended %(program)s at %(university)s."
+msgstr "Danışmanınız %(university)s bünyesindeki %(program)s programını önerdi."
+

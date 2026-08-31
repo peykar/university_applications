@@ -5,6 +5,7 @@ from typing import ClassVar, cast
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.forms import LocalizedFormMixin
 from apps.geography.models import City
 from apps.universities.models import (
     DegreeType,
@@ -31,13 +32,13 @@ def _unique_ids_by_label(rows):
     return unique_ids
 
 
-class LeadForm(forms.ModelForm):
+class LeadForm(LocalizedFormMixin, forms.ModelForm):
     applicant_for = forms.ChoiceField(
-        choices=(("self", "Myself"), ("other", "Someone else")),
+        choices=(("self", _("Myself")), ("other", _("Someone else"))),
         initial="self",
         required=False,
         widget=forms.RadioSelect,
-        label="Who are you applying for?",
+        label=_("Who are you applying for?"),
     )
 
     class Meta:
@@ -94,7 +95,7 @@ class CustomerLeadEditForm(LeadForm):
         )
 
 
-class LeadPreferenceForm(forms.ModelForm):
+class LeadPreferenceForm(LocalizedFormMixin, forms.ModelForm):
     preferred_degrees = forms.MultipleChoiceField(
         choices=DegreeType.choices,
         required=False,
@@ -126,39 +127,47 @@ class LeadPreferenceForm(forms.ModelForm):
             "preferred_languages": forms.SelectMultiple(
                 attrs={
                     "class": "searchable-multiselect",
-                    "data-placeholder": "Search languages",
+                    "data-placeholder": _("Search languages"),
+                    "data-empty-label": _("No matching options"),
+                    "data-remove-label": _("Remove"),
                 }
             ),
             "preferred_cities": forms.SelectMultiple(
                 attrs={
                     "class": "searchable-multiselect",
-                    "data-placeholder": "Search cities",
+                    "data-placeholder": _("Search cities"),
+                    "data-empty-label": _("No matching options"),
+                    "data-remove-label": _("Remove"),
                 }
             ),
             "preferred_universities": forms.SelectMultiple(
                 attrs={
                     "class": "searchable-multiselect",
-                    "data-placeholder": "Search universities",
+                    "data-placeholder": _("Search universities"),
+                    "data-empty-label": _("No matching options"),
+                    "data-remove-label": _("Remove"),
                 }
             ),
             "preferred_departments": forms.SelectMultiple(
                 attrs={
                     "class": "searchable-multiselect",
-                    "data-placeholder": "Search study fields",
+                    "data-placeholder": _("Search study fields"),
+                    "data-empty-label": _("No matching options"),
+                    "data-remove-label": _("Remove"),
                 }
             ),
             "requires_dormitory": forms.Select(
                 choices=(
-                    ("", "No preference"),
-                    ("true", "Required"),
-                    ("false", "Not required"),
+                    ("", _("No preference")),
+                    ("true", _("Required")),
+                    ("false", _("Not required")),
                 )
             ),
             "requires_erasmus": forms.Select(
                 choices=(
-                    ("", "No preference"),
-                    ("true", "Required"),
-                    ("false", "Not required"),
+                    ("", _("No preference")),
+                    ("true", _("Required")),
+                    ("false", _("Not required")),
                 )
             ),
             "notes": forms.Textarea(attrs={"rows": 3}),
@@ -224,17 +233,17 @@ class LeadPreferenceForm(forms.ModelForm):
         return value == "true"
 
 
-class LeadDocumentForm(forms.ModelForm):
+class LeadDocumentForm(LocalizedFormMixin, forms.ModelForm):
     class Meta:
         model = LeadDocument
         fields = ("document_type", "file", "description")
 
 
-class LeadDocumentReplacementForm(forms.Form):
+class LeadDocumentReplacementForm(LocalizedFormMixin, forms.Form):
     file = forms.FileField(label=_("Replacement file"))
 
 
-class ApplyProgramForm(forms.Form):
+class ApplyProgramForm(LocalizedFormMixin, forms.Form):
     applicant = forms.ChoiceField(
         choices=(),
         widget=forms.RadioSelect,

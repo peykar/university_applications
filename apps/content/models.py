@@ -1,5 +1,6 @@
 from django.db import models
 
+from apps.core.localization import localized_value
 from apps.core.models import BaseModel
 from apps.core.phone import normalize_phone_number
 from apps.core.validators import validate_phone_number
@@ -20,8 +21,12 @@ class FAQCategory(BaseModel):
     def faq_count(self):
         return self.faqs.filter(is_active=True).count()
 
+    @property
+    def localized_name(self):
+        return localized_value(self, "name")
+
     def __str__(self):
-        return self.name_en
+        return self.localized_name
 
 
 class FAQ(BaseModel):
@@ -37,8 +42,16 @@ class FAQ(BaseModel):
     sort_order = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
+    @property
+    def localized_question(self):
+        return localized_value(self, "question")
+
+    @property
+    def localized_answer(self):
+        return localized_value(self, "answer")
+
     def __str__(self):
-        return self.question_en
+        return self.localized_question
 
 
 class ContactSubmission(BaseModel):

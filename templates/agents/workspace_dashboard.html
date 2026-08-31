@@ -71,7 +71,7 @@
   <div class="agent-list">
   {% for interest in recent_program_requests %}
     <a class="agent-list-row" href="{% url 'agent-applicant-detail' interest.lead.pk %}">
-      <span><strong>{{ interest.lead }} · {{ interest.program.name_en }}</strong><small>{{ interest.program.university.name_en }}</small></span>
+      <span><strong>{{ interest.lead }} · {{ interest.program.localized_name }}</strong><small>{{ interest.program.university.localized_name }}</small></span>
       <span class="status-pill">{% trans "User-added" %}</span>
     </a>
   {% empty %}<p class="empty-state">{% trans "No user-added programs yet." %}</p>{% endfor %}
@@ -82,7 +82,7 @@
   <div class="agent-panel-head"><h2>{% trans "Recent applications" %}</h2><a href="{% url 'agent-application-list' %}">{% trans "View all" %}</a></div>
   <div class="agent-table-wrap"><table class="agent-table"><thead><tr><th>{% trans "Student" %}</th><th>{% trans "Program" %}</th><th>{% trans "University" %}</th><th>{% trans "Status" %}</th></tr></thead><tbody>
   {% for application in recent_applications %}
-    <tr data-href="{% url 'agent-application-detail' application.pk %}"><td><a href="{% url 'agent-application-detail' application.pk %}">{{ application.student }}</a></td><td>{{ application.program_offering.program.name_en }}</td><td>{{ application.program_offering.program.university.name_en }}</td><td><span class="status-pill">{{ application.get_status_display }}</span></td></tr>
+    <tr data-href="{% url 'agent-application-detail' application.pk %}"><td><a href="{% url 'agent-application-detail' application.pk %}">{{ application.student }}</a></td><td>{{ application.program_offering.program.localized_name }}</td><td>{{ application.program_offering.program.university.localized_name }}</td><td><span class="status-pill">{{ application.get_status_display }}</span></td></tr>
   {% empty %}<tr><td colspan="4">{% trans "No applications yet." %}</td></tr>{% endfor %}
   </tbody></table></div>
 </section>

@@ -39,8 +39,8 @@
       <div class="entity-list-row applicant-program-row">
         <a class="applicant-program-main" href="{% url 'program-detail' interest.program.slug_en %}" target="_blank" rel="noopener">
           <span>
-            <strong>{{ interest.program.name_en }}</strong>
-            <small>{{ interest.program.university.name_en }} · {{ interest.get_source_display }}</small>
+            <strong>{{ interest.program.localized_name }}</strong>
+            <small>{{ interest.program.university.localized_name }} · {{ interest.get_source_display }}</small>
             {% if interest.suggestion_reason %}
               <small class="program-recommendation-reason">{{ interest.suggestion_reason }}</small>
             {% endif %}
@@ -94,8 +94,8 @@
       {% for program in program_search_results %}
         <article class="program-search-result">
           <div class="program-search-result-copy">
-            <strong>{{ program.name_en }}</strong>
-            <span>{{ program.university.name_en }} · {{ program.get_degree_display }} · {{ program.instruction_language_display }}</span>
+            <strong>{{ program.localized_name }}</strong>
+            <span>{{ program.university.localized_name }} · {{ program.get_degree_display }} · {{ program.instruction_language_display }}</span>
           </div>
           <form method="post" action="{% url 'agent-applicant-program-recommend' lead.pk %}" class="program-recommend-form">
             {% csrf_token %}
@@ -148,7 +148,7 @@
   <div class="entity-list">
     {% for application in applications %}
       <a class="entity-list-row" href="{% url 'agent-application-detail' application.pk %}">
-        <span><strong>{{ application.program_offering.program.name_en }}</strong><small>{{ application.program_offering.program.university.name_en }}</small></span>
+        <span><strong>{{ application.program_offering.program.localized_name }}</strong><small>{{ application.program_offering.program.university.localized_name }}</small></span>
         <span class="status-pill">{{ application.get_status_display }}</span>
       </a>
     {% empty %}

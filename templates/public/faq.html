@@ -10,13 +10,13 @@
 </div>
 {% for category in categories %}
   <section class="section">
-    <h2>{{ category.name_en }}</h2>
+    <h2>{{ category.localized_name }}</h2>
     <div class="faq-list">
       {% for faq in category.faqs.all %}
         {% if faq.is_active %}
           <details class="faq-item">
-            <summary>{{ faq.question_en }}</summary>
-            <div class="faq-answer">{{ faq.answer_en }}</div>
+            <summary>{{ faq.localized_question }}</summary>
+            <div class="faq-answer">{{ faq.localized_answer }}</div>
           </details>
         {% endif %}
       {% empty %}

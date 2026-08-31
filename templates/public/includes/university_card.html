@@ -2,28 +2,28 @@
 <a
   class="university-feature-card university-catalogue-card university-card-link"
   href="{% url 'university-detail' university.slug_en %}"
-  aria-label="{% blocktrans with name=university.name_en %}Explore {{ name }}{% endblocktrans %}"
+  aria-label="{% blocktrans with name=university.localized_name %}Explore {{ name }}{% endblocktrans %}"
 >
   <div class="university-card-top">
     {% if university.logo %}
       <img
         class="university-logo"
         src="{{ university.logo.url }}"
-        alt="{{ university.name_en }}"
+        alt="{{ university.localized_name }}"
       >
     {% else %}
       <div class="university-logo university-logo-placeholder">
-        {{ university.name_en|slice:":2"|upper }}
+        {{ university.localized_name|slice:":2"|upper }}
       </div>
     {% endif %}
   </div>
 
-  <h3>{{ university.name_en }}</h3>
+  <h3>{{ university.localized_name }}</h3>
 
   <p class="card-location">
-    {{ university.city.name_en }}
-    {% if university.city.province and university.city.province.name_en != university.city.name_en %}
-      · {{ university.city.province.name_en }}
+    {{ university.city.localized_name }}
+    {% if university.city.province and university.city.province.localized_name != university.city.localized_name %}
+      · {{ university.city.province.localized_name }}
     {% endif %}
   </p>
 

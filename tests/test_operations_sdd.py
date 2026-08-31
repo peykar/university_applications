@@ -84,5 +84,5 @@ class OperationsSDDTests(SimpleTestCase):
 
     def test_activity_integration_is_private_for_applicant(self):
         self.assertIn("is_customer_visible=False", self.services)
-        self.assertIn('"title": "TODO"', self.views)
-        self.assertIn('"title": "Communication Log"', self.views)
+        self.assertIn('"title": _("TODO")', self.views)
+        self.assertIn('"title": _("Communication Log")', self.views)

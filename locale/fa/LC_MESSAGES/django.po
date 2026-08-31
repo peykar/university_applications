@@ -1,15 +1,163 @@
+# Persian translations for TurkDemy.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the TurkDemy project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: TurkDemy\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\nPlural-Forms: nplurals=2; plural=(n != 1);\\n"
+"Project-Id-Version: TurkDemy 1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-09-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fa\n"
+"Language-Team: fa <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
 
+#, python-format
+msgid "%(count)s comment"
+msgid_plural "%(count)s comments"
+msgstr[0] "%(count)s نظر"
+
+#, python-format
+msgid "%(count)s events"
+msgstr "%(count)s رویداد"
+
+#, python-format
+msgid "%(count)s revision"
+msgid_plural "%(count)s revisions"
+msgstr[0] "%(count)s بازبینی"
+
+#, python-format
+msgid "%(counter)s unread message"
+msgid_plural "%(counter)s unread messages"
+msgstr[0] "%(counter)s پیام خوانده‌نشده"
+
+#, python-format
+msgid "%(document)s reviewed"
+msgstr "%(document)s بررسی شد"
+
+#, python-format
+msgid "%(document)s uploaded"
+msgstr "%(document)s بارگذاری شد"
+
+#, python-format
+msgid "%(document_name)s needs to be replaced"
+msgstr "%(document_name)s باید جایگزین شود"
+
+#, python-format
+msgid "%(label)s (%(percentage)s%%)"
+msgstr "%(label)s (%(percentage)s٪)"
+
+#, python-format
+msgid "%(months)s months"
+msgstr "%(months)s ماه"
+
+#, python-format
+msgid "%(program)s added to the applicant programs."
+msgstr "%(program)s به رشته‌های متقاضی اضافه شد."
+
+#, python-format
+msgid "%(program)s added to your request"
+msgstr "%(program)s به درخواست شما اضافه شد"
+
+#, python-format
+msgid "%(program_name)s at %(university_name)s. %(degree)s, %(languages)s"
+msgstr "%(program_name)s در %(university_name)s. %(degree)s، %(languages)s"
+
+#, python-format
 msgid "%(provider)s disconnected."
 msgstr "اتصال %(provider)s قطع شد."
+
+#, python-format
+msgid "%(years)s year"
+msgstr "%(years)s سال"
+
+#, python-format
+msgid "%(years)s years"
+msgstr "%(years)s سال"
+
+msgid "(optional)"
+msgstr "(اختیاری)"
+
+msgid "A document needs replacement"
+msgstr "یک مدرک نیاز به جایگزینی دارد"
+
+msgid "A fee must define an amount, a percentage, or both."
+msgstr "برای هزینه باید مبلغ، درصد یا هر دو مشخص شود."
+
+msgid "A finalized applicant cannot be closed."
+msgstr "متقاضی نهایی‌شده را نمی‌توان بست."
+
+msgid "A quick view of your applicants, applications and conversations."
+msgstr "نمایی سریع از متقاضیان، درخواست‌ها و گفتگوهای شما."
+
+msgid "ACCOUNT"
+msgstr "حساب"
+
+msgid "AGENT WORKSPACE"
+msgstr "محیط کار نماینده"
+
+msgid "About"
+msgstr "درباره ما"
+
+msgid "About TurkDemy"
+msgstr "درباره ترک‌دمی"
+
+msgid "About the university"
+msgstr "درباره دانشگاه"
+
+msgid "About this program"
+msgstr "درباره این رشته"
+
+msgid "Academic background and English proficiency."
+msgstr "سوابق تحصیلی و مهارت زبان انگلیسی."
+
+msgid "Academic background and English-language test information."
+msgstr "سوابق تحصیلی و اطلاعات آزمون زبان انگلیسی."
+
+msgid "Academic unit"
+msgstr "واحد آموزشی"
+
+msgid "Academic year"
+msgstr "سال تحصیلی"
+
+msgid "Accepted"
+msgstr "پذیرفته‌شده"
 
 msgid "Account protection"
 msgstr "محافظت از حساب"
 
 msgid "Account security"
 msgstr "امنیت حساب"
+
+msgid "Action required"
+msgstr "اقدام لازم است"
+
+msgid "Active filters"
+msgstr "فیلترهای فعال"
+
+msgid "Active organization"
+msgstr "سازمان فعال"
+
+msgid "Activity"
+msgstr "فعالیت"
+
+msgid "Activity filters"
+msgstr "فیلترهای فعالیت"
+
+msgid "Activity pagination"
+msgstr "صفحه‌بندی فعالیت‌ها"
+
+msgid "Add TODO"
+msgstr "افزودن کار"
+
+msgid "Add a document received outside TurkDemy, for example by email or in person."
+msgstr "مدرکی را که خارج از ترک‌دمی، مثلاً از طریق ایمیل یا حضوری، دریافت شده اضافه کنید."
 
 msgid "Add a verified email to use passwordless email-code login."
 msgstr "برای ورود بدون رمز عبور با کد ایمیل، یک ایمیل تأییدشده اضافه کنید."
@@ -23,14 +171,535 @@ msgstr "پیش از قطع آخرین روش ورود، یک روش ورود د�
 msgid "Add another sign-in method before removing your last login method."
 msgstr "پیش از حذف آخرین روش ورود، یک روش ورود دیگر اضافه کنید."
 
+msgid "Add applicant"
+msgstr "افزودن متقاضی"
+
+msgid "Add document"
+msgstr "افزودن مدرک"
+
+msgid "Add existing student document"
+msgstr "افزودن مدرک موجود دانشجو"
+
+msgid "Add immutable comment…"
+msgstr "افزودن نظر غیرقابل‌ویرایش…"
+
+msgid "Add internal context, follow-up reminders, or information collected outside the portal."
+msgstr "اطلاعات داخلی، یادآوری پیگیری یا اطلاعات جمع‌آوری‌شده خارج از پورتال را اضافه کنید."
+
+msgid "Add to documents"
+msgstr "افزودن به مدارک"
+
+msgid "Added by you"
+msgstr "افزوده‌شده توسط شما"
+
+msgid "Added from conversation"
+msgstr "افزوده‌شده از گفتگو"
+
+msgid "Added to documents"
+msgstr "به مدارک اضافه شد"
+
+msgid "Additional Documents Required"
+msgstr "مدارک اضافی لازم است"
+
+msgid "Additional study preferences or constraints."
+msgstr "ترجیحات یا محدودیت‌های تحصیلی اضافی."
+
+msgid "Address"
+msgstr "نشانی"
+
+msgid "Advance Payment"
+msgstr "پرداخت پیشاپیش"
+
+msgid "Advance Payment (15%)"
+msgstr "پرداخت پیشاپیش (۱۵٪)"
+
+msgid "Advance payment"
+msgstr "پرداخت پیشاپیش"
+
+msgid "Advanced filters"
+msgstr "فیلترهای پیشرفته"
+
+msgid "Advisor assigned"
+msgstr "مشاور اختصاص داده شد"
+
+msgid "Advisor changed"
+msgstr "مشاور تغییر کرد"
+
+msgid "Agent"
+msgstr "نماینده"
+
+msgid "Agent hierarchy cannot contain a cycle."
+msgstr "ساختار سلسله‌مراتبی نماینده نمی‌تواند حلقه داشته باشد."
+
+msgid "Agent workspace"
+msgstr "محیط کار نماینده"
+
+msgid "Agent-suggested"
+msgstr "پیشنهاد نماینده"
+
+msgid "Agent:"
+msgstr "نماینده:"
+
+msgid "All"
+msgstr "همه"
+
+msgid "All messages"
+msgstr "همه پیام‌ها"
+
+msgid ""
+"All of these fields are optional. You can continue now, and our admissions team can collect "
+"anything missing later."
+msgstr ""
+"همه این فیلدها اختیاری هستند. اکنون می‌توانید ادامه دهید و تیم پذیرش ما اطلاعات باقی‌مانده را "
+"بعداً تکمیل می‌کند."
+
+msgid "All statuses"
+msgstr "همه وضعیت‌ها"
+
+msgid ""
+"All users of the agent can still see this applicant. This only changes who is responsible for "
+"working on it."
+msgstr ""
+"همه کاربران این نماینده همچنان می‌توانند این متقاضی را ببینند. این گزینه فقط مسئول رسیدگی را "
+"تغییر می‌دهد."
+
 msgid "Already have an account?"
 msgstr "از قبل حساب دارید؟"
+
+msgid "Annual"
+msgstr "سالانه"
+
+msgid "Annual Tuition"
+msgstr "شهریه سالانه"
+
+msgid "Any academic unit"
+msgstr "هر واحد آموزشی"
+
+msgid "Any academic year"
+msgstr "هر سال تحصیلی"
+
+msgid "Any city"
+msgstr "هر شهر"
+
+msgid "Any currency"
+msgstr "هر ارز"
+
+msgid "Any degree"
+msgstr "هر مقطع"
+
+msgid "Any field"
+msgstr "هر رشته"
+
+msgid "Any intake"
+msgstr "هر ورودی"
+
+msgid "Any intake / decide later"
+msgstr "هر ورودی / بعداً تصمیم می‌گیرم"
+
+msgid "Any language"
+msgstr "هر زبان"
+
+msgid "Any study mode"
+msgstr "هر شیوه تحصیل"
+
+msgid "Any type"
+msgstr "هر نوع"
+
+msgid "Any university"
+msgstr "هر دانشگاه"
+
+msgid "Applicant"
+msgstr "متقاضی"
+
+msgid "Applicant activity"
+msgstr "فعالیت متقاضی"
+
+msgid "Applicant closed."
+msgstr "متقاضی بسته شد."
+
+msgid "Applicant conversion"
+msgstr "تبدیل متقاضی"
+
+msgid "Applicant data"
+msgstr "اطلاعات متقاضی"
+
+msgid "Applicant data updated"
+msgstr "اطلاعات متقاضی به‌روزرسانی شد"
+
+msgid "Applicant data updated."
+msgstr "اطلاعات متقاضی به‌روزرسانی شد."
+
+msgid "Applicant details"
+msgstr "جزئیات متقاضی"
+
+msgid "Applicant documents"
+msgstr "مدارک متقاضی"
+
+msgid "Applicant managed by you"
+msgstr "متقاضی تحت مدیریت شما"
+
+msgid "Applicant navigation"
+msgstr "ناوبری متقاضی"
+
+msgid "Applicant overview"
+msgstr "نمای کلی متقاضی"
+
+msgid "Applicant profile"
+msgstr "پروفایل متقاضی"
+
+msgid "Applicant profile created."
+msgstr "پروفایل متقاضی ایجاد شد."
+
+msgid "Applicant profiles are managed separately because one account can manage multiple people."
+msgstr "پروفایل‌های متقاضی جداگانه مدیریت می‌شوند، زیرا یک حساب می‌تواند چند نفر را مدیریت کند."
+
+msgid "Applicant programs"
+msgstr "رشته‌های متقاضی"
+
+#, python-format
+msgid "Applicant record last updated by %(person)s · %(when)s"
+msgstr "آخرین به‌روزرسانی پرونده متقاضی توسط %(person)s · %(when)s"
+
+#, python-format
+msgid "Applicant record last updated · %(when)s"
+msgstr "آخرین به‌روزرسانی پرونده متقاضی · %(when)s"
+
+msgid "Applicant reopened."
+msgstr "متقاضی بازگشایی شد."
+
+msgid "Applicant-specific communication"
+msgstr "ارتباطات مربوط به متقاضی"
+
+msgid "Applicants"
+msgstr "متقاضیان"
+
+msgid "Application"
+msgstr "درخواست"
+
+msgid "Application activity"
+msgstr "فعالیت درخواست"
+
+msgid "Application deadline cannot precede opening date."
+msgstr "مهلت درخواست نمی‌تواند پیش از تاریخ آغاز باشد."
+
+msgid "Application document"
+msgstr "مدرک درخواست"
+
+msgid "Application documents"
+msgstr "مدارک درخواست"
+
+msgid "Application fee"
+msgstr "هزینه درخواست"
+
+msgid "Application management"
+msgstr "مدیریت درخواست‌ها"
+
+msgid "Application navigation"
+msgstr "ناوبری درخواست"
+
+msgid "Application requirements"
+msgstr "الزامات درخواست"
+
+msgid "Application status"
+msgstr "وضعیت درخواست"
+
+msgid "Application status updated."
+msgstr "وضعیت درخواست به‌روزرسانی شد."
+
+msgid "Application summary"
+msgstr "خلاصه درخواست"
+
+msgid "Applications"
+msgstr "درخواست‌ها"
+
+msgid "Applications created after an applicant has been converted to a student."
+msgstr "درخواست‌هایی که پس از تبدیل متقاضی به دانشجو ایجاد شده‌اند."
+
+msgid "Applications needing action"
+msgstr "درخواست‌های نیازمند اقدام"
+
+msgid "Applied for"
+msgstr "درخواست داده‌شده برای"
+
+msgid "Apply"
+msgstr "درخواست"
+
+msgid "Apply / I"
+msgstr "درخواست / من"
+
+msgid "Apply / I'm interested"
+msgstr "درخواست / علاقه‌مندم"
+
+msgid "Apply / express interest"
+msgstr "درخواست / اعلام علاقه‌مندی"
+
+msgid "Apply filters"
+msgstr "اعمال فیلترها"
+
+msgid "Approve"
+msgstr "تأیید"
+
+msgid "Approved"
+msgstr "تأییدشده"
+
+msgid "Ask TurkDemy"
+msgstr "از ترک‌دمی بپرسید"
+
+msgid "Assign"
+msgstr "واگذاری"
+
+msgid "Assign agent"
+msgstr "واگذاری نماینده"
+
+msgid "Assign applicant"
+msgstr "واگذاری متقاضی"
+
+msgid "Assign to me"
+msgstr "واگذاری به من"
+
+msgid "Assigned"
+msgstr "واگذار شده"
+
+msgid "Assignee"
+msgstr "مسئول"
+
+msgid "Assignee must belong to the owning Agent organization."
+msgstr "مسئول باید عضو سازمان نماینده مالک باشد."
+
+msgid "Assignment & status"
+msgstr "واگذاری و وضعیت"
+
+msgid "Associate"
+msgstr "کاردانی"
+
+msgid "Attach file"
+msgstr "پیوست فایل"
+
+msgid "Attachment"
+msgstr "پیوست"
+
+msgid "Attachment added to Documents and marked for review."
+msgstr "پیوست به مدارک اضافه و برای بررسی علامت‌گذاری شد."
+
+msgid "Authenticated account that owns and manages this applicant."
+msgstr "حساب احراز هویت‌شده‌ای که مالک و مدیر این متقاضی است."
+
+msgid "Available"
+msgstr "موجود"
+
+msgid "Available offerings"
+msgstr "گزینه‌های پذیرش موجود"
+
+msgid "Bachelor"
+msgstr "کارشناسی"
+
+msgid "Back to applicant"
+msgstr "بازگشت به متقاضی"
+
+msgid "Back to program"
+msgstr "بازگشت به رشته"
 
 msgid "Back to sign-in methods"
 msgstr "بازگشت به روش‌های ورود"
 
+msgid "Basic identity and contact details."
+msgstr "اطلاعات پایه هویتی و تماس."
+
+msgid "Birthdate"
+msgstr "تاریخ تولد"
+
+msgid "Breadcrumb"
+msgstr "مسیر صفحه"
+
+msgid "Browse all fields"
+msgstr "مشاهده همه رشته‌ها"
+
+msgid "Browse all programs"
+msgstr "مشاهده همه برنامه‌ها"
+
+msgid "Browse this university"
+msgstr "مشاهده این دانشگاه"
+
+msgid "Browse this university's programs"
+msgstr "مشاهده رشته‌های این دانشگاه"
+
+msgid "Budget"
+msgstr "بودجه"
+
+msgid "Built for international students"
+msgstr "طراحی‌شده برای دانشجویان بین‌المللی"
+
+msgid "CRM record of communication outside TurkDemy Messages."
+msgstr "رکورد CRM از ارتباطات خارج از پیام‌های ترک‌دمی."
+
+msgid "Cambridge"
+msgstr "کمبریج"
+
+msgid "Cancel"
+msgstr "لغو"
+
+msgid "Cancelled"
+msgstr "لغوشده"
+
+msgid "Canonical intake. Fall/Spring/Academic Intake are intake names."
+msgstr "ورودی استاندارد. پاییز/بهار/ورودی تحصیلی نام‌های ورودی هستند."
+
+msgid "Cash Payment"
+msgstr "پرداخت نقدی"
+
+msgid "Cash payment"
+msgstr "پرداخت نقدی"
+
+msgid "Catalogue"
+msgstr "فهرست تحصیلی"
+
 msgid "Change password"
 msgstr "تغییر رمز عبور"
+
+msgid "Changes are recorded in the applicant activity history after saving."
+msgstr "تغییرات پس از ذخیره در تاریخچه فعالیت متقاضی ثبت می‌شوند."
+
+msgid "Changes, notes and workflow events"
+msgstr "تغییرات، یادداشت‌ها و رویدادهای فرایند"
+
+msgid "Channel"
+msgstr "کانال"
+
+msgid "Chat attachment this document was promoted from, when applicable."
+msgstr "پیوست گفتگویی که این مدرک در صورت وجود از آن ایجاد شده است."
+
+msgid "Choose a concrete program intake. The application starts as Draft."
+msgstr "یک ورودی مشخص برای رشته انتخاب کنید. درخواست در حالت پیش‌نویس آغاز می‌شود."
+
+msgid "Choose a document type before adding the attachment."
+msgstr "پیش از افزودن پیوست، نوع مدرک را انتخاب کنید."
+
+msgid "Choose a replacement file."
+msgstr "فایل جایگزین را انتخاب کنید."
+
+msgid "Choose a responsible agent user."
+msgstr "یک کاربر نماینده مسئول انتخاب کنید."
+
+msgid "Choose a valid applicant."
+msgstr "یک متقاضی معتبر انتخاب کنید."
+
+msgid "Choose a valid document review decision."
+msgstr "یک تصمیم معتبر برای بررسی مدرک انتخاب کنید."
+
+msgid "Choose a valid program intake."
+msgstr "یک ورودی معتبر رشته انتخاب کنید."
+
+msgid "Choose an active user from this applicant"
+msgstr "یک کاربر فعال برای این متقاضی انتخاب کنید"
+
+msgid "Choose an agent user"
+msgstr "یک کاربر نماینده انتخاب کنید"
+
+msgid "Choose an available student document."
+msgstr "یک مدرک موجود دانشجو انتخاب کنید."
+
+msgid "Choose an existing applicant, yourself, or create someone new."
+msgstr "یک متقاضی موجود یا خودتان را انتخاب کنید، یا فرد جدیدی بسازید."
+
+msgid "Choose an offering"
+msgstr "یک گزینه پذیرش انتخاب کنید"
+
+msgid "Choose an organization"
+msgstr "یک سازمان انتخاب کنید"
+
+msgid "Choose as many options as you are open to."
+msgstr "هر تعداد گزینه‌ای که برایتان قابل قبول است انتخاب کنید."
+
+msgid "Choose intake"
+msgstr "انتخاب ورودی"
+
+msgid "Choose intake & start"
+msgstr "انتخاب ورودی و شروع"
+
+msgid "Choose one or more filters, then press Apply filters."
+msgstr "یک یا چند فیلتر را انتخاب کنید و سپس «اعمال فیلترها» را بزنید."
+
+msgid "Choose organization"
+msgstr "انتخاب سازمان"
+
+msgid "Choose replacement file"
+msgstr "انتخاب فایل جایگزین"
+
+msgid "Choose who is applying."
+msgstr "مشخص کنید چه کسی درخواست می‌دهد."
+
+msgid ""
+"Choose yourself to use the details we already know about your account, or someone else to enter "
+"their details."
+msgstr ""
+"برای استفاده از اطلاعات موجود حساب، خودتان را انتخاب کنید؛ یا فرد دیگری را برای وارد کردن اطلاعات"
+" او انتخاب کنید."
+
+msgid "Cities"
+msgstr "شهرها"
+
+msgid "City"
+msgstr "شهر"
+
+msgid "City of residence"
+msgstr "شهر محل اقامت"
+
+msgid "City of residence as free text."
+msgstr "شهر محل اقامت به‌صورت متن آزاد."
+
+msgid "Clear"
+msgstr "پاک کردن"
+
+msgid "Clear all"
+msgstr "پاک کردن همه"
+
+msgid "Clear all filters"
+msgstr "پاک کردن همه فیلترها"
+
+msgid "Close"
+msgstr "بستن"
+
+msgid "Close applicant"
+msgstr "بستن متقاضی"
+
+msgid "Close reason:"
+msgstr "دلیل بستن:"
+
+msgid "Close this lead when you no longer plan to continue working on it."
+msgstr "وقتی دیگر قصد ادامه کار روی این متقاضی را ندارید، آن را ببندید."
+
+msgid "Closed"
+msgstr "بسته"
+
+msgid "College"
+msgstr "کالج"
+
+msgid "Comment"
+msgstr "نظر"
+
+msgid "Comment added."
+msgstr "نظر اضافه شد."
+
+msgid "Comment cannot be empty."
+msgstr "نظر نمی‌تواند خالی باشد."
+
+msgid "Communication Log"
+msgstr "گزارش ارتباطات"
+
+msgid "Communication revisions are immutable."
+msgstr "نسخه‌های بازبینی ارتباطات غیرقابل‌تغییر هستند."
+
+msgid "Communication updated; previous version retained."
+msgstr "ارتباط به‌روزرسانی شد؛ نسخه قبلی حفظ شد."
+
+msgid "Communications"
+msgstr "ارتباطات"
+
+msgid "Compare your options"
+msgstr "گزینه‌های خود را مقایسه کنید"
+
+msgid "Completed"
+msgstr "تکمیل‌شده"
 
 msgid "Connect Google"
 msgstr "اتصال Google"
@@ -44,6 +713,27 @@ msgstr "برای اینکه همیشه به همان حساب TurkDemy دستر�
 msgid "Connected"
 msgstr "متصل"
 
+msgid "Conservatory"
+msgstr "کنسرواتوار"
+
+msgid "Contact"
+msgstr "تماس"
+
+msgid "Contact & residence"
+msgstr "تماس و اقامت"
+
+msgid "Contact TurkDemy"
+msgstr "تماس با ترک‌دمی"
+
+msgid "Contact TurkDemy for guidance about requirements, tuition and the application process."
+msgstr "برای راهنمایی درباره شرایط، شهریه و فرایند درخواست با ترک‌دمی تماس بگیرید."
+
+msgid "Contact us"
+msgstr "تماس با ما"
+
+msgid "Continue application"
+msgstr "ادامه درخواست"
+
 msgid "Continue with Google"
 msgstr "ادامه با Google"
 
@@ -56,20 +746,228 @@ msgstr "ادامه با ایمیل"
 msgid "Continue with email code"
 msgstr "ادامه با کد ایمیل"
 
+msgid "Conversation"
+msgstr "گفتگو"
+
+msgid "Conversation attachment"
+msgstr "پیوست گفتگو"
+
+msgid ""
+"Correct the highlighted fields or selections and submit again. No conversion changes have been "
+"committed."
+msgstr ""
+"فیلدها یا انتخاب‌های مشخص‌شده را اصلاح و دوباره ارسال کنید. هیچ تغییری در فرایند تبدیل ثبت نشده "
+"است."
+
+msgid "Could not create TODO. Check the supplied fields."
+msgstr "ایجاد کار ممکن نشد. فیلدهای واردشده را بررسی کنید."
+
+msgid "Could not update communication."
+msgstr "به‌روزرسانی ارتباط ممکن نشد."
+
+msgid "Could not upload document. Check the supplied fields."
+msgstr "بارگذاری مدرک ممکن نشد. فیلدهای واردشده را بررسی کنید."
+
+msgid "Could not upload the document."
+msgstr "بارگذاری مدرک انجام نشد."
+
+msgid "Counterparty name"
+msgstr "نام طرف مقابل"
+
+msgid "Counterparty type"
+msgstr "نوع طرف مقابل"
+
+msgid "Country of birth"
+msgstr "کشور محل تولد"
+
+msgid "Country of residence"
+msgstr "کشور محل اقامت"
+
+msgid "Create Student Record"
+msgstr "ایجاد پرونده دانشجو"
+
+msgid "Create TODO"
+msgstr "ایجاد کار"
+
 msgid "Create account"
 msgstr "ساخت حساب"
 
 msgid "Create an account with email"
 msgstr "ساخت حساب با ایمیل"
 
+msgid "Create an applicant for another person."
+msgstr "برای شخص دیگری متقاضی ایجاد کنید."
+
+msgid "Create draft application"
+msgstr "ایجاد درخواست پیش‌نویس"
+
 msgid "Create your account"
 msgstr "حساب خود را بسازید"
+
+msgid "Created"
+msgstr "ایجادشده"
+
+msgid "Currency"
+msgstr "ارز"
+
+msgid "Current residence details."
+msgstr "اطلاعات محل اقامت فعلی."
+
+msgid "Current status"
+msgstr "وضعیت فعلی"
+
+msgid "Customer"
+msgstr "مشتری"
+
+msgid "Customer navigation"
+msgstr "ناوبری مشتری"
+
+msgid "Customer visible"
+msgstr "قابل مشاهده برای مشتری"
+
+msgid "Customer-added"
+msgstr "افزوده‌شده توسط مشتری"
+
+msgid "Customer/agent messages require a sender."
+msgstr "پیام‌های مشتری/نماینده باید فرستنده داشته باشند."
+
+msgid "Dashboard"
+msgstr "داشبورد"
+
+msgid "Date of expiry"
+msgstr "تاریخ انقضا"
+
+msgid "Date of issue"
+msgstr "تاریخ صدور"
+
+msgid "Deadline"
+msgstr "مهلت"
+
+msgid "Decision"
+msgstr "تصمیم"
+
+msgid "Degree"
+msgstr "مقطع"
+
+msgid "Degree & university type"
+msgstr "مقطع و نوع دانشگاه"
+
+msgid "Degree codes such as bachelor, master or phd."
+msgstr "کدهای مقطع مانند bachelor، master یا phd."
+
+msgid "Department must belong to the selected university."
+msgstr "گروه باید متعلق به دانشگاه انتخاب‌شده باشد."
+
+msgid "Departments"
+msgstr "گروه‌ها"
+
+msgid "Deposit"
+msgstr "ودیعه"
+
+msgid "Deposit payment"
+msgstr "پرداخت ودیعه"
+
+msgid "Description"
+msgstr "توضیحات"
+
+msgid "Diploma"
+msgstr "دیپلم"
 
 msgid "Disconnect Google"
 msgstr "قطع اتصال Google"
 
 msgid "Disconnect Telegram"
 msgstr "قطع اتصال Telegram"
+
+msgid "Discounted tuition"
+msgstr "شهریه تخفیف‌خورده"
+
+msgid "Discussed or recommended programs"
+msgstr "رشته‌های مطرح‌شده یا پیشنهادی"
+
+msgid "Discussed program converted to a draft application."
+msgstr "رشته مطرح‌شده به درخواست پیش‌نویس تبدیل شد."
+
+msgid "Distance learning"
+msgstr "آموزش از راه دور"
+
+msgid "Document review"
+msgstr "بررسی مدرک"
+
+msgid "Document review updated."
+msgstr "بررسی مدرک به‌روزرسانی شد."
+
+msgid "Document reviewed"
+msgstr "مدرک بررسی شد"
+
+msgid "Document type"
+msgstr "نوع مدرک"
+
+msgid "Document uploaded"
+msgstr "مدرک بارگذاری شد"
+
+msgid "Document uploaded and added to application."
+msgstr "مدرک بارگذاری و به درخواست اضافه شد."
+
+msgid "Document uploaded and approved."
+msgstr "مدرک بارگذاری و تأیید شد."
+
+msgid "Document uploaded."
+msgstr "مدرک بارگذاری شد."
+
+msgid "Documents"
+msgstr "مدارک"
+
+msgid "Done"
+msgstr "انجام‌شده"
+
+msgid "Dormitory"
+msgstr "خوابگاه"
+
+msgid "Draft"
+msgstr "پیش‌نویس"
+
+msgid "Draft application created."
+msgstr "درخواست پیش‌نویس ایجاد شد."
+
+msgid "Draft applications"
+msgstr "درخواست‌های پیش‌نویس"
+
+msgid "Due"
+msgstr "سررسید"
+
+msgid "Due today"
+msgstr "سررسید امروز"
+
+msgid "Duration"
+msgstr "مدت تحصیل"
+
+msgid "EXPLORE"
+msgstr "کاوش"
+
+msgid "Edit"
+msgstr "ویرایش"
+
+msgid "Edit applicant"
+msgstr "ویرایش متقاضی"
+
+msgid "Edit internal notes"
+msgstr "ویرایش یادداشت‌های داخلی"
+
+msgid "Edit preferences"
+msgstr "ویرایش ترجیحات"
+
+msgid "Edit profile"
+msgstr "ویرایش پروفایل"
+
+msgid "Editing"
+msgstr "در حال ویرایش"
+
+msgid "Education & language"
+msgstr "تحصیلات و زبان"
+
+msgid "Educational background"
+msgstr "سوابق تحصیلی"
 
 msgid "Email"
 msgstr "ایمیل"
@@ -92,11 +990,37 @@ msgstr "روش ورود با ایمیل حذف شد."
 msgid "Email verification"
 msgstr "تأیید ایمیل"
 
+msgid "English test score"
+msgstr "نمره آزمون انگلیسی"
+
+msgid "English test type"
+msgstr "نوع آزمون انگلیسی"
+
+msgid "English, Persian, Turkish and Arabic support."
+msgstr "پشتیبانی به زبان‌های انگلیسی، فارسی، ترکی و عربی."
+
+msgid "Enter a phone number."
+msgstr "شماره تلفن وارد کنید."
+
+msgid "Enter a valid phone number, including the country code."
+msgstr "شماره تلفن معتبر همراه با کد کشور وارد کنید."
+
+msgid "Enter a valid phone number."
+msgstr "شماره تلفن معتبر وارد کنید."
+
 msgid "Enter sign-in code"
 msgstr "کد ورود را وارد کنید"
 
+#, python-format
 msgid "Enter the code sent to %(email)s."
 msgstr "کد ارسال‌شده به %(email)s را وارد کنید."
+
+#, python-format
+msgid "Enter the code sent to <bdi dir=\"ltr\">%(email)s</bdi>."
+msgstr "کد ارسال‌شده به <bdi dir=\"ltr\">%(email)s</bdi> را وارد کنید."
+
+msgid "Enter this code in the browser window where you started signing in."
+msgstr "این کد را در پنجره مرورگری که ورود را از آن آغاز کردید وارد کنید."
 
 msgid "Enter your TurkDemy email address and we will send you a one-time code."
 msgstr "ایمیل TurkDemy خود را وارد کنید تا یک کد یک‌بارمصرف برایتان ارسال کنیم."
@@ -104,14 +1028,370 @@ msgstr "ایمیل TurkDemy خود را وارد کنید تا یک کد یک‌
 msgid "Enter your sign-in code"
 msgstr "کد ورود خود را وارد کنید"
 
+msgid "Erasmus"
+msgstr "اراسموس"
+
+msgid "Erasmus+"
+msgstr "اراسموس+"
+
+msgid "Euro"
+msgstr "یورو"
+
+msgid "Explore"
+msgstr "کاوش"
+
+#, python-format
+msgid "Explore %(name)s"
+msgstr "مشاهده %(name)s"
+
+msgid "Explore alternatives"
+msgstr "بررسی گزینه‌های دیگر"
+
+msgid "Explore the catalogue or contact TurkDemy if you need help understanding your options."
+msgstr "فهرست تحصیلی را بررسی کنید یا برای شناخت بهتر گزینه‌ها با ترک‌دمی تماس بگیرید."
+
+msgid "Explore universities"
+msgstr "جستجوی دانشگاه‌ها"
+
+msgid "Explore universities and compare study options by field, degree, language, tuition and intake."
+msgstr "دانشگاه‌ها را بررسی کنید و گزینه‌های تحصیل را بر اساس رشته، مقطع، زبان، شهریه و ورودی مقایسه کنید."
+
+msgid "Explore university"
+msgstr "مشاهده دانشگاه"
+
+msgid "FAQ"
+msgstr "پرسش‌های متداول"
+
+msgid "Facilities & exchange"
+msgstr "امکانات و تبادل دانشجو"
+
+msgid "Faculty"
+msgstr "دانشکده"
+
+msgid "Family"
+msgstr "خانواده"
+
+msgid "Featured universities"
+msgstr "دانشگاه‌های منتخب"
+
+msgid "Female"
+msgstr "زن"
+
+msgid "Field"
+msgstr "رشته"
+
+msgid "File"
+msgstr "فایل"
+
+msgid "Filter"
+msgstr "فیلتر"
+
+msgid "Filter programs offered by this university."
+msgstr "برنامه‌های ارائه‌شده توسط این دانشگاه را فیلتر کنید."
+
+msgid "Filters"
+msgstr "فیلترها"
+
+msgid "Finalize this applicant before creating formal applications."
+msgstr "پیش از ایجاد درخواست‌های رسمی، این متقاضی را نهایی کنید."
+
+msgid "Finalized"
+msgstr "نهایی‌شده"
+
+msgid "Find Programs"
+msgstr "یافتن رشته‌ها"
+
+msgid "Find a program"
+msgstr "پیدا کردن رشته"
+
+msgid "Find a program to start your first request."
+msgstr "برای شروع اولین درخواست، یک رشته پیدا کنید."
+
+msgid "Find programs"
+msgstr "یافتن رشته‌ها"
+
+msgid "Find the right university and build your future."
+msgstr "دانشگاه مناسب را پیدا کنید و آینده‌تان را بسازید."
+
+msgid ""
+"Find universities and programs in Türkiye, compare tuition, and manage your application with "
+"TurkDemy."
+msgstr ""
+"دانشگاه‌ها و رشته‌های ترکیه را پیدا کنید، شهریه‌ها را مقایسه کنید و درخواست خود را با ترک‌دمی "
+"مدیریت کنید."
+
+msgid "Find your direction"
+msgstr "مسیر خود را پیدا کنید"
+
+msgid "Find your program"
+msgstr "رشته خود را پیدا کنید"
+
+msgid "First name"
+msgstr "نام"
+
+msgid "Follow your application status from one dashboard."
+msgstr "وضعیت درخواست خود را از یک داشبورد دنبال کنید."
+
+msgid "Formal application"
+msgstr "درخواست رسمی"
+
+msgid "Formal applications"
+msgstr "درخواست‌های رسمی"
+
+msgid "Formal applications become available after this applicant is finalized as a student."
+msgstr "پس از نهایی شدن این متقاضی به‌عنوان دانشجو، درخواست‌های رسمی در دسترس می‌شوند."
+
+msgid "Formal applications for a specific program intake."
+msgstr "درخواست‌های رسمی برای یک ورودی مشخص رشته."
+
+msgid "Free"
+msgstr "رایگان"
+
+msgid "Frequently asked questions"
+msgstr "پرسش‌های متداول"
+
+msgid "From"
+msgstr "از"
+
+#, python-format
+msgid "From %(amount)s"
+msgstr "از %(amount)s"
+
+msgid "From discovery to application."
+msgstr "از جستجو تا درخواست پذیرش."
+
+msgid "Gender"
+msgstr "جنسیت"
+
+msgid "General"
+msgstr "عمومی"
+
+msgid "Get Help"
+msgstr "دریافت کمک"
+
 msgid "Get a sign-in code"
 msgstr "دریافت کد ورود"
+
+msgid "Get in touch"
+msgstr "با ما در تماس باشید"
+
+msgid "Go to homepage"
+msgstr "رفتن به صفحه اصلی"
 
 msgid "Google login is not configured."
 msgstr "ورود با Google پیکربندی نشده است."
 
+msgid "Graduate School"
+msgstr "تحصیلات تکمیلی"
+
+msgid "Help center"
+msgstr "مرکز راهنما"
+
+msgid "High school GPA"
+msgstr "معدل دبیرستان"
+
+msgid "High school GPA scale"
+msgstr "مقیاس معدل دبیرستان"
+
+msgid "Home"
+msgstr "خانه"
+
+msgid "How to reach the applicant and their current place of residence."
+msgstr "اطلاعات تماس با متقاضی و محل اقامت فعلی او."
+
+msgid "Hybrid"
+msgstr "ترکیبی"
+
+msgid "I am applying for"
+msgstr "من برای این شخص درخواست می‌دهم"
+
+msgid "ID Card"
+msgstr "کارت شناسایی"
+
+msgid "IELTS"
+msgstr "آیلتس"
+
+msgid "ISO 3166-1 alpha-2 country code, for example NL, TR, or IR."
+msgstr "کد دوحرفی کشور ISO 3166-1، مانند NL، TR یا IR."
+
+msgid "ISO 3166-1 alpha-3 country code, for example NLD, TUR, or IRN."
+msgstr "کد سه‌حرفی کشور ISO 3166-1، مانند NLD، TUR یا IRN."
+
+msgid "Identity & nationality"
+msgstr "هویت و تابعیت"
+
+msgid "Identity and personal details used throughout the admissions process."
+msgstr "اطلاعات هویتی و شخصی مورد استفاده در فرایند پذیرش."
+
+msgid "Identity, contact, residence and education"
+msgstr "هویت، تماس، اقامت و تحصیلات"
+
+msgid "If you"
+msgstr "اگر شما"
+
+msgid "If you did not request this sign-in code, you can safely ignore this email."
+msgstr "اگر این کد ورود را درخواست نکرده‌اید، می‌توانید این ایمیل را نادیده بگیرید."
+
+msgid ""
+"If you followed a link from TurkDemy and think this is a mistake, return to the previous list and"
+" try again."
+msgstr ""
+"اگر از لینکی در ترک‌دمی به این صفحه رسیده‌اید و فکر می‌کنید اشتباهی رخ داده، به فهرست قبلی "
+"برگردید و دوباره تلاش کنید."
+
+msgid ""
+"If you select a document that is not verified, it will be approved as part of the successful "
+"conversion and copied to the Student document library. Unchecking an already verified document "
+"does not change its verification status."
+msgstr ""
+"اگر مدرکی تأییدنشده را انتخاب کنید، در صورت موفقیت فرایند تبدیل تأیید و به کتابخانه مدارک دانشجو "
+"کپی می‌شود. برداشتن انتخاب یک مدرک تأییدشده، وضعیت تأیید آن را تغییر نمی‌دهد."
+
+msgid "In person"
+msgstr "حضوری"
+
+msgid "In progress"
+msgstr "در حال انجام"
+
+msgid "Inbox"
+msgstr "صندوق ورودی"
+
+msgid "Installment total"
+msgstr "مجموع اقساط"
+
+msgid "Institute"
+msgstr "مؤسسه"
+
+msgid "Instruction-language percentages cannot exceed 100%."
+msgstr "درصدهای زبان آموزش نمی‌توانند از ۱۰۰٪ بیشتر شوند."
+
+msgid "Intake"
+msgstr "ورودی"
+
+msgid "Intake academic year must match the offering academic year."
+msgstr "سال تحصیلی ورودی باید با سال تحصیلی گزینه پذیرش مطابقت داشته باشد."
+
+msgid "Intakes and tuition"
+msgstr "ورودی‌ها و شهریه"
+
+msgid "Internal"
+msgstr "داخلی"
+
+msgid "Internal description visible to staff users."
+msgstr "توضیح داخلی قابل مشاهده برای کارکنان."
+
+msgid "Internal notes"
+msgstr "یادداشت‌های داخلی"
+
+msgid "Internal notes updated"
+msgstr "یادداشت‌های داخلی به‌روزرسانی شد"
+
+msgid "Internal notes updated."
+msgstr "یادداشت‌های داخلی به‌روزرسانی شد."
+
+msgid "Internal notes were not changed."
+msgstr "یادداشت‌های داخلی تغییری نکرد."
+
+msgid "Internal notes."
+msgstr "یادداشت‌های داخلی."
+
+msgid "Internal staff user currently responsible for this lead."
+msgstr "کاربر داخلی فعلی مسئول این متقاضی."
+
+msgid "Invalid applicant status action."
+msgstr "عملیات وضعیت متقاضی نامعتبر است."
+
+msgid "Invalid application status."
+msgstr "وضعیت درخواست نامعتبر است."
+
+msgid "Issuing authority"
+msgstr "مرجع صادرکننده"
+
+msgid "Keep pending"
+msgstr "در انتظار نگه دارید"
+
+msgid "Keep your personal information and documents together."
+msgstr "اطلاعات شخصی و مدارک خود را یکجا نگه دارید."
+
+msgid "Language"
+msgstr "زبان"
+
+msgid "Language Certificate"
+msgstr "گواهی زبان"
+
+msgid "Last date on which an application can be submitted for this offering."
+msgstr "آخرین تاریخی که می‌توان برای این گزینه پذیرش درخواست ثبت کرد."
+
+msgid "Last name"
+msgstr "نام خانوادگی"
+
+msgid "Last reviewed by"
+msgstr "آخرین بررسی توسط"
+
+msgid "Last updated"
+msgstr "آخرین به‌روزرسانی"
+
+#, python-format
+msgid "Last updated by %(person)s · %(when)s"
+msgstr "آخرین به‌روزرسانی توسط %(person)s · %(when)s"
+
+#, python-format
+msgid "Last updated · %(when)s"
+msgstr "آخرین به‌روزرسانی · %(when)s"
+
+msgid "Last-read message must belong to this conversation."
+msgstr "آخرین پیام خوانده‌شده باید متعلق به همین گفتگو باشد."
+
+msgid "Lead lifecycle"
+msgstr "چرخه متقاضی"
+
+msgid "Leave the document waiting for review."
+msgstr "مدرک را در انتظار بررسی نگه دارید."
+
+msgid "Login"
+msgstr "ورود"
+
+msgid "Logout"
+msgstr "خروج"
+
+msgid "MOE"
+msgstr "وزارت آموزش"
+
+msgid "MOE approved"
+msgstr "تأیید وزارت آموزش"
+
+msgid "MOE approved university"
+msgstr "دانشگاه مورد تأیید وزارت آموزش"
+
+msgid "MOE, MOH, YÖK and other university-level indicators where available."
+msgstr "شاخص‌های سطح دانشگاه از جمله MOE، MOH و YÖK در صورت موجود بودن."
+
+msgid "MOH"
+msgstr "وزارت بهداشت"
+
+msgid "MOH approved"
+msgstr "تأیید وزارت بهداشت"
+
+msgid "MOH approved university"
+msgstr "دانشگاه مورد تأیید وزارت بهداشت"
+
+msgid "MY TURKDEMY"
+msgstr "ترک‌دمی من"
+
+msgid "Main navigation"
+msgstr "ناوبری اصلی"
+
 msgid "Make primary"
 msgstr "انتخاب به‌عنوان ایمیل اصلی"
+
+msgid "Male"
+msgstr "مرد"
+
+msgid "Manage Google, Telegram and verified email access to your TurkDemy account."
+msgstr "دسترسی Google، Telegram و ایمیل تأییدشده به حساب ترک‌دمی خود را مدیریت کنید."
+
+msgid "Manage Google, Telegram, and email access from TurkDemy"
+msgstr "دسترسی Google، Telegram و ایمیل را از ترک‌دمی مدیریت کنید"
 
 msgid "Manage Google, Telegram, and email access from TurkDemy's account settings."
 msgstr "دسترسی Google، Telegram و ایمیل را از تنظیمات حساب TurkDemy مدیریت کنید."
@@ -119,8 +1399,252 @@ msgstr "دسترسی Google، Telegram و ایمیل را از تنظیمات ح
 msgid "Manage sign-in methods"
 msgstr "مدیریت روش‌های ورود"
 
+msgid "Manage your personal information and account access."
+msgstr "اطلاعات شخصی و دسترسی به حساب خود را مدیریت کنید."
+
+msgid "Master"
+msgstr "کارشناسی ارشد"
+
+msgid "Maximum tuition must be greater than minimum tuition."
+msgstr "حداکثر شهریه باید از حداقل شهریه بیشتر باشد."
+
+msgid "Medicine, dentistry, engineering, university…"
+msgstr "پزشکی، دندان‌پزشکی، مهندسی، دانشگاه…"
+
+msgid "Message us on WhatsApp"
+msgstr "در واتساپ به ما پیام دهید"
+
+msgid "Messages"
+msgstr "پیام‌ها"
+
+msgid "Messages about this applicant"
+msgstr "پیام‌های مربوط به این متقاضی"
+
+msgid "Messages about this application"
+msgstr "پیام‌های مربوط به این درخواست"
+
+msgid "Messages with"
+msgstr "پیام‌ها با"
+
+msgid "Messaging will be available once an advisor is assigned."
+msgstr "پس از اختصاص مشاور، پیام‌رسانی فعال می‌شود."
+
+msgid "Messaging will become available once TurkDemy assigns an advisor to this Request."
+msgstr "پس از اینکه ترک‌دمی مشاوری به این درخواست اختصاص دهد، پیام‌رسانی فعال می‌شود."
+
+msgid "Mobile navigation"
+msgstr "ناوبری موبایل"
+
+msgid "More programs at this university"
+msgstr "رشته‌های بیشتر در این دانشگاه"
+
+msgid "Multilingual platform"
+msgstr "پلتفرم چندزبانه"
+
+msgid "My Requests"
+msgstr "درخواست‌های من"
+
+msgid "My TODOs"
+msgstr "کارهای من"
+
+msgid "My TurkDemy"
+msgstr "ترک‌دمی من"
+
+msgid "Myself"
+msgstr "خودم"
+
+msgid "Name"
+msgstr "نام"
+
+msgid "Nationality"
+msgstr "تابعیت"
+
+msgid "Need help choosing?"
+msgstr "برای انتخاب کمک می‌خواهید؟"
+
+msgid "Need help?"
+msgstr "کمک می‌خواهید؟"
+
+msgid "Need recommendations"
+msgstr "نیاز به پیشنهاد"
+
+msgid "Needs program recommendations"
+msgstr "نیازمند پیشنهاد رشته"
+
+msgid "Needs replacement"
+msgstr "نیازمند جایگزینی"
+
+msgid "Needs review"
+msgstr "نیازمند بررسی"
+
+msgid "Needs your attention"
+msgstr "نیازمند توجه شما"
+
+msgid "New"
+msgstr "جدید"
+
+msgid "New applicants"
+msgstr "متقاضیان جدید"
+
+msgid "New application"
+msgstr "درخواست جدید"
+
 msgid "New to TurkDemy?"
 msgstr "تازه به TurkDemy آمده‌اید؟"
+
+msgid "Next"
+msgstr "بعدی"
+
+msgid "No FAQ categories available."
+msgstr "دسته‌بندی پرسش‌های متداول موجود نیست."
+
+msgid "No TODOs in this scope."
+msgstr "کاری در این بخش وجود ندارد."
+
+msgid "No active TODOs assigned to you."
+msgstr "هیچ کار فعالی به شما اختصاص داده نشده است."
+
+msgid ""
+"No active offering is available for this discussed program, so it cannot be selected for a draft "
+"application."
+msgstr ""
+"برای این رشته مطرح‌شده گزینه پذیرش فعالی وجود ندارد؛ بنابراین نمی‌توان آن را برای درخواست "
+"پیش‌نویس انتخاب کرد."
+
+msgid "No active offerings are currently available for this program."
+msgstr "در حال حاضر گزینه پذیرش فعالی برای این رشته موجود نیست."
+
+msgid "No activity matches this filter."
+msgstr "هیچ فعالیتی با این فیلتر مطابقت ندارد."
+
+msgid "No activity yet."
+msgstr "هنوز فعالیتی ثبت نشده است."
+
+msgid "No applicant data changed."
+msgstr "اطلاعات متقاضی تغییری نکرد."
+
+msgid "No applicant documents have been uploaded."
+msgstr "هنوز مدرکی برای متقاضی بارگذاری نشده است."
+
+msgid "No applicant programs yet."
+msgstr "هنوز رشته‌ای برای متقاضی ثبت نشده است."
+
+msgid "No applicants match these filters."
+msgstr "هیچ متقاضی‌ای با این فیلترها مطابقت ندارد."
+
+msgid "No applicants yet."
+msgstr "هنوز متقاضی‌ای ندارید."
+
+msgid "No application documents."
+msgstr "مدرکی برای درخواست وجود ندارد."
+
+msgid "No applications yet."
+msgstr "هنوز درخواستی وجود ندارد."
+
+msgid "No communication has been logged in this scope."
+msgstr "ارتباطی در این بخش ثبت نشده است."
+
+msgid "No communication logged yet."
+msgstr "هنوز ارتباطی ثبت نشده است."
+
+msgid "No conversations yet."
+msgstr "هنوز گفتگویی وجود ندارد."
+
+msgid "No documents have been attached to this application."
+msgstr "مدرکی به این درخواست پیوست نشده است."
+
+msgid "No documents uploaded yet."
+msgstr "هنوز مدرکی بارگذاری نشده است."
+
+msgid "No documents yet."
+msgstr "هنوز مدرکی وجود ندارد."
+
+msgid "No documents."
+msgstr "مدرکی وجود ندارد."
+
+msgid "No formal applications match these filters."
+msgstr "هیچ درخواست رسمی‌ای با این فیلترها مطابقت ندارد."
+
+msgid "No formal applications yet."
+msgstr "هنوز درخواست رسمی‌ای وجود ندارد."
+
+msgid "No internal notes yet."
+msgstr "هنوز یادداشت داخلی وجود ندارد."
+
+msgid "No matching active programs found."
+msgstr "هیچ رشته فعال مطابقی پیدا نشد."
+
+msgid "No matching options"
+msgstr "گزینه‌ای مطابق جستجو پیدا نشد"
+
+msgid "No messages yet."
+msgstr "هنوز پیامی وجود ندارد."
+
+msgid "No preference"
+msgstr "بدون ترجیح"
+
+msgid "No profile data changed."
+msgstr "اطلاعات پروفایل تغییری نکرد."
+
+msgid "No program preferences added yet."
+msgstr "هنوز ترجیح رشته‌ای اضافه نشده است."
+
+msgid "No programs added yet"
+msgstr "هنوز رشته‌ای اضافه نشده است"
+
+msgid "No programs are attached to this request yet."
+msgstr "هنوز رشته‌ای به این درخواست متصل نشده است."
+
+msgid "No programs available."
+msgstr "رشته‌ای موجود نیست."
+
+msgid "No programs have been added to this request yet."
+msgstr "هنوز رشته‌ای به این درخواست اضافه نشده است."
+
+msgid "No programs have been discussed. You can still create the Student record."
+msgstr "هنوز رشته‌ای مطرح نشده است. همچنان می‌توانید پرونده دانشجو را ایجاد کنید."
+
+msgid "No programs match your filters."
+msgstr "هیچ رشته‌ای با فیلترهای شما مطابقت ندارد."
+
+msgid "No programs were discussed during the applicant stage."
+msgstr "در مرحله متقاضی رشته‌ای مطرح نشده است."
+
+msgid "No programs yet."
+msgstr "هنوز رشته‌ای وجود ندارد."
+
+msgid "No programs."
+msgstr "رشته‌ای وجود ندارد."
+
+msgid "No questions in this category."
+msgstr "پرسشی در این دسته وجود ندارد."
+
+msgid "No requests yet"
+msgstr "هنوز درخواستی ندارید"
+
+msgid "No results."
+msgstr "نتیجه‌ای پیدا نشد."
+
+msgid "No structured requirements have been added to this application yet."
+msgstr "هنوز الزام ساختاریافته‌ای به این درخواست اضافه نشده است."
+
+msgid "No structured requirements have been added yet."
+msgstr "هنوز الزام ساختاریافته‌ای اضافه نشده است."
+
+msgid "No student documents."
+msgstr "مدرکی برای دانشجو وجود ندارد."
+
+msgid "No study preferences."
+msgstr "ترجیح تحصیلی‌ای وجود ندارد."
+
+msgid "No universities have been imported yet."
+msgstr "هنوز دانشگاهی وارد نشده است."
+
+msgid "No user-added programs yet."
+msgstr "هنوز رشته‌ای توسط کاربر اضافه نشده است."
+
+msgid "Not available"
+msgstr "موجود نیست"
 
 msgid "Not configured"
 msgstr "پیکربندی نشده"
@@ -128,11 +1652,193 @@ msgstr "پیکربندی نشده"
 msgid "Not connected"
 msgstr "متصل نیست"
 
+msgid "Not found"
+msgstr "یافت نشد"
+
+msgid "Not required"
+msgstr "الزامی نیست"
+
+msgid "Not selected"
+msgstr "انتخاب نشده"
+
+msgid "Not verified"
+msgstr "تأیید نشده"
+
+msgid "Note"
+msgstr "یادداشت"
+
+msgid "Notes"
+msgstr "یادداشت‌ها"
+
+msgid "Number of admission places available for this offering, when known."
+msgstr "تعداد ظرفیت پذیرش این گزینه، در صورت مشخص بودن."
+
+msgid "Occurred at"
+msgstr "زمان وقوع"
+
+msgid "Offering"
+msgstr "گزینه پذیرش"
+
+msgid "Offering must belong to the selected program."
+msgstr "گزینه پذیرش باید متعلق به رشته انتخاب‌شده باشد."
+
+msgid "On campus"
+msgstr "حضوری"
+
+msgid "One or more degree values are invalid."
+msgstr "یک یا چند مقدار مقطع نامعتبر است."
+
+msgid "One or more university types are invalid."
+msgstr "یک یا چند نوع دانشگاه نامعتبر است."
+
+msgid "One time"
+msgstr "یک‌باره"
+
+msgid "Online"
+msgstr "آنلاین"
+
+msgid "Open"
+msgstr "باز"
+
+#, python-format
+msgid "Open %(document_type)s"
+msgstr "باز کردن %(document_type)s"
+
+msgid "Open Documents to upload a replacement."
+msgstr "برای بارگذاری جایگزین، بخش مدارک را باز کنید."
+
+msgid "Open Messages to review and reply."
+msgstr "برای بررسی و پاسخ، پیام‌ها را باز کنید."
+
+msgid "Open applications"
+msgstr "درخواست‌های باز"
+
+msgid "Open conversation"
+msgstr "باز کردن گفتگو"
+
+msgid "Open dashboard"
+msgstr "باز کردن داشبورد"
+
+msgid "Open document"
+msgstr "باز کردن مدرک"
+
+msgid "Open document in a new tab"
+msgstr "باز کردن مدرک در برگه جدید"
+
+msgid "Open navigation"
+msgstr "باز کردن ناوبری"
+
+msgid "Open request"
+msgstr "باز کردن درخواست"
+
 msgid "Open sign-in methods"
 msgstr "باز کردن روش‌های ورود"
 
+msgid "Open workspace"
+msgstr "باز کردن محیط کار"
+
+msgid "Open/ongoing applications"
+msgstr "درخواست‌های باز/در حال انجام"
+
+msgid "Operations overview"
+msgstr "نمای کلی عملیات"
+
+msgid "Optional"
+msgstr "اختیاری"
+
+msgid "Optional family information used when an application requires it."
+msgstr "اطلاعات اختیاری خانواده که در صورت نیاز درخواست استفاده می‌شود."
+
+msgid "Optional internal review note"
+msgstr "یادداشت اختیاری بررسی داخلی"
+
+msgid "Optional note about this document"
+msgstr "یادداشت اختیاری درباره این مدرک"
+
+msgid "Optional reason for the applicant"
+msgstr "دلیل اختیاری برای متقاضی"
+
+msgid "Originating applicant"
+msgstr "متقاضی مبدأ"
+
+msgid "Other"
+msgstr "سایر"
+
+msgid "Other preferences"
+msgstr "سایر ترجیحات"
+
 msgid "Other sign-in methods"
 msgstr "روش‌های دیگر ورود"
+
+msgid "Overdue"
+msgstr "گذشته از موعد"
+
+msgid "Overview"
+msgstr "نمای کلی"
+
+msgid "PTE"
+msgstr "PTE"
+
+#, python-format
+msgid "Page %(current)s of %(total)s"
+msgstr "صفحه %(current)s از %(total)s"
+
+msgid "Page not found"
+msgstr "صفحه پیدا نشد"
+
+msgid "Pagination"
+msgstr "صفحه‌بندی"
+
+msgid "Passport"
+msgstr "گذرنامه"
+
+msgid "Passport Copy"
+msgstr "کپی گذرنامه"
+
+msgid "Passport Size Photo"
+msgstr "عکس پرسنلی"
+
+msgid "Passport number"
+msgstr "شماره گذرنامه"
+
+msgid "Per credit"
+msgstr "به‌ازای هر واحد"
+
+msgid "Per semester"
+msgstr "هر ترم"
+
+msgid "Personal information"
+msgstr "اطلاعات شخصی"
+
+msgid "PhD"
+msgstr "دکتری"
+
+msgid "Phone"
+msgstr "تلفن"
+
+msgid "Please review the form."
+msgstr "لطفاً فرم را بررسی کنید."
+
+msgid "Popular choices"
+msgstr "گزینه‌های محبوب"
+
+msgid "Popular programs"
+msgstr "رشته‌های محبوب"
+
+msgid "Preferences"
+msgstr "ترجیحات"
+
+msgid "Preparatory / foundation tuition"
+msgstr "شهریه دوره آمادگی"
+
+msgid "Prepare your profile"
+msgstr "پروفایل خود را آماده کنید"
+
+msgid "Preserve source footnotes, exceptional charges, or ambiguous terms here."
+msgstr "پاورقی‌های منبع، هزینه‌های استثنایی یا اصطلاحات مبهم را اینجا حفظ کنید."
+
+msgid "Previous"
+msgstr "قبلی"
 
 msgid "Primary"
 msgstr "اصلی"
@@ -140,11 +1846,422 @@ msgstr "اصلی"
 msgid "Primary email updated."
 msgstr "ایمیل اصلی به‌روزرسانی شد."
 
+msgid "Private"
+msgstr "خصوصی"
+
+msgid "Private work items shared by this Agent organization."
+msgstr "کارهای خصوصی مشترک در این سازمان نماینده."
+
+msgid "Profile"
+msgstr "پروفایل"
+
+msgid "Profile updated"
+msgstr "پروفایل به‌روزرسانی شد"
+
+msgid "Profile updated."
+msgstr "پروفایل به‌روزرسانی شد."
+
+msgid "Program"
+msgstr "رشته"
+
+msgid "Program / intake"
+msgstr "رشته / ورودی"
+
+msgid "Program added"
+msgstr "رشته اضافه شد"
+
+msgid "Program added to your request"
+msgstr "رشته به درخواست شما اضافه شد"
+
+#, python-format
+msgid "Program added: %(program)s."
+msgstr "رشته اضافه شد: %(program)s."
+
+msgid "Program catalogue"
+msgstr "فهرست رشته‌ها"
+
+msgid "Program intake"
+msgstr "ورودی رشته"
+
+msgid "Program intake updated."
+msgstr "ورودی رشته به‌روزرسانی شد."
+
+#, python-format
+msgid "Program intake updated: %(program)s."
+msgstr "ورودی رشته به‌روزرسانی شد: %(program)s."
+
+msgid "Program or university"
+msgstr "رشته یا دانشگاه"
+
+msgid "Program overview"
+msgstr "نمای کلی رشته"
+
+msgid "Program preferences"
+msgstr "ترجیحات رشته"
+
+msgid "Program recommendation removed."
+msgstr "پیشنهاد رشته حذف شد."
+
+msgid "Program recommended to applicant."
+msgstr "رشته به متقاضی پیشنهاد شد."
+
+msgid "Program removed from this Request."
+msgstr "رشته از این درخواست حذف شد."
+
+msgid "Program response"
+msgstr "پاسخ به رشته"
+
+msgid "Program response updated"
+msgstr "پاسخ به رشته به‌روزرسانی شد"
+
+msgid "Program suggested"
+msgstr "رشته پیشنهاد شد"
+
+#, python-format
+msgid "Program suggested: %(program)s."
+msgstr "رشته پیشنهاد شد: %(program)s."
+
+msgid "Programs"
+msgstr "رشته‌ها"
+
+msgid ""
+"Programs associated with applicants. User-added programs and advisor suggestions are shown "
+"separately from formal applications."
+msgstr ""
+"رشته‌های مرتبط با متقاضیان. رشته‌های افزوده‌شده توسط کاربر و پیشنهادهای مشاور جدا از درخواست‌های "
+"رسمی نمایش داده می‌شوند."
+
+msgid "Programs at this university"
+msgstr "رشته‌های این دانشگاه"
+
+msgid "Programs discussed during applicant stage"
+msgstr "رشته‌های مطرح‌شده در مرحله متقاضی"
+
+msgid "Programs discussed with or recommended to this applicant."
+msgstr "رشته‌هایی که با این متقاضی مطرح یا به او پیشنهاد شده‌اند."
+
+msgid "Programs, intakes, tuition and university information in a consistent format."
+msgstr "اطلاعات رشته‌ها، ورودی‌ها، شهریه و دانشگاه‌ها در قالبی یکپارچه."
+
+msgid "Progress"
+msgstr "پیشرفت"
+
+msgid "Public"
+msgstr "دولتی"
+
+msgid "Questions"
+msgstr "پرسش‌ها"
+
+msgid "Questions about this program?"
+msgstr "درباره این رشته سؤال دارید؟"
+
+msgid "Quota"
+msgstr "ظرفیت"
+
+msgid "Read"
+msgstr "خوانده‌شده"
+
+msgid "Reason"
+msgstr "دلیل"
+
+msgid "Reassign"
+msgstr "واگذاری مجدد"
+
+msgid "Reassign applicant"
+msgstr "واگذاری مجدد متقاضی"
+
+msgid "Reassigned"
+msgstr "مجدداً واگذار شد"
+
+msgid "Received"
+msgstr "دریافت‌شده"
+
+msgid "Recent applicants"
+msgstr "متقاضیان اخیر"
+
+msgid "Recent applications"
+msgstr "درخواست‌های اخیر"
+
+msgid "Recent communication"
+msgstr "ارتباطات اخیر"
+
+msgid "Recent messages"
+msgstr "پیام‌های اخیر"
+
+msgid "Recent user-added programs"
+msgstr "رشته‌های اخیر افزوده‌شده توسط کاربر"
+
+msgid "Recognized"
+msgstr "تأییدشده"
+
+msgid "Recommend"
+msgstr "پیشنهاد"
+
+msgid "Recommend a program"
+msgstr "پیشنهاد یک رشته"
+
+msgid "Recommend another program"
+msgstr "پیشنهاد رشته دیگر"
+
+msgid "Recommend program"
+msgstr "پیشنهاد رشته"
+
+msgid "Recommendation reason"
+msgstr "دلیل پیشنهاد"
+
+msgid "Recommendation updated."
+msgstr "پیشنهاد به‌روزرسانی شد."
+
+msgid "Recommendations generated"
+msgstr "پیشنهادها ایجاد شد"
+
+msgid "Record communication"
+msgstr "ثبت ارتباط"
+
+msgid "Recorded"
+msgstr "ثبت‌شده"
+
+msgid "Refine results"
+msgstr "دقیق‌تر کردن نتایج"
+
+msgid "Registration fee"
+msgstr "هزینه ثبت‌نام"
+
+msgid "Rejected"
+msgstr "ردشده"
+
 msgid "Remove"
 msgstr "حذف"
 
+msgid "Remove program"
+msgstr "حذف رشته"
+
+msgid "Remove recommendation"
+msgstr "حذف پیشنهاد"
+
+msgid "Remove this program from your Request?"
+msgstr "این رشته از درخواست شما حذف شود؟"
+
+msgid "Reopen"
+msgstr "بازگشایی"
+
+msgid "Reopen this applicant before creating a Student record."
+msgstr "پیش از ایجاد پرونده دانشجو، این متقاضی را بازگشایی کنید."
+
+msgid "Reopened"
+msgstr "بازگشایی‌شده"
+
+msgid "Replace document"
+msgstr "جایگزینی مدرک"
+
+msgid "Replacement file"
+msgstr "فایل جایگزین"
+
+msgid "Replacement requested"
+msgstr "جایگزینی درخواست شد"
+
+msgid "Replacement uploaded and sent for review."
+msgstr "فایل جایگزین بارگذاری و برای بررسی ارسال شد."
+
+msgid "Request closed"
+msgstr "درخواست بسته شد"
+
+msgid "Request completed"
+msgstr "درخواست تکمیل شد"
+
+msgid "Request context"
+msgstr "زمینه درخواست"
+
+msgid "Request created"
+msgstr "درخواست ایجاد شد"
+
+msgid "Request documents are read-only"
+msgstr "مدارک درخواست فقط خواندنی هستند"
+
+msgid "Request navigation"
+msgstr "ناوبری درخواست"
+
+msgid "Request profile"
+msgstr "پروفایل درخواست"
+
+msgid "Request received"
+msgstr "درخواست دریافت شد"
+
+msgid "Request reopened"
+msgstr "درخواست بازگشایی شد"
+
+msgid "Request replacement"
+msgstr "درخواست جایگزینی"
+
+msgid "Request reviewed"
+msgstr "درخواست بررسی شد"
+
+msgid "Request status updated"
+msgstr "وضعیت درخواست به‌روزرسانی شد"
+
+msgid "Request updated"
+msgstr "درخواست به‌روزرسانی شد"
+
+msgid "Required"
+msgstr "الزامی"
+
+msgid "Required document"
+msgstr "مدرک الزامی"
+
+msgid "Requirements"
+msgstr "الزامات"
+
+msgid "Residence"
+msgstr "اقامت"
+
+msgid "Responsibility"
+msgstr "مسئولیت"
+
+msgid "Responsible agent"
+msgstr "نماینده مسئول"
+
+msgid "Responsible:"
+msgstr "مسئول:"
+
+msgid "Reuse a document already stored for this student."
+msgstr "از مدرکی که قبلاً برای این دانشجو ذخیره شده دوباره استفاده کنید."
+
+msgid "Review"
+msgstr "بررسی"
+
+msgid "Review & create"
+msgstr "بررسی و ایجاد"
+
+msgid "Review decision"
+msgstr "تصمیم بررسی"
+
+msgid "Review note"
+msgstr "یادداشت بررسی"
+
+msgid ""
+"Review the student information, choose which applicant documents to transfer, and optionally "
+"create draft applications from discussed programs."
+msgstr ""
+"اطلاعات دانشجو را بررسی کنید، مدارک متقاضی برای انتقال را انتخاب کنید و در صورت نیاز از رشته‌های "
+"مطرح‌شده درخواست‌های پیش‌نویس بسازید."
+
+msgid "Review tuition, recognition, language, intake and university information."
+msgstr "شهریه، اعتبار، زبان، ورودی و اطلاعات دانشگاه را بررسی کنید."
+
+msgid "SWITCH WORKSPACE"
+msgstr "تغییر محیط کار"
+
+msgid "Save applicant"
+msgstr "ذخیره متقاضی"
+
+msgid "Save changes"
+msgstr "ذخیره تغییرات"
+
+msgid "Save notes"
+msgstr "ذخیره یادداشت‌ها"
+
+msgid "Save preferences"
+msgstr "ذخیره ترجیحات"
+
+msgid "Save review"
+msgstr "ذخیره بررسی"
+
+msgid "Save revision"
+msgstr "ذخیره نسخه بازبینی"
+
+msgid "Scholarship fee"
+msgstr "شهریه بورسیه"
+
+msgid "Scholarship fee (10%)"
+msgstr "شهریه بورسیه (۱۰٪)"
+
+msgid "School"
+msgstr "مدرسه عالی"
+
+msgid "Search"
+msgstr "جستجو"
+
+#, python-format
+msgid ""
+"Search %(program_count)s programs across %(university_count)s universities and compare your "
+"options in one place."
+msgstr ""
+"در میان %(program_count)s رشته در %(university_count)s دانشگاه جستجو کنید و گزینه‌های خود را یکجا"
+" مقایسه کنید."
+
+msgid "Search and select multiple options. Selected items appear as removable chips."
+msgstr ""
+"جستجو کنید و چند گزینه را انتخاب کنید. موارد انتخاب‌شده به‌صورت برچسب‌های قابل حذف نمایش داده "
+"می‌شوند."
+
+msgid "Search applicant or email"
+msgstr "جستجوی متقاضی یا ایمیل"
+
+msgid "Search below to recommend a suitable program to this applicant."
+msgstr "برای پیشنهاد رشته مناسب به این متقاضی، در پایین جستجو کنید."
+
+msgid "Search cities"
+msgstr "جستجوی شهرها"
+
+msgid "Search languages"
+msgstr "جستجوی زبان‌ها"
+
+msgid "Search program or university…"
+msgstr "جستجوی رشته یا دانشگاه…"
+
+msgid "Search programs"
+msgstr "جستجوی رشته‌ها"
+
+msgid "Search programs or universities"
+msgstr "جستجوی رشته یا دانشگاه"
+
+msgid "Search study fields"
+msgstr "جستجوی رشته‌ها"
+
+msgid "Search the catalogue by program or university name, then send a recommendation."
+msgstr "فهرست را بر اساس نام رشته یا دانشگاه جستجو کنید و سپس پیشنهاد را ارسال کنید."
+
+msgid "Search universities"
+msgstr "جستجوی دانشگاه‌ها"
+
+msgid "Search universities and programs by field, language and degree."
+msgstr "دانشگاه‌ها و رشته‌ها را بر اساس رشته، زبان و مقطع جستجو کنید."
+
+msgid "Secure sign in"
+msgstr "ورود امن"
+
+msgid "See all university programs"
+msgstr "مشاهده همه رشته‌های دانشگاه"
+
+msgid "Select intake"
+msgstr "انتخاب ورودی"
+
+msgid "Select zero or more discussed programs. Every selected program requires an active offering."
+msgstr "هیچ، یک یا چند رشته مطرح‌شده را انتخاب کنید. هر رشته انتخاب‌شده باید گزینه پذیرش فعال داشته باشد."
+
+msgid "Send"
+msgstr "ارسال"
+
+msgid "Send a message to your advisor about this Request."
+msgstr "درباره این درخواست به مشاور خود پیام بدهید."
+
+msgid "Send message"
+msgstr "ارسال پیام"
+
+msgid "Send reply"
+msgstr "ارسال پاسخ"
+
 msgid "Send sign-in code"
 msgstr "ارسال کد ورود"
+
+msgid "Set a tuition range if you have one."
+msgstr "اگر محدوده شهریه مدنظر دارید، آن را مشخص کنید."
+
+msgid "Shared CRM history of communication outside the platform."
+msgstr "تاریخچه مشترک CRM از ارتباطات خارج از پلتفرم."
+
+msgid "Shared operational work across this organization."
+msgstr "کار عملیاتی مشترک در این سازمان."
 
 msgid "Sign in"
 msgstr "ورود"
@@ -161,14 +2278,191 @@ msgstr "خارج می‌شوید؟"
 msgid "Sign-in methods"
 msgstr "روش‌های ورود"
 
+msgid "Similar programs"
+msgstr "رشته‌های مشابه"
+
+msgid "Simple process"
+msgstr "فرایند ساده"
+
+msgid "Someone else"
+msgstr "شخص دیگری"
+
+msgid "Someone new"
+msgstr "شخص جدید"
+
+msgid "Source"
+msgstr "منبع"
+
+msgid "Staff"
+msgstr "کارکنان"
+
+msgid "Start application"
+msgstr "شروع درخواست"
+
+msgid "Start with the right program."
+msgstr "با رشته مناسب شروع کنید."
+
+msgid ""
+"Start with whatever information you have. Most fields are optional; our admissions team can "
+"collect the rest later."
+msgstr ""
+"با هر اطلاعاتی که در اختیار دارید شروع کنید. بیشتر فیلدها اختیاری هستند و تیم پذیرش می‌تواند بقیه"
+" را بعداً تکمیل کند."
+
+msgid "Status"
+msgstr "وضعیت"
+
+msgid "Status changed"
+msgstr "وضعیت تغییر کرد"
+
+msgid "Structured catalogue"
+msgstr "فهرست ساختاریافته"
+
+msgid "Student"
+msgstr "دانشجو"
+
+msgid "Student document"
+msgstr "مدرک دانشجو"
+
+msgid "Student document added to application."
+msgstr "مدرک دانشجو به درخواست اضافه شد."
+
+msgid "Student document uploaded."
+msgstr "مدرک دانشجو بارگذاری شد."
+
+msgid "Student documents"
+msgstr "مدارک دانشجو"
+
+msgid "Student information"
+msgstr "اطلاعات دانشجو"
+
+msgid "Study field"
+msgstr "رشته تحصیلی"
+
+msgid "Study in Türkiye"
+msgstr "تحصیل در ترکیه"
+
+msgid "Study in Türkiye with TurkDemy."
+msgstr "با ترک‌دمی در ترکیه تحصیل کنید."
+
+msgid "Study in Türkiye with clarity."
+msgstr "با شفافیت در ترکیه تحصیل کنید."
+
+msgid "Study mode"
+msgstr "شیوه تحصیل"
+
+msgid "Study preferences"
+msgstr "ترجیحات تحصیلی"
+
+msgid "Study preferences updated."
+msgstr "ترجیحات تحصیلی به‌روزرسانی شد."
+
+msgid "Subject"
+msgstr "موضوع"
+
+msgid "Submitted"
+msgstr "ارسال‌شده"
+
+msgid "Suggested by your advisor"
+msgstr "پیشنهاد مشاور شما"
+
+msgid "Suggested by your agent"
+msgstr "پیشنهاد نماینده شما"
+
+msgid "Summary"
+msgstr "خلاصه"
+
+msgid "Switch"
+msgstr "تغییر"
+
+msgid "Switch organization"
+msgstr "تغییر سازمان"
+
+msgid "System"
+msgstr "سیستم"
+
+msgid "TODO comments are immutable after posting."
+msgstr "نظرهای کار پس از ثبت غیرقابل‌ویرایش هستند."
+
+msgid "TODO status"
+msgstr "وضعیت کار"
+
+msgid "TODO updated."
+msgstr "کار به‌روزرسانی شد."
+
+msgid "TOEFL"
+msgstr "تافل"
+
+msgid "Telegram"
+msgstr "تلگرام"
+
 msgid "Telegram account connected"
 msgstr "حساب Telegram متصل است"
 
 msgid "Telegram login is not configured."
 msgstr "ورود با Telegram پیکربندی نشده است."
 
+msgid "Tell us what you are looking for so TurkDemy can suggest suitable programs."
+msgstr "به ما بگویید دنبال چه چیزی هستید تا ترک‌دمی رشته‌های مناسب را پیشنهاد دهد."
+
+msgid "Tell us what you know"
+msgstr "هرچه می‌دانید به ما بگویید"
+
 msgid "That email address is already verified."
 msgstr "این آدرس ایمیل از قبل تأیید شده است."
+
+msgid "The Student record was not created."
+msgstr "پرونده دانشجو ایجاد نشد."
+
+msgid ""
+"The Student, selected document transfers, draft applications, and applicant finalization are "
+"committed as one conversion workflow."
+msgstr ""
+"دانشجو، انتقال مدارک انتخاب‌شده، درخواست‌های پیش‌نویس و نهایی‌سازی متقاضی به‌عنوان یک فرایند "
+"تبدیل واحد ثبت می‌شوند."
+
+msgid "The applicant should provide another version."
+msgstr "متقاضی باید نسخه دیگری ارائه کند."
+
+msgid "The attachment will be copied into the applicant"
+msgstr "پیوست به مدارک متقاضی کپی می‌شود"
+
+msgid "The document is acceptable."
+msgstr "مدرک قابل قبول است."
+
+msgid "The file is stored as a reusable Student document and added to this application."
+msgstr "فایل به‌عنوان مدرک قابل استفاده مجدد دانشجو ذخیره و به این درخواست اضافه می‌شود."
+
+msgid ""
+"The original filename is kept internally. The document type is what agents and applicants use to "
+"identify the document."
+msgstr ""
+"نام اصلی فایل به‌صورت داخلی نگهداری می‌شود. نمایندگان و متقاضیان برای شناسایی مدرک از نوع مدرک "
+"استفاده می‌کنند."
+
+msgid "The page may have moved, the link may be outdated, or you may not have access to this item."
+msgstr "ممکن است صفحه منتقل شده باشد، لینک قدیمی باشد یا به این مورد دسترسی نداشته باشید."
+
+msgid "These notes are visible only to agent/staff users."
+msgstr "این یادداشت‌ها فقط برای کاربران نماینده/کارکنان قابل مشاهده‌اند."
+
+msgid "These remain discussion history until an agent starts a formal application."
+msgstr "این موارد تا زمانی که نماینده یک درخواست رسمی آغاز کند، در تاریخچه گفتگو باقی می‌مانند."
+
+msgid "This Request can no longer be changed."
+msgstr "این درخواست دیگر قابل تغییر نیست."
+
+msgid "This applicant already has a Student record."
+msgstr "این متقاضی از قبل پرونده دانشجو دارد."
+
+msgid "This applicant can no longer be assigned."
+msgstr "این متقاضی دیگر قابل واگذاری نیست."
+
+msgid "This attachment is already in Documents."
+msgstr "این پیوست از قبل در مدارک وجود دارد."
+
+msgid "This conversation is closed."
+msgstr "این گفتگو بسته شده است."
 
 msgid "This email address already belongs to another TurkDemy account."
 msgstr "این آدرس ایمیل از قبل متعلق به حساب دیگری در TurkDemy است."
@@ -179,20 +2473,225 @@ msgstr "این آدرس ایمیل از قبل به حساب دیگری در Tur
 msgid "This page has moved"
 msgstr "این صفحه منتقل شده است"
 
+msgid "This program is already recommended."
+msgstr "این رشته قبلاً پیشنهاد شده است."
+
+msgid "This request is finalized, so document changes are managed by TurkDemy."
+msgstr "این درخواست نهایی شده است؛ بنابراین تغییرات مدارک توسط ترک‌دمی مدیریت می‌شود."
+
+msgid "This student has no originating applicant record."
+msgstr "این دانشجو پرونده متقاضی مبدأ ندارد."
+
+msgid "This user is already responsible for the applicant."
+msgstr "این کاربر از قبل مسئول متقاضی است."
+
+msgid "Tip"
+msgstr "نکته"
+
+msgid "To"
+msgstr "تا"
+
+msgid "Todos"
+msgstr "کارها"
+
+msgid "Total (Whole Program)"
+msgstr "کل دوره"
+
+msgid "Track applications"
+msgstr "پیگیری درخواست‌ها"
+
+msgid "Track programs, documents and status in your account."
+msgstr "رشته‌ها، مدارک و وضعیت را در حساب خود پیگیری کنید."
+
+msgid "Track the people and programs you have asked TurkDemy to help with."
+msgstr "افراد و رشته‌هایی را که از ترک‌دمی برای آن‌ها کمک خواسته‌اید پیگیری کنید."
+
+msgid "Transcript"
+msgstr "ریز نمرات"
+
+msgid "Travel document details, if available."
+msgstr "اطلاعات مدرک سفر، در صورت وجود."
+
+msgid "Travel document information required by later application workflows."
+msgstr "اطلاعات مدرک سفر مورد نیاز در مراحل بعدی درخواست."
+
+msgid "Try a program name such as Computer Engineering or a university name."
+msgstr "نام یک رشته مانند مهندسی کامپیوتر یا نام یک دانشگاه را امتحان کنید."
+
+msgid "Try broadening your search or clearing some filters."
+msgstr "جستجو را گسترده‌تر کنید یا برخی فیلترها را پاک کنید."
+
+msgid "Tuition"
+msgstr "شهریه"
+
+msgid "Tuition / list fee"
+msgstr "شهریه / مبلغ پایه"
+
+msgid "Tuition fee"
+msgstr "شهریه"
+
+msgid "Tuition from"
+msgstr "شهریه از"
+
+msgid "Tuition not available"
+msgstr "اطلاعات شهریه موجود نیست"
+
+msgid "TurkDemy"
+msgstr "ترک‌دمی"
+
+msgid ""
+"TurkDemy brings program information, university recognition, tuition details and application "
+"management into one structured platform."
+msgstr ""
+"ترک‌دمی اطلاعات رشته، اعتبار دانشگاه، جزئیات شهریه و مدیریت درخواست را در یک پلتفرم ساختاریافته "
+"گرد هم می‌آورد."
+
+msgid "TurkDemy catalogue statistics"
+msgstr "آمار فهرست ترک‌دمی"
+
+msgid "TurkDemy helps students, agents, and staff manage university discovery and admissions workflows."
+msgstr "ترک‌دمی به دانشجویان، نمایندگان و کارکنان کمک می‌کند فرایند جستجوی دانشگاه و پذیرش را مدیریت کنند."
+
+msgid "TurkDemy keeps your search, documents and application journey connected."
+msgstr "ترک‌دمی جستجو، مدارک و مسیر درخواست شما را یکپارچه نگه می‌دارد."
+
 msgid "TurkDemy now manages all sign-in methods from one account-security page."
 msgstr "TurkDemy اکنون همه روش‌های ورود را از یک صفحه امنیت حساب مدیریت می‌کند."
+
+msgid "Turkish Lira"
+msgstr "لیر ترکیه"
+
+msgid "Turkish Proficiency Certificate"
+msgstr "گواهی مهارت زبان ترکی"
+
+msgid "US Dollar"
+msgstr "دلار آمریکا"
+
+msgid "Unassigned"
+msgstr "واگذارنشده"
+
+msgid "Under Review"
+msgstr "در حال بررسی"
+
+msgid "Under review"
+msgstr "در حال بررسی"
+
+msgid "Universities"
+msgstr "دانشگاه‌ها"
+
+msgid "University"
+msgstr "دانشگاه"
+
+msgid "University discovery and admissions support for international students in Türkiye."
+msgstr "جستجوی دانشگاه و پشتیبانی پذیرش برای دانشجویان بین‌المللی در ترکیه."
+
+msgid "University preferences"
+msgstr "ترجیحات دانشگاه"
+
+msgid "University ranking position according to ARWU."
+msgstr "رتبه دانشگاه بر اساس ARWU."
+
+msgid "University ranking position according to QS World University Rankings."
+msgstr "رتبه دانشگاه بر اساس رتبه‌بندی جهانی QS."
+
+msgid "University ranking position according to URAP."
+msgstr "رتبه دانشگاه بر اساس URAP."
+
+msgid "University recognition"
+msgstr "اعتبار دانشگاه"
+
+msgid "University type"
+msgstr "نوع دانشگاه"
+
+msgid "University type codes such as public or private."
+msgstr "کدهای نوع دانشگاه مانند دولتی یا خصوصی."
+
+msgid "University website"
+msgstr "وب‌سایت دانشگاه"
+
+msgid "Unread messages"
+msgstr "پیام‌های خوانده‌نشده"
 
 msgid "Unverified"
 msgstr "تأییدنشده"
 
+msgid "Unverified documents"
+msgstr "مدارک تأییدنشده"
+
+#, python-format
+msgid "Up to %(amount)s"
+msgstr "تا %(amount)s"
+
+msgid "Upcoming"
+msgstr "پیش‌رو"
+
+msgid "Update"
+msgstr "به‌روزرسانی"
+
+#, python-format
+msgid ""
+"Update %(applicant)s's personal, contact, passport and education information. Applicant fields "
+"can remain incomplete until finalization."
+msgstr ""
+"اطلاعات شخصی، تماس، گذرنامه و تحصیلی %(applicant)s را به‌روزرسانی کنید. فیلدهای متقاضی می‌توانند "
+"تا زمان نهایی‌سازی ناقص بمانند."
+
+msgid "Update status"
+msgstr "به‌روزرسانی وضعیت"
+
+msgid "Updated"
+msgstr "به‌روزرسانی‌شده"
+
+msgid "Upload"
+msgstr "بارگذاری"
+
+msgid "Upload & add"
+msgstr "بارگذاری و افزودن"
+
+msgid "Upload document"
+msgstr "بارگذاری مدرک"
+
+msgid "Upload new document"
+msgstr "بارگذاری مدرک جدید"
+
+msgid "Upload replacement"
+msgstr "بارگذاری جایگزین"
+
+msgid "Upload the documents TurkDemy needs to process this Request."
+msgstr "مدارکی را که ترک‌دمی برای رسیدگی به این درخواست نیاز دارد بارگذاری کنید."
+
+msgid "Uploaded documents"
+msgstr "مدارک بارگذاری‌شده"
+
+msgid "Use the details we already know about your account."
+msgstr "از اطلاعاتی که از حساب شما داریم استفاده کنید."
+
 msgid "Use your email address. You will verify it with a one-time code; no password is required."
 msgstr "از آدرس ایمیل خود استفاده کنید. آن را با یک کد یک‌بارمصرف تأیید می‌کنید و نیازی به رمز عبور نیست."
+
+msgid "Useful information before you apply."
+msgstr "اطلاعات مفید پیش از درخواست."
+
+msgid "User-added"
+msgstr "افزوده‌شده توسط کاربر"
+
+msgid "Valid until cannot be earlier than valid from."
+msgstr "تاریخ پایان اعتبار نمی‌تواند قبل از تاریخ شروع اعتبار باشد."
+
+msgid "Validated"
+msgstr "اعتبارسنجی‌شده"
+
+msgid "Values are prefilled from the applicant and can be corrected before conversion."
+msgstr "مقادیر از اطلاعات متقاضی از پیش پر شده‌اند و پیش از تبدیل قابل اصلاح هستند."
 
 msgid "Verification pending"
 msgstr "در انتظار تأیید"
 
 msgid "Verified"
 msgstr "تأییدشده"
+
+msgid "Verified documents are selected by default. You may select or deselect any document."
+msgstr "مدارک تأییدشده به‌طور پیش‌فرض انتخاب می‌شوند. می‌توانید هر مدرکی را انتخاب یا لغو انتخاب کنید."
 
 msgid "Verified email login"
 msgstr "ورود با ایمیل تأییدشده"
@@ -209,50 +2708,374 @@ msgstr "پیش از انتخاب این ایمیل به‌عنوان ایمیل 
 msgid "Verify your email"
 msgstr "ایمیل خود را تأیید کنید"
 
+msgid "Video call"
+msgstr "تماس ویدیویی"
+
+#, python-format
+msgid "View %(program_name)s program"
+msgstr "مشاهده رشته %(program_name)s"
+
+msgid "View all"
+msgstr "مشاهده همه"
+
+msgid "View all FAQ"
+msgstr "مشاهده همه پرسش‌های متداول"
+
+msgid "View all programs"
+msgstr "مشاهده همه رشته‌ها"
+
+msgid "View history"
+msgstr "مشاهده تاریخچه"
+
+msgid "View more"
+msgstr "مشاهده بیشتر"
+
+msgid "View program"
+msgstr "مشاهده رشته"
+
+msgid "View student"
+msgstr "مشاهده دانشجو"
+
+msgid "View university"
+msgstr "مشاهده دانشگاه"
+
+msgid "Visible only to agent/staff users."
+msgstr "فقط برای کاربران نماینده/کارکنان قابل مشاهده است."
+
+msgid "Vocational School"
+msgstr "مدرسه عالی حرفه‌ای"
+
+msgid "WORKSPACES"
+msgstr "محیط‌های کار"
+
+msgid "We couldn"
+msgstr "نتوانستیم"
+
+#, python-format
 msgid "We sent a code to %(email)s."
 msgstr "یک کد به %(email)s ارسال کردیم."
 
+#, python-format
+msgid "We sent a code to <bdi dir=\"ltr\">%(email)s</bdi>."
+msgstr "یک کد به <bdi dir=\"ltr\">%(email)s</bdi> ارسال کردیم."
+
+#, python-format
 msgid "We sent a verification email to %(email)s."
 msgstr "یک ایمیل تأیید به %(email)s ارسال کردیم."
+
+msgid "Website"
+msgstr "وب‌سایت"
 
 msgid "Welcome"
 msgstr "خوش آمدید"
 
+msgid "What do you want to study?"
+msgstr "چه رشته‌ای می‌خواهید بخوانید؟"
+
+msgid "WhatsApp"
+msgstr "واتساپ"
+
+msgid "When would you like to start?"
+msgstr "چه زمانی می‌خواهید شروع کنید؟"
+
+msgid "Where & what to study"
+msgstr "کجا و چه رشته‌ای بخوانید"
+
+msgid "Whether the quoted tuition includes preparatory study."
+msgstr "آیا شهریه اعلام‌شده شامل دوره آمادگی است یا نه."
+
+msgid "Whether the university participates in the Erasmus+ mobility programme."
+msgstr "آیا دانشگاه در برنامه جابه‌جایی Erasmus+ شرکت می‌کند یا نه."
+
+msgid "Who are you applying for?"
+msgstr "برای چه کسی درخواست می‌دهید؟"
+
+msgid "Why is this applicant being closed?"
+msgstr "چرا این متقاضی بسته می‌شود؟"
+
+msgid "With Thesis"
+msgstr "با پایان‌نامه"
+
+msgid "Withdrawn"
+msgstr "انصراف‌داده‌شده"
+
+msgid "Without Thesis"
+msgstr "بدون پایان‌نامه"
+
+msgid "Write a message or attach a file."
+msgstr "پیامی بنویسید یا فایلی پیوست کنید."
+
+msgid "Write a message…"
+msgstr "پیامی بنویسید…"
+
+msgid "You"
+msgstr "شما"
+
+msgid "You are already responsible for this applicant."
+msgstr "شما از قبل مسئول این متقاضی هستید."
+
+msgid "You are now responsible for this applicant."
+msgstr "اکنون شما مسئول این متقاضی هستید."
+
+msgid "You belong to more than one Agent. Choose the organization you want to work in."
+msgstr "شما عضو بیش از یک نماینده هستید. سازمانی را که می‌خواهید در آن کار کنید انتخاب کنید."
+
 msgid "You can sign back in using Google, Telegram, or an email code."
 msgstr "می‌توانید دوباره با Google، Telegram یا کد ایمیل وارد شوید."
 
-msgid "You currently have %(count)s usable sign-in method(s). TurkDemy will not let you remove your last one."
+#, python-format
+msgid ""
+"You currently have %(count)s usable sign-in method(s). TurkDemy will not let you remove your last"
+" one."
 msgstr "در حال حاضر %(count)s روش ورود قابل استفاده دارید. TurkDemy اجازه حذف آخرین روش ورود را نمی‌دهد."
+
+#, python-format
+msgid "You have %(counter)s unread message"
+msgid_plural "You have %(counter)s unread messages"
+msgstr[0] "شما %(counter)s پیام خوانده‌نشده دارید"
+
+#, python-format
+msgid "Your %(brand)s sign-in code"
+msgstr "کد ورود %(brand)s شما"
+
+msgid "Your account"
+msgstr "حساب شما"
+
+msgid "Your advisor"
+msgstr "مشاور شما"
+
+msgid "Your advisor has not been assigned yet."
+msgstr "هنوز مشاوری به شما اختصاص داده نشده است."
+
+#, python-format
+msgid "Your advisor suggested %(program)s"
+msgstr "مشاور شما %(program)s را پیشنهاد کرد"
+
+msgid "Your advisor suggested a program"
+msgstr "مشاور شما یک رشته پیشنهاد کرد"
+
+msgid "Your message has been sent."
+msgstr "پیام شما ارسال شد."
+
+msgid "YÖK"
+msgstr "YÖK"
+
+msgid "YÖK Equivalency Certificate"
+msgstr "گواهی معادل‌سازی YÖK"
+
+msgid "YÖK Recognition Certificate"
+msgstr "گواهی تأیید YÖK"
+
+msgid "YÖK recognized"
+msgstr "مورد تأیید YÖK"
+
+msgid "YÖK recognized university"
+msgstr "دانشگاه مورد تأیید YÖK"
+
+msgid "active offerings"
+msgstr "گزینه پذیرش فعال"
+
+msgid "answered questions"
+msgstr "پرسش پاسخ‌داده‌شده"
+
+msgid "for tuition"
+msgstr "برای شهریه"
+
+msgid "from"
+msgstr "از"
+
+msgid "initial guidance"
+msgstr "راهنمایی اولیه"
 
 msgid "or"
 msgstr "یا"
 
-msgid "Find your program"
-msgstr ""
+msgid "program interests"
+msgstr "علاقه‌مندی‌های تحصیلی"
 
-msgid "Explore universities and compare study options by field, degree, language, tuition and intake."
-msgstr ""
+msgid "programs"
+msgstr "رشته"
 
-msgid "Refine results"
-msgstr ""
+msgid "programs available"
+msgstr "رشته موجود"
 
 msgid "programs found"
-msgstr ""
+msgstr "رشته پیدا شد"
 
-msgid "Reset filters"
-msgstr ""
+msgid "tuition unavailable"
+msgstr "شهریه موجود نیست"
 
-msgid "Tuition from"
-msgstr ""
+msgid "universities"
+msgstr "دانشگاه"
 
-msgid "Not available"
-msgstr ""
+msgid "Upload documents to the Student record after finalization."
+msgstr "پس از نهایی‌سازی، مدارک را در پرونده دانشجو بارگذاری کنید."
 
-msgid "View program"
-msgstr ""
+#, python-format
+msgid "Document was not uploaded. %(detail)s"
+msgstr "مدرک بارگذاری نشد. %(detail)s"
 
-msgid "Try broadening your search or clearing some filters."
-msgstr ""
+#, python-format
+msgid "TODO created: %(title)s."
+msgstr "کار ایجاد شد: %(title)s."
 
-msgid "TurkDemy"
-msgstr "ترک‌دمی"
+#, python-format
+msgid "Follow up: %(channel)s communication"
+msgstr "پیگیری ارتباط از طریق %(channel)s"
+
+#, python-format
+msgid "%(channel)s communication recorded."
+msgstr "ارتباط از طریق %(channel)s ثبت شد."
+
+#, python-format
+msgid "%(message)s Reason: %(reason)s"
+msgstr "%(message)s دلیل: %(reason)s"
+
+#, python-format
+msgid "%(user)s is now responsible for this applicant."
+msgstr "%(user)s اکنون مسئول این متقاضی است."
+
+msgid "Academic unit must belong to the selected university."
+msgstr "واحد دانشگاهی باید متعلق به دانشگاه انتخاب‌شده باشد."
+
+msgid "Application created"
+msgstr "درخواست پذیرش ایجاد شد"
+
+msgid "Application updated"
+msgstr "درخواست پذیرش به‌روزرسانی شد"
+
+msgid "Assign this applicant to yourself before creating a Student record."
+msgstr "پیش از ایجاد پرونده دانشجو، این متقاضی را به خودتان اختصاص دهید."
+
+msgid ""
+"Authenticated account that owns/manages this student record. One account may manage multiple "
+"students."
+msgstr ""
+"حساب احراز هویت‌شده‌ای که این پرونده دانشجو را مالک/مدیریت می‌کند. یک حساب می‌تواند چند دانشجو را"
+" مدیریت کند."
+
+msgid "Catalogue source must belong to the offering program's university."
+msgstr "منبع کاتالوگ باید متعلق به دانشگاه برنامه این ارائه باشد."
+
+msgid "Choose a valid intake for the discussed program."
+msgstr "برای برنامه مورد بحث یک ورودی معتبر انتخاب کنید."
+
+msgid "Could not record communication. Check the supplied fields."
+msgstr "ارتباط ثبت نشد. فیلدهای واردشده را بررسی کنید."
+
+msgid "Document added"
+msgstr "مدرک اضافه شد"
+
+msgid "Document must belong to the application student."
+msgstr "مدرک باید متعلق به دانشجوی این درخواست پذیرش باشد."
+
+msgid "Finalized or closed applicant data cannot be edited here."
+msgstr "اطلاعات متقاضی نهایی‌شده یا بسته‌شده را نمی‌توان اینجا ویرایش کرد."
+
+msgid "Indicates whether a graduate program is thesis or non-thesis, when applicable."
+msgstr "در صورت کاربرد، مشخص می‌کند برنامه تحصیلات تکمیلی با پایان‌نامه است یا بدون پایان‌نامه."
+
+msgid "Intake must belong to the offering program's university."
+msgstr "ورودی باید متعلق به دانشگاه برنامه این ارائه باشد."
+
+msgid "Internal Lead notes are read-only after finalization."
+msgstr "یادداشت‌های داخلی متقاضی پس از نهایی‌سازی فقط خواندنی هستند."
+
+msgid ""
+"Internal priority used to influence this item's position in listings. Higher values receive "
+"greater priority."
+msgstr ""
+"اولویت داخلی برای تأثیر بر جایگاه این مورد در فهرست‌ها استفاده می‌شود. مقدار بالاتر اولویت بیشتری"
+" دارد."
+
+msgid "Internal staff/import notes. Never expose this field on public or customer-facing surfaces."
+msgstr ""
+"یادداشت‌های داخلی کارکنان/واردسازی. این فیلد هرگز نباید در بخش‌های عمومی یا مشتری‌محور نمایش داده"
+" شود."
+
+msgid ""
+"Maximum value of the grading scale used for the high-school grade or GPA, for example 20, 4, 10, "
+"or 100."
+msgstr "حداکثر مقدار مقیاس نمره‌دهی برای نمره دبیرستان یا معدل؛ برای مثال ۲۰، ۴، ۱۰ یا ۱۰۰."
+
+msgid "Message"
+msgstr "پیام"
+
+msgid "Program recommendations cannot be changed after the applicant is finalized or closed."
+msgstr "پس از نهایی یا بسته شدن متقاضی، پیشنهادهای برنامه قابل تغییر نیستند."
+
+msgid "Program recommendations updated"
+msgstr "پیشنهادهای برنامه به‌روزرسانی شد"
+
+msgid "Replace documents on the student record after finalization."
+msgstr "پس از نهایی‌سازی، مدارک را در پرونده دانشجو جایگزین کنید."
+
+msgid ""
+"Specific intake/offering when known. Program-level interest is allowed without selecting an "
+"offering."
+msgstr "در صورت مشخص بودن، ورودی/ارائه خاص. علاقه‌مندی در سطح برنامه بدون انتخاب ارائه نیز مجاز است."
+
+#, python-format
+msgid ""
+"Student record created for %(student)s. Transferred %(documents)s document(s) and created "
+"%(applications)s draft application(s)."
+msgstr ""
+"پرونده دانشجو برای %(student)s ایجاد شد. %(documents)s مدرک منتقل و %(applications)s درخواست "
+"پذیرش پیش‌نویس ایجاد شد."
+
+msgid ""
+"Student's final high-school grade or GPA in the original grading system, for example 17.5 on a "
+"20-point scale or 3.5 on a 4-point scale."
+msgstr "نمره نهایی دبیرستان یا معدل دانشجو در سیستم نمره‌دهی اصلی؛ برای مثال ۱۷٫۵ از ۲۰ یا ۳٫۵ از ۴."
+
+msgid "TODO"
+msgstr "کار"
+
+msgid ""
+"The applicant is unsure which programs are suitable and wants TurkDemy staff/system to "
+"investigate and suggest options."
+msgstr ""
+"متقاضی مطمئن نیست کدام برنامه‌ها مناسب‌اند و می‌خواهد کارکنان/سیستم TurkDemy گزینه‌ها را بررسی و "
+"پیشنهاد کنند."
+
+msgid "The selected user does not belong to this applicant's agent."
+msgstr "کاربر انتخاب‌شده عضو مؤسسه مسئول این متقاضی نیست."
+
+msgid "This Request profile can no longer be edited."
+msgstr "پروفایل این درخواست دیگر قابل ویرایش نیست."
+
+msgid "This Request's preferences can no longer be edited."
+msgstr "ترجیحات این درخواست دیگر قابل ویرایش نیست."
+
+msgid "This program is already on the applicant's list."
+msgstr "این برنامه از قبل در فهرست متقاضی است."
+
+msgid "University ranking position according to Times Higher Education (THE)."
+msgstr "رتبه دانشگاه بر اساس Times Higher Education (THE)."
+
+msgid "Upload documents to the student record after finalization."
+msgstr "پس از نهایی‌سازی، مدارک را در پرونده دانشجو بارگذاری کنید."
+
+msgid ""
+"Whether the university is approved by the relevant Ministry of Education for the target student "
+"market."
+msgstr "آیا دانشگاه توسط وزارت آموزش مرتبط برای بازار دانشجویی هدف تأیید شده است."
+
+msgid ""
+"Whether the university is approved by the relevant Ministry of Health for the target student "
+"market."
+msgstr "آیا دانشگاه توسط وزارت بهداشت مرتبط برای بازار دانشجویی هدف تأیید شده است."
+
+msgid "Whether the university is recognized by YÖK (the Council of Higher Education of Türkiye)."
+msgstr "آیا دانشگاه توسط YÖK (شورای آموزش عالی ترکیه) به رسمیت شناخته شده است."
+
+msgid "Whether the university provides or officially offers student dormitory accommodation."
+msgstr "آیا دانشگاه خوابگاه دانشجویی فراهم می‌کند یا به‌طور رسمی ارائه می‌دهد."
+
+msgid "You are not an active user of this applicant's agent."
+msgstr "شما کاربر فعال مؤسسه مسئول این متقاضی نیستید."
+
+#, python-format
+msgid "Your advisor recommended %(program)s at %(university)s."
+msgstr "مشاور شما برنامه %(program)s در %(university)s را پیشنهاد کرده است."
+

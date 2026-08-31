@@ -2,16 +2,17 @@ from django import forms
 
 from apps.applications.models import Application
 from apps.content.models import ContactSubmission
+from apps.core.forms import LocalizedFormMixin
 from apps.students.models import Student
 
 
-class ContactForm(forms.ModelForm):
+class ContactForm(LocalizedFormMixin, forms.ModelForm):
     class Meta:
         model = ContactSubmission
         fields = ("name", "email", "phone", "subject", "message")
 
 
-class StudentProfileForm(forms.ModelForm):
+class StudentProfileForm(LocalizedFormMixin, forms.ModelForm):
     class Meta:
         model = Student
         fields = (
@@ -30,7 +31,7 @@ class StudentProfileForm(forms.ModelForm):
         )
 
 
-class ApplicationNoteForm(forms.ModelForm):
+class ApplicationNoteForm(LocalizedFormMixin, forms.ModelForm):
     class Meta:
         model = Application
         fields = ("notes",)

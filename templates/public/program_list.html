@@ -36,7 +36,7 @@
           <select name="field">
             <option value="">{% trans "Any field" %}</option>
             {% for field in field_choices %}
-              <option value="{{ field.slug_en }}"{% if filters.field == field.slug_en %} selected{% endif %}>{{ field.name_en }}</option>
+              <option value="{{ field.slug_en }}"{% if filters.field == field.slug_en %} selected{% endif %}>{{ field.localized_name }}</option>
             {% endfor %}
           </select>
         </div>
@@ -57,7 +57,7 @@
             <select name="language">
               <option value="">{% trans "Any language" %}</option>
               {% for language in language_choices %}
-                <option value="{{ language.slug_en }}"{% if filters.language == language.slug_en %} selected{% endif %}>{{ language.name_en }}</option>
+                <option value="{{ language.slug_en }}"{% if filters.language == language.slug_en %} selected{% endif %}>{{ language.localized_name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -79,7 +79,7 @@
             <select name="academic_unit">
               <option value="">{% trans "Any academic unit" %}</option>
               {% for unit in academic_unit_choices %}
-                <option value="{{ unit.slug_en }}"{% if filters.academic_unit == unit.slug_en %} selected{% endif %}>{{ unit.name_en }}</option>
+                <option value="{{ unit.slug_en }}"{% if filters.academic_unit == unit.slug_en %} selected{% endif %}>{{ unit.localized_name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -90,7 +90,7 @@
           <select name="university">
             <option value="">{% trans "Any university" %}</option>
             {% for university in university_choices %}
-              <option value="{{ university.slug_en }}"{% if filters.university == university.slug_en %} selected{% endif %}>{{ university.name_en }}</option>
+              <option value="{{ university.slug_en }}"{% if filters.university == university.slug_en %} selected{% endif %}>{{ university.localized_name }}</option>
             {% endfor %}
           </select>
         </div>
@@ -101,7 +101,7 @@
             <select name="city">
               <option value="">{% trans "Any city" %}</option>
               {% for city in city_choices %}
-                <option value="{{ city.slug_en }}"{% if filters.city == city.slug_en %} selected{% endif %}>{{ city.name_en }}</option>
+                <option value="{{ city.slug_en }}"{% if filters.city == city.slug_en %} selected{% endif %}>{{ city.localized_name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -137,7 +137,7 @@
             <select name="academic_year">
               <option value="">{% trans "Any academic year" %}</option>
               {% for year in academic_year_choices %}
-                <option value="{{ year.id }}"{% if filters.academic_year == year.id|stringformat:"s" %} selected{% endif %}>{{ year.name_en }}</option>
+                <option value="{{ year.id }}"{% if filters.academic_year == year.id|stringformat:"s" %} selected{% endif %}>{{ year.localized_name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -147,7 +147,7 @@
             <select name="intake">
               <option value="">{% trans "Any intake" %}</option>
               {% for intake in intake_choices %}
-                <option value="{{ intake.id }}"{% if filters.intake == intake.id|stringformat:"s" %} selected{% endif %}>{{ intake.name_en }}</option>
+                <option value="{{ intake.id }}"{% if filters.intake == intake.id|stringformat:"s" %} selected{% endif %}>{{ intake.localized_name }}</option>
               {% endfor %}
             </select>
           </div>

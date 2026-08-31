@@ -5,10 +5,12 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.forms import LocalizedFormMixin
+
 User = get_user_model()
 
 
-class AddLoginEmailForm(forms.Form):
+class AddLoginEmailForm(LocalizedFormMixin, forms.Form):
     email = forms.EmailField(
         label=_("Email address"),
         widget=forms.EmailInput(

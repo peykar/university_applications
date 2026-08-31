@@ -290,7 +290,7 @@ def lead_create(request):
                                 "updated_by": request.user,
                             },
                         )
-            messages.success(request, "Applicant profile created.")
+            messages.success(request, _("Applicant profile created."))
             return redirect("lead-detail", lead_id=lead.pk)
     else:
         form = LeadForm(
@@ -309,7 +309,7 @@ def lead_create(request):
         {
             "form": form,
             "next_program": next_program,
-            "title": "Add applicant",
+            "title": _("Add applicant"),
         },
     )
 
@@ -320,7 +320,7 @@ def lead_edit(request, lead_id):
     if lead.status == LeadStatus.FINALIZED:
         messages.error(
             request,
-            "This Request profile can no longer be edited.",
+            _("This Request profile can no longer be edited."),
         )
         return redirect("lead-profile", lead_id=lead.pk)
 
@@ -336,9 +336,9 @@ def lead_edit(request, lead_id):
                 form=form,
                 actor=request.user,
             ):
-                messages.success(request, "Profile updated.")
+                messages.success(request, _("Profile updated."))
             else:
-                messages.info(request, "No profile data changed.")
+                messages.info(request, _("No profile data changed."))
             return redirect("lead-profile", lead_id=updated_lead.pk)
     else:
         form = CustomerLeadEditForm(instance=lead)
@@ -349,7 +349,7 @@ def lead_edit(request, lead_id):
         {
             "form": form,
             "lead": lead,
-            "title": "Edit profile",
+            "title": _("Edit profile"),
             "entity_tab": "profile",
             "agent_context": False,
         },
@@ -370,7 +370,7 @@ def lead_preferences_edit(request, lead_id):
     if lead.status == LeadStatus.FINALIZED:
         messages.error(
             request,
-            "This Request's preferences can no longer be edited.",
+            _("This Request's preferences can no longer be edited."),
         )
         return redirect("lead-preferences", lead_id=lead.pk)
 
@@ -395,7 +395,7 @@ def lead_preferences_edit(request, lead_id):
                     "updated_at",
                 )
             )
-            messages.success(request, "Study preferences updated.")
+            messages.success(request, _("Study preferences updated."))
             return redirect("lead-preferences", lead_id=lead.pk)
     else:
         form = LeadPreferenceForm(instance=preferences)
@@ -465,7 +465,8 @@ def lead_program_intake_update(request, lead_id, interest_id):
     LeadActivity.objects.create(
         lead=lead,
         activity_type=LeadActivityType.PROGRAM_RESPONSE,
-        description=f"Program intake updated: {interest.program.name_en}.",
+        description=_("Program intake updated: %(program)s.")
+        % {"program": interest.program.localized_name},
         is_customer_visible=True,
         created_by=request.user,
         updated_by=request.user,
@@ -483,7 +484,7 @@ def lead_program_remove(request, lead_id, interest_id):
         return redirect("lead-programs", lead_id=lead.pk)
 
     interest = get_object_or_404(LeadProgramInterest, pk=interest_id, lead=lead)
-    program_name = interest.program.name_en
+    program_name = interest.program.localized_name
     interest.delete()
     LeadActivity.objects.create(
         lead=lead,
@@ -528,7 +529,7 @@ def lead_document_upload(request, lead_id):
     if lead.status == LeadStatus.FINALIZED:
         messages.error(
             request,
-            "Upload documents to the student record after finalization.",
+            _("Upload documents to the student record after finalization."),
         )
         return redirect("lead-documents", lead_id=lead.pk)
 
@@ -549,9 +550,9 @@ def lead_document_upload(request, lead_id):
             created_by=request.user,
             updated_by=request.user,
         )
-        messages.success(request, "Document uploaded.")
+        messages.success(request, _("Document uploaded."))
     else:
-        messages.error(request, "Could not upload the document.")
+        messages.error(request, _("Could not upload the document."))
 
     return redirect("lead-documents", lead_id=lead.pk)
 
@@ -563,7 +564,7 @@ def lead_document_replace(request, lead_id, document_id):
     if lead.status == LeadStatus.FINALIZED:
         messages.error(
             request,
-            "Replace documents on the student record after finalization.",
+            _("Replace documents on the student record after finalization."),
         )
         return redirect("lead-documents", lead_id=lead.pk)
 
@@ -575,7 +576,7 @@ def lead_document_replace(request, lead_id, document_id):
     )
     form = LeadDocumentReplacementForm(request.POST, request.FILES)
     if not form.is_valid():
-        messages.error(request, "Choose a replacement file.")
+        messages.error(request, _("Choose a replacement file."))
         return redirect("lead-documents", lead_id=lead.pk)
 
     replacement = form.cleaned_data["file"]
@@ -642,7 +643,7 @@ def lead_document_replace(request, lead_id, document_id):
             ),
             performed_by=request.user,
         )
-    messages.success(request, "Replacement uploaded and sent for review.")
+    messages.success(request, _("Replacement uploaded and sent for review."))
     return redirect("lead-documents", lead_id=lead.pk)
 
 
@@ -660,7 +661,7 @@ def lead_send_message(request, lead_id):
     conversation = ensure_conversation(lead)
 
     if conversation.is_closed:
-        messages.error(request, "This conversation is closed.")
+        messages.error(request, _("This conversation is closed."))
         return redirect("lead-messages", lead_id=lead.pk)
 
     form = MessageForm(request.POST, request.FILES)
@@ -673,7 +674,7 @@ def lead_send_message(request, lead_id):
             attachment=form.cleaned_data.get("attachment"),
         )
     else:
-        messages.error(request, "Write a message or attach a file.")
+        messages.error(request, _("Write a message or attach a file."))
 
     return redirect("lead-messages", lead_id=lead.pk)
 
@@ -748,13 +749,16 @@ def apply_program(request, slug):
             LeadActivity.objects.create(
                 lead=lead,
                 activity_type=LeadActivityType.PROGRAM_ADDED,
-                description=f"Program added: {program.name_en}.",
+                description=_("Program added: %(program)s.") % {"program": program.localized_name},
                 is_customer_visible=True,
                 created_by=request.user,
                 updated_by=request.user,
             )
 
-        messages.success(request, f"{program.name_en} added to the applicant programs.")
+        messages.success(
+            request,
+            _("%(program)s added to the applicant programs.") % {"program": program.localized_name},
+        )
         return redirect("lead-detail", lead_id=lead.pk)
 
     return render(

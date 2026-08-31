@@ -1,6 +1,6 @@
 {% extends "customer/base.html" %}
 {% load i18n %}
-{% block title %}{{ application.program_offering.program.name_en }} — TurkDemy{% endblock %}
+{% block title %}{{ application.program_offering.program.localized_name }} — TurkDemy{% endblock %}
 {% block customer_content %}
 {% include "includes/application_entity_header.html" %}
 
@@ -9,12 +9,12 @@
     <div class="section-heading"><div><p class="eyebrow">{% trans "Overview" %}</p><h2>{% trans "Application summary" %}</h2></div></div>
     <dl class="entity-facts-grid">
       <div><dt>{% trans "Applicant" %}</dt><dd>{{ application.student }}</dd></div>
-      <div><dt>{% trans "University" %}</dt><dd>{{ application.program_offering.program.university.name_en }}</dd></div>
-      <div><dt>{% trans "Program" %}</dt><dd>{{ application.program_offering.program.name_en }}</dd></div>
+      <div><dt>{% trans "University" %}</dt><dd>{{ application.program_offering.program.university.localized_name }}</dd></div>
+      <div><dt>{% trans "Program" %}</dt><dd>{{ application.program_offering.program.localized_name }}</dd></div>
       <div><dt>{% trans "Status" %}</dt><dd>{{ application.get_status_display }}</dd></div>
       <div><dt>{% trans "Tuition" %}</dt><dd>{{ application.tuition }}</dd></div>
       <div><dt>{% trans "Deposit" %}</dt><dd>{{ application.deposit|default:"—" }}</dd></div>
-      <div><dt>{% trans "Intake" %}</dt><dd>{{ application.program_offering.intake.name_en|default:"—" }} {{ application.program_offering.academic_year.name_en|default:"" }}</dd></div>
+      <div><dt>{% trans "Intake" %}</dt><dd>{{ application.program_offering.intake.localized_name|default:"—" }} {{ application.program_offering.academic_year.localized_name|default:"" }}</dd></div>
       <div><dt>{% trans "Last updated" %}</dt><dd>{{ application.updated_at|date:"Y-m-d H:i" }}</dd></div>
     </dl>
   </section>

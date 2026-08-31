@@ -3,13 +3,15 @@ from typing import ClassVar, cast
 from django import forms
 from django.utils import timezone
 
+from apps.core.forms import LocalizedFormMixin
+
 from .models import (
     CommunicationLog,
     Todo,
 )
 
 
-class TodoForm(forms.ModelForm):
+class TodoForm(LocalizedFormMixin, forms.ModelForm):
     class Meta:
         model = Todo
         fields = ("title", "description", "due_date", "assignee")
@@ -33,7 +35,7 @@ class TodoForm(forms.ModelForm):
             assignee_field.queryset = queryset.none()
 
 
-class CommunicationLogForm(forms.ModelForm):
+class CommunicationLogForm(LocalizedFormMixin, forms.ModelForm):
     class Meta:
         model = CommunicationLog
         fields = (

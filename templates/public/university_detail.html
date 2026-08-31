@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load i18n currency %}
-{% block title %}{{ university.name_en }} — TurkDemy{% endblock %}
+{% block title %}{{ university.localized_name }} — TurkDemy{% endblock %}
 {% block content %}
 <section class="detail-hero">
   <div>
-    <p class="eyebrow">{{ university.city.name_en }}</p>
-    <h1>{{ university.name_en }}</h1>
+    <p class="eyebrow">{{ university.city.localized_name }}</p>
+    <h1>{{ university.localized_name }}</h1>
     <div class="badges">
       <span class="badge">{{ university.get_university_type_display }}</span>
       {% if university.is_yok_recognized %}<span class="badge badge-success">{% trans "YÖK recognized" %}</span>{% endif %}
@@ -16,18 +16,18 @@
     </div>
   </div>
   {% if university.logo %}
-    <img class="detail-logo" src="{{ university.logo.url }}" alt="{{ university.name_en }}">
+    <img class="detail-logo" src="{{ university.logo.url }}" alt="{{ university.localized_name }}">
   {% endif %}
 </section>
 
 {% if university.banner %}
-  <img class="detail-banner" src="{{ university.banner.url }}" alt="{{ university.name_en }}">
+  <img class="detail-banner" src="{{ university.banner.url }}" alt="{{ university.localized_name }}">
 {% endif %}
 
-{% if university.description_en %}
+{% if university.localized_description %}
 <section class="section prose">
   <h2>{% trans "About the university" %}</h2>
-  <p>{{ university.description_en }}</p>
+  <p>{{ university.localized_description }}</p>
 </section>
 {% endif %}
 
@@ -61,7 +61,7 @@
             <select name="field">
               <option value="">{% trans "Any field" %}</option>
               {% for field in field_choices %}
-                <option value="{{ field.slug_en }}"{% if filters.field == field.slug_en %} selected{% endif %}>{{ field.name_en }}</option>
+                <option value="{{ field.slug_en }}"{% if filters.field == field.slug_en %} selected{% endif %}>{{ field.localized_name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -80,7 +80,7 @@
               <select name="language">
                 <option value="">{% trans "Any language" %}</option>
                 {% for language in language_choices %}
-                  <option value="{{ language.slug_en }}"{% if filters.language == language.slug_en %} selected{% endif %}>{{ language.name_en }}</option>
+                  <option value="{{ language.slug_en }}"{% if filters.language == language.slug_en %} selected{% endif %}>{{ language.localized_name }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -104,7 +104,7 @@
               <select name="academic_year">
                 <option value="">{% trans "Any academic year" %}</option>
                 {% for year in academic_year_choices %}
-                  <option value="{{ year.id }}"{% if filters.academic_year == year.id|stringformat:"s" %} selected{% endif %}>{{ year.name_en }}</option>
+                  <option value="{{ year.id }}"{% if filters.academic_year == year.id|stringformat:"s" %} selected{% endif %}>{{ year.localized_name }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -113,7 +113,7 @@
               <select name="intake">
                 <option value="">{% trans "Any intake" %}</option>
                 {% for intake in intake_choices %}
-                  <option value="{{ intake.id }}"{% if filters.intake == intake.id|stringformat:"s" %} selected{% endif %}>{{ intake.name_en }}</option>
+                  <option value="{{ intake.id }}"{% if filters.intake == intake.id|stringformat:"s" %} selected{% endif %}>{{ intake.localized_name }}</option>
                 {% endfor %}
               </select>
             </div>

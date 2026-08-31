@@ -9,7 +9,7 @@
     const search = document.createElement("input");
     search.type = "search";
     search.className = "multi-picker-search";
-    search.placeholder = select.dataset.placeholder || "Search";
+    search.placeholder = select.dataset.placeholder || "";
     search.autocomplete = "off";
 
     const chips = document.createElement("div");
@@ -27,7 +27,10 @@
         chip.type = "button";
         chip.className = "multi-picker-chip";
         chip.textContent = option.text;
-        chip.setAttribute("aria-label", `Remove ${option.text}`);
+        chip.setAttribute(
+          "aria-label",
+          `${select.dataset.removeLabel || ""} ${option.text}`.trim(),
+        );
         chip.addEventListener("click", () => {
           option.selected = false;
           select.dispatchEvent(new Event("change", { bubbles: true }));
@@ -50,7 +53,7 @@
       if (matches.length === 0) {
         const empty = document.createElement("div");
         empty.className = "multi-picker-empty";
-        empty.textContent = "No matching options";
+        empty.textContent = select.dataset.emptyLabel || "";
         optionsPanel.append(empty);
         return;
       }

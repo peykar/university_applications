@@ -39,19 +39,19 @@
         <div><dt>{% trans "Degree" %}</dt><dd>{% for item in preferred_degrees %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>
       {% endif %}
       {% if preferred_departments %}
-        <div><dt>{% trans "Study field" %}</dt><dd>{% for item in preferred_departments %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>
+        <div><dt>{% trans "Study field" %}</dt><dd>{% for item in preferred_departments %}{{ item.localized_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>
       {% endif %}
       {% if preferred_languages %}
-        <div><dt>{% trans "Language" %}</dt><dd>{% for item in preferred_languages %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>
+        <div><dt>{% trans "Language" %}</dt><dd>{% for item in preferred_languages %}{{ item.localized_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>
       {% endif %}
       {% if preferences.tuition_min or preferences.tuition_max %}
         <div><dt>{% trans "Tuition" %}</dt><dd>{% if preferences.tuition_min %}{{ preferences.tuition_min|floatformat:0 }}{% else %}0{% endif %}–{% if preferences.tuition_max %}{{ preferences.tuition_max|floatformat:0 }}{% else %}∞{% endif %} {{ preferences.tuition_currency }}</dd></div>
       {% endif %}
       {% if preferred_cities %}
-        <div><dt>{% trans "Cities" %}</dt><dd>{% for item in preferred_cities %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>
+        <div><dt>{% trans "Cities" %}</dt><dd>{% for item in preferred_cities %}{{ item.localized_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>
       {% endif %}
       {% if preferred_universities %}
-        <div><dt>{% trans "Universities" %}</dt><dd>{% for item in preferred_universities %}{{ item.name_en }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>
+        <div><dt>{% trans "Universities" %}</dt><dd>{% for item in preferred_universities %}{{ item.localized_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>
       {% endif %}
       {% if preferred_university_types %}
         <div><dt>{% trans "University type" %}</dt><dd>{% for item in preferred_university_types %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>

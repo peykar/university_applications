@@ -93,8 +93,8 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn('{% trans "Suggested by your agent" %}', self.request_list)
 
     def test_request_card_renders_program_and_university_names(self):
-        self.assertIn("{{ interest.program.name_en }}", self.request_list)
-        self.assertIn("{{ interest.program.university.name_en }}", self.request_list)
+        self.assertIn("{{ interest.program.localized_name }}", self.request_list)
+        self.assertIn("{{ interest.program.university.localized_name }}", self.request_list)
         self.assertNotIn("{{ interest.program.name }}", self.request_list)
         self.assertNotIn("{{ interest.program.university.name }}", self.request_list)
 
@@ -423,8 +423,8 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_customer_edit_profile_uses_request_safe_copy_and_actions(self):
         edit_view = self.views.split("def lead_edit", 1)[1].split("def lead_preferences", 1)[0]
-        self.assertIn('"title": "Edit profile"', edit_view)
-        self.assertIn('"Profile updated."', edit_view)
+        self.assertIn('"title": _("Edit profile")', edit_view)
+        self.assertIn('_("Profile updated.")', edit_view)
         self.assertIn('{% trans "Save changes" %}', self.request_form)
         self.assertIn("{% url 'lead-profile' lead.pk %}", self.request_form)
         self.assertNotIn(
@@ -587,7 +587,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             "href=\"{% url 'program-detail' interest.program.slug_en %}\">"
         )
         self.assertIn(detail_link, programs)
-        self.assertIn("<h3>{{ interest.program.name_en }}</h3>", programs)
+        self.assertIn("<h3>{{ interest.program.localized_name }}</h3>", programs)
         self.assertIn('class="request-program-university"', programs)
         self.assertIn('class="request-program-meta"', programs)
         self.assertIn('class="request-program-management"', programs)
@@ -619,7 +619,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
             '{% elif entity_tab == "documents" %}', 1
         )[0]
-        name_index = programs.index("{{ interest.program.name_en }}")
+        name_index = programs.index("{{ interest.program.localized_name }}")
         source_index = programs.index('{% trans "Suggested by your advisor" %}')
         self.assertLess(name_index, source_index)
         self.assertIn('{% trans "Suggested by your advisor" %}', programs)
@@ -645,8 +645,8 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
             '{% elif entity_tab == "documents" %}', 1
         )[0]
-        self.assertIn("interest.program_offering.intake.name_en", programs)
-        self.assertIn("interest.program_offering.academic_year.name_en", programs)
+        self.assertIn("interest.program_offering.intake.localized_name", programs)
+        self.assertIn("interest.program_offering.academic_year.localized_name", programs)
         self.assertIn('{% trans "Select intake" %}', programs)
         self.assertNotIn('{% trans "Any intake / decide later" %}', programs)
 

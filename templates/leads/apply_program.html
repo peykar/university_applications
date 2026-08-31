@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Apply" %} — {{ program.name_en }}{% endblock %}
+{% block title %}{% trans "Apply" %} — {{ program.localized_name }}{% endblock %}
 {% block content %}
 <section class="program-apply-page">
   <header class="program-apply-hero">
     <p class="eyebrow">{% trans "Apply / express interest" %}</p>
-    <h1>{{ program.name_en }}</h1>
+    <h1>{{ program.localized_name }}</h1>
     <p class="lead">
-      {{ program.university.name_en }} ·
+      {{ program.university.localized_name }} ·
       {{ program.get_degree_display }} ·
       {{ program.instruction_language_display }}
     </p>

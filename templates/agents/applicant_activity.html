@@ -76,7 +76,7 @@
       <div class="activity-changes">
        {% for change in activity.metadata.changes %}
         <div class="activity-change-row">
-         <strong>{{ change.label }}</strong>
+         <strong>{% translate change.label %}</strong>
          <span class="activity-change-old">{{ change.old }}</span>
          <span class="activity-change-arrow" aria-hidden="true">→</span>
          <span class="activity-change-new">{{ change.new }}</span>
