@@ -231,3 +231,10 @@ visually separated and collapsed under an explicit compatibility section so they
 are not mistaken for the canonical fee model. Staff MUST also be able to browse
 and edit OfferingFee rows directly in Admin.
 
+
+CAT-042 — Structured fee summaries in Django Admin MUST use a stable semantic
+ordering rather than alphabetical fee-type ordering. Tuition/list pricing MUST
+appear before advance-payment pricing, and preparatory/foundation pricing MUST
+appear after advance-payment pricing. Other supported fee types MUST have a
+stable business-readable position so fee tables scan consistently across
+universities.

@@ -67,3 +67,6 @@ Version: 3.1
       fixed pricing/Semester fields into a clearly labelled compatibility section,
       add direct OfferingFee administration, and cover the admin configuration.
 
+- [x] CAT-T28 (`CAT-042`) Order Django Admin structured-fee summaries by stable
+      fee semantics, including Tuition → Advance payment → Preparatory/Foundation,
+      with regression coverage.

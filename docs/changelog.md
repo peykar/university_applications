@@ -1,3 +1,5 @@
+- Fixed BUG-0025: give the Catalogue v3 admin structured-fee ordering regression test its own ProgramOffering fixture so it tests semantic ordering instead of failing with `AttributeError`.
+- Fixed BUG-0024: annotate the structured-fee semantic display-order mapping as `ClassVar[dict[str, int]]` so Ruff RUF012 accepts the intentional shared class constant.
 
 - Fixed BUG-0023: Catalogue v3 no longer reintroduces a Persian ZWNJ into the native Unicode slug importer fixture; display prose retains correct Persian typography while explicit slug fixtures follow Django Unicode slug validation.
 - Fixed BUG-0022: narrow nullable Intake/Semester relations explicitly in `ProgramOffering.__str__` for django-stubs/mypy.
@@ -1238,3 +1240,10 @@
 - Added a direct OfferingFee admin list/edit view and regression coverage for the
   admin configuration.
 
+
+## 2026-08-31 — Semantic structured-fee ordering
+
+- Added CAT-042/CAT-T28 for stable business-readable fee ordering in Django Admin.
+- Structured fee summaries now show tuition before advance payment and
+  preparatory/foundation fees after advance payment instead of alphabetic ordering.
+- Added regression coverage; no persisted catalogue data or import semantics changed.

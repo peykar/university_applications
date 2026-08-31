@@ -16,6 +16,7 @@ from .models import (
     Department,
     Intake,
     OfferingFee,
+    OfferingFeeType,
     Program,
     ProgramInstructionLanguage,
     ProgramLanguage,
@@ -141,13 +142,31 @@ class OfferingFeeInline(admin.TabularInline):
 
 
 class StructuredFeeSummaryMixin:
+    FEE_TYPE_DISPLAY_ORDER: ClassVar[dict[str, int]] = {
+        OfferingFeeType.TUITION: 10,
+        OfferingFeeType.DISCOUNTED_TUITION: 20,
+        OfferingFeeType.ADVANCE_PAYMENT: 30,
+        OfferingFeeType.CASH_PAYMENT: 40,
+        OfferingFeeType.INSTALLMENT_TOTAL: 50,
+        OfferingFeeType.DEPOSIT: 60,
+        OfferingFeeType.PREPARATORY: 70,
+        OfferingFeeType.APPLICATION: 80,
+        OfferingFeeType.REGISTRATION: 90,
+        OfferingFeeType.OTHER: 100,
+    }
+
     @admin.display(description="Structured fees (Catalogue v3)")
     def structured_fee_summary(self, obj):
         if not obj or not obj.pk:
             return "Save the offering first, then add structured fee rows."
 
-        fees = list(
-            obj.fees.select_related("language").order_by("fee_type", "language__name_en", "id")
+        fees = list(obj.fees.select_related("language"))
+        fees.sort(
+            key=lambda fee: (
+                self.FEE_TYPE_DISPLAY_ORDER.get(fee.fee_type, 999),
+                fee.language.name_en if fee.language_id else "",
+                str(fee.id),
+            )
         )
         if not fees:
             return (

@@ -89,6 +89,41 @@ class CatalogueV3Tests(TestCase):
 
 
 class CatalogueV3AdminPresentationTests(TestCase):
+    def setUp(self):
+        country = Country.objects.create(
+            name_en="Türkiye", slug_en="turkiye-admin", iso2="TR", iso3="TUR"
+        )
+        province = Province.objects.create(
+            country=country, name_en="Istanbul", slug_en="istanbul-admin"
+        )
+        city = City.objects.create(province=province, name_en="Istanbul", slug_en="istanbul-admin")
+        self.university = University.objects.create(
+            name_en="Admin Example University",
+            slug_en="admin-example-university",
+            city=city,
+            university_type="private",
+        )
+        self.year = AcademicYear.objects.create(name_en="2026-2027")
+        self.intake = Intake.objects.create(
+            university=self.university,
+            academic_year=self.year,
+            name_en="Academic Intake",
+        )
+        self.program = Program.objects.create(
+            university=self.university,
+            name_en="Pharmacy Services",
+            slug_en="pharmacy-services",
+            degree="associate",
+        )
+        self.offering = ProgramOffering.objects.create(
+            program=self.program,
+            academic_year=self.year,
+            intake=self.intake,
+            fee_basis=FeeBasis.ANNUAL,
+            currency="USD",
+            tuition=Decimal("3250"),
+        )
+
     def test_program_offering_admin_prioritizes_structured_fees(self):
         from django.contrib import admin
 
@@ -104,6 +139,40 @@ class CatalogueV3AdminPresentationTests(TestCase):
         self.assertIn("Legacy compatibility pricing", fieldsets)
         self.assertEqual(fieldsets["Legacy compatibility pricing"].get("classes"), ("collapse",))
         self.assertIn("structured_fee_summary", fieldsets["Structured fees"]["fields"])
+
+    def test_structured_fee_summary_uses_semantic_fee_order(self):
+        from django.contrib import admin
+
+        OfferingFee.objects.create(
+            offering=self.offering,
+            fee_type=OfferingFeeType.PREPARATORY,
+            currency="USD",
+            amount=Decimal("1390"),
+            basis=FeeBasis.ANNUAL,
+        )
+        OfferingFee.objects.create(
+            offering=self.offering,
+            fee_type=OfferingFeeType.ADVANCE_PAYMENT,
+            currency="USD",
+            amount=Decimal("2925"),
+            basis=FeeBasis.ANNUAL,
+        )
+        OfferingFee.objects.create(
+            offering=self.offering,
+            fee_type=OfferingFeeType.TUITION,
+            currency="USD",
+            amount=Decimal("3250"),
+            basis=FeeBasis.ANNUAL,
+        )
+
+        admin_instance = admin.site._registry[ProgramOffering]
+        summary = str(admin_instance.structured_fee_summary(self.offering))
+
+        self.assertLess(summary.index("Tuition / list fee"), summary.index("Advance payment"))
+        self.assertLess(
+            summary.index("Advance payment"),
+            summary.index("Preparatory / foundation tuition"),
+        )
 
     def test_program_inline_hides_legacy_pricing_behind_collapsed_section(self):
         from django.contrib import admin
