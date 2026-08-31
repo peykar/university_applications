@@ -299,9 +299,10 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
         """Rebuild localized public slugs from canonical structured Program data.
 
         A Program public slug is derived from the localized University slug,
-        localized Program name, degree, thesis type when applicable, and the
-        structured instruction-language variant. Historical/manual Program slug
-        text is never used as an input to canonical generation.
+        localized Academic Unit and Department when present, localized Program
+        name, degree, thesis type when applicable, and the structured
+        instruction-language variant. Historical/manual Program slug text is
+        never used as an input to canonical generation.
         """
         populated: set[str] = set()
         if not self.university_id:
@@ -317,7 +318,14 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
             name_slug = slugify(name, allow_unicode=locale != "en")
             if not name_slug:
                 continue
-            parts = [university_slug, name_slug, self._degree_slug_token(locale)]
+            parts = [university_slug]
+            academic_unit_token = self._related_slug_token(self.academic_unit, locale)
+            if academic_unit_token:
+                parts.append(academic_unit_token)
+            department_token = self._related_slug_token(self.department, locale)
+            if department_token:
+                parts.append(department_token)
+            parts.extend([name_slug, self._degree_slug_token(locale)])
             thesis_token = self._thesis_slug_token()
             if thesis_token:
                 parts.append(thesis_token)
@@ -338,6 +346,17 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
                 "-is_primary", "language__slug_en", "language__name_en"
             )
         )
+
+    @staticmethod
+    def _related_slug_token(related, locale: str) -> str:
+        """Return a localized Academic Unit/Department token when present."""
+        if related is None:
+            return ""
+        token = str(getattr(related, f"slug_{locale}", "") or "").strip()
+        if token:
+            return token
+        name = str(getattr(related, f"name_{locale}", "") or "").strip()
+        return slugify(name, allow_unicode=locale != "en") if name else ""
 
     def _degree_slug_token(self, locale: str) -> str:
         """Return the canonical localized degree token used in public slugs."""

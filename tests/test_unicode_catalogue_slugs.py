@@ -6,6 +6,8 @@ from apps.content.models import FAQCategory
 from apps.core.audit import get_system_user
 from apps.geography.models import City, Country, Province
 from apps.universities.models import (
+    AcademicUnit,
+    Department,
     Program,
     ProgramInstructionLanguage,
     ProgramLanguage,
@@ -344,6 +346,38 @@ class ProgramCanonicalPublicSlugTests(TestCase):
         self.assertEqual(
             program.slug_tr,
             "istanbul-atlas-üniversitesi-hemşirelik-lisans-türkçe",
+        )
+
+    def test_program_slug_includes_academic_unit_and_department_when_present(self):
+        academic_unit = AcademicUnit.objects.create(
+            university=self.university,
+            unit_type="faculty",
+            name_en="Faculty of Engineering",
+            slug_en="faculty-of-engineering",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        department = Department.objects.create(
+            university=self.university,
+            name_en="Department of Software Engineering",
+            slug_en="department-of-software-engineering",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        program = Program.objects.create(
+            university=self.university,
+            academic_unit=academic_unit,
+            department=department,
+            name_en="Software Engineering",
+            degree="bachelor",
+            created_by=self.actor,
+            updated_by=self.actor,
+        )
+        self._add_language(program, self.english)
+        self.assertEqual(
+            program.slug_en,
+            "istanbul-atlas-university-faculty-of-engineering-"
+            "department-of-software-engineering-software-engineering-bachelor-english",
         )
 
     def test_graduate_program_slug_includes_thesis_type(self):

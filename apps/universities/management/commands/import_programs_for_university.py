@@ -450,15 +450,30 @@ class Command(BaseCommand):
         elif thesis_type == ThesisType.NON_THESIS:
             thesis_token = "non-thesis"
 
+        academic_unit = defaults["academic_unit"]
+        department = defaults["department"]
+        hierarchy_tokens = [
+            str(getattr(academic_unit, "slug_en", "") or "").strip(),
+            str(getattr(department, "slug_en", "") or "").strip(),
+        ]
         structured_parts = [
+            university.slug_en,
+            *[token for token in hierarchy_tokens if token],
+            slugify(str(row["name_en"])),
+            degree_token,
+        ]
+        previous_structured_parts = [
             university.slug_en,
             slugify(str(row["name_en"])),
             degree_token,
         ]
         if thesis_token:
             structured_parts.append(thesis_token)
+            previous_structured_parts.append(thesis_token)
         structured_parts.extend(language_tokens)
+        previous_structured_parts.extend(language_tokens)
         structured_slug_en = "-".join(part for part in structured_parts if part)
+        previous_structured_slug_en = "-".join(part for part in previous_structured_parts if part)
 
         # ``slug_en`` in schema-v2 input is the stable source identity for
         # re-imports. Program.slug_en itself is now rebuilt from mutable
@@ -475,15 +490,32 @@ class Command(BaseCommand):
             suffix = f"-{token}"
             if source_identity_tail.endswith(suffix):
                 source_identity_tail = source_identity_tail[: -len(suffix)]
-        source_identity_parts = [university.slug_en, source_identity_tail, degree_token]
+        source_identity_parts = [
+            university.slug_en,
+            *[token for token in hierarchy_tokens if token],
+            source_identity_tail,
+            degree_token,
+        ]
+        previous_source_identity_parts = [
+            university.slug_en,
+            source_identity_tail,
+            degree_token,
+        ]
         if thesis_token:
             source_identity_parts.append(thesis_token)
+            previous_source_identity_parts.append(thesis_token)
         source_identity_parts.extend(language_tokens)
+        previous_source_identity_parts.extend(language_tokens)
         source_identity_canonical_slug_en = "-".join(part for part in source_identity_parts if part)
+        previous_source_identity_canonical_slug_en = "-".join(
+            part for part in previous_source_identity_parts if part
+        )
 
         matches = Program.objects.filter(university=university).filter(
             Q(slug_en=structured_slug_en)
+            | Q(slug_en=previous_structured_slug_en)
             | Q(slug_en=source_identity_canonical_slug_en)
+            | Q(slug_en=previous_source_identity_canonical_slug_en)
             | Q(slug_en=legacy_canonical_slug_en)
             | Q(slug_en=source_slug_en)
         )

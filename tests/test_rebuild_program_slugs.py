@@ -6,6 +6,7 @@ from django.test import TestCase
 from apps.core.audit import get_system_user
 from apps.geography.models import City, Country, Province
 from apps.universities.models import (
+    AcademicUnit,
     Program,
     ProgramInstructionLanguage,
     ProgramLanguage,
@@ -79,6 +80,23 @@ class RebuildProgramSlugsCommandTests(TestCase):
         call_command("rebuild_program_slugs", "--dry-run", stdout=StringIO())
         self.program.refresh_from_db()
         self.assertEqual(self.program.slug_en, "nursing-bachelor-turkish")
+
+    def test_command_adds_academic_unit_to_existing_slug(self):
+        unit = AcademicUnit.objects.create(
+            university=self.university,
+            unit_type="faculty",
+            name_en="Faculty of Health Sciences",
+            slug_en="faculty-of-health-sciences",
+            created_by=get_system_user(),
+            updated_by=get_system_user(),
+        )
+        Program.objects.filter(pk=self.program.pk).update(academic_unit=unit)
+        call_command("rebuild_program_slugs", stdout=StringIO())
+        self.program.refresh_from_db()
+        self.assertEqual(
+            self.program.slug_en,
+            "istanbul-atlas-university-faculty-of-health-sciences-nursing-bachelor-turkish",
+        )
 
     def test_command_adds_thesis_type_to_graduate_slug(self):
         self.program.name_en = "Business Administration"

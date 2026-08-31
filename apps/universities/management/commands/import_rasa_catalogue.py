@@ -783,23 +783,41 @@ class Command(BaseCommand):
         legacy_canonical_slug = (
             slug if slug.startswith(university_prefix) else f"{university_prefix}{slug}"
         )
+        hierarchy_tokens = [
+            str(getattr(academic_unit, "slug_en", "") or "").strip(),
+            str(getattr(department, "slug_en", "") or "").strip(),
+        ]
         structured_parts = [
+            university.slug_en,
+            *[token for token in hierarchy_tokens if token],
+            normalize_slug(name_en, slug),
+            str(degree),
+        ]
+        previous_structured_parts = [
             university.slug_en,
             normalize_slug(name_en, slug),
             str(degree),
         ]
         if thesis_type == ThesisType.THESIS:
             structured_parts.append("thesis")
+            previous_structured_parts.append("thesis")
         elif thesis_type == ThesisType.NON_THESIS:
             structured_parts.append("non-thesis")
+            previous_structured_parts.append("non-thesis")
         language_specs = parse_instruction_languages(item.get("language"))
-        structured_parts.extend(
+        language_slug_tokens = [
             normalize_slug(language_name, language_name)
             for language_name, _percentage in language_specs
-        )
+        ]
+        structured_parts.extend(language_slug_tokens)
+        previous_structured_parts.extend(language_slug_tokens)
         structured_slug = "-".join(part for part in structured_parts if part)
+        previous_structured_slug = "-".join(part for part in previous_structured_parts if part)
         matches = Program.objects.filter(university=university).filter(
-            Q(slug_en=structured_slug) | Q(slug_en=legacy_canonical_slug) | Q(slug_en=slug)
+            Q(slug_en=structured_slug)
+            | Q(slug_en=previous_structured_slug)
+            | Q(slug_en=legacy_canonical_slug)
+            | Q(slug_en=slug)
         )
         if matches.count() > 1:
             raise CommandError(

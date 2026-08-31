@@ -212,9 +212,11 @@ the canonical model.
 `Program` specializes shared slug behavior because its slug is a single-segment
 public/API route identifier. It does not treat an imported or manually edited
 Program slug as canonical input. Instead, each localized slug is reconstructed
-from structured catalogue data: localized University slug, localized Program
-name, deterministic localized degree token, `thesis`/`non-thesis` when applicable,
-and the structured instruction-language variant. Instruction languages are ordered
+from structured catalogue data: localized University slug, localized Academic Unit
+when present, localized Department when present, localized Program name,
+deterministic localized degree token, `thesis`/`non-thesis` when applicable, and
+the structured instruction-language variant. Missing Academic Unit/Department
+relations are omitted rather than inferred. Instruction languages are ordered
 primary-first and then deterministically, and every language in a multilingual
 variant is represented.
 
@@ -227,5 +229,6 @@ uniqueness constraints (blank localized values are excluded).
 target slug from current structured Program data, computes all changes first,
 rejects any would-be collision before writes, supports `--dry-run`, and updates
 audit metadata. This means legacy rows such as `altinbas-dentistry` normalize to
-a structured identity such as `altinbas-dentistry-bachelor-english` when their
-Program and instruction-language data establish those values.
+a structured identity such as
+`altinbas-faculty-of-dentistry-dentistry-bachelor-english` when its Academic Unit,
+Program, and instruction-language data establish those values.

@@ -284,9 +284,11 @@ MUST fail rather than drop an offering that still cannot be assigned an Intake.
 
 CAT-050 — Program public slugs MUST be globally unique and MUST be rebuilt
 from canonical structured data rather than historical/manual Program slug text.
-For each locale the canonical composition is `<University localized slug>-<Program
+For each locale the canonical composition is `<University localized slug>-<Academic
+Unit localized slug when present>-<Department localized slug when present>-<Program
 localized name>-<degree>-<thesis type when applicable>-<instruction language
-variant>`. Degree tokens are deterministic per locale. Thesis variants MUST use
+variant>`. Academic Unit and Department components MUST be omitted when the
+corresponding structured relation is absent and MUST NOT be invented for slug generation. Degree tokens are deterministic per locale. Thesis variants MUST use
 `thesis` or `non-thesis`. Instruction-language tokens MUST come from the structured
 `ProgramInstructionLanguage` rows, with the primary language first and remaining
 languages in deterministic order; a multilingual variant therefore preserves all

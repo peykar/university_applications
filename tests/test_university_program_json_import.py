@@ -170,7 +170,7 @@ class UniversityProgramJsonImportTests(TestCase):
         )
         program = Program.objects.get(
             university=self.university,
-            slug_en="json-import-university-software-engineering-bachelor-english",
+            slug_en="json-import-university-faculty-of-engineering-software-engineering-bachelor-english",
         )
         offering = ProgramOffering.objects.get(program=program, source=self.source)
 
@@ -200,7 +200,7 @@ class UniversityProgramJsonImportTests(TestCase):
 
         programs = Program.objects.filter(
             university=self.university,
-            slug_en="json-import-university-software-engineering-updated-bachelor-english",
+            slug_en="json-import-university-faculty-of-engineering-software-engineering-updated-bachelor-english",
         )
         self.assertEqual(programs.count(), 1)
         program = programs.get()
@@ -220,7 +220,7 @@ class UniversityProgramJsonImportTests(TestCase):
 
         program = Program.objects.get(
             university=self.university,
-            slug_en="json-import-university-software-engineering-renamed-bachelor-english",
+            slug_en="json-import-university-faculty-of-engineering-software-engineering-renamed-bachelor-english",
         )
         self.assertEqual(
             program.internal_notes,
@@ -281,7 +281,7 @@ class UniversityProgramJsonImportTests(TestCase):
 
         program = Program.objects.get(
             university=self.university,
-            slug_en="json-import-university-software-engineering-bachelor-english",
+            slug_en="json-import-university-faculty-of-engineering-software-engineering-bachelor-english",
         )
         self.assertEqual(program.slug_fa, "مهندسی-نرمافزار")
         self.assertEqual(program.slug_tr, "yazılım-mühendisliği")  # noqa: RUF001

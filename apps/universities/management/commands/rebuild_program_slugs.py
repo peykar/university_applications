@@ -10,7 +10,8 @@ from apps.universities.models import Program
 class Command(BaseCommand):
     help = (
         "Rebuild every Program localized public slug from structured University, "
-        "Program name, degree, thesis type, and instruction-language data."
+        "Academic Unit, Department, Program name, degree, thesis type, and "
+        "instruction-language data."
     )
 
     def add_arguments(self, parser):
@@ -24,7 +25,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         dry_run = bool(options["dry_run"])
         actor = None if dry_run else get_system_user()
-        programs = list(Program.objects.select_related("university").order_by("id"))
+        programs = list(
+            Program.objects.select_related(
+                "university",
+                "academic_unit",
+                "department",
+            ).order_by("id")
+        )
         planned: list[tuple[Program, dict[str, str]]] = []
         seen: dict[str, dict[str, str]] = {locale: {} for locale in ("en", "fa", "tr", "ar")}
 

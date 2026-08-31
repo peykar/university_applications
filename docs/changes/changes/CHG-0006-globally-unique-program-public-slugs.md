@@ -36,3 +36,13 @@ slug tail. They are generated from localized University slug, localized Program
 name, degree, thesis type when applicable, and structured instruction languages.
 This makes `rebuild_program_slugs` a true normalization command for legacy rows.
 
+
+
+## 2026-08-31 hierarchy extension
+
+CAT-050 now includes the Program's structured Academic Unit and Department in each
+localized canonical slug when those relations are present. The order is University,
+Academic Unit, Department, Program, degree, thesis type, and instruction language(s).
+Missing hierarchy relations are omitted and are never inferred solely for URL generation.
+The rebuild command and both catalogue importers preserve transition matching for
+pre-hierarchy canonical slugs so existing rows update rather than duplicate.
