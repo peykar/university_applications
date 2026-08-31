@@ -27,3 +27,14 @@ class SimilarProgramCardClickableTests(SimpleTestCase):
             '<span class="card-action">{% trans "View program" %}</span>',
             self.template,
         )
+
+    def test_similar_program_price_uses_customer_friendly_tuition_from_copy(self):
+        self.assertIn(
+            '<span>{% trans "Tuition from" %}</span>',
+            self.template,
+        )
+        self.assertIn(
+            "{{ related.min_active_tuition|currency_amount:related.min_active_currency }}",
+            self.template,
+        )
+        self.assertNotIn("minimum active tuition", self.template)

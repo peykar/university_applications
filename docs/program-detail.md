@@ -54,7 +54,7 @@ Two related-program sections are shown:
    favors matching department, degree and language.
 2. **More programs at this university**.
 
-Minimum active tuition is included where available.
+Similar-program cards present the lowest active tuition in customer-facing copy as **“Tuition from <amount>”** when available; internal/query terminology such as “minimum active tuition” is not exposed to customers.
 
 ## Internal catalogue notes
 

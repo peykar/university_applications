@@ -1337,3 +1337,11 @@
 - Fixed public Program offering pricing so promoted discounted/scholarship tuition
   keeps its fee label, percentages are shown exactly once, and each monetary fee
   displays its basis instead of presenting an ambiguous unlabeled annual amount.
+
+## 2026-08-31 — Similar-program tuition copy refinement
+
+- Replaced the implementation-oriented “minimum active tuition” label on public
+  Similar-program cards with customer-facing “Tuition from” copy.
+- Kept the existing minimum-active-tuition annotation, currency, filtering, and
+  catalogue pricing semantics unchanged.
+- Added UI-0004, Catalogue task/traceability updates, and regression coverage.

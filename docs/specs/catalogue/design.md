@@ -126,6 +126,12 @@ language display renders known percentages where available. Study mode and
 AcademicUnit become available presentation/filter dimensions where UX chooses
 to expose them. Tuition filters continue to constrain a coherent Offering row.
 
+Program-detail similarity cards may use the annotated minimum active tuition as
+their numeric source, but public copy presents that value as **“Tuition from”**
+rather than exposing internal/query terminology such as “minimum active tuition”.
+This refinement changes presentation only; the tuition annotation/filter semantics
+remain unchanged.
+
 ## Cross-cutting constraints
 
 - Follow `docs/product/business-rules.md` and terminology.

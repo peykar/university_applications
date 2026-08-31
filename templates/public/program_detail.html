@@ -232,8 +232,8 @@
               </div>
               <div class="related-program-price">
                 {% if related.min_active_tuition %}
+                  <span>{% trans "Tuition from" %}</span>
                   <strong>{{ related.min_active_tuition|currency_amount:related.min_active_currency }}</strong>
-                  <span>{% trans "minimum active tuition" %}</span>
                 {% else %}
                   <strong>—</strong>
                   <span>{% trans "tuition unavailable" %}</span>

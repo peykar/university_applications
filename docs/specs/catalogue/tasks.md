@@ -101,3 +101,7 @@ Version: 3.1
       tuition price, show source/structured percentages exactly once, display fee
       basis alongside every amount-bearing fee, and add rendered-page regression
       coverage for list, scholarship/discounted, advance-payment, and deposit fees.
+- [x] CAT-T37 (`CAT-043`) Refine Similar-program card tuition copy to present
+      the existing minimum active tuition annotation as customer-facing “Tuition
+      from” wording, without changing catalogue pricing/filter semantics, and add
+      regression coverage that prevents the internal phrase from returning.
