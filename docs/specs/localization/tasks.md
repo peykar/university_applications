@@ -28,3 +28,7 @@ Change: UI-0005
 - [x] `I18N-T11` — Keep public catalogue filter identities locale-independent while
       localizing field labels, and prevent inactive catalogue rows from producing
       localized dead-end field links (`BUG-0035`, `CAT-052`).
+
+- [x] `I18N-T12` — Render newly generated workflow system messages from structured event data in the
+      active locale while preserving human-authored and legacy stored message text (`CHG-0010`,
+      `MSG-010`).

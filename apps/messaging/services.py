@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db.models import OuterRef, Q, Subquery
-from django.utils import timezone
+from django.utils import timezone, translation
+from django.utils.translation import gettext as _
 
 from apps.core.audit import get_system_user
 
@@ -14,6 +17,7 @@ from .models import (
     Message,
     MessageAttachment,
     MessageSenderRole,
+    SystemMessageEventType,
 )
 
 
@@ -99,17 +103,122 @@ def send_message(*, conversation, sender, sender_role, body="", attachment=None)
     return message
 
 
-def send_system_message(subject, body: str, *, performed_by=None) -> Message:
+def _event_string(event_data: dict[str, object], key: str) -> str:
+    value = event_data.get(key, "")
+    return value if isinstance(value, str) else ""
+
+
+def _program_recommendation_body(event_data: dict[str, object]) -> str:
+    from apps.universities.models import Program
+
+    program = None
+    program_id = _event_string(event_data, "program_id")
+    if program_id:
+        program = Program.objects.select_related("university").filter(pk=program_id).first()
+
+    if program is None:
+        return ""
+
+    program_name = program.localized_name
+    university_name = program.university.localized_name
+    body = _("Your advisor recommended %(program)s at %(university)s.") % {
+        "program": program_name,
+        "university": university_name,
+    }
+    reason = _event_string(event_data, "reason").strip()
+    if reason:
+        body = _("%(message)s Reason: %(reason)s") % {
+            "message": body,
+            "reason": reason,
+        }
+    return str(body)
+
+
+def _document_type_label(event_data: dict[str, object]) -> str:
+    from apps.students.models import DocumentType
+
+    document_type = _event_string(event_data, "document_type")
+    try:
+        return str(DocumentType(document_type).label)
+    except ValueError:
+        return _event_string(event_data, "document_type_label_en") or str(_("document"))
+
+
+def _document_replacement_uploaded_body(event_data: dict[str, object]) -> str:
+    return str(
+        _("A replacement was uploaded for %(document)s. It is now pending review.")
+        % {"document": _document_type_label(event_data)}
+    )
+
+
+def _document_replacement_requested_body(event_data: dict[str, object]) -> str:
+    body = _("A replacement has been requested for %(document)s.") % {
+        "document": _document_type_label(event_data)
+    }
+    reason = _event_string(event_data, "reason").strip()
+    if reason:
+        body = _("%(message)s Reason: %(reason)s") % {
+            "message": body,
+            "reason": reason,
+        }
+    return str(body)
+
+
+def _lead_finalized_body(_event_data: dict[str, object]) -> str:
+    return str(
+        _(
+            "Your applicant profile has been finalized and converted to a student "
+            "record. Any discussed programs selected by your agent were created as "
+            "draft applications."
+        )
+    )
+
+
+_SYSTEM_EVENT_RENDERERS: dict[str, Callable[[dict[str, object]], str]] = {
+    SystemMessageEventType.PROGRAM_RECOMMENDED: _program_recommendation_body,
+    SystemMessageEventType.DOCUMENT_REPLACEMENT_UPLOADED: (_document_replacement_uploaded_body),
+    SystemMessageEventType.DOCUMENT_REPLACEMENT_REQUESTED: (_document_replacement_requested_body),
+    SystemMessageEventType.LEAD_FINALIZED: _lead_finalized_body,
+}
+
+
+def render_system_message_body(message: Message) -> str:
+    renderer = _SYSTEM_EVENT_RENDERERS.get(message.event_type)
+    if renderer is None:
+        return message.body
+    try:
+        rendered = renderer(message.event_data or {})
+    except (TypeError, ValueError, ValidationError):
+        return message.body
+    return rendered or message.body
+
+
+def send_system_message(
+    subject,
+    body: str = "",
+    *,
+    event_type: str = "",
+    event_data: dict[str, object] | None = None,
+    performed_by=None,
+) -> Message:
     actor = performed_by or get_system_user()
     conversation = get_or_create_conversation(subject=subject)
-    return Message.objects.create(
+    message = Message.objects.create(
         conversation=conversation,
         sender=actor,
         sender_role=MessageSenderRole.SYSTEM,
         body=body,
+        event_type=event_type,
+        event_data=event_data or {},
         created_by=actor,
         updated_by=actor,
     )
+    if event_type and not body:
+        with translation.override("en"):
+            message.body = render_system_message_body(message)
+        if message.body:
+            Message.objects.filter(pk=message.pk).update(body=message.body)
+    return message
 
 
 def mark_conversation_read(*, conversation, user, participant_role) -> None:

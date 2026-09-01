@@ -58,7 +58,7 @@
     <div class="agent-list">
       {% for message in recent_messages %}
         <a class="agent-list-row" href="{{ message.conversation.get_agent_url }}">
-          <span><strong>{{ message.conversation.subject_label }}</strong><small>{{ message.body|truncatechars:72|default:"Attachment" }}</small></span>
+          <span><strong>{{ message.conversation.subject_label }}</strong><small>{{ message.localized_body|truncatechars:72|default:"Attachment" }}</small></span>
           <time>{{ message.created_at|date:"M j, H:i" }}</time>
         </a>
       {% empty %}<p class="empty-state">{% trans "You're all caught up." %}</p>{% endfor %}

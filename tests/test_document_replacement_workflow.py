@@ -30,7 +30,12 @@ class DocumentReplacementWorkflowStructureTests(SimpleTestCase):
 
     def test_agent_request_creates_history_and_message(self):
         self.assertIn("LeadDocumentReviewHistory.objects.create(", self.agent_views)
-        self.assertIn("send_system_message(lead, body", self.agent_views)
+        self.assertIn(
+            "event_type=SystemMessageEventType.DOCUMENT_REPLACEMENT_REQUESTED",
+            self.agent_views,
+        )
+        self.assertIn('"document_type": document.document_type', self.agent_views)
+        self.assertIn('"reason": reason', self.agent_views)
 
     def test_customer_can_replace_requested_document(self):
         self.assertIn("def lead_document_replace", self.lead_views)

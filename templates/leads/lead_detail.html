@@ -83,7 +83,7 @@
                   <strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender_role == "agent" %}{% if message.sender and message.sender.get_full_name %}{{ message.sender.get_full_name }}{% else %}{% trans "Your advisor" %}{% endif %}{% elif message.sender_role == "customer" %}{% trans "You" %}{% else %}TurkDemy{% endif %}</strong>
                   <time>{{ message.created_at|date:"M j, H:i" }}</time>
                 </span>
-                <span class="request-message-preview-body">{% if message.body %}{{ message.body|truncatechars:110 }}{% else %}{% trans "Attachment" %}{% endif %}</span>
+                <span class="request-message-preview-body">{% if message.localized_body %}{{ message.localized_body|truncatechars:110 }}{% else %}{% trans "Attachment" %}{% endif %}</span>
               </a>
             {% empty %}<p class="muted">{% trans "No messages yet." %}</p>{% endfor %}
           </div>

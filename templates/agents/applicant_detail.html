@@ -289,12 +289,12 @@ document.addEventListener("DOMContentLoaded", () => {
    {% if message.sender_role == "system" %}
     <div class="system-event-row">
       <span class="system-event-icon" aria-hidden="true">✓</span>
-      <span class="system-event-text">{{ message.body }}</span>
+      <span class="system-event-text">{{ message.localized_body }}</span>
       <time>{{ message.created_at|date:"M j, H:i" }}</time>
     </div>
    {% else %}
     <header><strong>{{ message.get_sender_role_display }}</strong><time>{{ message.created_at|date:"M j, H:i" }}</time></header>
-    {% if message.body %}<p>{{ message.body|linebreaksbr }}</p>{% endif %}
+    {% if message.localized_body %}<p>{{ message.localized_body|linebreaksbr }}</p>{% endif %}
    {% endif %}
    {% if message.sender_role != "system" %}
    {% for attachment in message.attachments.all %}

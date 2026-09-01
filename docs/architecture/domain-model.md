@@ -47,6 +47,7 @@ Conversation
  ├── subject_content_type
  ├── subject_object_id
  ├── Message*
+ │    ├── structured system event (`event_type` + `event_data`) when applicable
  │    └── MessageAttachment*
  └── ConversationParticipantState*
       ├── User

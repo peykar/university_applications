@@ -6,5 +6,18 @@ def ensure_conversation(lead):
     return get_or_create_conversation(subject=lead)
 
 
-def send_system_message(lead, body: str, *, performed_by=None):
-    return _send_system(lead, body, performed_by=performed_by)
+def send_system_message(
+    lead,
+    body: str = "",
+    *,
+    event_type: str = "",
+    event_data: dict[str, object] | None = None,
+    performed_by=None,
+):
+    return _send_system(
+        lead,
+        body,
+        event_type=event_type,
+        event_data=event_data,
+        performed_by=performed_by,
+    )

@@ -3067,3 +3067,33 @@ msgstr "أنت لست مستخدمًا نشطًا في وكالة مقدم ال�
 msgid "Your advisor recommended %(program)s at %(university)s."
 msgstr "أوصى مستشارك ببرنامج %(program)s في %(university)s."
 
+msgid "Program recommended"
+msgstr "تم اقتراح البرنامج"
+
+msgid "Document replacement uploaded"
+msgstr "تم رفع بديل للمستند"
+
+msgid "Document replacement requested"
+msgstr "تم طلب بديل للمستند"
+
+msgid "Applicant finalized"
+msgstr "تم إنهاء ملف المتقدم"
+
+msgid "document"
+msgstr "المستند"
+
+#, python-format
+msgid "A replacement was uploaded for %(document)s. It is now pending review."
+msgstr "تم رفع ملف بديل لـ %(document)s، وهو الآن بانتظار المراجعة."
+
+#, python-format
+msgid "A replacement has been requested for %(document)s."
+msgstr "تم طلب ملف بديل لـ %(document)s."
+
+msgid ""
+"Your applicant profile has been finalized and converted to a student record. Any discussed "
+"programs selected by your agent were created as draft applications."
+msgstr ""
+"تم إنهاء ملف المتقدم الخاص بك وتحويله إلى سجل طالب. وأُنشئت البرامج التي نوقشت واختارها مستشارك "
+"كطلبات تقديم مسودة."
+

@@ -52,7 +52,9 @@ def _application_activity(application):
             {
                 "when": message.created_at,
                 "title": _("Message"),
-                "detail": message.body[:120] if message.body else _("Attachment"),
+                "detail": (
+                    message.localized_body[:120] if message.localized_body else _("Attachment")
+                ),
             }
         )
     if application.updated_at != application.created_at:

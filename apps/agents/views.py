@@ -36,6 +36,7 @@ from apps.messaging.models import (
     Message,
     MessageAttachment,
     MessageSenderRole,
+    SystemMessageEventType,
 )
 from apps.messaging.services import (
     agent_unread_count,
@@ -482,18 +483,14 @@ def applicant_recommend_program(request, lead_id):
         created_by=request.user,
         updated_by=request.user,
     )
-    recommendation_message = _("Your advisor recommended %(program)s at %(university)s.") % {
-        "program": program.localized_name,
-        "university": program.university.localized_name,
-    }
-    if reason:
-        recommendation_message = _("%(message)s Reason: %(reason)s") % {
-            "message": recommendation_message,
-            "reason": reason,
-        }
     send_system_message(
         lead,
-        recommendation_message,
+        event_type=SystemMessageEventType.PROGRAM_RECOMMENDED,
+        event_data={
+            "program_id": str(program.pk),
+            "interest_id": str(interest.pk),
+            "reason": reason,
+        },
         performed_by=request.user,
     )
     messages.success(request, _("Program recommended to applicant."))
@@ -1148,10 +1145,15 @@ def applicant_document_review(request, lead_id, document_id):
 
     if review_status == LeadDocumentReviewStatus.REPLACEMENT_REQUESTED:
         reason = document.review_note.strip()
-        body = f"A replacement has been requested for {document.get_document_type_display()}."
-        if reason:
-            body += f" Reason: {reason}"
-        send_system_message(lead, body, performed_by=request.user)
+        send_system_message(
+            lead,
+            event_type=SystemMessageEventType.DOCUMENT_REPLACEMENT_REQUESTED,
+            event_data={
+                "document_type": document.document_type,
+                "reason": reason,
+            },
+            performed_by=request.user,
+        )
 
     LeadActivity.objects.create(
         lead=lead,
@@ -1498,7 +1500,9 @@ def _agent_application_activity(application):
             {
                 "when": message.created_at,
                 "title": _("Message"),
-                "detail": message.body[:120] if message.body else _("Attachment"),
+                "detail": (
+                    message.localized_body[:120] if message.localized_body else _("Attachment")
+                ),
             }
         )
     application_agent = application.agent or application.student.agent

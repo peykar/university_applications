@@ -27,7 +27,7 @@
      <strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong>
      <time>{{ message.created_at|date:"Y-m-d H:i" }}</time>
     </div>
-    {% if message.body %}<div class="chat-message-body">{{ message.body|linebreaksbr }}</div>{% endif %}
+    {% if message.localized_body %}<div class="chat-message-body">{{ message.localized_body|linebreaksbr }}</div>{% endif %}
     {% for attachment in message.attachments.all %}<a href="{{ attachment.file.url }}" target="_blank" rel="noopener">{{ attachment.original_name|default:"Attachment" }}</a>{% endfor %}
    </article>
   {% empty %}<div class="empty-chat">{% trans "No messages yet." %}</div>{% endfor %}

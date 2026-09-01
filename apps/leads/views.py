@@ -18,6 +18,7 @@ from apps.messaging.models import (
     ConversationParticipantRole,
     Message,
     MessageSenderRole,
+    SystemMessageEventType,
 )
 from apps.messaging.services import (
     mark_conversation_read,
@@ -637,10 +638,8 @@ def lead_document_replace(request, lead_id, document_id):
     if lead.agent_id:
         send_system_message(
             lead,
-            (
-                f"A replacement was uploaded for "
-                f"{document.get_document_type_display()}. It is now pending review."
-            ),
+            event_type=SystemMessageEventType.DOCUMENT_REPLACEMENT_UPLOADED,
+            event_data={"document_type": document.document_type},
             performed_by=request.user,
         )
     messages.success(request, _("Replacement uploaded and sent for review."))

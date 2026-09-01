@@ -22,6 +22,19 @@ class MessageSenderRole(models.TextChoices):
     SYSTEM = "system", _("System")
 
 
+class SystemMessageEventType(models.TextChoices):
+    PROGRAM_RECOMMENDED = "program_recommended", _("Program recommended")
+    DOCUMENT_REPLACEMENT_UPLOADED = (
+        "document_replacement_uploaded",
+        _("Document replacement uploaded"),
+    )
+    DOCUMENT_REPLACEMENT_REQUESTED = (
+        "document_replacement_requested",
+        _("Document replacement requested"),
+    )
+    LEAD_FINALIZED = "lead_finalized", _("Applicant finalized")
+
+
 class ConversationParticipantRole(models.TextChoices):
     CUSTOMER = "customer", _("Customer")
     AGENT = "agent", _("Agent")
@@ -149,6 +162,12 @@ class Message(BaseModel):
     )
     sender_role = models.CharField(max_length=16, choices=MessageSenderRole.choices)
     body = models.TextField(blank=True)
+    event_type = models.CharField(
+        max_length=64,
+        choices=SystemMessageEventType.choices,
+        blank=True,
+    )
+    event_data = models.JSONField(default=dict, blank=True)
     edited_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
@@ -164,6 +183,14 @@ class Message(BaseModel):
         super().clean()
         if self.sender_role != MessageSenderRole.SYSTEM and not self.sender_id:
             raise ValidationError({"sender": _("Customer/agent messages require a sender.")})
+
+    @property
+    def localized_body(self) -> str:
+        if self.sender_role != MessageSenderRole.SYSTEM or not self.event_type:
+            return self.body
+        from .services import render_system_message_body
+
+        return render_system_message_body(self)
 
     def __str__(self):
         return f"{self.conversation.subject_label} - {self.get_sender_role_display()}"

@@ -103,3 +103,12 @@ values remain canonical `slug_en` values in every locale, while the visible opti
 chip, and homepage-field labels use the active-locale structured name with English
 fallback. This keeps a URL such as `?field=engineering` semantically identical under
 `/en/`, `/fa/`, `/tr/`, and `/ar/` and avoids querying all localized slug columns.
+
+## Structured system-message localization
+
+System-generated workflow messages are not treated as historical user-authored free text. New
+system events store a stable event type and structured arguments, retain an English body snapshot as
+a compatibility fallback, and render their interface sentence under the active request locale.
+Referenced localizable catalogue entities are resolved at display time so the event follows current
+approved localized names. User-authored reason/comment values embedded in an event remain verbatim.
+Legacy system messages without structured metadata continue to show their stored historical body.

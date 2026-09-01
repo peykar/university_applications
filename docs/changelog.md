@@ -1384,3 +1384,13 @@
 - Restored localized study-field names on grouped homepage cards with canonical English fallback.
 - Bidi-isolated tuition amounts so currency/number order stays readable in RTL locales.
 - Added BUG-0034, I18N-T10 and regression coverage.
+
+
+## 2026-09-01 — Locale-aware structured system messages
+
+- Added MSG-010/CHG-0010 so new workflow system messages store structured event identity/data and
+  render in the active locale instead of freezing the creator session language.
+- Program recommendations now resolve localized Program/University names at display time; document
+  replacement events localize document-type labels; Applicant finalization copy is locale-aware.
+- Human-authored messages and legacy system rows remain unchanged, with stored English bodies kept
+  as resilient fallback snapshots for new events.

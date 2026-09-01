@@ -307,7 +307,7 @@
                 </strong>
                 <time datetime="{{ message.created_at|date:'c' }}">{{ message.created_at|date:"M j, Y · H:i" }}</time>
               </div>
-              {% if message.body %}<div class="chat-message-body" dir="auto">{{ message.body|linebreaksbr }}</div>{% endif %}
+              {% if message.localized_body %}<div class="chat-message-body" dir="auto">{{ message.localized_body|linebreaksbr }}</div>{% endif %}
               {% for attachment in message.attachments.all %}
                 <a class="chat-attachment" href="{{ attachment.file.url }}" target="_blank" rel="noopener">
                   <span aria-hidden="true">📎</span> {{ attachment.original_name }}

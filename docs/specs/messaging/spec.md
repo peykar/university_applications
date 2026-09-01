@@ -1,7 +1,7 @@
 # Generic messaging
 
 Status: BASELINED
-Version: 1.1
+Version: 1.2
 
 ## Goal
 
@@ -30,6 +30,13 @@ MSG-008 — Conversation access MUST respect customer ownership and active-Agent
 authorization for the subject.
 
 MSG-009 — Subject-scoped messaging MUST NOT make an otherwise valid customer Request inaccessible when the subject has no Agent yet. No Conversation may be created without the required Agent/customer pair; customer message composition MUST remain unavailable until that pair exists, and direct send attempts MUST fail safely without a server error.
+
+MSG-010 — System-generated workflow messages that contain translatable interface copy MUST be
+stored with a stable event identity and structured event data sufficient to render that event in
+the active request locale. Rendering MUST localize referenced structured domain values at display
+time when localized values exist. Human-authored message text MUST NOT be automatically translated.
+Historical system messages without structured event metadata MUST remain readable through their
+stored body fallback.
 
 ## Acceptance policy
 

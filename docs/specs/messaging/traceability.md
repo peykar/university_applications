@@ -13,6 +13,7 @@ Status: BASELINED
 | `MSG-007` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `MSG-008` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `MSG-009` | `apps/leads/views.py`, `templates/leads/lead_section.html`, generic Conversation invariant | `UnassignedCustomerRequestTests` | Named runtime tests |
+| `MSG-010` | `design.md`; `MSG-T10`–`MSG-T11`; `apps/messaging/models.py`; `apps/messaging/services.py`; structured event producers and message presentation templates | `LocalizedSystemMessageTests`; existing messaging/workspace regressions | Named runtime tests |
 
 ## Notes
 

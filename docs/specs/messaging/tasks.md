@@ -13,3 +13,8 @@ baseline subject to the gap report.
 - [ ] Update traceability after each implementation change.
 - [ ] Run `make format` and `make check`.
 - [x] `MSG-009` Guard customer Request messaging until the subject has an Agent while preserving the Conversation invariant.
+
+- [x] `MSG-T10` — Add structured system-event persistence plus active-locale rendering with legacy
+      body fallback (`MSG-010`, `CHG-0010`).
+- [x] `MSG-T11` — Convert current workflow system-message producers and all product message
+      presentation surfaces to `localized_body`; add runtime localization/compatibility regressions.

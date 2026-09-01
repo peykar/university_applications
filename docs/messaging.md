@@ -67,3 +67,16 @@ Desktop retains the Request context sidebar. At customer mobile widths the sideb
 hidden so the thread and composer use the available width. The composer preserves the
 existing `MessageForm`/send service while presenting an accessible **Attach file**
 affordance and selected-file feedback instead of the browser file-input chrome.
+
+## Locale-aware system messages
+
+New workflow-generated system messages use `Message.event_type` plus JSON-safe
+`Message.event_data` as their canonical event representation. `Message.body` is
+retained as an English fallback snapshot. Product templates and inbox/detail
+previews render `Message.localized_body`, which translates the event sentence in
+the active locale and resolves localized structured values (for example Program
+and University names) at display time.
+
+Human-authored customer/Agent messages are never automatically translated.
+Historical system messages without structured event metadata continue to display
+their stored body unchanged.

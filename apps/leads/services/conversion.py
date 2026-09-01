@@ -9,6 +9,7 @@ from django.utils import timezone
 
 from apps.applications.services import create_student_application
 from apps.core.audit import get_system_user
+from apps.messaging.models import SystemMessageEventType
 from apps.students.models import Student, StudentDocument
 from apps.universities.models import ProgramOffering
 
@@ -264,11 +265,8 @@ def finalize_lead(
 
     send_system_message(
         lead,
-        (
-            "Your applicant profile has been finalized and converted to a student "
-            "record. Any discussed programs selected by your agent were created as "
-            "draft applications."
-        ),
+        event_type=SystemMessageEventType.LEAD_FINALIZED,
+        event_data={"student_id": str(student.pk)},
         performed_by=actor,
     )
 
