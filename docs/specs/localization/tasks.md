@@ -32,3 +32,7 @@ Change: UI-0005
 - [x] `I18N-T12` — Render newly generated workflow system messages from structured event data in the
       active locale while preserving human-authored and legacy stored message text (`CHG-0010`,
       `MSG-010`).
+
+- [x] `I18N-T13` — Make the shared language switch deterministic across locale-prefixed and
+      non-prefixed product routes, preserving query state and preventing an unresolved URL from
+      silently retaining the previous locale (`BUG-0036`).

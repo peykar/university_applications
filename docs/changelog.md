@@ -1,3 +1,4 @@
+- Fixed BUG-0036 / I18N-T13: language switching now deterministically changes locale-prefixed URLs, preserves query strings, and safely falls back for unresolved localized routes.
 ## 2026-09-01 — Locale-independent public field filter identity
 
 - Fixed BUG-0035 / CAT-052: public field filters keep stable canonical `slug_en`

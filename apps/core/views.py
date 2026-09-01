@@ -1,11 +1,57 @@
 from django.conf import settings
 from django.contrib import messages
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.urls import reverse, translate_url
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.translation import check_for_language
 from django.views.decorators.http import require_POST
 
 from .email_previews import EMAIL_PREVIEW_REGISTRY, render_email_preview
+
+
+@require_POST
+def switch_language(request):
+    """Switch locale without silently falling back to the current language URL."""
+    language = (request.POST.get("language") or "").strip().lower()
+    supported = {code for code, _name in settings.LANGUAGES}
+    if language not in supported or not check_for_language(language):
+        return HttpResponseRedirect("/")
+
+    next_url = request.POST.get("next") or "/"
+    if not url_has_allowed_host_and_scheme(
+        url=next_url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        next_url = "/"
+
+    translated_url = translate_url(next_url, language)
+    if translated_url == next_url:
+        # ``translate_url`` intentionally returns the input when Django cannot
+        # resolve it. Locale-prefixed TurkDemy product routes still have a
+        # deterministic language segment, so do not leave the user stranded in
+        # the old locale merely because URL translation could not resolve.
+        path, separator, query = next_url.partition("?")
+        segments = path.split("/")
+        if len(segments) > 1 and segments[1] in supported:
+            segments[1] = language
+            translated_url = "/".join(segments)
+            if separator:
+                translated_url = f"{translated_url}?{query}"
+
+    response = HttpResponseRedirect(translated_url)
+    response.set_cookie(
+        settings.LANGUAGE_COOKIE_NAME,
+        language,
+        max_age=settings.LANGUAGE_COOKIE_AGE,
+        path=settings.LANGUAGE_COOKIE_PATH,
+        domain=settings.LANGUAGE_COOKIE_DOMAIN,
+        secure=settings.LANGUAGE_COOKIE_SECURE,
+        httponly=settings.LANGUAGE_COOKIE_HTTPONLY,
+        samesite=settings.LANGUAGE_COOKIE_SAMESITE,
+    )
+    return response
 
 
 def page_not_found(request, exception=None):
