@@ -11,8 +11,8 @@
     <p class="eyebrow hero-eyebrow">{% trans "Study in Türkiye" %}</p>
     <h1>{% trans "Find the right university and build your future." %}</h1>
     <p class="hero-copy">
-      {% blocktrans with program_count=program_count university_count=university_count %}
-      Search {{ program_count }} programs across {{ university_count }} universities and compare your options in one place.
+      {% blocktrans trimmed with program_count=program_count university_count=university_count %}
+        Search {{ program_count }} programs across {{ university_count }} universities and compare your options in one place.
       {% endblocktrans %}
     </p>
 
@@ -75,7 +75,7 @@
   <div class="field-chip-grid">
     {% for field in study_fields %}
       <a class="field-chip" href="{% url 'program-list' %}?field={{ field.slug_en|urlencode }}">
-        <span>{{ field.localized_name }}</span>
+        <span>{{ field|localized:"name" }}</span>
         <small>{{ field.program_count }} {% trans "programs" %}</small>
       </a>
     {% endfor %}
@@ -98,7 +98,7 @@
         </div>
         <div class="program-row-meta">
           {% if program.min_active_tuition %}
-            <strong>{{ program.min_active_tuition|currency_amount:program.min_active_currency }}</strong>
+            <strong><bdi dir="ltr">{{ program.min_active_tuition|currency_amount:program.min_active_currency }}</bdi></strong>
             <small>{% trans "from" %}</small>
           {% else %}
             <strong>{% trans "Contact" %}</strong><small>{% trans "for tuition" %}</small>

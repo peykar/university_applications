@@ -1367,3 +1367,10 @@
   completeness, languages, offerings, fees, ownership, duplicate identities,
   public provenance leakage, numeric slug tails, and Application readiness.
 - Added human output plus optional JSON/CSV reports and opt-in `--fail-on-errors`.
+
+## 2026-09-01 — Persian homepage localization regression
+
+- Fixed dynamic homepage hero copy so existing FA/TR/AR translations are selected reliably.
+- Restored localized study-field names on grouped homepage cards with canonical English fallback.
+- Bidi-isolated tuition amounts so currency/number order stays readable in RTL locales.
+- Added BUG-0034, I18N-T10 and regression coverage.

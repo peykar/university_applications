@@ -22,3 +22,6 @@ Change: UI-0005
       change history.
 - [x] `I18N-T09` — Verify archive integrity, including mandatory `.env.example` and
       exclusion of secret env files, virtualenvs and generated caches.
+
+- [x] `I18N-T10` — Fix rendered-homepage localization gaps for dynamic hero copy,
+      grouped study-field names and RTL tuition bidi isolation (`BUG-0034`).

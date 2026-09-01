@@ -3,7 +3,7 @@ from urllib.parse import urlencode
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Case, Count, IntegerField, Prefetch, Q, Value, When
+from django.db.models import Case, Count, IntegerField, Max, Prefetch, Q, Value, When
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -120,7 +120,12 @@ def home(request):
             programs__is_active=True,
         )
         .values("name_en", "slug_en")
-        .annotate(program_count=Count("programs", distinct=True))
+        .annotate(
+            name_fa=Max("name_fa"),
+            name_tr=Max("name_tr"),
+            name_ar=Max("name_ar"),
+            program_count=Count("programs", distinct=True),
+        )
         .exclude(name_en="")
         .order_by("-program_count", "name_en")[:10]
     )

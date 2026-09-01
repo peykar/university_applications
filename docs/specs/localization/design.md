@@ -91,3 +91,7 @@ Regression coverage checks:
 - representative surface-family localization markers;
 - generated ModelForm labels under an RTL locale;
 - JavaScript use of localized server-provided data attributes.
+- rendered homepage dynamic `blocktrans` messages use trimmed canonical msgids;
+- grouped dictionary-backed localized values retain locale fields and use the canonical
+  `localized` selector;
+- mixed-direction numeric/currency fragments are bidi-isolated where required.
