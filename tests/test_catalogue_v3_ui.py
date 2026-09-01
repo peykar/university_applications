@@ -161,3 +161,14 @@ class PublicStructuredFeePresentationTests(TestCase):
         )
 
         self.assertEqual(fee.display_label, "Cash payment (12.5%)")
+
+
+def test_homepage_popular_programs_use_structured_fee_annotation():
+    source = (ROOT / "apps/public/views.py").read_text()
+    template = (ROOT / "templates/public/home.html").read_text()
+
+    assert "offerings__tuition" not in source
+    assert "popular_programs = annotate_min_active_tuition(" in source
+    assert "program.min_active_tuition" in template
+    assert "program.min_active_currency" in template
+    assert "program.min_tuition" not in template

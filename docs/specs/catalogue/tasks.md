@@ -109,3 +109,8 @@ Version: 3.1
       human/JSON/CSV reports, optional error exit status, operator documentation,
       and regression coverage for Application readiness, clean structured tuition,
       and public provenance leakage.
+
+- [x] CAT-T39 (`CAT-043`) Remove the stale Catalogue v2 homepage tuition lookup and
+  source Popular-program pricing exclusively from active structured `OfferingFee`
+  rows through the canonical Catalogue v3 tuition annotation helper.
+

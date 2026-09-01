@@ -97,8 +97,8 @@
           <span>{{ program.university.localized_name }} · {{ program.get_degree_display }} · {{ program.instruction_language_display }}</span>
         </div>
         <div class="program-row-meta">
-          {% if program.min_tuition %}
-            <strong>{{ program.min_tuition|currency_amount:program.offerings.first.currency }}</strong>
+          {% if program.min_active_tuition %}
+            <strong>{{ program.min_active_tuition|currency_amount:program.min_active_currency }}</strong>
             <small>{% trans "from" %}</small>
           {% else %}
             <strong>{% trans "Contact" %}</strong><small>{% trans "for tuition" %}</small>

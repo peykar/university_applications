@@ -3,7 +3,7 @@ from urllib.parse import urlencode
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Case, Count, IntegerField, Min, Prefetch, Q, Value, When
+from django.db.models import Case, Count, IntegerField, Prefetch, Q, Value, When
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -106,21 +106,13 @@ def home(request):
         .order_by("-is_featured", "-listing_priority", "name_en")[:8]
     )
 
-    popular_programs = (
+    popular_programs = annotate_min_active_tuition(
         active_programs.select_related(
             "university",
             "academic_unit",
             "department",
-        )
-        .prefetch_related("instruction_language_rows__language", "offerings")
-        .annotate(
-            min_tuition=Min(
-                "offerings__tuition",
-                filter=Q(offerings__is_active=True),
-            )
-        )
-        .order_by("-listing_priority", "name_en")[:8]
-    )
+        ).prefetch_related("instruction_language_rows__language")
+    ).order_by("-listing_priority", "name_en")[:8]
 
     study_fields = (
         Department.objects.filter(
