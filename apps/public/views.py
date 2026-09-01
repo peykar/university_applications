@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from apps.content.models import FAQ, FAQCategory
+from apps.core.localization import normalized_language_code
 from apps.geography.models import City
 from apps.universities.models import (
     AcademicUnit,
@@ -36,16 +37,44 @@ from .services.program_filters import (
 )
 
 
-def _program_filter_options(*, university=None):
-    base_programs = Program.objects.filter(is_active=True)
+def _canonical_field_choices(*, university=None):
     departments = Department.objects.filter(
         is_active=True,
+        university__is_active=True,
         programs__is_active=True,
+        programs__university__is_active=True,
+    ).exclude(slug_en="")
+
+    if university is not None:
+        departments = departments.filter(university=university)
+
+    language = normalized_language_code()
+    localized_name_field = f"name_{language}"
+    choices_by_slug: dict[str, Department] = {}
+    for department in departments.order_by("slug_en", "name_en", "pk").distinct():
+        existing = choices_by_slug.get(department.slug_en)
+        if existing is None:
+            choices_by_slug[department.slug_en] = department
+            continue
+        existing_localized_name = existing.__dict__.get(localized_name_field, "")
+        department_localized_name = department.__dict__.get(localized_name_field, "")
+        if not existing_localized_name and department_localized_name:
+            choices_by_slug[department.slug_en] = department
+
+    return sorted(
+        choices_by_slug.values(),
+        key=lambda department: (department.localized_name.casefold(), department.slug_en),
+    )
+
+
+def _program_filter_options(*, university=None):
+    base_programs = Program.objects.filter(
+        is_active=True,
+        university__is_active=True,
     )
 
     if university is not None:
         base_programs = base_programs.filter(university=university)
-        departments = departments.filter(university=university)
 
     return {
         "degree_choices": DegreeType.choices,
@@ -62,7 +91,7 @@ def _program_filter_options(*, university=None):
         )
         .distinct()
         .order_by("name_en"),
-        "field_choices": (departments.exclude(slug_en="").order_by("name_en").distinct()),
+        "field_choices": _canonical_field_choices(university=university),
         "academic_year_choices": AcademicYear.objects.filter(
             is_active=True,
             program_offerings__program__in=base_programs,
@@ -92,7 +121,7 @@ def home(request):
         return redirect(f"{reverse('program-list')}?{urlencode(params)}")
 
     active_universities = University.objects.filter(is_active=True)
-    active_programs = Program.objects.filter(is_active=True)
+    active_programs = Program.objects.filter(is_active=True, university__is_active=True)
     active_faqs = FAQ.objects.filter(is_active=True)
 
     featured_universities = (
@@ -117,10 +146,14 @@ def home(request):
     study_fields = (
         Department.objects.filter(
             is_active=True,
+            university__is_active=True,
             programs__is_active=True,
+            programs__university__is_active=True,
         )
-        .values("name_en", "slug_en")
+        .exclude(slug_en="")
+        .values("slug_en")
         .annotate(
+            name_en=Max("name_en"),
             name_fa=Max("name_fa"),
             name_tr=Max("name_tr"),
             name_ar=Max("name_ar"),

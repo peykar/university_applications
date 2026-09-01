@@ -114,3 +114,8 @@ Version: 3.1
   source Popular-program pricing exclusively from active structured `OfferingFee`
   rows through the canonical Catalogue v3 tuition annotation helper.
 
+- [x] CAT-T40 (`CAT-052`, `I18N-001`) Keep public field-filter query identities on
+      canonical `slug_en`, deduplicate repeated Department slugs for presentation,
+      localize only their labels, exclude fields backed only by inactive Universities,
+      align homepage study-field links/counts with the active catalogue, and add
+      regression coverage for canonical-vs-localized slug behavior.

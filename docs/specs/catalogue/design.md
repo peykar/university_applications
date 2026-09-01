@@ -279,3 +279,18 @@ used for expected-but-notable state such as numeric public-slug collision tails.
 The command never repairs data. Human output is the default; JSON and CSV are
 available for review/automation. `--fail-on-errors` is opt-in so an exploratory
 audit remains non-disruptive.
+
+## Locale-independent public filter identity (CAT-052)
+
+Slug-backed public catalogue filters use `slug_en` as their stable URL identity in
+all supported locales. Locale selection affects presentation labels only. A field
+query such as `?field=engineering` therefore filters `Department.slug_en` and never
+fans out across `slug_fa`, `slug_tr`, or `slug_ar`.
+
+Departments are University-owned, so the same logical field may exist as multiple
+rows. Public field controls collapse those rows by canonical `slug_en`; the chosen
+representative prefers an explicit name for the active locale and otherwise uses the
+normal English fallback. Only rows connected to active Programs at active Universities
+may contribute public choices. The homepage study-field aggregation applies the same
+active-catalogue boundary and groups counts by canonical field slug, preventing links
+published from inactive/legacy catalogue rows from leading to zero-result pages.

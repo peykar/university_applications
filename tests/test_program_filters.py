@@ -2,7 +2,8 @@ from datetime import timedelta
 from decimal import Decimal
 
 from django.test import TestCase
-from django.utils import timezone
+from django.urls import reverse
+from django.utils import timezone, translation
 
 from apps.core.audit import get_system_user
 from apps.geography.models import City, Country, Province
@@ -10,6 +11,7 @@ from apps.public.services.program_filters import (
     ProgramFilterState,
     apply_program_filters,
 )
+from apps.public.views import _program_filter_options
 from apps.universities.models import (
     AcademicYear,
     Department,
@@ -82,6 +84,7 @@ class ProgramFilterTests(TestCase):
             created_by=user,
             updated_by=user,
         )
+        self.university = university
         department = Department.objects.create(
             university=university,
             name_en="Engineering",
@@ -95,6 +98,7 @@ class ProgramFilterTests(TestCase):
             created_by=user,
             updated_by=user,
         )
+        self.department = department
         language = ProgramLanguage.objects.create(
             name_en="English",
             name_fa="",
@@ -201,6 +205,59 @@ class ProgramFilterTests(TestCase):
             ),
         )
         self.assertEqual(qs.count(), 1)
+
+    def test_field_filter_uses_canonical_english_slug_identity(self):
+        self.department.name_fa = "مهندسی"
+        self.department.slug_fa = "مهندسی"
+        self.department.save(update_fields=["name_fa", "slug_fa", "updated_at"])
+
+        base = Program.objects.filter(
+            is_active=True,
+            university__is_active=True,
+        )
+        canonical = apply_program_filters(
+            base,
+            ProgramFilterState(field="engineering"),
+        )
+        localized_slug = apply_program_filters(
+            base,
+            ProgramFilterState(field="مهندسی"),
+        )
+
+        self.assertEqual(canonical.count(), 1)
+        self.assertEqual(localized_slug.count(), 0)
+
+    def test_field_choice_localizes_label_but_keeps_canonical_slug(self):
+        self.department.name_fa = "مهندسی"
+        self.department.slug_fa = "مهندسی"
+        self.department.save(update_fields=["name_fa", "slug_fa", "updated_at"])
+
+        with translation.override("fa"):
+            choices = _program_filter_options()["field_choices"]
+            engineering = next(choice for choice in choices if choice.slug_en == "engineering")
+            self.assertEqual(engineering.localized_name, "مهندسی")
+            self.assertEqual(engineering.slug_en, "engineering")
+
+    def test_field_choices_exclude_departments_without_active_university(self):
+        self.university.is_active = False
+        self.university.save(update_fields=["is_active", "updated_at"])
+
+        choices = _program_filter_options()["field_choices"]
+
+        self.assertNotIn("engineering", [choice.slug_en for choice in choices])
+
+    def test_homepage_does_not_publish_dead_field_links(self):
+        self.university.is_active = False
+        self.university.save(update_fields=["is_active", "updated_at"])
+
+        response = self.client.get(reverse("home"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(
+            "engineering",
+            [field["slug_en"] for field in response.context["study_fields"]],
+        )
+        self.assertEqual(response.context["program_count"], 0)
 
     def test_offering_filters_must_match_same_offering(self):
         qs = apply_program_filters(

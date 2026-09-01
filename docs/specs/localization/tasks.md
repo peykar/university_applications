@@ -25,3 +25,6 @@ Change: UI-0005
 
 - [x] `I18N-T10` — Fix rendered-homepage localization gaps for dynamic hero copy,
       grouped study-field names and RTL tuition bidi isolation (`BUG-0034`).
+- [x] `I18N-T11` — Keep public catalogue filter identities locale-independent while
+      localizing field labels, and prevent inactive catalogue rows from producing
+      localized dead-end field links (`BUG-0035`, `CAT-052`).

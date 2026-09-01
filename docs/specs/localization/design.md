@@ -95,3 +95,11 @@ Regression coverage checks:
 - grouped dictionary-backed localized values retain locale fields and use the canonical
   `localized` selector;
 - mixed-direction numeric/currency fragments are bidi-isolated where required.
+
+## Locale-independent filter identities
+
+Localization does not rewrite public catalogue filter identities. Slug-backed filter
+values remain canonical `slug_en` values in every locale, while the visible option,
+chip, and homepage-field labels use the active-locale structured name with English
+fallback. This keeps a URL such as `?field=engineering` semantically identical under
+`/en/`, `/fa/`, `/tr/`, and `/ar/` and avoids querying all localized slug columns.

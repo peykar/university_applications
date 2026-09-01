@@ -316,3 +316,17 @@ programme/offering identities, public-note provenance leakage, unused hierarchy,
 and numeric Program slug collision tails. It MUST print a human-readable summary,
 MUST support JSON and CSV report output, and MAY fail the process on ERROR findings
 only when the operator explicitly requests `--fail-on-errors`.
+
+CAT-052 — Public catalogue filter URLs MUST use the canonical English slug as the
+stable identity for slug-backed filter dimensions across every supported locale.
+Changing the request locale MUST change only the displayed localized label, not the
+submitted/query-string identifier or the set of matching catalogue records. A
+canonical field slug MUST match active Programs attached to any active Department
+with that `slug_en`, including the same logical field repeated across Universities;
+filtering MUST NOT probe `slug_fa`, `slug_tr`, or `slug_ar` as alternate URL
+identities. Public field choices and homepage field links MUST only expose canonical
+field slugs that have at least one active matching Program at an active University,
+and repeated Department rows with the same canonical slug MUST be presented as one
+logical field choice. When multiple matching Department rows exist, an available
+localized name for the active locale MUST be preferred for presentation, with the
+normal English fallback when no localized name exists.

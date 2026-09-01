@@ -1,3 +1,13 @@
+## 2026-09-01 — Locale-independent public field filter identity
+
+- Fixed BUG-0035 / CAT-052: public field filters keep stable canonical `slug_en`
+  query identities in every locale while displaying localized field labels.
+- Public field choices are deduplicated by canonical slug and exclude fields backed
+  only by inactive Universities, preventing localized homepage links that lead to
+  zero-result catalogue pages.
+- Homepage programme counts/popular-program sources now follow the same active-
+  University boundary as the programme catalogue.
+
 ## 2026-09-01 — Application-wide localization integrity
 
 - Implemented I18N-001 / UI-0005 across every intentionally translation-enabled
