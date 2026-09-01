@@ -43,12 +43,12 @@ class ActiveActionsMixin:
     def get_actions(self, request):
         actions = super().get_actions(request)  # type: ignore[misc]
         actions["mark_active"] = (
-            self.mark_active,
+            ActiveActionsMixin.mark_active,
             "mark_active",
             "Mark selected records active",
         )
         actions["mark_inactive"] = (
-            self.mark_inactive,
+            ActiveActionsMixin.mark_inactive,
             "mark_inactive",
             "Mark selected records inactive",
         )
