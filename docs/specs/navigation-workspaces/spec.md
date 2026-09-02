@@ -1,7 +1,7 @@
 # Navigation and workspace information architecture
 
 Status: BASELINED
-Version: 1.4
+Version: 1.5
 
 ## Goal
 
@@ -51,3 +51,6 @@ NAV-010 — The customer workspace navigation MUST expose **My Requests**, **Mes
 NAV-011 — The Agent workspace MUST use the same shared workspace visual system as **My TurkDemy** for its outer page shell: global header separation, desktop left-sidebar geometry, main-content width, page-heading hierarchy, entity navigation treatment, and responsive collapse behavior. Agent-only organization identity, workspace switching, operational navigation, data density, and permissions MAY remain Agent-specific and MUST NOT be removed merely for visual parity.
 
 NAV-012 — Workspace secondary/context sidebars MUST be layout-conditional. When a page has no meaningful secondary/context content to render, it MUST NOT reserve an empty secondary column; the primary workspace content MUST expand into the released width. This rule applies consistently to customer and Agent workspace layouts that use an optional secondary/context sidebar.
+
+
+NAV-013 — On desktop, the Agent workspace MUST preserve the standard primary-sidebar alignment while allowing its workspace canvas to extend into available inline-end space. Agent pages without a secondary/context rail MUST let the main content consume that released space rather than stopping at the narrower two-area site-container width. Pages that do render an Agent entity/context rail MAY use the same expanded canvas for the three-area layout. Tablet/mobile behavior MUST continue to use the established responsive collapse.

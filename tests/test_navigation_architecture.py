@@ -84,6 +84,18 @@ class NavigationArchitectureTests(SimpleTestCase):
         self.assertIn('class="workspace-sidebar agent-workspace-sidebar"', self.agent_base)
         self.assertNotIn('class="agent-tabs"', self.agent_base)
 
+    def test_agent_workspace_expands_into_released_context_space(self):
+        self.assertIn(
+            ".agent-workspace-page .page-shell{",
+            self.css,
+        )
+        self.assertIn("max-width:1496px;", self.css)
+        self.assertIn(
+            "margin-inline-start:max(16px,calc((100vw - 1160px)/2));",
+            self.css,
+        )
+        self.assertIn("margin-inline-end:16px;", self.css)
+
     def test_agent_workspace_uses_shared_workspace_visual_system(self):
         self.assertIn(
             'class="section-heading workspace-page-head agent-workspace-head"',

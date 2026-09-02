@@ -20,3 +20,5 @@ baseline subject to the gap report.
 - [x] `NAV-T11` Align the Agent workspace outer shell and page-heading hierarchy with the shared My TurkDemy workspace visual system while retaining Agent-only organization and operational controls.
 
 - [x] `NAV-T12` Make optional workspace secondary/context columns collapse when they have no meaningful content, allowing the primary workspace to use the released width.
+
+- [x] `NAV-T13` Expand the desktop Agent workspace into released context-rail space while preserving standard inline-start alignment and responsive collapse.

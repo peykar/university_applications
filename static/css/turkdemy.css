@@ -5004,10 +5004,20 @@ a.entity-list-row:hover{
 /* ============================================================
    Agent workspace
 
-   Agent and My TurkDemy intentionally share the same outer workspace
-   geometry. Agent-specific density belongs inside panels and tables, not in
-   a separate shell or page-heading system.
+   Agent and My TurkDemy share the same visual language and sidebar geometry.
+   On desktop the Agent workspace may consume the otherwise-unused inline-end
+   canvas reserved by three-area workspace layouts. This keeps the primary
+   sidebar aligned with the standard site container while allowing pages with
+   no secondary/context rail to expand their main content.
    ============================================================ */
+@media(min-width:1161px){
+  .agent-workspace-page .page-shell{
+    width:auto;
+    max-width:1496px;
+    margin-inline-start:max(16px,calc((100vw - 1160px)/2));
+    margin-inline-end:16px;
+  }
+}
 .agent-workspace-page .agent-workspace{
   padding:0;
   background:transparent;

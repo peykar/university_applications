@@ -39,3 +39,10 @@ This is visual-system alignment, not an information-architecture merge. The Agen
 ## Optional secondary/context columns
 
 `NAV-012` makes secondary workspace columns content-driven rather than structural placeholders. A Request context sidebar is rendered only when it has meaningful document or preference context. If no such context exists, the same full-width layout used by intentionally sidebar-free tabs is applied, so the central workspace expands into the released column. The rule is shared with Agent workspace layouts: any future or existing optional Agent context sidebar must follow the same collapse behavior instead of leaving an empty right rail.
+
+
+## Agent desktop canvas and released context space
+
+`NAV-013` clarifies the desktop geometry implied by `NAV-012`. The shared visual system does not require Agent operational pages to stop at the public site's 1160px content boundary. Above the desktop breakpoint, the Agent page shell keeps its inline-start edge aligned with the standard site container, but may extend toward the inline-end viewport edge up to a 1496px workspace cap. This approximates the standard workspace width plus a 310px context rail and its 26px gap.
+
+As a result, top-level Agent pages with no context rail (Overview, Applicants, Applications, TODOs, Communications, and Messages) use the released width for their main content. Applicant/Application entity pages that have a real secondary rail can use the same canvas without changing the visual language. At 1160px and below, the existing shared responsive workspace rules remain authoritative.
