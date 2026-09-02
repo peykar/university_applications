@@ -182,6 +182,18 @@ def _lead_entity_context(*, request, lead, mark_read=False):
         else []
     )
 
+    has_request_context_data = bool(
+        documents
+        or preferred_degrees
+        or preferred_university_types
+        or preferences.tuition_min
+        or preferences.tuition_max
+        or preferences.preferred_languages.exists()
+        or preferences.preferred_cities.exists()
+        or preferences.preferred_universities.exists()
+        or preferences.preferred_departments.exists()
+    )
+
     return {
         "lead": lead,
         "interests": interests,
@@ -205,6 +217,7 @@ def _lead_entity_context(*, request, lead, mark_read=False):
         "preferred_cities": preferences.preferred_cities.all(),
         "preferred_universities": preferences.preferred_universities.all(),
         "preferred_departments": preferences.preferred_departments.all(),
+        "has_request_context_data": has_request_context_data,
         "agent_context": False,
     }
 

@@ -3,7 +3,7 @@
 {% block title %}{{ lead }} · {{ entity_tab|title }} — TurkDemy{% endblock %}
 {% block customer_content %}
 <div class="customer-applicant-page customer-request-detail">
-<div class="request-detail-layout{% if entity_tab == 'documents' or entity_tab == 'preferences' %} request-detail-layout-full{% elif entity_tab == 'messages' %} request-detail-layout-messages{% endif %}">
+<div class="request-detail-layout{% if entity_tab == 'documents' or entity_tab == 'preferences' or not has_request_context_data %} request-detail-layout-full{% elif entity_tab == 'messages' %} request-detail-layout-messages{% endif %}">
 <main class="request-detail-main">
 {% include "includes/applicant_entity_header.html" %}
 {% if entity_tab == "profile" %}
@@ -348,7 +348,7 @@
 {% endif %}
 
 </main>
-{% if entity_tab != "documents" and entity_tab != "preferences" %}
+{% if entity_tab != "documents" and entity_tab != "preferences" and has_request_context_data %}
   {% include "includes/customer_request_context_sidebar.html" %}
 {% endif %}
 </div>

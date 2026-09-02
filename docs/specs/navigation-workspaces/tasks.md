@@ -18,3 +18,5 @@ baseline subject to the gap report.
 - [x] `NAV-010` Make all configured customer workspace actions visible on mobile without horizontal clipping.
 
 - [x] `NAV-T11` Align the Agent workspace outer shell and page-heading hierarchy with the shared My TurkDemy workspace visual system while retaining Agent-only organization and operational controls.
+
+- [x] `NAV-T12` Make optional workspace secondary/context columns collapse when they have no meaningful content, allowing the primary workspace to use the released width.

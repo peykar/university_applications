@@ -522,10 +522,11 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             "entity_tab == 'documents' or entity_tab == 'preferences'",
             self.request_section,
         )
-        self.assertIn(
-            '{% if entity_tab != "documents" and entity_tab != "preferences" %}',
-            self.request_section,
+        context_sidebar_condition = (
+            '{% if entity_tab != "documents" and entity_tab != "preferences" '
+            "and has_request_context_data %}"
         )
+        self.assertIn(context_sidebar_condition, self.request_section)
         self.assertIn(
             ".request-detail-layout-documents,.request-detail-layout-full"
             "{grid-template-columns:minmax(0,1fr)}",
@@ -854,10 +855,11 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertNotIn('{% trans "Add another document" %}', documents)
 
     def test_documents_tab_has_no_request_context_sidebar(self):
-        self.assertIn(
-            '{% if entity_tab != "documents" and entity_tab != "preferences" %}',
-            self.request_section,
+        context_sidebar_condition = (
+            '{% if entity_tab != "documents" and entity_tab != "preferences" '
+            "and has_request_context_data %}"
         )
+        self.assertIn(context_sidebar_condition, self.request_section)
         self.assertIn(
             '{% include "includes/customer_request_context_sidebar.html" %}',
             self.request_section,
@@ -872,6 +874,17 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             self.css,
         )
         self.assertIn('{% trans "Program preferences" %}', self.request_context_sidebar)
+
+    def test_empty_request_context_releases_secondary_column(self):
+        self.assertIn('"has_request_context_data": has_request_context_data', self.views)
+        self.assertIn(
+            "or not has_request_context_data %} request-detail-layout-full",
+            self.request_section,
+        )
+        self.assertIn(
+            'entity_tab != "preferences" and has_request_context_data %}',
+            self.request_section,
+        )
 
     def test_document_type_is_a_direct_file_link(self):
         documents = self.request_section.split('{% elif entity_tab == "documents" %}', 1)[1].split(

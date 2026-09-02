@@ -23,3 +23,4 @@ This baseline intentionally starts at capability level. When a requirement is
 changed or newly implemented, replace the family row with requirement-level
 code paths and named tests. Do not claim exact traceability that has not been
 verified.
+| `NAV-012` | `apps/leads/views.py`, `templates/leads/lead_section.html`, `static/css/turkdemy.css` | `CustomerRequestWorkspaceTests.test_empty_request_context_releases_secondary_column` | Named structural/runtime test |

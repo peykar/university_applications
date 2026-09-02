@@ -1,5 +1,11 @@
 ## 2026-09-02
 
+### Optional secondary sidebar collapse
+
+- Added `NAV-012` / `NAV-T12` and `UI-0007`.
+- Optional workspace context sidebars no longer reserve an empty right-hand column.
+- When a Request has no document/preference context, the central workspace expands to the full available width; the same rule applies to optional Agent context rails.
+
 ### Shared Agent workspace visual system
 
 - Added `NAV-011` / `NAV-T11` and `UI-0006`.
