@@ -61,3 +61,7 @@ DEFAULT_LEAD_AGENT_ID=3fa85f64-5717-4562-b3fc-2c963f66afa6
 
 The assignment is applied by the Lead `pre_save` signal, so it covers website,
 admin, import, and service-created leads consistently.
+
+## Visual workspace shell
+
+The Agent workspace is a role-specific variant of the shared TurkDemy workspace design. It inherits the same outer container, sidebar geometry, content spacing, heading hierarchy, entity navigation styling, responsive behavior, and RTL treatment used by My TurkDemy. Agent organization identity/switching and operational controls remain Agent-specific content.

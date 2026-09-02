@@ -15,6 +15,7 @@ Status: BASELINED
 | `NAV-009` | `templates/base.html`, `docs/navigation.md` | `NavigationArchitectureTests.test_footer_uses_current_customer_workspace_terminology` | Named test |
 
 | `NAV-010` | `templates/customer/base.html`, `static/css/turkdemy.css`, `docs/navigation.md` | `NavigationArchitectureTests.test_customer_workspace_mobile_actions_do_not_clip` | Named style/structural test |
+| `NAV-011` | `templates/agents/base.html`, `static/css/turkdemy.css`, `docs/navigation.md` | `NavigationArchitectureTests.test_agent_workspace_uses_shared_workspace_visual_system`; `AgentProgramRecommendationStructureTests.test_agent_workspace_uses_shared_shell_and_compact_overview` | Named structural/style tests |
 
 ## Notes
 

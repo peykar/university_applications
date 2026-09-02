@@ -38,7 +38,7 @@ class NavigationArchitectureTests(SimpleTestCase):
 
     def test_customer_workspace_mobile_actions_do_not_clip(self):
         self.assertIn(
-            ".customer-workspace-sidebar .workspace-sidebar-nav{",
+            ".customer-workspace-sidebar .workspace-sidebar-nav,",
             self.css,
         )
         self.assertIn(
@@ -83,3 +83,23 @@ class NavigationArchitectureTests(SimpleTestCase):
     def test_agent_workspace_uses_desktop_sidebar(self):
         self.assertIn('class="workspace-sidebar agent-workspace-sidebar"', self.agent_base)
         self.assertNotIn('class="agent-tabs"', self.agent_base)
+
+    def test_agent_workspace_uses_shared_workspace_visual_system(self):
+        self.assertIn(
+            'class="section-heading workspace-page-head agent-workspace-head"',
+            self.agent_base,
+        )
+        self.assertNotIn('{% trans "AGENT WORKSPACE" %}', self.agent_base)
+        self.assertNotIn(
+            ".agent-workspace-page .container{",
+            self.css,
+        )
+        self.assertNotIn(
+            ".agent-workspace-page .workspace-shell{",
+            self.css,
+        )
+        self.assertIn(
+            ".agent-workspace-sidebar .workspace-sidebar-nav{",
+            self.css,
+        )
+        self.assertIn("same outer visual system", self.docs)

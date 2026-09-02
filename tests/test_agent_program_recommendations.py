@@ -40,8 +40,8 @@ class AgentProgramRecommendationStructureTests(SimpleTestCase):
         self.assertIn("Recommend program", self.header)
         self.assertIn("#recommend-program", self.header)
 
-    def test_agent_workspace_has_wide_layout_and_compact_overview(self):
-        self.assertIn(".agent-workspace-page .container{", self.css)
-        self.assertIn("width:min(1500px,calc(100% - 48px))", self.css)
+    def test_agent_workspace_uses_shared_shell_and_compact_overview(self):
+        self.assertNotIn(".agent-workspace-page .container{", self.css)
+        self.assertNotIn("width:min(1500px,calc(100% - 48px))", self.css)
         self.assertIn(".agent-applicant-overview>#messages", self.css)
         self.assertIn(".applicant-overview-links{", self.css)

@@ -5002,34 +5002,22 @@ a.entity-list-row:hover{
 
 
 /* ============================================================
-   Agent workspace layout polish
+   Agent workspace
+
+   Agent and My TurkDemy intentionally share the same outer workspace
+   geometry. Agent-specific density belongs inside panels and tables, not in
+   a separate shell or page-heading system.
    ============================================================ */
-.agent-workspace-page .container{
-  width:min(1500px,calc(100% - 48px));
-}
-.agent-workspace-page .page-shell{
-  padding-block:26px 54px;
-}
 .agent-workspace-page .agent-workspace{
   padding:0;
   background:transparent;
   min-height:0;
-}
-.agent-workspace-page .workspace-shell{
-  grid-template-columns:240px minmax(0,1fr);
-  gap:28px;
-}
-.agent-workspace-page .workspace-sidebar{
-  top:88px;
 }
 .agent-workspace-page .workspace-main{
   max-width:none;
 }
 .agent-workspace-page .entity-context-head{
   margin-bottom:18px;
-}
-.agent-workspace-page .entity-context-title h1{
-  font-size:clamp(2rem,2.8vw,2.8rem);
 }
 .agent-workspace-page .agent-panel{
   padding:22px;
@@ -5191,13 +5179,6 @@ a.entity-list-row:hover{
 }
 
 @media(max-width:1100px){
-  .agent-workspace-page .container{
-    width:min(100% - 32px,1160px);
-  }
-  .agent-workspace-page .workspace-shell{
-    grid-template-columns:210px minmax(0,1fr);
-    gap:22px;
-  }
   .applicant-overview-links{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
@@ -5207,12 +5188,6 @@ a.entity-list-row:hover{
   }
 }
 @media(max-width:760px){
-  .agent-workspace-page .container{
-    width:min(100% - 22px,1160px);
-  }
-  .agent-workspace-page .page-shell{
-    padding-block:18px 42px;
-  }
   .applicant-overview-links{
     grid-template-columns:1fr 1fr;
   }
@@ -6007,19 +5982,22 @@ a.entity-list-row:hover{
   }
 }
 
-/* Customer workspace mobile navigation must expose every action without clipping (NAV-010). */
+/* Shared workspace mobile navigation: expose every action without clipping. */
 @media(max-width:760px){
-  .customer-workspace-sidebar{
+  .customer-workspace-sidebar,
+  .agent-workspace-sidebar{
     overflow-x:visible;
   }
-  .customer-workspace-sidebar .workspace-sidebar-nav{
+  .customer-workspace-sidebar .workspace-sidebar-nav,
+  .agent-workspace-sidebar .workspace-sidebar-nav{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(72px,1fr));
     width:100%;
     min-width:0;
     gap:2px;
   }
-  .customer-workspace-sidebar .workspace-sidebar-nav>a{
+  .customer-workspace-sidebar .workspace-sidebar-nav>a,
+  .agent-workspace-sidebar .workspace-sidebar-nav>a{
     min-width:0;
     justify-content:center;
     gap:5px;
@@ -6028,7 +6006,8 @@ a.entity-list-row:hover{
     line-height:1.2;
     white-space:normal;
   }
-  .customer-workspace-sidebar .workspace-sidebar-nav>a>span{
+  .customer-workspace-sidebar .workspace-sidebar-nav>a>span,
+  .agent-workspace-sidebar .workspace-sidebar-nav>a>span{
     min-width:0;
     overflow-wrap:anywhere;
   }

@@ -37,8 +37,8 @@ is finalized or closed. Converted/formalized interests are not removable.
 
 ## Layout
 
-Agent workspace pages use a wider desktop shell than public catalogue pages.
-The workspace expands up to 1500px while retaining responsive breakpoints for
-tablet and mobile. This gives Applicant and Application entity pages enough room
-for their sidebar, data panels and forms without leaving excessive unused
-horizontal space.
+Agent Applicant pages use the shared TurkDemy workspace shell rather than an
+Agent-only wide canvas. The standard site container, sidebar geometry, heading
+hierarchy, entity navigation, responsive behavior, and RTL treatment match My
+TurkDemy. Applicant-specific panels and tables may remain denser inside the shared
+content column when the workflow requires it.

@@ -16,3 +16,5 @@ baseline subject to the gap report.
 - [x] `NAV-009` Align shared footer workspace terminology and authenticated links with My TurkDemy / My Requests / Messages.
 
 - [x] `NAV-010` Make all configured customer workspace actions visible on mobile without horizontal clipping.
+
+- [x] `NAV-T11` Align the Agent workspace outer shell and page-heading hierarchy with the shared My TurkDemy workspace visual system while retaining Agent-only organization and operational controls.

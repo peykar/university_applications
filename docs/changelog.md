@@ -1,3 +1,11 @@
+## 2026-09-02
+
+### Shared Agent workspace visual system
+
+- Added `NAV-011` / `NAV-T11` and `UI-0006`.
+- Aligned the Agent workspace outer shell and page-heading hierarchy with My TurkDemy.
+- Removed the Agent-only 1500px canvas and custom shell spacing while preserving Agent organization identity, switching, operational navigation, and dense workflow content.
+
 - Fixed BUG-0036 / I18N-T13: language switching now deterministically changes locale-prefixed URLs, preserves query strings, and safely falls back for unresolved localized routes.
 ## 2026-09-01 — Locale-independent public field filter identity
 

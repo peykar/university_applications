@@ -129,10 +129,15 @@ The customer sidebar appears on My Requests, request detail/edit/preferences pag
 ### Agent workspace
 
 The Agent sidebar appears on every Agent workspace page and replaces the older
-top-tab navigation.
+top-tab navigation. The Agent and My TurkDemy workspaces intentionally use the
+same outer visual system: the standard site container, desktop sidebar geometry,
+main-content column, page-heading hierarchy, entity tabs, and responsive collapse
+behavior. Agent-specific organization identity, organization switching, operational
+links, and denser workflow content remain distinct.
 
-At viewport widths up to 760px the sidebar becomes a horizontal, scrollable
-workspace navigation bar so content width remains usable on phones.
+At viewport widths up to 760px both customer and Agent sidebars collapse into
+an adaptive workspace navigation grid. Labels may wrap and all configured actions
+remain visible without requiring horizontal clipping.
 
 The global header remains independent from these sidebars. It provides public
 discovery, a My TurkDemy entry point, language, account actions, and workspace

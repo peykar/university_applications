@@ -1,7 +1,7 @@
 # Navigation and workspace information architecture
 
 Status: BASELINED
-Version: 1.3
+Version: 1.4
 
 ## Goal
 
@@ -47,3 +47,5 @@ This baseline does not authorize new domain behavior beyond the requirements
 above. New behavior requires a spec change before implementation.
 
 NAV-010 — The customer workspace navigation MUST expose **My Requests**, **Messages**, **Get Help**, and the optional **Message us on WhatsApp** action on mobile without clipping any item off-screen. Labels MAY wrap within their navigation cell, and the layout MUST adapt when the optional WhatsApp action is absent.
+
+NAV-011 — The Agent workspace MUST use the same shared workspace visual system as **My TurkDemy** for its outer page shell: global header separation, desktop left-sidebar geometry, main-content width, page-heading hierarchy, entity navigation treatment, and responsive collapse behavior. Agent-only organization identity, workspace switching, operational navigation, data density, and permissions MAY remain Agent-specific and MUST NOT be removed merely for visual parity.

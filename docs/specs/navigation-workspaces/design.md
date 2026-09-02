@@ -29,3 +29,9 @@ The footer mirrors the current customer workspace vocabulary instead of legacy s
 ## Mobile customer workspace navigation
 
 `NAV-010` replaces the narrow-screen max-content horizontal strip for the customer sidebar with an adaptive grid. `repeat(auto-fit, minmax(...))` keeps all configured actions visible, allows long support labels to wrap, preserves the unread badge, and automatically redistributes space when WhatsApp is not configured.
+
+## Shared customer / Agent workspace visual system
+
+`NAV-011` makes the outer workspace presentation deliberately shared rather than maintaining an Agent-only shell variant. `templates/customer/base.html` and `templates/agents/base.html` both use `workspace-shell`, `workspace-sidebar`, `workspace-sidebar-nav`, `workspace-main`, and the shared entity-header/navigation components where applicable. The Agent base uses the same normal page-heading hierarchy as customer workspace pages and inherits the standard site container and page-shell spacing instead of overriding them with a 1500px Agent-only canvas.
+
+This is visual-system alignment, not an information-architecture merge. The Agent sidebar keeps active organization identity and switching, and operational Applicant/Application pages retain their Agent-only actions and denser panels/tables.
