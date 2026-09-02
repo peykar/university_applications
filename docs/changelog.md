@@ -1,3 +1,12 @@
+
+## 2026-09-03 — REF-0002 program recommendation transactional service
+
+- Moved Agent program recommendation domain mutations into
+  `apps.leads.services.recommendations.recommend_program`.
+- Made new recommendation interest/activity/system-message creation atomic.
+- Preserved customer-created interests and existing Agent recommendation update/no-op behavior.
+- Added named recommendation service tests and updated PRG SDD traceability.
+- Marked G-001 in the spec/code gap report resolved.
 ## 2026-09-02
 
 ### Optional secondary sidebar collapse

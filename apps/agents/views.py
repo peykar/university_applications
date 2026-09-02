@@ -29,6 +29,10 @@ from apps.leads.models import (
 from apps.leads.services.activity import record_applicant_profile_update
 from apps.leads.services.conversion import finalize_lead
 from apps.leads.services.messaging import ensure_conversation, send_system_message
+from apps.leads.services.recommendations import (
+    RecommendationOutcome,
+    recommend_program,
+)
 from apps.messaging.forms import MessageForm
 from apps.messaging.models import (
     Conversation,
@@ -426,74 +430,20 @@ def applicant_recommend_program(request, lead_id):
     )
     reason = (request.POST.get("suggestion_reason") or "").strip()
 
-    interest = lead.program_interests.filter(
-        program=program,
-        program_offering__isnull=True,
-    ).first()
-
-    if interest is not None:
-        if interest.source == "user":
-            messages.info(
-                request,
-                _("This program is already on the applicant's list."),
-            )
-            return redirect("agent-applicant-programs", lead_id=lead.pk)
-
-        changed = False
-        if reason != interest.suggestion_reason:
-            interest.suggestion_reason = reason
-            interest.updated_by = request.user
-            changed = True
-        if interest.suggested_by_id != request.user.pk:
-            interest.suggested_by = request.user
-            changed = True
-        if changed:
-            interest.save(
-                update_fields=(
-                    "suggestion_reason",
-                    "suggested_by",
-                    "updated_by",
-                    "updated_at",
-                )
-            )
-            messages.success(request, _("Recommendation updated."))
-        else:
-            messages.info(request, _("This program is already recommended."))
-        return redirect("agent-applicant-programs", lead_id=lead.pk)
-
-    interest = LeadProgramInterest.objects.create(
+    result = recommend_program(
         lead=lead,
         program=program,
-        source="agent",
-        suggested_by=request.user,
-        suggestion_reason=reason,
-        created_by=request.user,
-        updated_by=request.user,
+        agent_user=request.user,
+        reason=reason,
     )
-    LeadActivity.objects.create(
-        lead=lead,
-        activity_type=LeadActivityType.PROGRAM_SUGGESTED,
-        description=_("Program suggested: %(program)s.") % {"program": program.localized_name},
-        metadata={
-            "program_id": str(program.pk),
-            "interest_id": str(interest.pk),
-            "suggestion_reason": reason,
-        },
-        is_customer_visible=True,
-        created_by=request.user,
-        updated_by=request.user,
-    )
-    send_system_message(
-        lead,
-        event_type=SystemMessageEventType.PROGRAM_RECOMMENDED,
-        event_data={
-            "program_id": str(program.pk),
-            "interest_id": str(interest.pk),
-            "reason": reason,
-        },
-        performed_by=request.user,
-    )
-    messages.success(request, _("Program recommended to applicant."))
+    if result.outcome == RecommendationOutcome.USER_INTEREST_EXISTS:
+        messages.info(request, _("This program is already on the applicant's list."))
+    elif result.outcome == RecommendationOutcome.UPDATED:
+        messages.success(request, _("Recommendation updated."))
+    elif result.outcome == RecommendationOutcome.ALREADY_RECOMMENDED:
+        messages.info(request, _("This program is already recommended."))
+    else:
+        messages.success(request, _("Program recommended to applicant."))
     return redirect("agent-applicant-programs", lead_id=lead.pk)
 
 

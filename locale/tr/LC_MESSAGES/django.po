@@ -3119,3 +3119,6 @@ msgstr ""
 "Başvuru sahibi profiliniz tamamlandı ve öğrenci kaydına dönüştürüldü. Danışmanınızın seçtiği "
 "görüşülmüş programlar taslak başvurular olarak oluşturuldu."
 
+
+msgid "Only active programs at active universities can be recommended."
+msgstr "Yalnızca aktif üniversitelerdeki aktif programlar önerilebilir."

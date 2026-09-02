@@ -17,36 +17,23 @@ does not invent missing product decisions.
 | Program interest vs Application | MATCH | Separate models/workflows exist. |
 | Applicant entity navigation | MATCH | Focused Applicant tabs exist. |
 | Application entity navigation | MATCH | Focused Application tabs exist. |
-| Program recommendations | PARTIAL DESIGN DEBT | Agent recommendation behavior exists, but orchestration currently lives in Agent views rather than a dedicated domain service/transaction. |
+| Program recommendations | MATCH | REF-0002 moved Agent recommendation orchestration into a dedicated transactional domain service. |
 | Application requirements | SPEC GAP | Current project explicitly says requirements are not yet a full separate workflow/model. Do not infer requirements from document attachment. |
-| Program recommendation atomicity | CODE GAP | Recommendation creates interest, activity and system message as separate operations; design should define an atomic service before expanding this workflow. |
+| Program recommendation atomicity | RESOLVED | REF-0002 wraps recommendation creation, activity and system message in one explicit transaction boundary. |
 | Traceability | PROCESS GAP | Existing tests predate requirement IDs; exact requirement→test mapping is not yet complete. |
 | Legacy docs | DOC DEBT | Existing flat `docs/*.md` remain useful but overlap with new canonical product/architecture/spec docs. |
 
-## G-001 — Program recommendation service boundary
+## G-001 — Program recommendation service boundary — RESOLVED
 
-Classification: CODE GAP / design debt  
-Priority: High before further recommendation features.
+Classification: RESOLVED CODE GAP / design debt  
+Resolved by: `REF-0002`
 
-Current Agent recommendation behavior creates/updates `LeadProgramInterest`,
-creates `LeadActivity`, and sends a system message from Agent view code.
-
-Target design:
-
-```text
-recommend_program(
-    *,
-    lead,
-    program,
-    agent_user,
-    reason="",
-) -> LeadProgramInterest
-```
-
-The service should own duplicate/user-interest behavior, audit side effects and
-system-message side effects under an explicit transaction boundary.
-
-Do not change user-visible behavior merely as part of this refactor.
+`apps.leads.services.recommendations.recommend_program(...)` now owns duplicate
+and user-interest behavior, Agent recommendation updates, attribution, and the
+creation of the recommendation/activity/system-message side effects. New
+recommendation creation is protected by an explicit `transaction.atomic`
+boundary. The Agent view retains HTTP scoping, request parsing, flash messages
+and redirects. No intentional user-visible behavior changed.
 
 ## G-002 — Application requirements domain
 
@@ -103,9 +90,9 @@ dependency or CI tool merely for documentation validation.
 
 ## Recommended next SDD change
 
-Before adding another large feature, perform G-001 as a behavior-preserving
-refactor using `PRG-002` through `PRG-007` as acceptance requirements. Then use
-the resulting service pattern for subsequent cross-model workflows.
+G-001 was completed by `REF-0002`. The next product change should follow the
+normal change-driven SDD workflow. G-002 remains a discovery/specification gap
+and must be resolved before implementing a full Application Requirements domain.
 
 
 ## 2026-08-28 alignment follow-up

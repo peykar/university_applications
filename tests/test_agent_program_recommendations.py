@@ -9,6 +9,7 @@ class AgentProgramRecommendationStructureTests(SimpleTestCase):
         root = Path(settings.BASE_DIR)
         self.views = (root / "apps/agents/views.py").read_text(encoding="utf-8")
         self.urls = (root / "apps/agents/urls.py").read_text(encoding="utf-8")
+        self.service = (root / "apps/leads/services/recommendations.py").read_text(encoding="utf-8")
         self.section = (root / "templates/agents/applicant_section.html").read_text(
             encoding="utf-8"
         )
@@ -24,11 +25,13 @@ class AgentProgramRecommendationStructureTests(SimpleTestCase):
         self.assertIn('name="program_id"', self.section)
         self.assertIn('name="suggestion_reason"', self.section)
 
-    def test_recommendation_is_agent_sourced_and_audited(self):
-        self.assertIn('source="agent"', self.views)
-        self.assertIn("suggested_by=request.user", self.views)
-        self.assertIn("LeadActivityType.PROGRAM_SUGGESTED", self.views)
-        self.assertIn("send_system_message(", self.views)
+    def test_recommendation_is_agent_sourced_and_audited_by_service(self):
+        self.assertIn("recommend_program(", self.views)
+        self.assertIn("@transaction.atomic", self.service)
+        self.assertIn("source=LeadProgramInterestSource.AGENT", self.service)
+        self.assertIn("suggested_by=agent_user", self.service)
+        self.assertIn("LeadActivityType.PROGRAM_SUGGESTED", self.service)
+        self.assertIn("send_system_message(", self.service)
 
     def test_agent_can_remove_own_recommendation(self):
         self.assertIn("def applicant_remove_recommendation", self.views)

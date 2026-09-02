@@ -18,7 +18,11 @@ from apps.leads.models import (
     LeadStatus,
 )
 from apps.leads.services.conversion import finalize_lead
-from apps.messaging.models import Message, MessageSenderRole
+from apps.leads.services.recommendations import (
+    RecommendationOutcome,
+    recommend_program,
+)
+from apps.messaging.models import Message, MessageSenderRole, SystemMessageEventType
 from apps.messaging.services import get_or_create_conversation
 from apps.students.models import Gender, Student
 from apps.universities.models import (
@@ -201,6 +205,100 @@ class LeadWorkflowTests(TestCase):
             updated_by=self.staff,
         )
         return [(interest, offering or self.offering)]
+
+    def test_recommend_program_service_creates_interest_activity_and_message(self):
+        lead = self.make_lead()
+
+        result = recommend_program(
+            lead=lead,
+            program=self.program,
+            agent_user=self.staff,
+            reason="Good academic match",
+        )
+
+        self.assertEqual(result.outcome, RecommendationOutcome.CREATED)
+        self.assertEqual(result.interest.source, LeadProgramInterestSource.AGENT)
+        self.assertEqual(result.interest.suggested_by, self.staff)
+        self.assertEqual(result.interest.suggestion_reason, "Good academic match")
+        activity = LeadActivity.objects.get(
+            lead=lead,
+            activity_type=LeadActivityType.PROGRAM_SUGGESTED,
+        )
+        self.assertTrue(activity.is_customer_visible)
+        self.assertEqual(activity.metadata["interest_id"], str(result.interest.pk))
+        message = Message.objects.get(event_type=SystemMessageEventType.PROGRAM_RECOMMENDED)
+        self.assertEqual(message.event_data["interest_id"], str(result.interest.pk))
+        self.assertEqual(message.event_data["reason"], "Good academic match")
+
+    def test_recommend_program_service_preserves_user_interest(self):
+        lead = self.make_lead()
+        existing = LeadProgramInterest.objects.create(
+            lead=lead,
+            program=self.program,
+            source=LeadProgramInterestSource.USER,
+            created_by=self.user,
+            updated_by=self.user,
+        )
+
+        result = recommend_program(
+            lead=lead,
+            program=self.program,
+            agent_user=self.staff,
+            reason="Agent reason",
+        )
+
+        self.assertEqual(result.outcome, RecommendationOutcome.USER_INTEREST_EXISTS)
+        existing.refresh_from_db()
+        self.assertEqual(existing.source, LeadProgramInterestSource.USER)
+        self.assertIsNone(existing.suggested_by_id)
+        self.assertEqual(existing.suggestion_reason, "")
+        self.assertFalse(
+            LeadActivity.objects.filter(
+                lead=lead, activity_type=LeadActivityType.PROGRAM_SUGGESTED
+            ).exists()
+        )
+
+    def test_recommend_program_service_updates_existing_agent_recommendation(self):
+        lead = self.make_lead()
+        existing = LeadProgramInterest.objects.create(
+            lead=lead,
+            program=self.program,
+            source=LeadProgramInterestSource.AGENT,
+            suggested_by=self.staff,
+            suggestion_reason="Old reason",
+            created_by=self.staff,
+            updated_by=self.staff,
+        )
+
+        result = recommend_program(
+            lead=lead,
+            program=self.program,
+            agent_user=self.staff,
+            reason="Updated reason",
+        )
+
+        self.assertEqual(result.outcome, RecommendationOutcome.UPDATED)
+        existing.refresh_from_db()
+        self.assertEqual(existing.suggestion_reason, "Updated reason")
+        self.assertFalse(
+            LeadActivity.objects.filter(
+                lead=lead, activity_type=LeadActivityType.PROGRAM_SUGGESTED
+            ).exists()
+        )
+
+    def test_recommend_program_service_rejects_finalized_lead(self):
+        lead = self.make_lead()
+        lead.status = LeadStatus.FINALIZED
+        lead.save(update_fields=("status", "updated_at"))
+
+        with self.assertRaises(ValidationError):
+            recommend_program(
+                lead=lead,
+                program=self.program,
+                agent_user=self.staff,
+            )
+
+        self.assertFalse(LeadProgramInterest.objects.filter(lead=lead).exists())
 
     def test_user_can_have_multiple_leads(self):
         self.make_lead("Sara")
