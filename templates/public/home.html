@@ -76,7 +76,7 @@
   <div class="section-heading"><div><p class="eyebrow">{% trans "Find your direction" %}</p><h2>{% trans "What do you want to study?" %}</h2></div></div>
   <div class="field-chip-grid">
     {% for field in study_fields %}
-      <a class="field-chip" href="{% url 'program-list' %}?field={{ field.slug_en|urlencode }}">
+      <a class="field-chip" href="{% url 'program-field-detail' field.slug_en %}">
         <span>{{ field|localized:"name" }}</span>
         <small>{{ field.program_count }} {% trans "programs" %}</small>
       </a>

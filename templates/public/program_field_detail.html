@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% if field.localized_seo_title %}{{ field.localized_seo_title }}{% else %}{{ field.localized_name }} {% trans "Programs in Türkiye" %} — TurkDemy{% endif %}{% endblock %}
+{% block meta_description %}{% if field.localized_seo_description %}{{ field.localized_seo_description }}{% elif field.localized_description %}{{ field.localized_description|striptags|truncatechars:160 }}{% else %}{% blocktrans with field_name=field.localized_name %}Explore {{ field_name }} programs in Türkiye and compare universities and study options.{% endblocktrans %}{% endif %}{% endblock %}
+{% block og_title %}{% if field.localized_seo_title %}{{ field.localized_seo_title }}{% else %}{{ field.localized_name }} {% trans "Programs in Türkiye" %} — TurkDemy{% endif %}{% endblock %}
+{% block og_description %}{% if field.localized_seo_description %}{{ field.localized_seo_description }}{% elif field.localized_description %}{{ field.localized_description|striptags|truncatechars:160 }}{% else %}{% blocktrans with field_name=field.localized_name %}Explore {{ field_name }} programs in Türkiye and compare universities and study options.{% endblocktrans %}{% endif %}{% endblock %}
+
+{% block content %}
+<section class="programs-hero field-landing-hero">
+  <div class="programs-hero-copy">
+    <p class="eyebrow">{% trans "Study field" %}</p>
+    <h1>{{ field.localized_name }}</h1>
+    {% if field.localized_description %}
+      <div class="programs-hero-text field-landing-description">{{ field.localized_description|linebreaks }}</div>
+    {% else %}
+      <p class="programs-hero-text">
+        {% blocktrans with field_name=field.localized_name %}Explore {{ field_name }} programs offered by universities in Türkiye.{% endblocktrans %}
+      </p>
+    {% endif %}
+  </div>
+  <div class="programs-hero-stat field-landing-stat">
+    <strong>{{ program_result_count }}</strong>
+    <span>{% trans "programs" %}</span>
+    <strong>{{ university_count }}</strong>
+    <span>{% trans "universities" %}</span>
+  </div>
+</section>
+
+<section class="home-section field-landing-programs">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">{% trans "Programs" %}</p>
+      <h2>{% blocktrans with field_name=field.localized_name %}{{ field_name }} programs{% endblocktrans %}</h2>
+    </div>
+    <a class="section-link" href="{{ advanced_filter_url }}">{% trans "Refine with advanced filters" %} →</a>
+  </div>
+
+  <div class="programs-result-grid">
+    {% for program in programs %}
+      {% include "public/includes/program_discovery_card.html" with program=program %}
+    {% empty %}
+      <div class="programs-empty-state">
+        <h2>{% trans "No active programs are available in this field." %}</h2>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="programs-pagination-wrap">
+    {% include "public/includes/pagination.html" %}
+  </div>
+</section>
+
+{% if universities %}
+<section class="home-section field-landing-universities">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">{% trans "Universities" %}</p>
+      <h2>{% blocktrans with field_name=field.localized_name %}Universities offering {{ field_name }}{% endblocktrans %}</h2>
+    </div>
+    <a class="section-link" href="{% url 'university-list' %}">{% trans "View all universities" %} →</a>
+  </div>
+  <div class="university-grid">
+    {% for university in universities %}
+      {% include "public/includes/university_card.html" with university=university %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -74,3 +74,7 @@ the locked project dependencies.
 | `CAT-058` | SEO/editorial readiness; landing pages deferred | `CAT-T45` | `GeneralField.description_*`, `seo_title_*`, `seo_description_*`; docs boundary | SDD/document review |
 | `CAT-059` | City editorial/SEO metadata | `CAT-T47` | `apps/geography/models.py::City`; `apps/geography/admin.py::CityAdmin` | Django model/system checks; `tests/test_taxonomy_enrichment.py` |
 | `CAT-060` | One-time curated taxonomy enrichment | `CAT-T48` | `apps/universities/management/commands/enrich_taxonomy.py` | `tests/test_taxonomy_enrichment.py`; operator `--dry-run` |
+
+| `CAT-061` | Indexable canonical GeneralField landing route | `CAT-T49`, `CAT-T52` | `apps/public/urls.py`; `apps/public/views.py::program_field_detail`; `apps/public/context_processors.py` | `tests/test_public_seo.py`; `tests/test_public_page_metadata.py` |
+| `CAT-062` | GeneralField landing content and catalogue discovery | `CAT-T50`, `CAT-T52` | `templates/public/program_field_detail.html`; `apps/public/views.py::program_field_detail` | `tests/test_public_page_metadata.py` |
+| `CAT-063` | GeneralField SEO/sitemap/internal linking | `CAT-T51`, `CAT-T52` | `apps/public/seo_views.py`; `templates/public/home.html`; `templates/public/program_field_detail.html` | `tests/test_public_seo.py`; `tests/test_public_page_metadata.py` |

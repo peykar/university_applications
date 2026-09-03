@@ -63,6 +63,21 @@ class PublicSEOTests(SimpleTestCase):
             "https://turkdemy.com/en/programs/?page=2",
         )
 
+    def test_general_field_landing_route_is_indexable_and_localized(self):
+        request = self._request("/en/programs/fields/engineering/")
+        with override("en"):
+            context = seo(request)
+        self.assertEqual(context["seo_robots"], "index,follow")
+        self.assertEqual(
+            context["seo_canonical_url"],
+            "https://turkdemy.com/en/programs/fields/engineering/",
+        )
+        alternates = {item["language"]: item["href"] for item in context["seo_alternates"]}
+        self.assertEqual(
+            alternates["fa"],
+            "https://turkdemy.com/fa/programs/fields/engineering/",
+        )
+
     def test_shared_head_renders_required_seo_hooks(self):
         self.assertIn('rel="canonical"', self.base_template)
         self.assertIn('rel="alternate" hreflang=', self.base_template)

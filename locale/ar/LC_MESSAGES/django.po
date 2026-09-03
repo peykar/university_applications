@@ -3367,3 +3367,27 @@ msgstr "البرامج الجامعية في تركيا"
 
 msgid "TurkDemy-curated general study fields. Assign manually after catalogue import and verification; importers must not populate, overwrite, or clear them."
 msgstr "مجالات الدراسة العامة التي يديرها TurkDemy. تُسند يدويًا بعد استيراد الكتالوج والتحقق منه؛ ويجب ألا تقوم أدوات الاستيراد بتعيينها أو الكتابة فوقها أو مسحها."
+
+msgid "Programs in Türkiye"
+msgstr "البرامج الدراسية في تركيا"
+
+msgid "Explore %(field_name)s programs in Türkiye and compare universities and study options."
+msgstr "استكشف برامج %(field_name)s في تركيا وقارن بين الجامعات وخيارات الدراسة."
+
+msgid "Explore %(field_name)s programs offered by universities in Türkiye."
+msgstr "استكشف برامج %(field_name)s التي تقدمها الجامعات في تركيا."
+
+msgid "%(field_name)s programs"
+msgstr "برامج %(field_name)s"
+
+msgid "Refine with advanced filters"
+msgstr "تصفية باستخدام المرشحات المتقدمة"
+
+msgid "No active programs are available in this field."
+msgstr "لا توجد برامج نشطة متاحة حالياً في هذا المجال."
+
+msgid "Universities offering %(field_name)s"
+msgstr "الجامعات التي تقدم %(field_name)s"
+
+msgid "View all universities"
+msgstr "عرض جميع الجامعات"

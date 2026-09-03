@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils import translation
 
 from apps.geography.models import City, Country, Province
-from apps.universities.models import Program, University
+from apps.universities.models import GeneralField, Program, University
 
 
 @override_settings(SITE_URL="https://turkdemy.com")
@@ -57,6 +57,21 @@ class PublicPageMetadataTests(TestCase):
             slug_en="seo-test-university-computer-engineering",
             degree="bachelor",
         )
+        cls.general_field = GeneralField.objects.create(
+            name_en="Engineering",
+            name_fa="مهندسی",
+            name_tr="Mühendislik",
+            name_ar="الهندسة",
+            slug_en="engineering",
+            slug_fa="mohandesi",
+            slug_tr="muhendislik",
+            slug_ar="engineering-ar",
+            description_en="Explore engineering degrees in Türkiye.",
+            description_fa="برنامه‌های مهندسی در ترکیه را بررسی کنید.",
+            seo_title_en="Engineering Programs in Türkiye",
+            seo_description_en=("Compare engineering programs and universities in Türkiye."),
+        )
+        cls.program.general_fields.add(cls.general_field)
 
     def _schema(self, response):
         html = response.content.decode()
@@ -118,6 +133,44 @@ class PublicPageMetadataTests(TestCase):
         types = {node["@type"] for node in schema["@graph"]}
         self.assertIn("EducationalOccupationalProgram", types)
         self.assertIn("BreadcrumbList", types)
+
+    def test_general_field_landing_page_has_curated_metadata_and_schema(self):
+        with translation.override("en"):
+            url = reverse("program-field-detail", args=[self.general_field.slug_en])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn("Engineering Programs in Türkiye", html)
+        self.assertIn("Compare engineering programs and universities in Türkiye.", html)
+        self.assertIn("Computer Engineering", html)
+        self.assertIn('name="robots" content="index,follow"', html)
+        schema = self._schema(response)
+        types = {node["@type"] for node in schema["@graph"]}
+        self.assertIn("CollectionPage", types)
+        self.assertIn("BreadcrumbList", types)
+
+    def test_sitemap_contains_general_field_landing_page(self):
+        response = self.client.get("/sitemap.xml")
+        self.assertEqual(response.status_code, 200)
+        xml = response.content.decode()
+        self.assertIn(
+            "https://turkdemy.com/en/programs/fields/engineering/",
+            xml,
+        )
+        self.assertIn(
+            'hreflang="fa" href="https://turkdemy.com/fa/programs/fields/engineering/"',
+            xml,
+        )
+
+    def test_general_field_route_uses_canonical_english_slug_in_persian(self):
+        response = self.client.get("/fa/programs/fields/engineering/")
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn("مهندسی", html)
+        self.assertIn(
+            ('rel="canonical" href="https://turkdemy.com/fa/programs/fields/engineering/"'),
+            html,
+        )
 
     def test_persian_university_metadata_is_localized(self):
         self.client.cookies["django_language"] = "fa"

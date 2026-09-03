@@ -12,6 +12,11 @@ urlpatterns = [
     ),
     path("programs/", views.program_list, name="program-list"),
     path(
+        "programs/fields/<str:slug>/",
+        views.program_field_detail,
+        name="program-field-detail",
+    ),
+    path(
         "programs/<str:slug>/",
         views.program_detail,
         name="program-detail",

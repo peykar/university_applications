@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.utils.translation import override
 
-from apps.universities.models import Program, University
+from apps.universities.models import GeneralField, Program, University
 
 
 def _absolute(path: str) -> str:
@@ -40,6 +40,26 @@ def sitemap_xml(_request):
                 "university-detail",
                 code,
                 slug=university.slug_en,
+            )
+            for code, _name in settings.LANGUAGES
+        }
+        entries.append((alternates.get("en") or next(iter(alternates.values())), alternates))
+
+    for general_field in (
+        GeneralField.objects.filter(
+            is_active=True,
+            programs__is_active=True,
+            programs__university__is_active=True,
+        )
+        .exclude(slug_en="")
+        .distinct()
+        .only("slug_en")
+    ):
+        alternates = {
+            code: _localized_url(
+                "program-field-detail",
+                code,
+                slug=general_field.slug_en,
             )
             for code, _name in settings.LANGUAGES
         }

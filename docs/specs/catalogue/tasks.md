@@ -138,3 +138,12 @@ Version: 3.1
       fallback, new-import empty mapping, re-import preservation and import rejection.
 - [x] CAT-T47 (`CAT-059`) Add localized editorial/SEO metadata to City and expose it in Django Admin.
 - [x] CAT-T48 (`CAT-060`) Add the one-time `enrich_taxonomy` command with transactional dry-run, 24 curated GeneralFields, Istanbul enrichment, and UUID-pinned mappings for the exported active catalogue.
+
+
+## CHG-0019 — GeneralField landing pages
+
+- [x] CAT-T49 (`CAT-061`) Add `/programs/fields/<slug_en>/` before the generic Program detail route.
+- [x] CAT-T50 (`CAT-062`) Render localized GeneralField editorial content, mapped Programs, University coverage and pagination.
+- [x] CAT-T51 (`CAT-063`) Link homepage fields to the landing route and add canonical/hreflang, schema and sitemap behavior.
+- [x] CAT-T52 (`CAT-061`–`CAT-063`) Add public metadata/SEO regression tests and synchronized documentation.
+- [ ] Run `make format` and `make check` locally.

@@ -21,3 +21,9 @@ Status: BASELINED
 - [x] `SEO-013` Add list, FAQ, About and Contact structured data.
 - [x] `SEO-014` Add safe JSON-LD serialization and regression coverage.
 - [ ] Run `make format` and `make check` in the project environment.
+
+
+## CHG-0019
+
+- [x] `SEO-015` Promote curated GeneralFields to explicit indexable Program-field landing pages without promoting arbitrary filter URLs.
+- [ ] Run `make format` and `make check` in the project environment.

@@ -11,6 +11,7 @@ _INDEXABLE_PUBLIC_ROUTES = {
     "university-list",
     "university-detail",
     "program-list",
+    "program-field-detail",
     "program-detail",
     "faq",
     "about",

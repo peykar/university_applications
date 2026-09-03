@@ -11,13 +11,14 @@ Compact filters:
 - city
 - study-field shortcuts
 
-These redirect to the full Programs catalogue.
+Keyword/degree/language/city searches redirect to the full Programs catalogue.
+Study-field shortcuts link to the dedicated indexable GeneralField landing pages.
 
 ## University page
 
 The university is fixed by context. Available filters:
 - keyword
-- field/department
+- GeneralField
 - degree
 - language
 - academic year
@@ -31,7 +32,7 @@ The university is fixed by context. Available filters:
 
 The complete filter set:
 - keyword
-- field/department
+- GeneralField
 - degree
 - language (matches any canonical instruction language)
 - study mode
@@ -73,7 +74,7 @@ filters while navigating pages.
 Public catalogue URLs use human-readable stable values whenever the model
 provides them:
 
-- `field`: department slug
+- `field`: canonical GeneralField English slug
 - `language`: instruction-language slug
 - `study_mode`: stable study-mode enum/code
 - `academic_unit`: academic-unit slug
@@ -123,3 +124,16 @@ intake_id = state.intake
 Current public programme filtering uses canonical `Intake` (`?intake=<uuid>`).
 Tuition range and displayed minimum tuition are derived exclusively from active
 structured `OfferingFee` tuition/discounted-tuition rows.
+
+
+## GeneralField landing pages
+
+Curated study fields also have dedicated indexable discovery URLs:
+
+```text
+/<locale>/programs/fields/<general-field-slug_en>/
+```
+
+The English GeneralField slug is stable across EN/FA/TR/AR route prefixes. These
+pages are the canonical SEO surface for a field. The equivalent
+`/programs/?field=<slug>` URL remains a `noindex,follow` advanced-filter surface.

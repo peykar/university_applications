@@ -1,7 +1,7 @@
 # Public SEO
 
 Status: BASELINED
-Version: 1.1
+Version: 1.2
 
 ## Goal
 
@@ -68,3 +68,11 @@ human-readable catalogue values are emitted.
 - It does not create SEO landing pages for arbitrary catalogue filters.
 - It does not manufacture structured data where the domain does not support it.
 - `robots.txt` is never a substitute for authentication or authorization.
+
+
+SEO-015 — Curated GeneralField landing pages at
+`/programs/fields/<canonical-slug>/` MUST be indexable public pages with canonical
+URLs, reciprocal language alternates, English x-default, sitemap inclusion,
+page-specific metadata, CollectionPage/breadcrumb structured data, and internal
+links from catalogue discovery. Equivalent query-string field filters remain
+`noindex,follow`.

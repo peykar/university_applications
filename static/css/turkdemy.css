@@ -6192,3 +6192,12 @@ a.entity-list-row:hover{
   .customer-applicant-page .lead-panel .request-preferences-heading{display:flex;align-items:center!important;justify-content:space-between;gap:8px}
   .customer-applicant-page .lead-panel .request-preferences-heading .button{margin:0;padding:8px 10px;font-size:.7rem;white-space:nowrap}
 }
+
+/* CHG-0019: indexable GeneralField landing pages. */
+.field-landing-hero{gap:36px}
+.field-landing-description p{margin:.45rem 0 0}
+.field-landing-stat{display:grid;grid-template-columns:auto 1fr;align-items:baseline;gap:4px 12px;min-width:220px}
+.field-landing-stat strong{font-size:1.8rem}
+.field-landing-stat span{color:var(--muted)}
+.field-landing-programs,.field-landing-universities{margin-top:42px}
+@media(max-width:720px){.field-landing-stat{width:100%;min-width:0}.field-landing-programs,.field-landing-universities{margin-top:30px}}

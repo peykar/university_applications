@@ -31,3 +31,15 @@ applicable SEO effects in its change record and tests.
 - `apps.public.templatetags.seo.json_ld` safely serializes schema payloads.
 - University/Program detail pages prefer available University banner/logo media
   for Open Graph/Twitter images.
+
+
+## Curated GeneralField landing pages
+
+- GeneralField landing URLs live under the Program catalogue namespace:
+  `/programs/fields/<slug_en>/`.
+- `slug_en` is intentionally stable across locale-prefixed routes, matching the
+  existing canonical filter identity policy.
+- The dedicated route is indexable; `/programs/?field=<slug_en>` remains a
+  noindex filter/navigation URL and is used for deeper advanced filtering.
+- Active mapped GeneralFields are emitted in the multilingual sitemap.
+- Homepage study-field cards link directly to the dedicated landing pages.

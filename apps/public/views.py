@@ -532,6 +532,101 @@ def program_list(request):
     )
 
 
+def program_field_detail(request, slug):
+    general_field = get_object_or_404(
+        GeneralField.objects.filter(
+            is_active=True,
+            programs__is_active=True,
+            programs__university__is_active=True,
+        ).distinct(),
+        slug_en=slug,
+    )
+
+    programs = annotate_min_active_tuition(
+        Program.objects.filter(
+            is_active=True,
+            university__is_active=True,
+            general_fields=general_field,
+        )
+        .select_related(
+            "university",
+            "university__city",
+            "academic_unit",
+            "department",
+        )
+        .prefetch_related("instruction_language_rows__language")
+        .distinct()
+    ).order_by(
+        "-listing_priority",
+        "university__name_en",
+        "name_en",
+    )
+
+    paginator = Paginator(programs, 24)
+    page_obj = paginator.get_page(request.GET.get("page"))
+
+    universities = (
+        University.objects.filter(
+            is_active=True,
+            programs__is_active=True,
+            programs__general_fields=general_field,
+        )
+        .select_related("city", "city__province")
+        .annotate(
+            active_program_count=Count(
+                "programs",
+                filter=Q(
+                    programs__is_active=True,
+                    programs__general_fields=general_field,
+                ),
+                distinct=True,
+            )
+        )
+        .distinct()
+        .order_by("-active_program_count", "-listing_priority", "name_en")
+    )
+
+    field_url = localized_absolute_url(
+        "program-field-detail",
+        slug=general_field.slug_en,
+    )
+    field_description = (
+        general_field.localized_seo_description or general_field.localized_description
+    )
+    schema_node = {
+        "@type": "CollectionPage",
+        "name": general_field.localized_seo_title or general_field.localized_name,
+        "url": field_url,
+    }
+    if field_description:
+        schema_node["description"] = field_description
+
+    return render(
+        request,
+        "public/program_field_detail.html",
+        {
+            "field": general_field,
+            "programs": page_obj.object_list,
+            "page_obj": page_obj,
+            "program_result_count": paginator.count,
+            "universities": universities[:12],
+            "university_count": universities.count(),
+            "advanced_filter_url": (
+                f"{reverse('program-list')}?{urlencode({'field': general_field.slug_en})}"
+            ),
+            "seo_schema": graph_schema(
+                schema_node,
+                breadcrumb_schema(
+                    [
+                        (_("Programs"), localized_absolute_url("program-list")),
+                        (general_field.localized_name, field_url),
+                    ]
+                ),
+            ),
+        },
+    )
+
+
 def program_detail(request, slug):
     active_fees = OfferingFee.objects.filter(is_active=True).select_related("language")
     active_offerings = (

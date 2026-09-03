@@ -228,3 +228,8 @@ BR-SEO-003 — Arbitrary search/filter query combinations are navigation surface
 not standalone SEO landing pages, unless a future approved requirement promotes
 a specific route to an indexable landing page.
 
+BR-SEO-004 — A curated GeneralField is promoted to an indexable Program discovery
+landing page at `/programs/fields/<canonical-slug>/`. The GeneralField canonical
+English slug remains the route identity across locales. The equivalent
+`/programs/?field=<slug>` query remains a noindex navigation/filter surface.
+

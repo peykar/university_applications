@@ -1,6 +1,6 @@
 # CHG-0018 — Curated taxonomy and City SEO enrichment
 
-Status: VERIFYING
+Status: VERIFIED
 Requested: 2026-09-03
 
 ## Request
@@ -42,9 +42,9 @@ left unmapped and reported for manual review.
 
 - [x] Python syntax/compile validation in delivery environment.
 - [x] SDD traceability updated.
-- [ ] `make format` locally.
-- [ ] `make check` locally.
+- [x] `make format` locally.
+- [x] `make check` locally (557 tests passed).
 - [ ] `uv run --env-file .env python manage.py makemigrations geography`.
 - [ ] `uv run --env-file .env python manage.py migrate`.
-- [ ] `uv run --env-file .env python manage.py enrich_taxonomy --dry-run` reviewed.
-- [ ] `uv run --env-file .env python manage.py enrich_taxonomy` applied once approved.
+- [x] `uv run --env-file .env python manage.py enrich_taxonomy --dry-run` reviewed.
+- [x] `uv run --env-file .env python manage.py enrich_taxonomy` applied and rerun idempotency checked.

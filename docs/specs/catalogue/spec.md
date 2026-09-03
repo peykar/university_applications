@@ -381,3 +381,22 @@ creating duplicate cities, and adds pre-reviewed Program-GeneralField mappings b
 Program UUID. The command MUST preserve any existing Program GeneralField mappings,
 MUST skip/report mapped UUIDs that are absent or inactive, and MUST explicitly
 report source records withheld for manual review rather than guessing a field.
+
+
+## GeneralField public landing pages
+
+CAT-061 — Every active GeneralField that has at least one active Program at an active
+University MUST have an indexable public landing route at
+`/programs/fields/<slug_en>/`. The canonical English GeneralField slug is the stable
+route identity in every supported locale; localized slugs MUST NOT create alternate
+route identities.
+
+CAT-062 — A GeneralField landing page MUST render its localized name and curated
+editorial description, use its localized SEO title/description when available, list
+active mapped Programs and Universities, paginate Programs, and link to the existing
+advanced Program catalogue with the same canonical field filter.
+
+CAT-063 — GeneralField landing pages MUST participate in the public SEO contract:
+indexable canonical/hreflang URLs, sitemap inclusion, page-specific social metadata,
+CollectionPage plus breadcrumb structured data, and internal linking from the homepage
+study-field discovery surface. The query-string field catalogue remains noindex.

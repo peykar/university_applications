@@ -30,6 +30,7 @@ The public website is language-prefixed:
 /<lang>/universities/
 /<lang>/universities/<slug>/
 /<lang>/programs/
+/<lang>/programs/fields/<general-field-slug_en>/
 /<lang>/programs/<slug>/
 /<lang>/faq/
 /<lang>/contact/
