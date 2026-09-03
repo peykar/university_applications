@@ -10,6 +10,7 @@ _INDEXABLE_PUBLIC_ROUTES = {
     "home",
     "university-list",
     "university-detail",
+    "university-city-detail",
     "program-list",
     "program-field-detail",
     "program-detail",

@@ -6,6 +6,11 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("universities/", views.university_list, name="university-list"),
     path(
+        "universities/cities/<str:slug>/",
+        views.university_city_detail,
+        name="university-city-detail",
+    ),
+    path(
         "universities/<str:slug>/",
         views.university_detail,
         name="university-detail",

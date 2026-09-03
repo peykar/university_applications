@@ -27,3 +27,9 @@ Status: BASELINED
 
 - [x] `SEO-015` Promote curated GeneralFields to explicit indexable Program-field landing pages without promoting arbitrary filter URLs.
 - [ ] Run `make format` and `make check` in the project environment.
+
+## CHG-0020
+
+- [x] `SEO-016` Promote qualifying Cities to explicit indexable University-city landing pages without promoting arbitrary city-filter URLs.
+- [ ] Run `make format` and `make check` in the project environment.
+

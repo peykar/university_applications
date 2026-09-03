@@ -1,6 +1,6 @@
 # CHG-0019 — GeneralField public landing pages
 
-Status: VERIFYING
+Status: VERIFIED
 Requested: 2026-09-03
 
 ## Request
@@ -49,6 +49,6 @@ CHANGE
 
 - [x] Python syntax/compile validation in delivery environment.
 - [x] SDD traceability updated.
-- [ ] `make format` locally.
-- [ ] `make check` locally.
-- [ ] Manually open at least one EN and one RTL GeneralField landing page.
+- [x] `make format` locally.
+- [x] `make check` locally.
+- [x] Manually open at least one EN and one RTL GeneralField landing page.

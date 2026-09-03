@@ -318,3 +318,21 @@ and list/filter/search support.
 
 `import_programs_for_university` deliberately excludes GeneralField memberships from update
 defaults. New Programs therefore remain unmapped and all existing assignments survive re-import. The schema validator rejects supplied `general_field` and `general_fields` keys so accidental automatic classification cannot become an undocumented import convention.
+
+## City public landing pages (CAT-064–CAT-066)
+
+City landing routes live inside the University catalogue namespace at
+`/universities/cities/<slug_en>/`. The route resolves an active City only when it
+has at least one active University. `slug_en` is the stable route identity across
+locale prefixes.
+
+The view renders City editorial/SEO fields from the City model, paginates active
+Universities 24 at a time, and shows up to 12 representative active Programs from
+active Universities in the City using the canonical structured-fee tuition
+annotation. A Program-catalogue link carries `?city=<slug_en>` for advanced
+discovery; that query surface remains non-canonical/noindex.
+
+City pages use CollectionPage + BreadcrumbList structured data. Sitemap emission is
+restricted to active Cities with active Universities. University detail pages provide
+crawlable internal links to their City's canonical landing route.
+

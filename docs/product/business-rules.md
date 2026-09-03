@@ -233,3 +233,9 @@ landing page at `/programs/fields/<canonical-slug>/`. The GeneralField canonical
 English slug remains the route identity across locales. The equivalent
 `/programs/?field=<slug>` query remains a noindex navigation/filter surface.
 
+BR-SEO-005 — A catalogue City with at least one active University is promoted to an
+indexable University discovery landing page at
+`/universities/cities/<canonical-slug>/`. The City canonical English slug remains
+the route identity across locales. Equivalent city query-filter URLs remain
+noindex navigation surfaces rather than canonical City pages.
+

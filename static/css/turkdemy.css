@@ -6201,3 +6201,14 @@ a.entity-list-row:hover{
 .field-landing-stat span{color:var(--muted)}
 .field-landing-programs,.field-landing-universities{margin-top:42px}
 @media(max-width:720px){.field-landing-stat{width:100%;min-width:0}.field-landing-programs,.field-landing-universities{margin-top:30px}}
+
+.city-landing-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.city-landing-link:hover,
+.city-landing-link:focus-visible {
+  text-decoration: underline;
+}
+

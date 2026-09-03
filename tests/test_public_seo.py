@@ -78,6 +78,32 @@ class PublicSEOTests(SimpleTestCase):
             "https://turkdemy.com/fa/programs/fields/engineering/",
         )
 
+    def test_city_landing_route_is_indexable_and_localized(self):
+        request = self._request("/en/universities/cities/istanbul/")
+        with override("en"):
+            context = seo(request)
+        self.assertEqual(context["seo_robots"], "index,follow")
+        self.assertEqual(
+            context["seo_canonical_url"],
+            "https://turkdemy.com/en/universities/cities/istanbul/",
+        )
+        alternates = {item["language"]: item["href"] for item in context["seo_alternates"]}
+        self.assertEqual(
+            alternates["fa"],
+            "https://turkdemy.com/fa/universities/cities/istanbul/",
+        )
+
+    def test_city_filter_remains_noindex_navigation(self):
+        request = self.factory.get("/en/programs/?city=istanbul")
+        request.resolver_match = resolve("/en/programs/")
+        with override("en"):
+            context = seo(request)
+        self.assertEqual(context["seo_robots"], "noindex,follow")
+        self.assertEqual(
+            context["seo_canonical_url"],
+            "https://turkdemy.com/en/programs/",
+        )
+
     def test_shared_head_renders_required_seo_hooks(self):
         self.assertIn('rel="canonical"', self.base_template)
         self.assertIn('rel="alternate" hreflang=', self.base_template)

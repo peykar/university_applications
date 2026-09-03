@@ -1496,3 +1496,26 @@
 - Seeded 24 curated GeneralFields and UUID-pinned mappings for 5,508 of 5,509 active
   Programs from the supplied database snapshot; malformed `biruni` remains for manual review.
 - Kept normal catalogue import completely independent from GeneralField mapping.
+
+
+## 2026-09-03 — CHG-0019 GeneralField public landing pages
+
+- Added indexable multilingual GeneralField discovery routes under
+  `/programs/fields/<slug_en>/`.
+- Field pages use curated GeneralField editorial/SEO content, list mapped Programs
+  and Universities, and link to the existing advanced field-filtered Program catalogue.
+- Added canonical/hreflang, CollectionPage/breadcrumb structured data, multilingual
+  sitemap inclusion, homepage internal links, and regression coverage while preserving
+  query-string field filters as `noindex,follow`.
+
+## 2026-09-03 — CHG-0020 City public landing pages
+
+- Added indexable multilingual City discovery routes under
+  `/universities/cities/<slug_en>/`.
+- City pages use curated City description/SEO fields, list active Universities,
+  expose representative Programs, and link to the existing city-filtered Program
+  catalogue.
+- Added canonical/hreflang, CollectionPage/breadcrumb structured data, multilingual
+  sitemap inclusion, University-detail internal links, and regression coverage while
+  preserving query-string city filters as `noindex,follow`.
+

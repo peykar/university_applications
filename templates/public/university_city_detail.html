@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% if city.localized_seo_title %}{{ city.localized_seo_title }}{% else %}{% blocktrans with city_name=city.localized_name %}Universities in {{ city_name }}{% endblocktrans %} — TurkDemy{% endif %}{% endblock %}
+{% block meta_description %}{% if city.localized_seo_description %}{{ city.localized_seo_description }}{% elif city.localized_description %}{{ city.localized_description|striptags|truncatechars:160 }}{% else %}{% blocktrans with city_name=city.localized_name %}Explore universities and study programs in {{ city_name }}, Türkiye with TurkDemy.{% endblocktrans %}{% endif %}{% endblock %}
+{% block og_title %}{% if city.localized_seo_title %}{{ city.localized_seo_title }}{% else %}{% blocktrans with city_name=city.localized_name %}Universities in {{ city_name }}{% endblocktrans %} — TurkDemy{% endif %}{% endblock %}
+{% block og_description %}{% if city.localized_seo_description %}{{ city.localized_seo_description }}{% elif city.localized_description %}{{ city.localized_description|striptags|truncatechars:160 }}{% else %}{% blocktrans with city_name=city.localized_name %}Explore universities and study programs in {{ city_name }}, Türkiye with TurkDemy.{% endblocktrans %}{% endif %}{% endblock %}
+
+{% block content %}
+<section class="programs-hero city-landing-hero">
+  <div class="programs-hero-copy">
+    <p class="eyebrow">{% trans "Study destination" %}</p>
+    <h1>{% blocktrans with city_name=city.localized_name %}Universities in {{ city_name }}{% endblocktrans %}</h1>
+    {% if city.localized_description %}
+      <div class="programs-hero-text city-landing-description">{{ city.localized_description|linebreaks }}</div>
+    {% else %}
+      <p class="programs-hero-text">
+        {% blocktrans with city_name=city.localized_name %}Explore universities and study programs in {{ city_name }}, Türkiye.{% endblocktrans %}
+      </p>
+    {% endif %}
+  </div>
+  <div class="programs-hero-stat city-landing-stat">
+    <strong>{{ university_count }}</strong>
+    <span>{% trans "universities" %}</span>
+    <strong>{{ program_count }}</strong>
+    <span>{% trans "programs" %}</span>
+  </div>
+</section>
+
+<section class="home-section city-landing-universities">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">{% trans "Universities" %}</p>
+      <h2>{% blocktrans with city_name=city.localized_name %}Universities in {{ city_name }}{% endblocktrans %}</h2>
+    </div>
+    <a class="section-link" href="{% url 'university-list' %}">{% trans "View all universities" %} →</a>
+  </div>
+
+  <div class="university-grid">
+    {% for university in universities %}
+      {% include "public/includes/university_card.html" with university=university %}
+    {% empty %}
+      <div class="programs-empty-state">
+        <h2>{% trans "No active universities are available in this city." %}</h2>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="programs-pagination-wrap">
+    {% include "public/includes/pagination.html" %}
+  </div>
+</section>
+
+{% if programs %}
+<section class="home-section city-landing-programs">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">{% trans "Programs" %}</p>
+      <h2>{% blocktrans with city_name=city.localized_name %}Study programs in {{ city_name }}{% endblocktrans %}</h2>
+    </div>
+    <a class="section-link" href="{{ program_filter_url }}">{% trans "Explore all programs in this city" %} →</a>
+  </div>
+  <div class="programs-result-grid">
+    {% for program in programs %}
+      {% include "public/includes/program_discovery_card.html" with program=program %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

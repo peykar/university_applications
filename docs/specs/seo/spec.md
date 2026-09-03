@@ -76,3 +76,11 @@ URLs, reciprocal language alternates, English x-default, sitemap inclusion,
 page-specific metadata, CollectionPage/breadcrumb structured data, and internal
 links from catalogue discovery. Equivalent query-string field filters remain
 `noindex,follow`.
+
+SEO-016 — Curated City landing pages at
+`/universities/cities/<canonical-slug>/` MUST be indexable public pages with canonical
+URLs, reciprocal language alternates, English x-default, sitemap inclusion only when
+the City has an active University, page-specific metadata, CollectionPage/breadcrumb
+structured data, and crawlable internal links from University detail pages. Equivalent
+query-string city filters remain `noindex,follow`.
+

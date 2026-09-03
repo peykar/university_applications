@@ -236,6 +236,98 @@ def university_list(request):
     )
 
 
+def university_city_detail(request, slug):
+    city = get_object_or_404(
+        City.objects.filter(
+            is_active=True,
+            universities__is_active=True,
+        )
+        .select_related("province", "province__country")
+        .distinct(),
+        slug_en=slug,
+    )
+
+    universities = (
+        University.objects.filter(
+            is_active=True,
+            city=city,
+        )
+        .select_related("city", "city__province", "city__province__country")
+        .annotate(
+            active_program_count=Count(
+                "programs",
+                filter=Q(programs__is_active=True),
+                distinct=True,
+            )
+        )
+        .order_by("-listing_priority", "name_en")
+    )
+
+    paginator = Paginator(universities, 24)
+    page_obj = paginator.get_page(request.GET.get("page"))
+
+    programs = annotate_min_active_tuition(
+        Program.objects.filter(
+            is_active=True,
+            university__is_active=True,
+            university__city=city,
+        )
+        .select_related(
+            "university",
+            "university__city",
+            "academic_unit",
+            "department",
+        )
+        .prefetch_related("instruction_language_rows__language")
+    ).order_by(
+        "-listing_priority",
+        "-university__listing_priority",
+        "name_en",
+    )[:12]
+
+    city_url = localized_absolute_url(
+        "university-city-detail",
+        slug=city.slug_en,
+    )
+    city_description = city.localized_seo_description or city.localized_description
+    schema_node = {
+        "@type": "CollectionPage",
+        "name": city.localized_seo_title or city.localized_name,
+        "url": city_url,
+    }
+    if city_description:
+        schema_node["description"] = city_description
+
+    return render(
+        request,
+        "public/university_city_detail.html",
+        {
+            "city": city,
+            "universities": page_obj.object_list,
+            "page_obj": page_obj,
+            "university_count": paginator.count,
+            "programs": programs,
+            "program_count": Program.objects.filter(
+                is_active=True,
+                university__is_active=True,
+                university__city=city,
+            ).count(),
+            "program_filter_url": (
+                f"{reverse('program-list')}?{urlencode({'city': city.slug_en})}"
+            ),
+            "seo_schema": graph_schema(
+                schema_node,
+                breadcrumb_schema(
+                    [
+                        (_("Universities"), localized_absolute_url("university-list")),
+                        (city.localized_name, city_url),
+                    ]
+                ),
+            ),
+        },
+    )
+
+
 def university_detail(request, slug):
     university = get_object_or_404(
         University.objects.select_related("city"),

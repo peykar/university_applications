@@ -43,3 +43,15 @@ applicable SEO effects in its change record and tests.
   noindex filter/navigation URL and is used for deeper advanced filtering.
 - Active mapped GeneralFields are emitted in the multilingual sitemap.
 - Homepage study-field cards link directly to the dedicated landing pages.
+
+## Curated City landing pages
+
+- City landing URLs live under the University catalogue namespace:
+  `/universities/cities/<slug_en>/`.
+- `slug_en` remains stable across locale-prefixed routes.
+- The clean City route is indexable; query-string city filters remain
+  `noindex,follow` navigation surfaces.
+- The multilingual sitemap emits only active Cities with at least one active
+  University.
+- University detail pages link their City label to the dedicated landing page.
+

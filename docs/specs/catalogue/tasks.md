@@ -147,3 +147,12 @@ Version: 3.1
 - [x] CAT-T51 (`CAT-063`) Link homepage fields to the landing route and add canonical/hreflang, schema and sitemap behavior.
 - [x] CAT-T52 (`CAT-061`–`CAT-063`) Add public metadata/SEO regression tests and synchronized documentation.
 - [ ] Run `make format` and `make check` locally.
+
+## CHG-0020 — City landing pages
+
+- [x] CAT-T53 (`CAT-064`) Add `/universities/cities/<slug_en>/` before the generic University detail route.
+- [x] CAT-T54 (`CAT-065`) Render localized City editorial content, paginated active Universities and representative Programs with a canonical city-filter discovery link.
+- [x] CAT-T55 (`CAT-066`) Add City canonical/hreflang, structured data, sitemap inclusion and crawlable University-detail internal linking.
+- [x] CAT-T56 (`CAT-064`–`CAT-066`) Add public metadata/SEO regression tests and synchronized documentation.
+- [ ] Run `make format` and `make check` locally.
+

@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.utils.translation import override
 
+from apps.geography.models import City
 from apps.universities.models import GeneralField, Program, University
 
 
@@ -40,6 +41,25 @@ def sitemap_xml(_request):
                 "university-detail",
                 code,
                 slug=university.slug_en,
+            )
+            for code, _name in settings.LANGUAGES
+        }
+        entries.append((alternates.get("en") or next(iter(alternates.values())), alternates))
+
+    for city in (
+        City.objects.filter(
+            is_active=True,
+            universities__is_active=True,
+        )
+        .exclude(slug_en="")
+        .distinct()
+        .only("slug_en")
+    ):
+        alternates = {
+            code: _localized_url(
+                "university-city-detail",
+                code,
+                slug=city.slug_en,
             )
             for code, _name in settings.LANGUAGES
         }

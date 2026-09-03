@@ -400,3 +400,23 @@ CAT-063 — GeneralField landing pages MUST participate in the public SEO contra
 indexable canonical/hreflang URLs, sitemap inclusion, page-specific social metadata,
 CollectionPage plus breadcrumb structured data, and internal linking from the homepage
 study-field discovery surface. The query-string field catalogue remains noindex.
+
+## City public landing pages
+
+CAT-064 — Every active City that has at least one active University MUST have an
+indexable public landing route at `/universities/cities/<slug_en>/`. The canonical
+English City slug is the stable route identity in every supported locale; localized
+slugs MUST NOT create alternate route identities.
+
+CAT-065 — A City landing page MUST render its localized name and curated editorial
+description, use localized SEO title/description when available, list active
+Universities in the City with pagination, expose representative active Programs in
+that City, and link to the existing Program catalogue with the same canonical city
+filter for deeper discovery.
+
+CAT-066 — City landing pages MUST participate in the public SEO contract: indexable
+canonical/hreflang URLs, sitemap inclusion only for active Cities with active
+Universities, page-specific social metadata, CollectionPage plus breadcrumb structured
+data, and crawlable internal links from University detail pages. Equivalent
+query-string city filters remain noindex navigation surfaces.
+

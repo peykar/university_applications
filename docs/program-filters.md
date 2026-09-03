@@ -137,3 +137,16 @@ Curated study fields also have dedicated indexable discovery URLs:
 The English GeneralField slug is stable across EN/FA/TR/AR route prefixes. These
 pages are the canonical SEO surface for a field. The equivalent
 `/programs/?field=<slug>` URL remains a `noindex,follow` advanced-filter surface.
+
+## City landing pages
+
+Cities represented by active Universities have dedicated indexable discovery URLs:
+
+```text
+/<locale>/universities/cities/<city-slug_en>/
+```
+
+The English City slug is stable across EN/FA/TR/AR route prefixes. These pages are
+the canonical SEO surface for University discovery by City. Program catalogue URLs
+such as `/programs/?city=<slug>` remain `noindex,follow` advanced-filter surfaces.
+

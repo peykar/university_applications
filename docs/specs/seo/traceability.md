@@ -20,3 +20,5 @@ Status: BASELINED
 | `SEO-014` | `apps/public/templatetags/seo.py`; `apps/public/seo.py` | `tests/test_public_page_metadata.py` | Automated |
 
 | `SEO-015` | `apps/public/context_processors.py`; `apps/public/seo_views.py`; `apps/public/views.py::program_field_detail`; `templates/public/program_field_detail.html`; `templates/public/home.html` | `tests/test_public_seo.py`; `tests/test_public_page_metadata.py` | Automated |
+| `SEO-016` | `apps/public/context_processors.py`; `apps/public/seo_views.py`; `apps/public/views.py::university_city_detail`; `templates/public/university_city_detail.html`; `templates/public/university_detail.html` | `tests/test_public_seo.py`; `tests/test_public_page_metadata.py` | Automated |
+

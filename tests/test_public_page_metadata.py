@@ -37,7 +37,14 @@ class PublicPageMetadataTests(TestCase):
             name_tr="İstanbul",
             name_ar="إسطنبول",
             slug_en="istanbul-seo",
+            description_en="Study in Istanbul, Türkiye's largest university city.",
+            description_fa=("استانبول یکی از مهم‌ترین مقاصد تحصیلی ترکیه است."),
+            seo_title_en="Universities in Istanbul, Türkiye",
+            seo_description_en=(
+                "Compare universities and study programs in Istanbul with TurkDemy."
+            ),
         )
+        cls.city = city
         cls.university = University.objects.create(
             name_en="SEO Test University",
             name_fa="دانشگاه تست سئو",
@@ -170,6 +177,74 @@ class PublicPageMetadataTests(TestCase):
         self.assertIn(
             ('rel="canonical" href="https://turkdemy.com/fa/programs/fields/engineering/"'),
             html,
+        )
+
+    def test_city_landing_page_has_curated_metadata_schema_and_internal_content(self):
+        with translation.override("en"):
+            url = reverse("university-city-detail", args=[self.city.slug_en])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn("Universities in Istanbul, Türkiye", html)
+        self.assertIn(
+            "Compare universities and study programs in Istanbul with TurkDemy.",
+            html,
+        )
+        self.assertIn("SEO Test University", html)
+        self.assertIn("Computer Engineering", html)
+        self.assertIn('name="robots" content="index,follow"', html)
+        schema = self._schema(response)
+        types = {node["@type"] for node in schema["@graph"]}
+        self.assertIn("CollectionPage", types)
+        self.assertIn("BreadcrumbList", types)
+
+    def test_sitemap_contains_city_landing_page(self):
+        response = self.client.get("/sitemap.xml")
+        self.assertEqual(response.status_code, 200)
+        xml = response.content.decode()
+        self.assertIn(
+            "https://turkdemy.com/en/universities/cities/istanbul-seo/",
+            xml,
+        )
+        self.assertIn(
+            ('hreflang="fa" href="https://turkdemy.com/fa/universities/cities/istanbul-seo/"'),
+            xml,
+        )
+
+    def test_city_without_active_university_is_not_public_or_in_sitemap(self):
+        empty_city = City.objects.create(
+            province=self.city.province,
+            name_en="Empty City",
+            slug_en="empty-city",
+        )
+        with translation.override("en"):
+            url = reverse("university-city-detail", args=[empty_city.slug_en])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+        sitemap = self.client.get("/sitemap.xml").content.decode()
+        self.assertNotIn(
+            "https://turkdemy.com/en/universities/cities/empty-city/",
+            sitemap,
+        )
+
+    def test_city_route_uses_canonical_english_slug_in_persian(self):
+        response = self.client.get("/fa/universities/cities/istanbul-seo/")
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn("استانبول", html)
+        self.assertIn(
+            ('rel="canonical" href="https://turkdemy.com/fa/universities/cities/istanbul-seo/"'),
+            html,
+        )
+
+    def test_university_detail_links_to_city_landing_page(self):
+        with translation.override("en"):
+            url = reverse("university-detail", args=[self.university.slug_en])
+        response = self.client.get(url)
+        self.assertContains(
+            response,
+            f"/en/universities/cities/{self.city.slug_en}/",
         )
 
     def test_persian_university_metadata_is_localized(self):

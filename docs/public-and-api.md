@@ -7,6 +7,7 @@ Server-rendered routes include:
 ```text
 /<lang>/
 /<lang>/universities/
+/<lang>/universities/cities/<city-slug_en>/
 /<lang>/universities/<slug>/
 /<lang>/programs/
 /<lang>/programs/fields/<general-field-slug_en>/

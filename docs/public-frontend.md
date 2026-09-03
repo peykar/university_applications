@@ -28,6 +28,7 @@ The public website is language-prefixed:
 ```text
 /<lang>/
 /<lang>/universities/
+/<lang>/universities/cities/<city-slug_en>/
 /<lang>/universities/<slug>/
 /<lang>/programs/
 /<lang>/programs/fields/<general-field-slug_en>/

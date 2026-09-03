@@ -7,7 +7,13 @@
 {% block content %}
 <section class="detail-hero">
   <div>
-    <p class="eyebrow">{{ university.city.localized_name }}</p>
+    <p class="eyebrow">
+      {% if university.city.is_active and university.city.slug_en %}
+        <a class="city-landing-link" href="{% url 'university-city-detail' university.city.slug_en %}">{{ university.city.localized_name }}</a>
+      {% else %}
+        {{ university.city.localized_name }}
+      {% endif %}
+    </p>
     <h1>{{ university.localized_name }}</h1>
     <div class="badges">
       <span class="badge">{{ university.get_university_type_display }}</span>

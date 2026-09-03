@@ -3405,3 +3405,28 @@ msgstr "دانشگاه‌های ارائه‌دهنده %(field_name)s"
 
 msgid "View all universities"
 msgstr "مشاهده همه دانشگاه‌ها"
+
+msgid "Study destination"
+msgstr "مقصد تحصیلی"
+
+#, python-format
+msgid "Universities in %(city_name)s"
+msgstr "دانشگاه‌های %(city_name)s"
+
+#, python-format
+msgid "Explore universities and study programs in %(city_name)s, Türkiye with TurkDemy."
+msgstr "دانشگاه‌ها و برنامه‌های تحصیلی در %(city_name)s، ترکیه را با ترک‌دمی بررسی کنید."
+
+#, python-format
+msgid "Explore universities and study programs in %(city_name)s, Türkiye."
+msgstr "دانشگاه‌ها و برنامه‌های تحصیلی در %(city_name)s، ترکیه را بررسی کنید."
+
+#, python-format
+msgid "Study programs in %(city_name)s"
+msgstr "برنامه‌های تحصیلی در %(city_name)s"
+
+msgid "Explore all programs in this city"
+msgstr "مشاهده همه برنامه‌های این شهر"
+
+msgid "No active universities are available in this city."
+msgstr "در حال حاضر دانشگاه فعالی در این شهر موجود نیست."
