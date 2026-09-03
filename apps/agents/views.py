@@ -472,7 +472,10 @@ def applicant_remove_recommendation(request, lead_id, interest_id):
         lead=lead,
         activity_type=LeadActivityType.PROGRAM_RESPONSE,
         description=f"Program recommendation removed: {program_name}.",
-        metadata={"action": "recommendation_removed"},
+        metadata={
+            "action": "recommendation_removed",
+            "program_id": str(interest.program_id),
+        },
         is_customer_visible=True,
         created_by=request.user,
         updated_by=request.user,
@@ -573,6 +576,7 @@ def applicant_internal_notes(request, lead_id):
         activity_type=LeadActivityType.INTERNAL_NOTES_UPDATED,
         description="Internal notes updated.",
         metadata={
+            "action": "internal_notes_updated",
             "changes": [
                 {
                     "field": "notes",
@@ -580,7 +584,7 @@ def applicant_internal_notes(request, lead_id):
                     "old": old_notes or "—",
                     "new": new_notes or "—",
                 }
-            ]
+            ],
         },
         is_customer_visible=False,
         created_by=request.user,
@@ -690,6 +694,10 @@ def applicant_document_upload(request, lead_id):
         description=(
             f"{document.get_document_type_display()} uploaded and approved by agent user."
         ),
+        metadata={
+            "action": "agent_uploaded_approved",
+            "document_type": document.document_type,
+        },
         is_customer_visible=False,
         created_by=request.user,
         updated_by=request.user,
@@ -729,6 +737,7 @@ def applicant_status(request, lead_id):
             lead=lead,
             activity_type=LeadActivityType.CLOSED,
             description=f"Lead closed.{f' Reason: {reason}' if reason else ''}",
+            metadata={"action": "closed", "close_reason": reason},
             is_customer_visible=False,
             created_by=request.user,
             updated_by=request.user,
@@ -755,6 +764,7 @@ def applicant_status(request, lead_id):
             lead=lead,
             activity_type=LeadActivityType.REOPENED,
             description="Lead reopened.",
+            metadata={"action": "manual_reopen"},
             is_customer_visible=False,
             created_by=request.user,
             updated_by=request.user,
@@ -788,10 +798,18 @@ def _assign_lead(lead, *, target_user, performed_by) -> None:
         activity_type = LeadActivityType.ASSIGNED
         description = f"Assigned to {_user_display_name(target_user)}."
 
+    assignment_metadata = {
+        "action": "reassigned" if previous else "assigned",
+        "assignee_name": _user_display_name(target_user),
+    }
+    if previous:
+        assignment_metadata["previous_assignee_name"] = _user_display_name(previous)
+
     LeadActivity.objects.create(
         lead=lead,
         activity_type=activity_type,
         description=description,
+        metadata=assignment_metadata,
         is_customer_visible=False,
         created_by=performed_by,
         updated_by=performed_by,
@@ -1150,6 +1168,12 @@ def applicant_document_review(request, lead_id, document_id):
             f"Document reviewed: {document.name or document.get_document_type_display()} "
             f"→ {document.get_review_status_display()}."
         ),
+        metadata={
+            "action": "reviewed",
+            "document_name": document.name,
+            "document_type": document.document_type,
+            "review_status": document.review_status,
+        },
         is_customer_visible=True,
         created_by=request.user,
         updated_by=request.user,
@@ -1213,6 +1237,11 @@ def applicant_attachment_to_document(request, lead_id, attachment_id):
             f"Chat attachment added to Documents: "
             f"{document.name or document.get_document_type_display()}."
         ),
+        metadata={
+            "action": "chat_attachment_added",
+            "document_name": document.name,
+            "document_type": document.document_type,
+        },
         is_customer_visible=True,
         created_by=request.user,
         updated_by=request.user,

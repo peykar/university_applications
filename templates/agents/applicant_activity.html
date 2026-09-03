@@ -68,16 +68,16 @@
       </span>
      </div>
 
-     {% if activity.description %}
-      <p>{{ activity.description }}</p>
+     {% if activity.localized_description %}
+      <p>{{ activity.localized_description }}</p>
      {% endif %}
      {% if activity.activity_type == "program_suggested" and activity.metadata.suggestion_reason %}
       <p class="activity-recommendation-reason" dir="auto">{{ activity.metadata.suggestion_reason }}</p>
      {% endif %}
 
-     {% if activity.metadata.changes %}
+     {% if activity.localized_changes %}
       <div class="activity-changes">
-       {% for change in activity.metadata.changes %}
+       {% for change in activity.localized_changes %}
         <div class="activity-change-row">
          <strong>{% translate change.label %}</strong>
          <span class="activity-change-old">{{ change.old }}</span>

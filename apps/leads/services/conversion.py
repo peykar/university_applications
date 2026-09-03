@@ -77,6 +77,11 @@ def _copy_selected_documents(
                     f"Document approved during Student record creation: "
                     f"{source.name or source.get_document_type_display()}."
                 ),
+                metadata={
+                    "action": "student_conversion_approved",
+                    "document_name": source.name,
+                    "document_type": source.document_type,
+                },
                 is_customer_visible=True,
                 created_by=actor,
                 updated_by=actor,
@@ -245,7 +250,12 @@ def finalize_lead(
                 f"Re-finalized existing Student {student.pk}; "
                 f"created {created_count} new draft application(s)."
             ),
-            metadata={"new_application_count": created_count, "reopened": True},
+            metadata={
+                "action": "refinalized",
+                "student_id": str(student.pk),
+                "new_application_count": created_count,
+                "reopened": True,
+            },
             is_customer_visible=True,
             created_by=actor,
             updated_by=actor,
@@ -314,6 +324,12 @@ def finalize_lead(
             f"Finalized and converted to Student {student.pk}; "
             f"created {len(application_selections)} draft application(s)."
         ),
+        metadata={
+            "action": "finalized",
+            "student_id": str(student.pk),
+            "new_application_count": len(application_selections),
+            "reopened": False,
+        },
         is_customer_visible=True,
         created_by=actor,
         updated_by=actor,

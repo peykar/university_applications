@@ -488,6 +488,7 @@ def lead_program_intake_update(request, lead_id, interest_id):
         activity_type=LeadActivityType.PROGRAM_RESPONSE,
         description=_("Program intake updated: %(program)s.")
         % {"program": interest.program.localized_name},
+        metadata={"action": "intake_updated", "program_id": str(interest.program_id)},
         is_customer_visible=True,
         created_by=request.user,
         updated_by=request.user,
@@ -511,6 +512,7 @@ def lead_program_remove(request, lead_id, interest_id):
         lead=lead,
         activity_type=LeadActivityType.PROGRAM_RESPONSE,
         description=f"Program removed: {program_name}.",
+        metadata={"action": "program_removed", "program_id": str(interest.program_id)},
         is_customer_visible=True,
         created_by=request.user,
         updated_by=request.user,
@@ -567,6 +569,10 @@ def lead_document_upload(request, lead_id):
             lead=lead,
             activity_type=LeadActivityType.DOCUMENT_UPLOADED,
             description=f"Document uploaded: {document.get_document_type_display()}",
+            metadata={
+                "action": "uploaded",
+                "document_type": document.document_type,
+            },
             is_customer_visible=True,
             created_by=request.user,
             updated_by=request.user,
@@ -651,6 +657,10 @@ def lead_document_replace(request, lead_id, document_id):
         lead=lead,
         activity_type=LeadActivityType.DOCUMENT_UPLOADED,
         description=f"Replacement uploaded: {document.get_document_type_display()}",
+        metadata={
+            "action": "replacement_uploaded",
+            "document_type": document.document_type,
+        },
         is_customer_visible=True,
         created_by=request.user,
         updated_by=request.user,

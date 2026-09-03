@@ -3160,3 +3160,108 @@ msgstr "حمّل المستندات إلى سجل الطالب بعد إنشاء
 
 msgid "Application already exists"
 msgstr "طلب التقديم موجود بالفعل"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Lead reopened."
+msgstr "أعيد فتح الطلب."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Lead closed."
+msgstr "تم إغلاق الطلب."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Finalized and converted to Student %(student)s; created %(count)s draft application(s)."
+msgstr "تم إنهاء الطلب وتحويله إلى الطالب %(student)s؛ تم إنشاء %(count)s طلب مسودة."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Lead closed. Reason: %(reason)s"
+msgstr "تم إغلاق الطلب. السبب: %(reason)s"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Assigned to %(assignee)s."
+msgstr "تم الإسناد إلى %(assignee)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Reassigned from %(old)s to %(new)s."
+msgstr "تم تغيير المسؤول من %(old)s إلى %(new)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Document uploaded: %(document)s."
+msgstr "تم رفع المستند: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Document reviewed: %(document)s → %(status)s."
+msgstr "تمت مراجعة المستند: %(document)s → %(status)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Re-finalized existing Student %(student)s; created %(count)s new draft application(s)."
+msgstr "تم إنهاء الطالب الحالي %(student)s مرة أخرى؛ تم إنشاء %(count)s طلب مسودة جديد."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Program removed: %(program)s."
+msgstr "تمت إزالة البرنامج: %(program)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Program recommendation removed: %(program)s."
+msgstr "تمت إزالة توصية البرنامج: %(program)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Replacement uploaded: %(document)s."
+msgstr "تم رفع البديل: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "%(document)s uploaded and approved by agent user."
+msgstr "تم رفع %(document)s واعتماده بواسطة مستخدم الوكيل."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Chat attachment added to Documents: %(document)s."
+msgstr "تمت إضافة مرفق المحادثة إلى المستندات: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Document approved during Student record creation: %(document)s."
+msgstr "تم اعتماد المستند أثناء إنشاء سجل الطالب: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Middle name"
+msgstr "الاسم الأوسط"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Cell"
+msgstr "الهاتف المحمول"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Father name"
+msgstr "اسم الأب"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Mother name"
+msgstr "اسم الأم"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport no"
+msgstr "رقم جواز السفر"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport issuing authority"
+msgstr "جهة إصدار جواز السفر"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport date of issue"
+msgstr "تاريخ إصدار جواز السفر"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport date of expiry"
+msgstr "تاريخ انتهاء جواز السفر"
+
+#: apps/leads/services/activity_presentation.py
+msgid "English language test score"
+msgstr "درجة اختبار اللغة الإنجليزية"
+
+#: apps/leads/services/activity_presentation.py
+msgid "High school gpa"
+msgstr "المعدل التراكمي للثانوية"
+
+#: apps/leads/services/activity_presentation.py
+msgid "High school gpa scale"
+msgstr "مقياس المعدل التراكمي للثانوية"
+

@@ -3182,3 +3182,108 @@ msgstr "Öğrenci oluşturulduktan sonra belgeleri öğrenci kaydına yükleyin.
 
 msgid "Application already exists"
 msgstr "Başvuru zaten mevcut"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Lead reopened."
+msgstr "Talep yeniden açıldı."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Lead closed."
+msgstr "Talep kapatıldı."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Finalized and converted to Student %(student)s; created %(count)s draft application(s)."
+msgstr "Sonlandırıldı ve Öğrenci %(student)s kaydına dönüştürüldü; %(count)s taslak başvuru oluşturuldu."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Lead closed. Reason: %(reason)s"
+msgstr "Talep kapatıldı. Neden: %(reason)s"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Assigned to %(assignee)s."
+msgstr "%(assignee)s kullanıcısına atandı."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Reassigned from %(old)s to %(new)s."
+msgstr "Sorumlu %(old)s kullanıcısından %(new)s kullanıcısına değiştirildi."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Document uploaded: %(document)s."
+msgstr "Belge yüklendi: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Document reviewed: %(document)s → %(status)s."
+msgstr "Belge incelendi: %(document)s → %(status)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Re-finalized existing Student %(student)s; created %(count)s new draft application(s)."
+msgstr "Mevcut Öğrenci %(student)s yeniden sonlandırıldı; %(count)s yeni taslak başvuru oluşturuldu."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Program removed: %(program)s."
+msgstr "Program kaldırıldı: %(program)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Program recommendation removed: %(program)s."
+msgstr "Program önerisi kaldırıldı: %(program)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Replacement uploaded: %(document)s."
+msgstr "Yedek belge yüklendi: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "%(document)s uploaded and approved by agent user."
+msgstr "%(document)s temsilci kullanıcısı tarafından yüklendi ve onaylandı."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Chat attachment added to Documents: %(document)s."
+msgstr "Sohbet eki Belgeler bölümüne eklendi: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Document approved during Student record creation: %(document)s."
+msgstr "Öğrenci kaydı oluşturulurken belge onaylandı: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Middle name"
+msgstr "İkinci ad"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Cell"
+msgstr "Cep telefonu"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Father name"
+msgstr "Baba adı"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Mother name"
+msgstr "Anne adı"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport no"
+msgstr "Pasaport no"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport issuing authority"
+msgstr "Pasaportu düzenleyen makam"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport date of issue"
+msgstr "Pasaport düzenlenme tarihi"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport date of expiry"
+msgstr "Pasaport son geçerlilik tarihi"
+
+#: apps/leads/services/activity_presentation.py
+msgid "English language test score"
+msgstr "İngilizce sınav puanı"
+
+#: apps/leads/services/activity_presentation.py
+msgid "High school gpa"
+msgstr "Lise not ortalaması"
+
+#: apps/leads/services/activity_presentation.py
+msgid "High school gpa scale"
+msgstr "Lise not ortalaması ölçeği"
+

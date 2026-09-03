@@ -65,8 +65,8 @@ class AgentInternalNotesActivityTests(SimpleTestCase):
         self.assertIn("agent-applicant-activity", self.detail_template)
         self.assertIn("activity.get_activity_type_display", self.activity_template)
         self.assertIn("activity.created_by", self.activity_template)
-        self.assertIn("activity.description", self.activity_template)
-        self.assertIn("activity.metadata.changes", self.activity_template)
+        self.assertIn("activity.localized_description", self.activity_template)
+        self.assertIn("activity.localized_changes", self.activity_template)
 
     def test_activity_queryset_includes_actor(self):
         self.assertIn(

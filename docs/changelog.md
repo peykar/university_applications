@@ -1,3 +1,12 @@
+## 2026-09-03 — CHG-0013 Localized structured Activity rendering
+
+- Agent Applicant Activity descriptions now follow the viewer's active language.
+- Predefined events use semantic metadata plus a centralized presentation-time
+  renderer instead of relying on the language used when audit text was written.
+- Recognized historical Activity rows localize without rewriting audit history;
+  unknown/free-form audit text remains verbatim.
+- Added compiled Persian, Turkish, and Arabic translations for Activity sentences.
+
 ## 2026-09-03 — Reopen completed Request for a new program
 
 - CHG-0012: Finalized customer Requests can reopen when a genuinely new Program is added from Apply; the existing Student and Applications are preserved, Lead person/documents remain historical, and Agent completion creates only missing new draft Applications before returning the Request to finalized.

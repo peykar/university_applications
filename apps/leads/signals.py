@@ -28,6 +28,7 @@ def create_lead_workspace(sender, instance, created, **kwargs):
         lead=instance,
         activity_type=LeadActivityType.CREATED,
         description="Applicant profile created.",
+        metadata={"action": "profile_created"},
         is_customer_visible=True,
         created_by=instance.created_by,
         updated_by=instance.updated_by,

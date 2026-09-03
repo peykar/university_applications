@@ -120,6 +120,7 @@ def recommend_program(*, lead: Lead, program, agent_user, reason: str = "") -> R
         activity_type=LeadActivityType.PROGRAM_SUGGESTED,
         description=_("Program suggested: %(program)s.") % {"program": program.localized_name},
         metadata={
+            "action": "program_suggested",
             "program_id": str(program.pk),
             "interest_id": str(interest.pk),
             "suggestion_reason": reason,

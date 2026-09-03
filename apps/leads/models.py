@@ -491,6 +491,20 @@ class LeadActivity(BaseModel):
     class Meta:
         ordering = ("-created_at",)
 
+    @property
+    def localized_description(self) -> str:
+        from apps.leads.services.activity_presentation import (
+            localized_activity_description,
+        )
+
+        return localized_activity_description(self)
+
+    @property
+    def localized_changes(self) -> list[dict[str, object]]:
+        from apps.leads.services.activity_presentation import localized_activity_changes
+
+        return localized_activity_changes(self)
+
     def __str__(self):
         return f"{self.lead}: {self.get_activity_type_display()}"
 

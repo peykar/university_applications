@@ -1,7 +1,7 @@
 # Activity and audit
 
 Status: BASELINED
-Version: 1.0
+Version: 1.1
 
 ## Goal
 
@@ -27,6 +27,17 @@ AUD-006 — Customer-visible events MUST be explicitly marked; internal events M
 not be exposed to customers.
 
 AUD-007 — Historical audit/version data MUST be preserved across workflow changes.
+
+AUD-008 — Predefined Lead Activity descriptions MUST render in the viewer's active
+interface language at read time. Dynamic values such as program names, assignee
+names, document names, reasons, Student identifiers, and counts MUST remain
+interpolated into the localized sentence rather than being translated as free
+text.
+
+AUD-009 — Localization MUST preserve historical Activity rows without rewriting
+or deleting their stored audit payload. The presentation layer MUST localize
+recognized legacy predefined descriptions when structured metadata is absent,
+and MUST leave unknown/free-form descriptions verbatim.
 
 ## Acceptance policy
 

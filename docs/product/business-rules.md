@@ -140,6 +140,11 @@ BR-AUD-002 — Internal notes are Agent/staff-only.
 BR-AUD-003 — Audit/version history is preserved; it must not be deleted merely
 to simplify current-state UI.
 
+BR-AUD-004 — Predefined Activity events are localized at presentation time from
+the semantic event type and structured metadata. Persisted audit text is a
+fallback/audit payload and MUST NOT lock a predefined event to the language that
+was active when the event was written.
+
 ## Geography
 
 BR-GEO-001 — Student country of residence uses the country catalogue.

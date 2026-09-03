@@ -3172,3 +3172,108 @@ msgstr "پس از ایجاد دانشجو، مدارک را در پرونده د
 
 msgid "Application already exists"
 msgstr "درخواست پذیرش از قبل وجود دارد"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Lead reopened."
+msgstr "درخواست دوباره باز شد."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Lead closed."
+msgstr "درخواست بسته شد."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Finalized and converted to Student %(student)s; created %(count)s draft application(s)."
+msgstr "نهایی شد و به دانشجوی %(student)s تبدیل شد؛ %(count)s درخواست پذیرش پیش‌نویس ایجاد شد."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Lead closed. Reason: %(reason)s"
+msgstr "درخواست بسته شد. دلیل: %(reason)s"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Assigned to %(assignee)s."
+msgstr "به %(assignee)s واگذار شد."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Reassigned from %(old)s to %(new)s."
+msgstr "مسئول از %(old)s به %(new)s تغییر کرد."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Document uploaded: %(document)s."
+msgstr "مدرک بارگذاری شد: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Document reviewed: %(document)s → %(status)s."
+msgstr "مدرک بررسی شد: %(document)s → %(status)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Re-finalized existing Student %(student)s; created %(count)s new draft application(s)."
+msgstr "دانشجوی موجود %(student)s دوباره نهایی شد؛ %(count)s درخواست پذیرش پیش‌نویس جدید ایجاد شد."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Program removed: %(program)s."
+msgstr "رشته حذف شد: %(program)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Program recommendation removed: %(program)s."
+msgstr "پیشنهاد رشته حذف شد: %(program)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Replacement uploaded: %(document)s."
+msgstr "نسخه جایگزین بارگذاری شد: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "%(document)s uploaded and approved by agent user."
+msgstr "%(document)s توسط کاربر نماینده بارگذاری و تأیید شد."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Chat attachment added to Documents: %(document)s."
+msgstr "پیوست گفتگو به مدارک اضافه شد: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Document approved during Student record creation: %(document)s."
+msgstr "مدرک هنگام ایجاد پرونده دانشجو تأیید شد: %(document)s."
+
+#: apps/leads/services/activity_presentation.py
+msgid "Middle name"
+msgstr "نام میانی"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Cell"
+msgstr "موبایل"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Father name"
+msgstr "نام پدر"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Mother name"
+msgstr "نام مادر"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport no"
+msgstr "شماره گذرنامه"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport issuing authority"
+msgstr "مرجع صادرکننده گذرنامه"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport date of issue"
+msgstr "تاریخ صدور گذرنامه"
+
+#: apps/leads/services/activity_presentation.py
+msgid "Passport date of expiry"
+msgstr "تاریخ انقضای گذرنامه"
+
+#: apps/leads/services/activity_presentation.py
+msgid "English language test score"
+msgstr "نمره آزمون زبان انگلیسی"
+
+#: apps/leads/services/activity_presentation.py
+msgid "High school gpa"
+msgstr "معدل دبیرستان"
+
+#: apps/leads/services/activity_presentation.py
+msgid "High school gpa scale"
+msgstr "مقیاس معدل دبیرستان"
+

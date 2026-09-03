@@ -7,6 +7,20 @@ Status: BASELINED
 - Model: `LeadActivity` with type, description, metadata and visibility flag.
 - Shared recorder lives under Lead services/activity.
 - Agent Activity page is separate from compact Applicant Overview.
+- Predefined Activity description presentation is centralized in
+  `apps/leads/services/activity_presentation.py` and exposed through
+  `LeadActivity.localized_description`.
+- New predefined event producers persist semantic metadata for dynamic values.
+  Program references use stable Program IDs so the current localized Program
+  name can be resolved at display time; document metadata prefers stable type and
+  review-status codes plus free-form document names where applicable.
+- The renderer includes backward-compatible parsing for recognized historical
+  English description shapes. It never mutates historical rows and falls back to
+  the stored description for unknown/free-form audit text.
+- Agent templates render `localized_description` rather than raw
+  `description`; structured profile-change field labels render through
+  `localized_changes`, while old/new snapshot values remain immutable audit data.
+  Activity-type choice labels continue to use Django i18n.
 
 ## Cross-cutting constraints
 
