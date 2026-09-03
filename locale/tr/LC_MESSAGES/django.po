@@ -3500,3 +3500,7 @@ msgstr "Devamını oku"
 #: UI-0011 stabilization
 msgid "Show less"
 msgstr "Daha az göster"
+
+#: UI-0011 stabilization
+msgid "Browse programs"
+msgstr "Programlara göz at"

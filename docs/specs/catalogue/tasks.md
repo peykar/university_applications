@@ -184,4 +184,5 @@ Version: 3.1
 - [x] CAT-T68 (`CAT-070`) Add responsive structural regression coverage and synchronize Program Detail/UI documentation.
 - [x] CAT-T69 (`CAT-070`) Stabilize mobile University density, collapsible description, full-width media, shorter conversion copy and swipeable Similar Programs after visual review.
 - [x] CAT-T70 (`CAT-070`) Add mobile hero safe spacing and suppress immediately repeated University/summary surfaces after visual review.
+- [x] CAT-T71 (`CAT-070`) Align mobile Program Detail with the approved visual direction: bridged University card, single-owner fact summary, compact CTA actions, 3x2 University facts and denser horizontal alternatives.
 - [ ] Run `make format` and `make check` in the project environment.

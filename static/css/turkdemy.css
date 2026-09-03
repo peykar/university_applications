@@ -6409,3 +6409,140 @@ a.entity-list-row:hover{
   .related-program-grid::-webkit-scrollbar{display:none}
   .related-program-card{flex:0 0 min(84vw,280px);min-height:250px;scroll-snap-align:start}
 }
+
+/* UI-0011 stabilization — align the mobile Program Detail with the approved visual direction. */
+.program-contact-secondary-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+.program-contact-secondary-actions .button{margin-top:0}
+@media(max-width:720px){
+  /* Hero: keep the title block clearly inset from the viewport and let the university card bridge sections. */
+  .program-detail-hero{
+    overflow:visible;
+    padding:92px 24px 104px;
+  }
+  .program-detail-copy{padding-inline:4px}
+  .program-breadcrumbs{line-height:1.55;margin-bottom:18px}
+  .program-degree-label{margin-top:0}
+  .program-detail-copy h1{
+    margin-top:.35rem;
+    font-size:clamp(2.15rem,11vw,3rem);
+    line-height:1.08;
+    letter-spacing:-.035em;
+  }
+  .program-hero-university{font-size:.96rem;line-height:1.55;margin-bottom:0}
+  /* The compact fact row below the hero owns degree/language/duration/mode on mobile. */
+  .program-fact-pills{display:none}
+  .program-context-links{margin-top:16px}
+  .program-context-links a{padding:6px 10px;font-size:.76rem;background:rgba(6,28,48,.28)}
+  .program-university-mini-card{
+    display:flex;
+    position:absolute;
+    inset-inline:18px;
+    bottom:-72px;
+    max-width:none;
+    min-height:144px;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap:6px;
+    padding:16px 18px;
+    border-color:#d9e1e8;
+    border-radius:18px;
+    box-shadow:0 15px 34px rgba(17,39,65,.14);
+  }
+  .program-university-mini-card img{width:56px;height:56px;border-radius:50%;padding:5px}
+  .program-university-mini-card strong{font-size:1.02rem}
+  .program-university-mini-card a{margin-top:2px}
+  .program-summary-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    margin-top:92px;
+    border:1px solid var(--border);
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 16px rgba(20,35,60,.035);
+  }
+  .program-summary-card{
+    min-width:0;
+    padding:12px 5px 13px;
+    text-align:center;
+    border-bottom:0!important;
+    border-inline-end:1px solid var(--border)!important;
+  }
+  .program-summary-card:last-child{border-inline-end:0!important}
+  .program-summary-card span{
+    font-size:.59rem;
+    letter-spacing:0;
+    text-transform:none;
+    line-height:1.3;
+  }
+  .program-summary-card strong{font-size:.76rem;line-height:1.35;margin-top:4px;overflow-wrap:anywhere}
+
+  /* Conversion: one dominant action, two equal secondary actions, then a low-emphasis context link. */
+  .program-detail-layout{margin-top:14px}
+  .program-contact-card{
+    padding:18px;
+    border-radius:16px;
+    box-shadow:0 10px 26px rgba(20,35,60,.07);
+  }
+  .program-contact-card .eyebrow{text-align:start}
+  .program-contact-card h3{font-size:1.12rem;margin:.15rem 0 .45rem}
+  .program-contact-card p:not(.eyebrow){font-size:.79rem;line-height:1.55;margin-bottom:9px}
+  .program-contact-card .button-accent{min-height:44px;margin-top:7px}
+  .program-contact-secondary-actions{grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .program-contact-secondary-actions .button{width:100%;min-width:0;margin:0;padding-inline:8px;font-size:.76rem}
+  .program-contact-card>.button-secondary{display:none}
+  .program-contact-card .secondary-card-link{font-size:.72rem;margin-top:9px}
+
+  /* Content density: visually separate sections without stretching the page. */
+  .program-detail-layout .detail-section{margin-bottom:30px}
+  .detail-section h2{font-size:1.48rem;margin-bottom:13px}
+  .section-heading{align-items:end;gap:12px}
+  .section-heading .muted{font-size:.7rem}
+  .offering-card{padding:18px;border-radius:15px}
+  .offering-price-block{margin:16px 0 13px;padding:14px 0}
+  .offering-price-block strong{font-size:1.55rem}
+
+  /* University block follows the compact 3x2 information grid from the approved mobile direction. */
+  .university-showcase{padding:17px;border-radius:17px;background:#fff}
+  .university-showcase-header{display:flex;align-items:center;gap:12px}
+  .university-showcase-title{gap:10px;min-width:0}
+  .university-showcase-title img{width:54px;height:54px;border-radius:50%;padding:5px;flex:0 0 54px}
+  .university-showcase-title h2{font-size:1.2rem;line-height:1.25}
+  .university-showcase-title p:last-child{font-size:.75rem}
+  .university-showcase-header .button{margin-top:0;margin-inline-start:auto;padding:8px 10px;font-size:.72rem;white-space:nowrap}
+  .university-info-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:15px 0;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .university-info-grid div{padding:11px 5px;border:0;border-inline-end:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:0;text-align:center}
+  .university-info-grid div:nth-child(3n){border-inline-end:0}
+  .university-info-grid div:nth-last-child(-n+3){border-bottom:0}
+  .university-info-grid span{font-size:.58rem;letter-spacing:0;text-transform:none;line-height:1.3}
+  .university-info-grid strong{font-size:.7rem;line-height:1.3;overflow-wrap:anywhere}
+  .university-description{font-size:.8rem;line-height:1.65}
+  .university-description-copy{max-height:5.3em}
+  .university-media-grid{margin-top:12px}
+  .university-media-item,.university-media-featured{aspect-ratio:16/7.5;border-radius:11px}
+  .university-showcase-actions{justify-content:space-between;gap:10px;margin-top:12px;font-size:.72rem}
+
+  /* Related Programs: show several cards at once so the horizontal interaction is obvious. */
+  .related-program-grid{gap:9px;margin-inline:-2px;padding-inline:2px}
+  .related-program-card{
+    flex:0 0 min(44vw,168px);
+    min-height:205px;
+    padding:13px;
+    border-radius:12px;
+  }
+  .related-program-university{font-size:.63rem}
+  .related-program-university img{width:22px;height:22px}
+  .related-program-card h3{font-size:.86rem;line-height:1.3}
+  .related-program-card .muted{font-size:.67rem}
+  .related-program-card .badges{display:none}
+  .related-program-price{margin-top:auto;padding-top:10px}
+  .related-program-price strong{font-size:.95rem}
+  .related-program-price span,.related-program-card .card-action{font-size:.65rem}
+
+  /* More-from-university remains a short scan list. */
+  .more-program-list{gap:6px}
+  .more-program-row{padding:11px 12px;border-radius:9px;gap:10px}
+  .more-program-row>div strong{font-size:.8rem}
+  .more-program-row>div span{font-size:.66rem}
+  .more-program-price{font-size:.78rem;white-space:nowrap}
+}

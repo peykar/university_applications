@@ -70,3 +70,12 @@ was therefore stabilized again without opening UI-0012:
 - Hid the standalone four-item Program summary strip on mobile; degree/language/duration context is
   already present in the hero, avoiding an immediate duplicate block.
 - Desktop/tablet structure and all Program, Offering, Request and SEO semantics remain unchanged.
+
+
+## Visual-direction correction
+
+A later mobile comparison showed that the implementation had removed repetition but no longer matched
+the approved visual direction. UI-0011 was therefore corrected in-place: hero facts now have a single
+owner in a compact four-cell strip, the University bridge card returns as a deliberate overlap, the
+conversion card uses one primary plus two compact secondary actions, University facts use a 3x2 grid,
+and Related Programs expose multiple swipeable cards at once.

@@ -382,8 +382,9 @@ retain the same information with tighter vertical density.
 
 At widths below 1000px the grid collapses and the Request sidebar receives negative flex/grid order
 so it appears before the long main content without duplicating the conversion action in the DOM.
-Mobile returns the conversion card to a conventional stacked layout with full-width buttons. The
-mobile hero receives additional block/inline safe spacing below the fixed shell, while the separate
-University mini-card and four-item summary strip are suppressed because their content is already
-represented by the hero context/fact pills and the later University showcase. This removes duplicate
-information without removing catalogue data from the page.
+Mobile uses the approved conversion-first composition: the hero gets generous safe spacing; hero fact
+pills are suppressed so degree/language/duration/study-mode appear only once in a compact four-cell
+summary row; and a small University bridge card overlaps the hero boundary. The Request card keeps one
+dominant CTA with two compact secondary actions. The later University section uses a three-column by
+two-row fact grid, shortened expandable copy and a wide media treatment. Similar Programs use compact
+horizontal snap cards so several alternatives are visible without creating a long repeated stack.

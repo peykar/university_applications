@@ -3472,3 +3472,7 @@ msgstr "اقرأ المزيد"
 #: UI-0011 stabilization
 msgid "Show less"
 msgstr "عرض أقل"
+
+#: UI-0011 stabilization
+msgid "Browse programs"
+msgstr "تصفح البرامج"

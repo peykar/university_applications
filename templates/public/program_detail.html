@@ -66,8 +66,8 @@
     <strong>{% if program.duration_months %}{{ program.duration_display }}{% else %}—{% endif %}</strong>
   </article>
   <article class="program-summary-card">
-    <span>{% trans "University" %}</span>
-    <strong>{{ program.university.localized_name }}</strong>
+    <span>{% trans "Study mode" %}</span>
+    <strong>{{ program.get_study_mode_display }}</strong>
   </article>
 </section>
 
@@ -296,8 +296,15 @@
       <h3>{% trans "Interested in this program?" %}</h3>
       <p>{% trans "Start a Request and let TurkDemy help with the next steps." %}</p>
       <a class="button button-accent" href="{% url 'apply-program' program.slug_en %}">{% trans "Start a Request" %}</a>
-      <a class="button button-secondary" href="{% url 'contact' %}">{% trans "Ask TurkDemy" %}</a>
-      <a class="secondary-card-link" href="{% url 'program-list' %}?university={{ program.university.slug_en }}">{% trans "Browse this university's programs" %}</a>
+      <div class="program-contact-secondary-actions">
+        <a class="button button-secondary" href="{% url 'contact' %}">{% trans "Ask TurkDemy" %}</a>
+        {% if request.user.is_authenticated %}
+          <a class="button button-secondary" href="{% url 'lead-list' %}">{% trans "My Requests" %}</a>
+        {% else %}
+          <a class="button button-secondary" href="{% url 'program-list' %}?university={{ program.university.slug_en }}">{% trans "Browse programs" %}</a>
+        {% endif %}
+      </div>
+      <a class="secondary-card-link" href="{% url 'university-detail' program.university.slug_en %}">{% trans "View university" %} →</a>
     </div>
   </aside>
 </div>
