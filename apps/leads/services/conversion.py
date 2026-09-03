@@ -246,10 +246,7 @@ def finalize_lead(
         LeadActivity.objects.create(
             lead=lead,
             activity_type=LeadActivityType.FINALIZED,
-            description=(
-                f"Re-finalized existing Student {student.pk}; "
-                f"created {created_count} new draft application(s)."
-            ),
+            description="",
             metadata={
                 "action": "refinalized",
                 "student_id": str(student.pk),
@@ -320,10 +317,7 @@ def finalize_lead(
     LeadActivity.objects.create(
         lead=lead,
         activity_type=LeadActivityType.FINALIZED,
-        description=(
-            f"Finalized and converted to Student {student.pk}; "
-            f"created {len(application_selections)} draft application(s)."
-        ),
+        description="",
         metadata={
             "action": "finalized",
             "student_id": str(student.pk),

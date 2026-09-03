@@ -3287,3 +3287,11 @@ msgstr "Lise not ortalaması"
 msgid "High school gpa scale"
 msgstr "Lise not ortalaması ölçeği"
 
+
+# CHG-0013 activity fallback
+msgid "Finalized and converted to a student record; created %(count)s draft application(s)."
+msgstr "Sonlandırıldı ve bir öğrenci kaydına dönüştürüldü; %(count)s taslak başvuru oluşturuldu."
+
+# CHG-0013 activity fallback
+msgid "Re-finalized existing student record; created %(count)s new draft application(s)."
+msgstr "Mevcut öğrenci kaydı yeniden sonlandırıldı; %(count)s yeni taslak başvuru oluşturuldu."

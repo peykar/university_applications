@@ -32,6 +32,7 @@ Unknown/free-form descriptions remain unchanged.
 - Enriched predefined Activity producers with semantic metadata for programs,
   assignments, documents, close/reopen actions, and finalization.
 - Added legacy pattern support for existing Activity rows.
+- Finalization Activity events persist only semantic `student_id`/count metadata rather than a UUID-bearing human sentence; rendering resolves the current Student record at read time, mirroring structured system-message object resolution. Raw Student UUIDs are never used as display text, and missing records use localized generic wording.
 - Added and compiled FA/TR/AR gettext entries for predefined sentences.
 
 ## Verification

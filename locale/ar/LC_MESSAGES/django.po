@@ -3265,3 +3265,11 @@ msgstr "المعدل التراكمي للثانوية"
 msgid "High school gpa scale"
 msgstr "مقياس المعدل التراكمي للثانوية"
 
+
+# CHG-0013 activity fallback
+msgid "Finalized and converted to a student record; created %(count)s draft application(s)."
+msgstr "تم الإنهاء والتحويل إلى سجل طالب؛ تم إنشاء %(count)s طلب مسودة."
+
+# CHG-0013 activity fallback
+msgid "Re-finalized existing student record; created %(count)s new draft application(s)."
+msgstr "تمت إعادة إنهاء سجل الطالب الحالي؛ تم إنشاء %(count)s طلب مسودة جديد."

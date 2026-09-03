@@ -65,6 +65,20 @@ def localized_activity_changes(activity: LeadActivity) -> list[dict[str, Any]]:
     return localized
 
 
+def _student_display_name(student_id: str) -> str:
+    if not student_id:
+        return ""
+
+    from apps.students.models import Student
+
+    try:
+        student = Student.objects.filter(pk=student_id).first()
+    except (TypeError, ValueError, ValidationError):
+        return ""
+
+    return str(student).strip() if student is not None else ""
+
+
 def _program_name(activity: LeadActivity) -> str:
     program_id = activity.metadata.get("program_id")
     if program_id:
@@ -272,17 +286,30 @@ def localized_activity_description(activity: LeadActivity) -> str:
             student_id = student_id or match.group("student")
             if count is None:
                 count = int(match.group("count"))
-        if student_id and count is not None:
+
+        if count is not None:
+            student_name = _student_display_name(student_id)
             if reopened:
-                message = _(
-                    "Re-finalized existing Student %(student)s; created %(count)s "
+                if student_name:
+                    message = _(
+                        "Re-finalized existing Student %(student)s; created %(count)s "
+                        "new draft application(s)."
+                    )
+                    return message % {"student": student_name, "count": count}
+                return _(
+                    "Re-finalized existing student record; created %(count)s "
                     "new draft application(s)."
+                ) % {"count": count}
+
+            if student_name:
+                message = _(
+                    "Finalized and converted to Student %(student)s; created %(count)s "
+                    "draft application(s)."
                 )
-                return message % {"student": student_id, "count": count}
-            message = _(
-                "Finalized and converted to Student %(student)s; created %(count)s "
+                return message % {"student": student_name, "count": count}
+            return _(
+                "Finalized and converted to a student record; created %(count)s "
                 "draft application(s)."
-            )
-            return message % {"student": student_id, "count": count}
+            ) % {"count": count}
 
     return description

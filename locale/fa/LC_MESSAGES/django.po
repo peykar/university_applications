@@ -3277,3 +3277,11 @@ msgstr "معدل دبیرستان"
 msgid "High school gpa scale"
 msgstr "مقیاس معدل دبیرستان"
 
+
+# CHG-0013 activity fallback
+msgid "Finalized and converted to a student record; created %(count)s draft application(s)."
+msgstr "نهایی شد و به پرونده دانشجو تبدیل شد؛ %(count)s درخواست پذیرش پیش‌نویس ایجاد شد."
+
+# CHG-0013 activity fallback
+msgid "Re-finalized existing student record; created %(count)s new draft application(s)."
+msgstr "پرونده دانشجوی موجود دوباره نهایی شد؛ %(count)s درخواست پذیرش پیش‌نویس جدید ایجاد شد."
