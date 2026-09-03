@@ -20,6 +20,11 @@ class MobileHomepageTests(SimpleTestCase):
     def test_mobile_home_caps_visible_field_cards(self):
         self.assertIn(".field-chip:nth-child(n+9)", self.css)
 
+    def test_city_destinations_are_swipeable_on_mobile(self):
+        self.assertIn("city-destination-grid", self.home)
+        self.assertIn(".city-destination-grid{", self.css)
+        self.assertIn("scroll-snap-align:start;", self.css)
+
     def test_mobile_hero_hides_secondary_selects(self):
         self.assertIn(".hero-filter-row select{", self.css)
         self.assertIn("display:none!important;", self.css)

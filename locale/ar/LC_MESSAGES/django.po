@@ -3419,3 +3419,12 @@ msgstr "لا توجد جامعات نشطة متاحة حاليًا في هذه 
 
 msgid "Main banner image used on the public City landing page."
 msgstr "صورة البانر الرئيسية المستخدمة في صفحة المدينة العامة."
+
+msgid "Study destinations"
+msgstr "وجهات الدراسة"
+
+msgid "Where do you want to study?"
+msgstr "أين تريد أن تدرس؟"
+
+msgid "Explore destination"
+msgstr "استكشف الوجهة"

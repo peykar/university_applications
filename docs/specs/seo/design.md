@@ -64,3 +64,11 @@ exists. The view converts its media URL to an absolute URL for `og:image`,
 `twitter:image`, and CollectionPage `image`. The template uses
 `City.localized_banner_alt` for visible alternative text. Missing banners remain a clean
 no-image state; there is no generated or unrelated fallback image.
+
+## Homepage City internal linking (SEO-018)
+
+The homepage includes a Study destinations section for up to five qualifying Cities. Each
+card is an ordinary crawlable anchor to `/universities/cities/<slug_en>/`, strengthening
+internal discovery of the dedicated City SEO surface without changing homepage canonical
+identity or promoting `/programs/?city=...` filter URLs. Curated City banners retain their
+localized alternative text when reused on the homepage.

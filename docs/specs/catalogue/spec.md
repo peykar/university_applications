@@ -426,3 +426,10 @@ landing page when present, and omitted cleanly when absent. Alternative text MUS
 active locale with canonical English fallback, then the localized City name as the final
 fallback.
 
+CAT-068 — The homepage MUST expose up to five active study-destination Cities that have at
+least one active University. Destinations MUST link directly to the canonical City landing
+route, render the localized City name, active University and Program counts, and use the
+curated City banner with localized alt text when available. The destination selection MUST
+prefer Cities with more active Universities, then more active Programs, with a stable name
+tie-breaker.
+

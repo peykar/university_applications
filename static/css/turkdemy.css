@@ -6218,3 +6218,94 @@ a.entity-list-row:hover{
 .city-landing-banner-wrap{margin:28px 0 0}
 .city-landing-banner{display:block;width:100%;height:clamp(260px,38vw,520px);object-fit:cover;border-radius:18px}
 @media(max-width:720px){.city-landing-banner-wrap{margin-top:20px}.city-landing-banner{height:240px;border-radius:14px}}
+
+/* Homepage City discovery */
+.study-destination-section{
+  margin-top:56px;
+  padding:58px 0 8px;
+  border-top:1px solid var(--border);
+}
+.city-destination-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:12px;
+}
+.city-destination-card{
+  min-width:0;
+  overflow:hidden;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 7px 22px rgba(22,37,61,.045);
+  transition:.18s ease;
+}
+.city-destination-card:hover{
+  transform:translateY(-2px);
+  border-color:#b9c8d6;
+  box-shadow:0 11px 28px rgba(20,35,60,.08);
+  text-decoration:none;
+}
+.city-destination-image{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  background:#eaf0f5;
+}
+.city-destination-placeholder{
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#dce7f0,#eef3f7);
+  color:#0B3A67;
+  font-size:1.35rem;
+  font-weight:900;
+  letter-spacing:.04em;
+}
+.city-destination-body{
+  padding:14px 15px 16px;
+}
+.city-destination-body h3{
+  margin:0 0 5px;
+  color:#172b47;
+  font-size:1rem;
+}
+.city-destination-body p{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin:0 0 12px;
+  color:var(--muted);
+  font-size:.76rem;
+}
+.city-destination-body>span{
+  color:#0B3A67;
+  font-size:.78rem;
+  font-weight:800;
+}
+
+@media(max-width:760px){
+  .study-destination-section{
+    margin-top:38px!important;
+    padding-top:38px!important;
+  }
+  .city-destination-grid{
+    display:flex;
+    gap:10px;
+    width:calc(100% + 11px);
+    margin-inline-end:-11px;
+    padding-inline-end:11px;
+    overflow-x:auto;
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+  }
+  .city-destination-grid::-webkit-scrollbar{
+    display:none;
+  }
+  .city-destination-card{
+    flex:0 0 min(72vw,230px);
+    scroll-snap-align:start;
+  }
+  .city-destination-body{
+    padding:12px 13px 14px;
+  }
+}

@@ -23,3 +23,5 @@ Status: BASELINED
 | `SEO-016` | `apps/public/context_processors.py`; `apps/public/seo_views.py`; `apps/public/views.py::university_city_detail`; `templates/public/university_city_detail.html`; `templates/public/university_detail.html` | `tests/test_public_seo.py`; `tests/test_public_page_metadata.py` | Automated |
 | `SEO-017` | `apps/geography/models.py::City`; `apps/public/views.py::university_city_detail`; `templates/public/university_city_detail.html`; `templates/base.html` | `tests/test_public_page_metadata.py`; `tests/test_taxonomy_enrichment.py` | Automated |
 
+
+| `SEO-018` | `apps/public/views.py::home`; `templates/public/home.html`; `static/css/turkdemy.css` | `tests/test_public_page_metadata.py`; `tests/test_mobile_homepage.py` | Automated |

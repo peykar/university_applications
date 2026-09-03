@@ -3433,3 +3433,12 @@ msgstr "در حال حاضر دانشگاه فعالی در این شهر موج
 
 msgid "Main banner image used on the public City landing page."
 msgstr "تصویر بنر اصلی مورد استفاده در صفحه عمومی شهر."
+
+msgid "Study destinations"
+msgstr "مقاصد تحصیلی"
+
+msgid "Where do you want to study?"
+msgstr "کجا می‌خواهید تحصیل کنید؟"
+
+msgid "Explore destination"
+msgstr "مشاهده مقصد تحصیلی"

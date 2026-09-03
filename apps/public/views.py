@@ -131,6 +131,30 @@ def home(request):
         ).prefetch_related("instruction_language_rows__language")
     ).order_by("-listing_priority", "name_en")[:8]
 
+    study_destinations = (
+        City.objects.filter(
+            is_active=True,
+            universities__is_active=True,
+        )
+        .exclude(slug_en="")
+        .annotate(
+            university_count=Count(
+                "universities",
+                filter=Q(universities__is_active=True),
+                distinct=True,
+            ),
+            program_count=Count(
+                "universities__programs",
+                filter=Q(
+                    universities__is_active=True,
+                    universities__programs__is_active=True,
+                ),
+                distinct=True,
+            ),
+        )
+        .order_by("-university_count", "-program_count", "name_en")[:5]
+    )
+
     study_fields = (
         GeneralField.objects.filter(
             is_active=True,
@@ -175,6 +199,7 @@ def home(request):
         {
             "featured_universities": featured_universities,
             "popular_programs": popular_programs,
+            "study_destinations": study_destinations,
             "study_fields": study_fields,
             "faq_preview": faq_preview,
             "hero_university": hero_university,

@@ -164,3 +164,10 @@ Version: 3.1
 - [x] CAT-T60 (`CAT-067`, `SEO-017`) Add regression tests, SEO review and synchronized documentation.
 - [ ] Run `make format` and `make check` locally.
 
+
+## CHG-0022 — Homepage City discovery integration
+
+- [x] CAT-T61 (`CAT-068`) Add a top-five active City destination query with distinct active University and Program counts.
+- [x] CAT-T62 (`CAT-068`) Render localized City destination cards between Featured Universities and GeneralField discovery, linking to canonical City landing pages and reusing curated banners.
+- [x] CAT-T63 (`CAT-068`, `SEO-018`) Add responsive/mobile presentation, translations, public-page regression coverage, and synchronized SEO/documentation updates.
+- [ ] Run `make format` and `make check` in the project environment.

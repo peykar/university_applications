@@ -71,6 +71,44 @@
   </div>
 </section>
 
+{% if study_destinations %}
+<section class="home-section study-destination-section">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">{% trans "Study destinations" %}</p>
+      <h2>{% trans "Where do you want to study?" %}</h2>
+    </div>
+    <a class="section-link" href="{% url 'university-list' %}">{% trans "Explore universities" %} →</a>
+  </div>
+  <div class="city-destination-grid">
+    {% for city in study_destinations %}
+      <a class="city-destination-card" href="{% url 'university-city-detail' city.slug_en %}">
+        {% if city.banner %}
+          <img
+            class="city-destination-image"
+            src="{{ city.banner.url }}"
+            alt="{{ city.localized_banner_alt }}"
+          >
+        {% else %}
+          <div class="city-destination-image city-destination-placeholder" aria-hidden="true">
+            <span>{{ city.localized_name|slice:":2"|upper }}</span>
+          </div>
+        {% endif %}
+        <div class="city-destination-body">
+          <h3>{{ city.localized_name }}</h3>
+          <p>
+            {{ city.university_count }} {% trans "universities" %}
+            <span aria-hidden="true">·</span>
+            {{ city.program_count }} {% trans "programs" %}
+          </p>
+          <span>{% trans "Explore destination" %} →</span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
 {% if study_fields %}
 <section class="home-section study-field-section">
   <div class="section-heading"><div><p class="eyebrow">{% trans "Find your direction" %}</p><h2>{% trans "What do you want to study?" %}</h2></div></div>

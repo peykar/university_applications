@@ -38,3 +38,8 @@ Status: BASELINED
 - [x] `SEO-017` Use an optional curated City banner as visible, social and structured-data representative media with localized alt text and a clean no-image fallback.
 - [ ] Run `make format` and `make check` in the project environment.
 
+
+## CHG-0022
+
+- [x] `SEO-018` Add crawlable homepage City destination links to canonical City landing pages with localized banner alt text.
+- [ ] Run `make format` and `make check` in the project environment.

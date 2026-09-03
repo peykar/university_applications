@@ -3447,3 +3447,12 @@ msgstr "Bu şehirde şu anda aktif üniversite bulunmuyor."
 
 msgid "Main banner image used on the public City landing page."
 msgstr "Herkese açık şehir sayfasında kullanılan ana banner görseli."
+
+msgid "Study destinations"
+msgstr "Eğitim destinasyonları"
+
+msgid "Where do you want to study?"
+msgstr "Nerede eğitim almak istiyorsunuz?"
+
+msgid "Explore destination"
+msgstr "Destinasyonu keşfet"

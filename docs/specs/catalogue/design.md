@@ -349,3 +349,16 @@ omits the entire media block when absent. The view promotes the same banner to t
 Open Graph/Twitter image and CollectionPage `image` property using an absolute media URL.
 No image is synthesized when a City has no curated banner.
 
+
+## Homepage City discovery (CAT-068)
+
+The homepage queries active `City` rows that have active Universities, annotates distinct
+active-University and active-Program counts, and exposes the top five ordered by University
+count, Program count, then English name. Cards link directly to
+`university-city-detail` using the canonical `slug_en`; they never use a query-string filter
+as the destination identity.
+
+Cards reuse `City.banner` and `City.localized_banner_alt` when curated. Missing banners use
+a non-semantic visual placeholder while preserving the localized City name as visible text.
+The desktop layout is a compact responsive card grid; mobile uses a horizontally swipeable
+row so destination discovery does not create excessive page height.

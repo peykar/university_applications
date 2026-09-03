@@ -89,3 +89,9 @@ its visible representative media, Open Graph/Twitter image, and CollectionPage i
 The visible image MUST have locale-aware meaningful alt text. When no City banner exists,
 the page MUST omit City-specific image markup and MUST NOT invent a social image.
 
+
+SEO-018 — The homepage City discovery surface MUST provide crawlable direct links to the
+canonical indexable City landing routes. It MUST NOT promote query-string city filters as
+canonical destination pages. Reusing a curated City banner on a homepage destination card
+MUST preserve locale-aware meaningful alt text. Existing homepage canonical, hreflang,
+robots, sitemap identity, social metadata, and structured data remain unchanged.

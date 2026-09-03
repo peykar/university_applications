@@ -30,6 +30,7 @@ class PublicPageMetadataTests(TestCase):
             name_ar="إسطنبول",
             slug_en="istanbul-seo",
         )
+        cls.province = province
         city = City.objects.create(
             province=province,
             name_en="Istanbul",
@@ -117,6 +118,64 @@ class PublicPageMetadataTests(TestCase):
                 schema = self._schema(response)
                 schema_types = {node.get("@type") for node in schema.get("@graph", [schema])}
                 self.assertIn(schema_type, schema_types)
+
+    def test_homepage_city_destinations_are_eligible_ranked_and_capped(self):
+        for index in range(6):
+            city = City.objects.create(
+                province=self.province,
+                name_en=f"City {index}",
+                slug_en=f"city-{index}",
+            )
+            University.objects.create(
+                name_en=f"University {index}",
+                slug_en=f"university-{index}",
+                city=city,
+                university_type="private",
+            )
+
+        high_coverage_city = City.objects.create(
+            province=self.province,
+            name_en="High Coverage City",
+            slug_en="high-coverage-city",
+        )
+        for index in range(2):
+            University.objects.create(
+                name_en=f"High Coverage University {index}",
+                slug_en=f"high-coverage-university-{index}",
+                city=high_coverage_city,
+                university_type="private",
+            )
+
+        City.objects.create(
+            province=self.province,
+            name_en="Empty City",
+            slug_en="empty-city",
+        )
+
+        with translation.override("en"):
+            response = self.client.get(reverse("home"))
+        destinations = list(response.context["study_destinations"])
+
+        self.assertEqual(len(destinations), 5)
+        self.assertEqual(destinations[0], high_coverage_city)
+        self.assertNotIn("empty-city", {city.slug_en for city in destinations})
+
+    def test_homepage_links_featured_city_destinations_to_canonical_landing_pages(self):
+        with translation.override("en"):
+            url = reverse("home")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn("Study destinations", html)
+        self.assertIn("Where do you want to study?", html)
+        self.assertIn(
+            'href="/en/universities/cities/istanbul-seo/"',
+            html,
+        )
+        self.assertIn('src="/media/cities/banners/istanbul.jpg"', html)
+        self.assertIn('alt="Istanbul skyline and Bosphorus"', html)
+        self.assertIn("1 universities", html)
+        self.assertIn("1 programs", html)
 
     def test_university_detail_has_entity_metadata_and_schema(self):
         with translation.override("en"):

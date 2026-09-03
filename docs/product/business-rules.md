@@ -244,3 +244,7 @@ the banner is the representative image for the City landing page and its social 
 Visible image alternative text MUST be localized with English fallback and MUST NOT be
 replaced by decorative or invented text when curated alt text exists.
 
+BR-SEO-007 — The public homepage MUST expose a crawlable City-discovery surface for
+qualifying catalogue Cities. Featured destination cards MUST link directly to the canonical
+`/universities/cities/<slug_en>/` landing route rather than to query-string city filters.
+

@@ -1526,3 +1526,10 @@
 - Added one optional City banner image with localized EN/FA/TR/AR alt text and Admin preview/editing.
 - City landing pages now render the curated responsive banner when present and use it as `og:image`, `twitter:image`, and CollectionPage image metadata.
 - Missing City banners remain a clean no-image state; canonical, hreflang, sitemap and query-indexability rules are unchanged.
+
+
+## 2026-09-03 — CHG-0022 Homepage City discovery integration
+
+- Added a Study destinations section between Featured Universities and study-field discovery.
+- Homepage destination cards link directly to canonical City landing pages, show active University/Program counts, and reuse curated City banners with localized alt text.
+- Added responsive/mobile presentation, translations, SEO/internal-link review, and regression coverage without changing homepage canonical/sitemap identity or promoting query-string city filters.
