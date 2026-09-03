@@ -6546,3 +6546,160 @@ a.entity-list-row:hover{
   .more-program-row>div span{font-size:.66rem}
   .more-program-price{font-size:.78rem;white-space:nowrap}
 }
+
+/* UI-0011 final mobile composition — implement the approved AFTER reference. */
+.program-university-mini-card-mobile{display:none}
+@media(max-width:720px){
+  /* The hero owns only discovery context; facts live in the row below it. */
+  .program-detail-hero{
+    position:relative;
+    overflow:visible;
+    margin-bottom:76px;
+    padding:54px 24px 72px;
+    min-height:290px;
+  }
+  .program-detail-hero-inner{display:block}
+  .program-detail-copy{padding:0 8px;max-width:none}
+  .program-breadcrumbs{margin:0 0 24px;line-height:1.7;font-size:.72rem}
+  .program-degree-label{margin:0 0 8px}
+  .program-detail-copy h1{
+    max-width:none;
+    margin:0 0 10px;
+    font-size:clamp(2rem,10vw,2.65rem);
+    line-height:1.16;
+    letter-spacing:-.025em;
+  }
+  .program-hero-university{font-size:.88rem;line-height:1.65}
+  .program-fact-pills{display:none!important}
+  .program-context-links{margin-top:14px}
+  .program-context-links a{font-size:.72rem;padding:6px 9px}
+  .program-university-mini-card-desktop{display:none!important}
+  .program-university-mini-card-mobile{
+    display:flex!important;
+    position:absolute;
+    z-index:4;
+    inset-inline:28px;
+    bottom:-62px;
+    min-height:124px;
+    padding:14px 18px;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    text-align:center;
+    border:1px solid #dce3ea;
+    border-radius:17px;
+    background:#fff;
+    box-shadow:0 14px 34px rgba(17,39,65,.14);
+  }
+  .program-university-mini-card-mobile img{width:46px;height:46px;border-radius:50%;padding:4px}
+  .program-university-mini-card-mobile strong{font-size:.96rem;line-height:1.3}
+  .program-university-mini-card-mobile span{font-size:.7rem}
+  .program-university-mini-card-mobile a{font-size:.73rem;margin-top:1px}
+
+  /* Exactly one compact, four-cell facts surface. */
+  .program-summary-grid{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    margin:0 0 14px!important;
+    border:1px solid var(--border)!important;
+    border-radius:14px!important;
+    overflow:hidden;
+    background:#fff;
+    box-shadow:0 5px 16px rgba(20,35,60,.035);
+  }
+  .program-summary-card,
+  .program-summary-card:nth-child(2),
+  .program-summary-card:nth-child(-n+2),
+  .program-summary-card:last-child{
+    min-width:0;
+    padding:11px 4px!important;
+    text-align:center;
+    border-bottom:0!important;
+    border-inline-end:1px solid var(--border)!important;
+  }
+  .program-summary-card:last-child{border-inline-end:0!important}
+  .program-summary-card span{font-size:.56rem!important;line-height:1.25;text-transform:none!important;letter-spacing:0!important}
+  .program-summary-card strong{font-size:.72rem!important;line-height:1.3;margin-top:4px!important;overflow-wrap:anywhere}
+
+  /* Request follows facts and is the strongest action surface. */
+  .program-detail-layout{display:flex!important;flex-direction:column;margin-top:0!important;gap:0}
+  .program-detail-sidebar{order:-1!important;width:100%;margin:0 0 28px;position:static!important}
+  .program-contact-card{padding:17px!important;border-radius:15px!important;text-align:start}
+  .program-contact-card h3{font-size:1.08rem!important;margin:.12rem 0 .35rem!important}
+  .program-contact-card p:not(.eyebrow){font-size:.76rem!important;line-height:1.5!important;margin-bottom:8px!important}
+  .program-contact-card .button-accent{display:flex;align-items:center;justify-content:center;min-height:42px;margin:6px 0 0!important}
+  .program-contact-secondary-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;margin-top:8px!important}
+  .program-contact-secondary-actions .button{display:flex!important;width:100%!important;min-height:38px;margin:0!important;padding:7px 6px!important;align-items:center;justify-content:center;font-size:.7rem!important;white-space:normal!important}
+  .program-contact-card .secondary-card-link{margin-top:8px!important;font-size:.68rem!important;text-align:center}
+
+  /* Main sections follow the approved compact rhythm. */
+  .program-detail-layout>main{width:100%}
+  .program-detail-layout .detail-section{margin-bottom:28px!important}
+  .detail-section h2{font-size:1.38rem!important;line-height:1.25;margin:.15rem 0 12px!important}
+  .section-heading{margin-bottom:10px}
+  .section-heading .muted{font-size:.66rem}
+  .offering-card-grid{grid-template-columns:1fr!important}
+  .offering-card{padding:16px!important;border-radius:14px!important}
+  .offering-card-head>div span{font-size:.72rem}
+  .offering-price-block{margin:13px 0 11px!important;padding:12px 0!important}
+  .offering-price-block strong{font-size:1.48rem!important}
+  .offering-facts{gap:7px}
+  .offering-facts dt,.offering-facts dd{font-size:.72rem}
+
+  /* University card: header + exact 3x2 facts + short copy + wide media. */
+  .university-showcase{padding:15px!important;border-radius:16px!important;background:#fff!important}
+  .university-showcase-header{display:flex!important;align-items:center!important;gap:8px!important}
+  .university-showcase-title{gap:8px!important;min-width:0;flex:1}
+  .university-showcase-title img{width:44px!important;height:44px!important;flex:0 0 44px!important;border-radius:50%!important;padding:4px!important}
+  .university-showcase-title h2{font-size:1.02rem!important;line-height:1.25!important;margin:0!important}
+  .university-showcase-title .eyebrow{display:none}
+  .university-showcase-title p:last-child{font-size:.66rem!important;margin-top:2px!important}
+  .university-showcase-header .button{margin:0!important;padding:7px 8px!important;font-size:.65rem!important;white-space:nowrap}
+  .university-info-grid{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:0!important;
+    margin:13px 0!important;
+    border:1px solid var(--border);
+    border-radius:11px;
+    overflow:hidden;
+  }
+  .university-info-grid div{
+    padding:9px 3px!important;
+    min-width:0;
+    text-align:center;
+    border:0!important;
+    border-inline-end:1px solid var(--border)!important;
+    border-bottom:1px solid var(--border)!important;
+    border-radius:0!important;
+  }
+  .university-info-grid div:nth-child(3n){border-inline-end:0!important}
+  .university-info-grid div:nth-last-child(-n+3){border-bottom:0!important}
+  .university-info-grid span{font-size:.53rem!important;line-height:1.25;text-transform:none!important;letter-spacing:0!important}
+  .university-info-grid strong{font-size:.65rem!important;line-height:1.3;margin-top:3px!important;overflow-wrap:anywhere}
+  .university-description{font-size:.74rem!important;line-height:1.6!important}
+  .university-description-copy{max-height:4.9em!important}
+  .university-media-grid{display:block!important;margin-top:11px!important}
+  .university-media-item,.university-media-featured{display:block!important;width:100%!important;height:auto!important;aspect-ratio:16/7!important;margin-top:8px;border-radius:10px!important}
+  .university-media-grid .university-media-item:not(:first-child){display:none!important}
+  .university-showcase-actions{justify-content:space-between!important;gap:8px!important;margin-top:10px!important;font-size:.66rem!important}
+
+  /* Related cards show multiple choices at once, like the reference. */
+  .related-program-grid{display:flex!important;gap:8px!important;overflow-x:auto!important;overflow-y:hidden!important;margin-inline:-2px!important;padding:2px 2px 10px!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .related-program-grid::-webkit-scrollbar{display:none}
+  .related-program-card{flex:0 0 min(42vw,158px)!important;min-height:190px!important;padding:11px!important;border-radius:11px!important;scroll-snap-align:start}
+  .related-program-university{font-size:.58rem!important;gap:5px!important}
+  .related-program-university img{width:20px!important;height:20px!important}
+  .related-program-card h3{font-size:.79rem!important;line-height:1.3!important;margin:.3rem 0!important}
+  .related-program-card .muted{font-size:.61rem!important}
+  .related-program-card .badges{display:none!important}
+  .related-program-price{margin-top:auto!important;padding-top:8px!important}
+  .related-program-price strong{font-size:.88rem!important}
+  .related-program-price span,.related-program-card .card-action{font-size:.6rem!important}
+
+  .more-program-list{gap:6px!important}
+  .more-program-row{padding:10px 11px!important;border-radius:9px!important;gap:10px!important}
+  .more-program-row>div span{font-size:.66rem!important}
+  .more-program-row strong{font-size:.76rem!important}
+  .more-program-price{font-size:.76rem!important}
+}
