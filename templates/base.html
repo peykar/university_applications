@@ -21,6 +21,16 @@
   <meta property="og:title" content="{% block og_title %}TurkDemy{% endblock %}">
   <meta property="og:description" content="{% block og_description %}{% trans 'Study in Türkiye with TurkDemy.' %}{% endblock %}">
   <meta name="twitter:card" content="summary_large_image">
+  {% if seo_image_url %}
+    <meta property="og:image" content="{{ seo_image_url }}">
+    <meta name="twitter:image" content="{{ seo_image_url }}">
+  {% endif %}
+  {% block structured_data %}
+    {% if seo_schema %}
+      {% load seo %}
+      <script type="application/ld+json">{{ seo_schema|json_ld|safe }}</script>
+    {% endif %}
+  {% endblock %}
   <link rel="icon" href="{% static 'branding/favicon.ico' %}" sizes="any">
   <link rel="icon" type="image/svg+xml" href="{% static 'branding/turkdemy-mark.svg' %}">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'branding/favicon-32x32.png' %}">

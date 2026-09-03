@@ -3109,7 +3109,6 @@ msgstr ""
 "پروفایل متقاضی شما نهایی و به پرونده دانشجویی تبدیل شده است. برنامه‌های موردبحثی که مشاور شما "
 "انتخاب کرده، به‌صورت درخواست‌های پذیرش پیش‌نویس ایجاد شده‌اند."
 
-
 msgid "Only active programs at active universities can be recommended."
 msgstr "فقط برنامه‌های فعال در دانشگاه‌های فعال را می‌توان پیشنهاد کرد."
 
@@ -3128,12 +3127,17 @@ msgstr "درخواست تکمیل‌شده — افزودن برنامه جدی�
 msgid "Internal Lead notes are read-only after Student creation."
 msgstr "یادداشت‌های داخلی درخواست پس از ایجاد دانشجو فقط خواندنی هستند."
 
-msgid "New draft applications and Request completion are committed together; the existing Student and applications are preserved."
-msgstr "درخواست‌های پذیرش پیش‌نویس جدید و تکمیل درخواست با هم ثبت می‌شوند؛ دانشجو و درخواست‌های پذیرش موجود حفظ می‌شوند."
+msgid ""
+"New draft applications and Request completion are committed together; the existing Student and "
+"applications are preserved."
+msgstr ""
+"درخواست‌های پذیرش پیش‌نویس جدید و تکمیل درخواست با هم ثبت می‌شوند؛ دانشجو و درخواست‌های پذیرش "
+"موجود حفظ می‌شوند."
 
 msgid "Reopened Request"
 msgstr "درخواست بازگشایی‌شده"
 
+#, python-format
 msgid "Reopened Request completed for %(student)s."
 msgstr "درخواست بازگشایی‌شده برای %(student)s تکمیل شد."
 
@@ -3149,8 +3153,12 @@ msgstr "بررسی و تکمیل"
 msgid "Student-linked or closed applicant data cannot be edited here."
 msgstr "اطلاعات متقاضیِ متصل به دانشجو یا بسته‌شده را نمی‌توان اینجا ویرایش کرد."
 
-msgid "The Student record already exists. Review the newly discussed programs and create only the additional draft applications that are needed."
-msgstr "پرونده دانشجو از قبل وجود دارد. برنامه‌های جدید را بررسی کنید و فقط درخواست‌های پذیرش پیش‌نویس اضافی موردنیاز را ایجاد کنید."
+msgid ""
+"The Student record already exists. Review the newly discussed programs and create only the "
+"additional draft applications that are needed."
+msgstr ""
+"پرونده دانشجو از قبل وجود دارد. برنامه‌های جدید را بررسی کنید و فقط درخواست‌های پذیرش پیش‌نویس "
+"اضافی موردنیاز را ایجاد کنید."
 
 msgid "The selected intake must belong to this program."
 msgstr "ورودی انتخاب‌شده باید متعلق به همین برنامه باشد."
@@ -3182,54 +3190,67 @@ msgid "Lead closed."
 msgstr "درخواست بسته شد."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Finalized and converted to Student %(student)s; created %(count)s draft application(s)."
 msgstr "نهایی شد و به دانشجوی %(student)s تبدیل شد؛ %(count)s درخواست پذیرش پیش‌نویس ایجاد شد."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Lead closed. Reason: %(reason)s"
 msgstr "درخواست بسته شد. دلیل: %(reason)s"
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Assigned to %(assignee)s."
 msgstr "به %(assignee)s واگذار شد."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Reassigned from %(old)s to %(new)s."
 msgstr "مسئول از %(old)s به %(new)s تغییر کرد."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Document uploaded: %(document)s."
 msgstr "مدرک بارگذاری شد: %(document)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Document reviewed: %(document)s → %(status)s."
 msgstr "مدرک بررسی شد: %(document)s → %(status)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Re-finalized existing Student %(student)s; created %(count)s new draft application(s)."
 msgstr "دانشجوی موجود %(student)s دوباره نهایی شد؛ %(count)s درخواست پذیرش پیش‌نویس جدید ایجاد شد."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Program removed: %(program)s."
 msgstr "رشته حذف شد: %(program)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Program recommendation removed: %(program)s."
 msgstr "پیشنهاد رشته حذف شد: %(program)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Replacement uploaded: %(document)s."
 msgstr "نسخه جایگزین بارگذاری شد: %(document)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "%(document)s uploaded and approved by agent user."
 msgstr "%(document)s توسط کاربر نماینده بارگذاری و تأیید شد."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Chat attachment added to Documents: %(document)s."
 msgstr "پیوست گفتگو به مدارک اضافه شد: %(document)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Document approved during Student record creation: %(document)s."
 msgstr "مدرک هنگام ایجاد پرونده دانشجو تأیید شد: %(document)s."
 
@@ -3277,15 +3298,83 @@ msgstr "معدل دبیرستان"
 msgid "High school gpa scale"
 msgstr "مقیاس معدل دبیرستان"
 
-
 # CHG-0013 activity fallback
+#, python-format
 msgid "Finalized and converted to a student record; created %(count)s draft application(s)."
 msgstr "نهایی شد و به پرونده دانشجو تبدیل شد؛ %(count)s درخواست پذیرش پیش‌نویس ایجاد شد."
 
 # CHG-0013 activity fallback
+#, python-format
 msgid "Re-finalized existing student record; created %(count)s new draft application(s)."
 msgstr "پرونده دانشجوی موجود دوباره نهایی شد؛ %(count)s درخواست پذیرش پیش‌نویس جدید ایجاد شد."
 
 # CHG-0014
 msgid "No due date"
 msgstr "بدون تاریخ سررسید"
+
+msgid "Universities in Türkiye"
+msgstr "دانشگاه‌های ترکیه"
+
+msgid ""
+"Explore universities in Türkiye, compare available programs, locations and study options with "
+"TurkDemy."
+msgstr ""
+"دانشگاه‌های ترکیه را بررسی کنید و برنامه‌های موجود، موقعیت‌ها و گزینه‌های تحصیلی را با ترک‌دمی "
+"مقایسه کنید."
+
+msgid "Programs & Study Options"
+msgstr "برنامه‌ها و گزینه‌های تحصیلی"
+
+#, python-format
+msgid ""
+"Explore %(university_name)s in %(city)s, including available programs, study options and "
+"university information on TurkDemy."
+msgstr ""
+"%(university_name)s در %(city)s را همراه با برنامه‌های موجود، گزینه‌های تحصیلی و اطلاعات دانشگاه "
+"در ترک‌دمی بررسی کنید."
+
+msgid "University Programs in Türkiye"
+msgstr "برنامه‌های دانشگاهی در ترکیه"
+
+msgid ""
+"Explore university programs in Türkiye and compare fields, degrees, languages, tuition and "
+"available intakes."
+msgstr ""
+"برنامه‌های دانشگاهی در ترکیه را بررسی کنید و رشته‌ها، مقاطع، زبان‌ها، شهریه و ورودی‌های موجود را "
+"مقایسه کنید."
+
+#, python-format
+msgid ""
+"Explore %(program_name)s at %(university_name)s: %(degree)s, %(languages)s, tuition, intakes and "
+"study details on TurkDemy."
+msgstr ""
+"%(program_name)s در %(university_name)s را بررسی کنید: %(degree)s، %(languages)s، شهریه، ورودی‌ها"
+" و جزئیات تحصیل در ترک‌دمی."
+
+#, python-format
+msgid "Explore %(program_name)s at %(university_name)s, including tuition, intakes and study details."
+msgstr "%(program_name)s در %(university_name)s را همراه با شهریه، ورودی‌ها و جزئیات تحصیل بررسی کنید."
+
+msgid "Study in Türkiye FAQ"
+msgstr "پرسش‌های متداول تحصیل در ترکیه"
+
+msgid ""
+"Find answers to common questions about university discovery, applications and studying in Türkiye"
+" with TurkDemy."
+msgstr "پاسخ پرسش‌های متداول درباره یافتن دانشگاه، درخواست‌ها و تحصیل در ترکیه با ترک‌دمی را پیدا کنید."
+
+msgid ""
+"Learn how TurkDemy helps international students discover universities and programs in Türkiye and"
+" manage admissions support."
+msgstr ""
+"با نحوه کمک ترک‌دمی به دانشجویان بین‌المللی برای یافتن دانشگاه‌ها و برنامه‌های تحصیلی در ترکیه و "
+"مدیریت پشتیبانی پذیرش آشنا شوید."
+
+msgid "Contact TurkDemy for help with university discovery, programs and admissions support in Türkiye."
+msgstr ""
+"برای دریافت کمک درباره یافتن دانشگاه، برنامه‌های تحصیلی و پشتیبانی پذیرش در ترکیه با ترک‌دمی تماس"
+" بگیرید."
+
+msgid "University programs in Türkiye"
+msgstr "برنامه‌های دانشگاهی در ترکیه"
+

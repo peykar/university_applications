@@ -13,3 +13,8 @@ Status: BASELINED
 | `SEO-007` | `apps/public/seo_views.py`; catalogue models | `tests/test_public_seo.py` | Automated |
 | `SEO-008` | `templates/base.html` | `tests/test_public_seo.py` | Automated |
 | `SEO-009` | repository SDD/SEO contract | `tests/test_public_seo.py` | Automated |
+| `SEO-010` | public templates; locale catalogues | `tests/test_public_page_metadata.py` | Automated |
+| `SEO-011` | `templates/base.html`; public templates/views | `tests/test_public_page_metadata.py` | Automated |
+| `SEO-012` | `apps/public/seo.py`; `apps/public/views.py` | `tests/test_public_page_metadata.py` | Automated |
+| `SEO-013` | `apps/public/views.py` | `tests/test_public_page_metadata.py` | Automated |
+| `SEO-014` | `apps/public/templatetags/seo.py`; `apps/public/seo.py` | `tests/test_public_page_metadata.py` | Automated |

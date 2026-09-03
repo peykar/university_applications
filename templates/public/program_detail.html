@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load i18n currency %}
 {% block title %}{{ program.localized_name }} · {{ program.university.localized_name }} — TurkDemy{% endblock %}
-{% block meta_description %}{% blocktrans with program_name=program.localized_name university_name=program.university.localized_name degree=program.get_degree_display languages=program.instruction_language_display %}{{ program_name }} at {{ university_name }}. {{ degree }}, {{ languages }}{% endblocktrans %}{% if program.duration_months %}, {{ program.duration_display }}{% endif %}.{% endblock %}
+{% block meta_description %}{% blocktrans with program_name=program.localized_name university_name=program.university.localized_name degree=program.get_degree_display languages=program.instruction_language_display %}Explore {{ program_name }} at {{ university_name }}: {{ degree }}, {{ languages }}, tuition, intakes and study details on TurkDemy.{% endblocktrans %}{% endblock %}
+{% block og_title %}{{ program.localized_name }} · {{ program.university.localized_name }} — TurkDemy{% endblock %}
+{% block og_description %}{% blocktrans with program_name=program.localized_name university_name=program.university.localized_name %}Explore {{ program_name }} at {{ university_name }}, including tuition, intakes and study details.{% endblocktrans %}{% endblock %}
 
 {% block content %}
 <section class="program-detail-hero{% if program.university.banner %} program-detail-hero-photo{% endif %}"

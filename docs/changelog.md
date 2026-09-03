@@ -1,5 +1,11 @@
 ## 2026-09-03 — CHG-0013 Localized structured Activity rendering
 
+## 2026-09-03 — Page-specific public SEO metadata
+
+- Added CHG-0016 page-specific localized metadata and structured data for Home,
+  Universities, University Detail, Programs, Program Detail, FAQ, About and Contact.
+- Added entity-aware social preview images and JSON-LD regression coverage.
+
 ## 2026-09-03 — Public-page SEO becomes a development invariant
 
 - Added CHG-0015 and the Public SEO capability.

@@ -19,3 +19,15 @@ Status: BASELINED
 
 Any task touching a public template/view/route must review SEO-001 and record the
 applicable SEO effects in its change record and tests.
+
+
+## Page-specific metadata and structured data
+
+- Requested public templates own their localized title, description and social
+  copy so metadata follows the same translation catalogue as visible content.
+- `apps.public.seo` provides canonical absolute URL, breadcrumb and graph helpers.
+- Public views build structured data from the same domain objects rendered on the
+  page; no SEO-only domain facts are invented.
+- `apps.public.templatetags.seo.json_ld` safely serializes schema payloads.
+- University/Program detail pages prefer available University banner/logo media
+  for Open Graph/Twitter images.

@@ -2,6 +2,8 @@
 {% load i18n currency %}
 {% block title %}TurkDemy — {% trans "Study in Türkiye" %}{% endblock %}
 {% block meta_description %}{% trans "Find universities and programs in Türkiye, compare tuition, and manage your application with TurkDemy." %}{% endblock %}
+{% block og_title %}{% trans "Study in Türkiye" %} — TurkDemy{% endblock %}
+{% block og_description %}{% trans "Find universities and programs in Türkiye, compare tuition, and manage your application with TurkDemy." %}{% endblock %}
 
 {% block content %}
 <section class="home-hero{% if hero_university and hero_university.banner %} home-hero-photo{% endif %}"

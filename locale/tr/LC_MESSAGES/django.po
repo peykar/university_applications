@@ -386,7 +386,7 @@ msgid "Contact"
 msgstr "İletişim"
 
 msgid "Contact TurkDemy"
-msgstr "TurkDemy ile iletişime geçin"
+msgstr "TurkDemy ile İletişim"
 
 msgid "Contact TurkDemy for guidance about requirements, tuition and the application process."
 msgstr "Koşullar, öğrenim ücreti ve başvuru süreci hakkında rehberlik için TurkDemy ile iletişime geçin."
@@ -3119,7 +3119,6 @@ msgstr ""
 "Başvuru sahibi profiliniz tamamlandı ve öğrenci kaydına dönüştürüldü. Danışmanınızın seçtiği "
 "görüşülmüş programlar taslak başvurular olarak oluşturuldu."
 
-
 msgid "Only active programs at active universities can be recommended."
 msgstr "Yalnızca aktif üniversitelerdeki aktif programlar önerilebilir."
 
@@ -3138,12 +3137,17 @@ msgstr "Tamamlanmış Talep — yeni bir program eklemek Talebi yeniden açar."
 msgid "Internal Lead notes are read-only after Student creation."
 msgstr "Öğrenci oluşturulduktan sonra dahili Talep notları salt okunurdur."
 
-msgid "New draft applications and Request completion are committed together; the existing Student and applications are preserved."
-msgstr "Yeni taslak başvurular ve Talebin tamamlanması birlikte kaydedilir; mevcut Öğrenci ve başvurular korunur."
+msgid ""
+"New draft applications and Request completion are committed together; the existing Student and "
+"applications are preserved."
+msgstr ""
+"Yeni taslak başvurular ve Talebin tamamlanması birlikte kaydedilir; mevcut Öğrenci ve başvurular "
+"korunur."
 
 msgid "Reopened Request"
 msgstr "Yeniden Açılan Talep"
 
+#, python-format
 msgid "Reopened Request completed for %(student)s."
 msgstr "%(student)s için yeniden açılan Talep tamamlandı."
 
@@ -3159,8 +3163,12 @@ msgstr "İncele ve tamamla"
 msgid "Student-linked or closed applicant data cannot be edited here."
 msgstr "Öğrenciye bağlı veya kapalı başvuru sahibi verileri burada düzenlenemez."
 
-msgid "The Student record already exists. Review the newly discussed programs and create only the additional draft applications that are needed."
-msgstr "Öğrenci kaydı zaten mevcut. Yeni görüşülen programları inceleyin ve yalnızca gereken ek taslak başvuruları oluşturun."
+msgid ""
+"The Student record already exists. Review the newly discussed programs and create only the "
+"additional draft applications that are needed."
+msgstr ""
+"Öğrenci kaydı zaten mevcut. Yeni görüşülen programları inceleyin ve yalnızca gereken ek taslak "
+"başvuruları oluşturun."
 
 msgid "The selected intake must belong to this program."
 msgstr "Seçilen dönem bu programa ait olmalıdır."
@@ -3192,54 +3200,67 @@ msgid "Lead closed."
 msgstr "Talep kapatıldı."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Finalized and converted to Student %(student)s; created %(count)s draft application(s)."
 msgstr "Sonlandırıldı ve Öğrenci %(student)s kaydına dönüştürüldü; %(count)s taslak başvuru oluşturuldu."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Lead closed. Reason: %(reason)s"
 msgstr "Talep kapatıldı. Neden: %(reason)s"
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Assigned to %(assignee)s."
 msgstr "%(assignee)s kullanıcısına atandı."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Reassigned from %(old)s to %(new)s."
 msgstr "Sorumlu %(old)s kullanıcısından %(new)s kullanıcısına değiştirildi."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Document uploaded: %(document)s."
 msgstr "Belge yüklendi: %(document)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Document reviewed: %(document)s → %(status)s."
 msgstr "Belge incelendi: %(document)s → %(status)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Re-finalized existing Student %(student)s; created %(count)s new draft application(s)."
 msgstr "Mevcut Öğrenci %(student)s yeniden sonlandırıldı; %(count)s yeni taslak başvuru oluşturuldu."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Program removed: %(program)s."
 msgstr "Program kaldırıldı: %(program)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Program recommendation removed: %(program)s."
 msgstr "Program önerisi kaldırıldı: %(program)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Replacement uploaded: %(document)s."
 msgstr "Yedek belge yüklendi: %(document)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "%(document)s uploaded and approved by agent user."
 msgstr "%(document)s temsilci kullanıcısı tarafından yüklendi ve onaylandı."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Chat attachment added to Documents: %(document)s."
 msgstr "Sohbet eki Belgeler bölümüne eklendi: %(document)s."
 
 #: apps/leads/services/activity_presentation.py
+#, python-format
 msgid "Document approved during Student record creation: %(document)s."
 msgstr "Öğrenci kaydı oluşturulurken belge onaylandı: %(document)s."
 
@@ -3287,15 +3308,87 @@ msgstr "Lise not ortalaması"
 msgid "High school gpa scale"
 msgstr "Lise not ortalaması ölçeği"
 
-
 # CHG-0013 activity fallback
+#, python-format
 msgid "Finalized and converted to a student record; created %(count)s draft application(s)."
 msgstr "Sonlandırıldı ve bir öğrenci kaydına dönüştürüldü; %(count)s taslak başvuru oluşturuldu."
 
 # CHG-0013 activity fallback
+#, python-format
 msgid "Re-finalized existing student record; created %(count)s new draft application(s)."
 msgstr "Mevcut öğrenci kaydı yeniden sonlandırıldı; %(count)s yeni taslak başvuru oluşturuldu."
 
 # CHG-0014
 msgid "No due date"
 msgstr "Son tarih yok"
+
+msgid "Universities in Türkiye"
+msgstr "Türkiye'deki Üniversiteler"
+
+msgid ""
+"Explore universities in Türkiye, compare available programs, locations and study options with "
+"TurkDemy."
+msgstr ""
+"Türkiye'deki üniversiteleri keşfedin; mevcut programları, konumları ve eğitim seçeneklerini "
+"TurkDemy ile karşılaştırın."
+
+msgid "Programs & Study Options"
+msgstr "Programlar ve Eğitim Seçenekleri"
+
+#, python-format
+msgid ""
+"Explore %(university_name)s in %(city)s, including available programs, study options and "
+"university information on TurkDemy."
+msgstr ""
+"%(city)s şehrindeki %(university_name)s üniversitesini; mevcut programlar, eğitim seçenekleri ve "
+"üniversite bilgileriyle TurkDemy'de keşfedin."
+
+msgid "University Programs in Türkiye"
+msgstr "Türkiye'deki Üniversite Programları"
+
+msgid ""
+"Explore university programs in Türkiye and compare fields, degrees, languages, tuition and "
+"available intakes."
+msgstr ""
+"Türkiye'deki üniversite programlarını keşfedin; alanları, dereceleri, dilleri, öğrenim "
+"ücretlerini ve mevcut dönemleri karşılaştırın."
+
+#, python-format
+msgid ""
+"Explore %(program_name)s at %(university_name)s: %(degree)s, %(languages)s, tuition, intakes and "
+"study details on TurkDemy."
+msgstr ""
+"%(university_name)s bünyesindeki %(program_name)s programını keşfedin: %(degree)s, %(languages)s,"
+" öğrenim ücreti, dönemler ve eğitim ayrıntıları TurkDemy'de."
+
+#, python-format
+msgid "Explore %(program_name)s at %(university_name)s, including tuition, intakes and study details."
+msgstr ""
+"%(university_name)s bünyesindeki %(program_name)s programını; öğrenim ücreti, dönemler ve eğitim "
+"ayrıntılarıyla keşfedin."
+
+msgid "Study in Türkiye FAQ"
+msgstr "Türkiye'de Eğitim SSS"
+
+msgid ""
+"Find answers to common questions about university discovery, applications and studying in Türkiye"
+" with TurkDemy."
+msgstr ""
+"TurkDemy ile üniversite keşfi, başvurular ve Türkiye'de eğitim hakkında sık sorulan soruların "
+"yanıtlarını bulun."
+
+msgid ""
+"Learn how TurkDemy helps international students discover universities and programs in Türkiye and"
+" manage admissions support."
+msgstr ""
+"TurkDemy'nin uluslararası öğrencilerin Türkiye'deki üniversite ve programları keşfetmesine ve "
+"kabul desteğini yönetmesine nasıl yardımcı olduğunu öğrenin."
+
+msgid "Contact TurkDemy for help with university discovery, programs and admissions support in Türkiye."
+msgstr ""
+"Türkiye'de üniversite keşfi, programlar ve kabul desteği konusunda yardım için TurkDemy ile "
+"iletişime geçin."
+
+msgid "University programs in Türkiye"
+msgstr "Türkiye'deki üniversite programları"
+

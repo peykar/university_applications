@@ -30,6 +30,12 @@ from apps.universities.models import (
 )
 
 from .forms import ContactForm
+from .seo import (
+    absolute_media_url,
+    breadcrumb_schema,
+    graph_schema,
+    localized_absolute_url,
+)
 from .services.program_filters import (
     annotate_min_active_tuition,
     apply_program_filters,
@@ -193,6 +199,18 @@ def home(request):
             "university_count": active_universities.count(),
             "program_count": active_programs.count(),
             "faq_count": active_faqs.count(),
+            "seo_schema": graph_schema(
+                {
+                    "@type": "Organization",
+                    "name": "TurkDemy",
+                    "url": localized_absolute_url("home"),
+                },
+                {
+                    "@type": "WebSite",
+                    "name": "TurkDemy",
+                    "url": localized_absolute_url("home"),
+                },
+            ),
             **filter_options,
         },
     )
@@ -224,7 +242,15 @@ def university_list(request):
     return render(
         request,
         "public/university_list.html",
-        {"universities": qs.order_by("-listing_priority", "name_en")},
+        {
+            "universities": qs.order_by("-listing_priority", "name_en"),
+            "seo_schema": {
+                "@context": "https://schema.org",
+                "@type": "CollectionPage",
+                "name": _("Universities in Türkiye"),
+                "url": localized_absolute_url("university-list"),
+            },
+        },
     )
 
 
@@ -260,8 +286,43 @@ def university_detail(request, slug):
     query_params = request.GET.copy()
     query_params.pop("page", None)
 
+    university_url = localized_absolute_url(
+        "university-detail",
+        slug=university.slug_en,
+    )
+    university_node = {
+        "@type": "CollegeOrUniversity",
+        "name": university.localized_name,
+        "url": university_url,
+    }
+    if university.website:
+        university_node["sameAs"] = university.website
+    if university.logo:
+        university_node["logo"] = absolute_media_url(university.logo.url)
+    if university.city:
+        university_node["address"] = {
+            "@type": "PostalAddress",
+            "addressLocality": university.city.localized_name,
+        }
+
     context = {
         "university": university,
+        "seo_image_url": (
+            absolute_media_url(university.banner.url)
+            if university.banner
+            else absolute_media_url(university.logo.url)
+            if university.logo
+            else ""
+        ),
+        "seo_schema": graph_schema(
+            university_node,
+            breadcrumb_schema(
+                [
+                    (_("Universities"), localized_absolute_url("university-list")),
+                    (university.localized_name, university_url),
+                ]
+            ),
+        ),
         "programs": page_obj.object_list,
         "page_obj": page_obj,
         "program_result_count": paginator.count,
@@ -467,6 +528,12 @@ def program_list(request):
     )
 
     context = {
+        "seo_schema": {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": _("University programs in Türkiye"),
+            "url": localized_absolute_url("program-list"),
+        },
         "programs": page_obj.object_list,
         "page_obj": page_obj,
         "program_result_count": paginator.count,
@@ -582,11 +649,48 @@ def program_detail(request, slug):
         is_active=True,
     ).count()
 
+    program_url = localized_absolute_url("program-detail", slug=program.slug_en)
+    university_url = localized_absolute_url(
+        "university-detail",
+        slug=program.university.slug_en,
+    )
+    program_node = {
+        "@type": "EducationalOccupationalProgram",
+        "name": program.localized_name,
+        "url": program_url,
+        "provider": {
+            "@type": "CollegeOrUniversity",
+            "name": program.university.localized_name,
+            "url": university_url,
+        },
+    }
+    if program.localized_description:
+        program_node["description"] = program.localized_description
+    if program.duration_months:
+        program_node["timeToComplete"] = f"P{program.duration_months}M"
+
     return render(
         request,
         "public/program_detail.html",
         {
             "program": program,
+            "seo_image_url": (
+                absolute_media_url(program.university.banner.url)
+                if program.university.banner
+                else absolute_media_url(program.university.logo.url)
+                if program.university.logo
+                else ""
+            ),
+            "seo_schema": graph_schema(
+                program_node,
+                breadcrumb_schema(
+                    [
+                        (_("Programs"), localized_absolute_url("program-list")),
+                        (program.university.localized_name, university_url),
+                        (program.localized_name, program_url),
+                    ]
+                ),
+            ),
             "offerings": getattr(program, "active_offerings", []),
             "university_media": getattr(program.university, "active_media", [])[:6],
             "similar_programs": similar_programs,
@@ -599,10 +703,30 @@ def program_detail(request, slug):
 
 def faq(request):
     categories = FAQCategory.objects.filter(is_active=True).prefetch_related("faqs")
+    faq_entities = [
+        {
+            "@type": "Question",
+            "name": item.localized_question,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": item.localized_answer,
+            },
+        }
+        for category in categories
+        for item in category.faqs.all()
+        if item.is_active
+    ]
     return render(
         request,
         "public/faq.html",
-        {"categories": categories},
+        {
+            "categories": categories,
+            "seo_schema": {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": faq_entities,
+            },
+        },
     )
 
 
@@ -619,12 +743,37 @@ def contact(request):
     return render(
         request,
         "public/contact.html",
-        {"form": form},
+        {
+            "form": form,
+            "seo_schema": {
+                "@context": "https://schema.org",
+                "@type": "ContactPage",
+                "name": _("Contact TurkDemy"),
+                "url": localized_absolute_url("contact"),
+            },
+        },
     )
 
 
 def about(request):
-    return render(request, "public/about.html")
+    return render(
+        request,
+        "public/about.html",
+        {
+            "seo_schema": graph_schema(
+                {
+                    "@type": "AboutPage",
+                    "name": _("About TurkDemy"),
+                    "url": localized_absolute_url("about"),
+                },
+                {
+                    "@type": "Organization",
+                    "name": "TurkDemy",
+                    "url": localized_absolute_url("home"),
+                },
+            ),
+        },
+    )
 
 
 @login_required

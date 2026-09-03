@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load i18n currency %}
-{% block title %}{{ university.localized_name }} — TurkDemy{% endblock %}
+{% block title %}{{ university.localized_name }} {% trans "Programs & Study Options" %} — TurkDemy{% endblock %}
+{% block meta_description %}{% blocktrans with university_name=university.localized_name city=university.city.localized_name %}Explore {{ university_name }} in {{ city }}, including available programs, study options and university information on TurkDemy.{% endblocktrans %}{% endblock %}
+{% block og_title %}{{ university.localized_name }} {% trans "Programs & Study Options" %} — TurkDemy{% endblock %}
+{% block og_description %}{% blocktrans with university_name=university.localized_name city=university.city.localized_name %}Explore {{ university_name }} in {{ city }}, including available programs, study options and university information on TurkDemy.{% endblocktrans %}{% endblock %}
 {% block content %}
 <section class="detail-hero">
   <div>

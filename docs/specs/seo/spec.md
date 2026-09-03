@@ -1,7 +1,7 @@
 # Public SEO
 
 Status: BASELINED
-Version: 1.0
+Version: 1.1
 
 ## Goal
 
@@ -38,6 +38,29 @@ more specific social metadata is applicable.
 
 SEO-009 — SEO metadata and crawlability MUST be regression-tested so future public
 page work cannot silently omit the repository SEO gate.
+
+
+SEO-010 — Home, Universities, University Detail, Programs, Program Detail, FAQ,
+About and Contact MUST provide page-specific localized titles and meta
+descriptions rather than the generic site fallback.
+
+SEO-011 — The same public surfaces MUST provide page-specific Open Graph title
+and description metadata; entity detail pages SHOULD use available catalogue
+media as their social image.
+
+SEO-012 — Home MUST expose Organization and WebSite structured data; University
+Detail MUST expose CollegeOrUniversity and breadcrumb structured data; Program
+Detail MUST expose educational-program and breadcrumb structured data using only
+facts supported by the catalogue.
+
+SEO-013 — University and Program list pages MUST identify themselves as
+CollectionPage structured data; About and Contact MUST identify their page
+purpose; FAQ MAY expose FAQPage structured data from the same active questions
+visibly rendered on the page.
+
+SEO-014 — Structured data MUST serialize safely as valid JSON, use canonical
+absolute URLs, avoid unsupported/invented claims, and remain localized where
+human-readable catalogue values are emitted.
 
 ## Non-goals
 
