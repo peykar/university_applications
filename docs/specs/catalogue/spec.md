@@ -1,7 +1,7 @@
 # University and program catalogue
 
 Status: APPROVED
-Version: 3.1
+Version: 3.2
 
 ## Goal
 
@@ -330,3 +330,43 @@ and repeated Department rows with the same canonical slug MUST be presented as o
 logical field choice. When multiple matching Department rows exist, an available
 localized name for the active locale MUST be preferred for presentation, with the
 normal English fallback when no localized name exists.
+
+
+## TurkDemy General Field taxonomy
+
+CAT-053 — TurkDemy MUST provide a global `GeneralField` entity independent from
+University, AcademicUnit, and Department. GeneralField MUST support localized
+name, localized slug, localized editorial description, localized SEO title,
+localized SEO description, active state, and explicit sort order. Its non-empty
+localized slugs MUST be globally unique.
+
+CAT-054 — A Program MAY reference zero or one `GeneralField`. The relation MUST
+be optional so newly imported or not-yet-reviewed Programs can remain intentionally
+unclassified. GeneralField does not replace Program.department or
+Program.academic_unit.
+
+CAT-055 — Public catalogue filtering by the `field` query dimension MUST use
+`Program.general_field` and the GeneralField canonical English slug. Field choices
+MUST expose only active GeneralFields that have at least one active Program at an
+active University; a University-scoped Program catalogue MUST expose only fields
+represented by that University's active Programs. Localized slugs MUST NOT be
+accepted as alternate filter identities.
+
+CAT-056 — Django Admin MUST allow TurkDemy staff to create/edit GeneralFields and
+manually map Programs to them. Program administration MUST make the GeneralField
+assignment visible, searchable/filterable, and selectable without altering the
+University-owned Department/AcademicUnit structure.
+
+CAT-057 — `import_programs_for_university` MUST NOT infer, assign, overwrite, or
+clear `Program.general_field`. A newly imported Program MUST remain unmapped. A
+re-import of an existing manually mapped Program MUST preserve that assignment.
+A normalized import row that attempts to supply `general_field` MUST be rejected
+before import writes.
+
+CAT-058 — GeneralField's localized description and SEO metadata are the canonical
+editorial inputs for future field landing pages. CHG-0017 does not require public
+GeneralField landing-page routes; those routes remain a separate SEO/content change.
+
+CAT-052's earlier Department-backed field-filter behavior is superseded by CAT-055.
+Department remains University-owned catalogue structure and may still participate in
+search/similarity features where explicitly appropriate.

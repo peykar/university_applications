@@ -3378,3 +3378,6 @@ msgstr ""
 msgid "University programs in Türkiye"
 msgstr "برنامه‌های دانشگاهی در ترکیه"
 
+
+msgid "TurkDemy-curated general study field. Assign manually after catalogue import and verification; importers must not populate or overwrite it."
+msgstr "رشته تحصیلی عمومیِ مدیریت‌شده توسط ترک‌دمی. پس از وارد کردن و تأیید کاتالوگ، آن را به‌صورت دستی اختصاص دهید؛ واردکننده‌ها نباید آن را مقداردهی یا بازنویسی کنند."

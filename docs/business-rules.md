@@ -6,6 +6,10 @@
 - If a program references a department, that department must belong to the
   same university.
 - Thesis type is only meaningful for degree types that support it.
+- `GeneralField` is a TurkDemy-wide curated classification, separate from a
+  University's AcademicUnit/Department structure.
+- `import_programs_for_university` never maps or clears `Program.general_field`;
+  new Programs start unmapped and re-imports preserve manual assignments.
 
 ## Program offerings
 

@@ -124,6 +124,12 @@ when the import should explicitly clear it.
 `academic_unit` and `department` are either `null` or the `slug_en` of an item
 defined in the corresponding top-level array.
 
+`general_field` is deliberately **not** part of the normalized import contract.
+GeneralField is TurkDemy-curated after catalogue verification. A new imported
+Program therefore has no GeneralField assignment, while re-importing an existing
+Program preserves any GeneralField already assigned manually. Supplying a
+`general_field` key in a Program import row is rejected before writes.
+
 Every Program must contain at least one instruction language. Language entries
 are matched globally by `slug`; a missing language vocabulary row is created
 from `name_en` and optional localized name/slug fields. A file may mark at most
@@ -175,6 +181,8 @@ not part of schema version 2.
 - Rows absent from a later JSON file are not deleted or deactivated.
 - The command never infers missing tuition semantics, percentages, study mode,
   validity, or other ambiguous values.
+- The command never assigns, overwrites, or clears TurkDemy's curated
+  `Program.general_field` classification.
 - The complete import runs in one database transaction.
 ### Localized slug policy
 

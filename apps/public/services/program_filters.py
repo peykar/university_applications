@@ -106,10 +106,14 @@ def apply_program_filters(
             | Q(department__name_en__icontains=state.q)
             | Q(department__name_fa__icontains=state.q)
             | Q(department__name_tr__icontains=state.q)
+            | Q(general_field__name_en__icontains=state.q)
+            | Q(general_field__name_fa__icontains=state.q)
+            | Q(general_field__name_tr__icontains=state.q)
+            | Q(general_field__name_ar__icontains=state.q)
         )
 
     if state.field:
-        queryset = queryset.filter(department__slug_en=state.field)
+        queryset = queryset.filter(general_field__slug_en=state.field)
 
     if state.degree:
         queryset = queryset.filter(degree=state.degree)

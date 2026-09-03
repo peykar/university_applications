@@ -17,9 +17,9 @@ def test_homepage_study_field_query_carries_localized_names():
     source = (ROOT / "apps/public/views.py").read_text(encoding="utf-8")
     template = (ROOT / "templates/public/home.html").read_text(encoding="utf-8")
 
-    assert 'name_fa=Max("name_fa")' in source
-    assert 'name_tr=Max("name_tr")' in source
-    assert 'name_ar=Max("name_ar")' in source
+    assert "GeneralField.objects.filter(" in source
+    assert "programs__is_active=True" in source
+    assert "programs__university__is_active=True" in source
     assert '{{ field|localized:"name" }}' in template
     assert "field.localized_name" not in template
 

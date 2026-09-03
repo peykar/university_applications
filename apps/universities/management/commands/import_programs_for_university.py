@@ -167,6 +167,11 @@ class Command(BaseCommand):
                 raise CommandError(f"{path}.listing_priority must be an integer.")
             self._validate_optional_text(program, "internal_notes", path=path)
             self._validate_optional_bool(program, "is_active", path=path)
+            if "general_field" in program:
+                raise CommandError(
+                    f"{path}.general_field is TurkDemy-curated and must be assigned "
+                    "manually after import verification; remove it from the import file."
+                )
 
             unit_slug = program.get("academic_unit")
             if unit_slug is not None and unit_slug not in unit_slugs:
@@ -421,6 +426,11 @@ class Command(BaseCommand):
         )
         if "internal_notes" in row:
             defaults["internal_notes"] = str(row.get("internal_notes") or "")
+
+        # GeneralField is intentionally absent from importer defaults. It is a
+        # TurkDemy-curated classification assigned only after catalogue verification.
+        # New Programs therefore start unmapped, while re-imports preserve any
+        # existing manual Program.general_field assignment.
 
         source_slug_en = str(row["slug_en"])
         university_prefix = f"{university.slug_en}-"

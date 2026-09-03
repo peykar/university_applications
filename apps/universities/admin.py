@@ -14,6 +14,7 @@ from .models import (
     AcademicUnit,
     AcademicYear,
     Department,
+    GeneralField,
     Intake,
     OfferingFee,
     OfferingFeeType,
@@ -347,6 +348,16 @@ class UniversityAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
             },
         ),
         (
+            "TurkDemy classification",
+            {
+                "fields": ("general_field",),
+                "description": (
+                    "Curated after catalogue import verification. This classification "
+                    "is independent from the university Academic Unit and Department."
+                ),
+            },
+        ),
+        (
             "Descriptions",
             {
                 "classes": ("collapse",),
@@ -429,6 +440,70 @@ class DepartmentAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
     prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
 
 
+@admin.register(GeneralField)
+class GeneralFieldAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
+    list_display = ("name_en", "slug_en", "program_count", "sort_order", "is_active")
+    list_filter = ("is_active",)
+    search_fields = (
+        "name_en",
+        "name_fa",
+        "name_tr",
+        "name_ar",
+        "slug_en",
+    )
+    prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
+    ordering = ("sort_order", "name_en")
+    fieldsets = (
+        (
+            "Identity",
+            {
+                "fields": (
+                    "name_en",
+                    "name_fa",
+                    "name_tr",
+                    "name_ar",
+                    "slug_en",
+                    "slug_fa",
+                    "slug_tr",
+                    "slug_ar",
+                    "sort_order",
+                    "is_active",
+                )
+            },
+        ),
+        (
+            "Landing-page content",
+            {
+                "fields": (
+                    "description_en",
+                    "description_fa",
+                    "description_tr",
+                    "description_ar",
+                )
+            },
+        ),
+        (
+            "SEO metadata",
+            {
+                "fields": (
+                    "seo_title_en",
+                    "seo_title_fa",
+                    "seo_title_tr",
+                    "seo_title_ar",
+                    "seo_description_en",
+                    "seo_description_fa",
+                    "seo_description_tr",
+                    "seo_description_ar",
+                )
+            },
+        ),
+    )
+
+    @admin.display(description="Programs")
+    def program_count(self, obj):
+        return obj.programs.count()
+
+
 @admin.register(AcademicUnit)
 class AcademicUnitAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
     list_display = ("name_en", "university", "unit_type", "is_active")
@@ -466,6 +541,7 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "university",
         "academic_unit",
         "department",
+        "general_field",
         "degree",
         "study_mode",
         "language_summary",
@@ -477,6 +553,7 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "degree",
         "study_mode",
         "instruction_languages",
+        "general_field",
         "university",
         "is_active",
     )
@@ -489,11 +566,13 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "university__name_en",
         "academic_unit__name_en",
         "department__name_en",
+        "general_field__name_en",
     )
     autocomplete_fields = (
         "university",
         "academic_unit",
         "department",
+        "general_field",
     )
     prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
     ordering = ("-listing_priority", "university__name_en", "name_en")

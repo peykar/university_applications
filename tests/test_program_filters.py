@@ -15,6 +15,7 @@ from apps.public.views import _program_filter_options
 from apps.universities.models import (
     AcademicYear,
     Department,
+    GeneralField,
     Intake,
     OfferingFee,
     OfferingFeeType,
@@ -99,6 +100,19 @@ class ProgramFilterTests(TestCase):
             updated_by=user,
         )
         self.department = department
+        general_field = GeneralField.objects.create(
+            name_en="Engineering",
+            name_fa="",
+            name_tr="",
+            name_ar="",
+            slug_en="engineering",
+            slug_fa="engineering",
+            slug_tr="engineering",
+            slug_ar="engineering",
+            created_by=user,
+            updated_by=user,
+        )
+        self.general_field = general_field
         language = ProgramLanguage.objects.create(
             name_en="English",
             name_fa="",
@@ -134,6 +148,7 @@ class ProgramFilterTests(TestCase):
         self.program = Program.objects.create(
             university=university,
             department=department,
+            general_field=general_field,
             degree="bachelor",
             name_en="Computer Engineering",
             name_fa="",
@@ -207,9 +222,9 @@ class ProgramFilterTests(TestCase):
         self.assertEqual(qs.count(), 1)
 
     def test_field_filter_uses_canonical_english_slug_identity(self):
-        self.department.name_fa = "مهندسی"
-        self.department.slug_fa = "مهندسی"
-        self.department.save(update_fields=["name_fa", "slug_fa", "updated_at"])
+        self.general_field.name_fa = "مهندسی"
+        self.general_field.slug_fa = "مهندسی"
+        self.general_field.save(update_fields=["name_fa", "slug_fa", "updated_at"])
 
         base = Program.objects.filter(
             is_active=True,
@@ -227,10 +242,21 @@ class ProgramFilterTests(TestCase):
         self.assertEqual(canonical.count(), 1)
         self.assertEqual(localized_slug.count(), 0)
 
+    def test_field_filter_does_not_fall_back_to_department(self):
+        self.program.general_field = None
+        self.program.save(update_fields=["general_field", "updated_at"])
+
+        qs = apply_program_filters(
+            Program.objects.all(),
+            ProgramFilterState(field="engineering"),
+        )
+
+        self.assertEqual(qs.count(), 0)
+
     def test_field_choice_localizes_label_but_keeps_canonical_slug(self):
-        self.department.name_fa = "مهندسی"
-        self.department.slug_fa = "مهندسی"
-        self.department.save(update_fields=["name_fa", "slug_fa", "updated_at"])
+        self.general_field.name_fa = "مهندسی"
+        self.general_field.slug_fa = "مهندسی"
+        self.general_field.save(update_fields=["name_fa", "slug_fa", "updated_at"])
 
         with translation.override("fa"):
             choices = _program_filter_options()["field_choices"]
@@ -238,7 +264,7 @@ class ProgramFilterTests(TestCase):
             self.assertEqual(engineering.localized_name, "مهندسی")
             self.assertEqual(engineering.slug_en, "engineering")
 
-    def test_field_choices_exclude_departments_without_active_university(self):
+    def test_field_choices_exclude_general_fields_without_active_university(self):
         self.university.is_active = False
         self.university.save(update_fields=["is_active", "updated_at"])
 
@@ -255,7 +281,7 @@ class ProgramFilterTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotIn(
             "engineering",
-            [field["slug_en"] for field in response.context["study_fields"]],
+            [field.slug_en for field in response.context["study_fields"]],
         )
         self.assertEqual(response.context["program_count"], 0)
 

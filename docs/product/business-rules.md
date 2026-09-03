@@ -182,6 +182,15 @@ first Program by Program ID keeps the unsuffixed slug and later Programs receive
 smallest available numeric tail (`-2`, `-3`, ...). The collision and every resolved slug
 are reported.
 
+BR-CAT-008 — `GeneralField` is a TurkDemy-owned, cross-University classification.
+It is not a synonym for Department or AcademicUnit. A Program MAY have one
+GeneralField and public field filtering uses that curated relation.
+
+BR-CAT-009 — `import_programs_for_university` MUST NOT infer, assign, overwrite,
+or clear `Program.general_field`. New imported Programs start unmapped; re-imports
+preserve an existing manual GeneralField assignment. GeneralField mapping happens
+only through an explicit TurkDemy-admin curation workflow after catalogue verification.
+
 
 ## Locale-aware calendar presentation
 

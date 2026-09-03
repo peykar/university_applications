@@ -10,6 +10,7 @@ from apps.core.audit import get_system_user
 from apps.geography.models import City, Country, Province
 from apps.universities.models import (
     AcademicUnit,
+    GeneralField,
     OfferingFeeType,
     Program,
     ProgramOffering,
@@ -175,6 +176,7 @@ class UniversityProgramJsonImportTests(TestCase):
         offering = ProgramOffering.objects.get(program=program, source=self.source)
 
         self.assertEqual(program.academic_unit, unit)
+        self.assertIsNone(program.general_field)
         self.assertEqual(program.duration_months, 48)
         self.assertEqual(
             program.internal_notes,
@@ -226,6 +228,35 @@ class UniversityProgramJsonImportTests(TestCase):
             program.internal_notes,
             "Normalized from the university tuition sheet.",
         )
+
+    def test_reimport_preserves_manually_curated_general_field(self):
+        payload = self._payload()
+        self._run(payload)
+        program = Program.objects.get(university=self.university)
+        field = GeneralField.objects.create(
+            name_en="Engineering",
+            slug_en="engineering",
+            created_by=self.user,
+            updated_by=self.user,
+        )
+        program.general_field = field
+        program.save(update_fields=["general_field", "updated_at"])
+
+        payload["programs"][0]["name_en"] = "Software Engineering Updated"
+        self._run(payload)
+
+        program.refresh_from_db()
+        self.assertEqual(program.general_field, field)
+
+    def test_import_rejects_general_field_mapping_before_writes(self):
+        payload = self._payload()
+        payload["programs"][0]["general_field"] = "engineering"
+
+        with self.assertRaises(CommandError):
+            self._run(payload)
+
+        self.assertFalse(Program.objects.filter(university=self.university).exists())
+        self.assertFalse(AcademicUnit.objects.filter(university=self.university).exists())
 
     def test_source_must_belong_to_university_before_any_import_writes(self):
         with self.assertRaises(CommandError):

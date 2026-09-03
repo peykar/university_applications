@@ -3,21 +3,20 @@ from urllib.parse import urlencode
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Case, Count, IntegerField, Max, Prefetch, Q, Value, When
+from django.db.models import Case, Count, IntegerField, Prefetch, Q, Value, When
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from apps.content.models import FAQ, FAQCategory
-from apps.core.localization import normalized_language_code
 from apps.geography.models import City
 from apps.universities.models import (
     AcademicUnit,
     AcademicYear,
     Currency,
     DegreeType,
-    Department,
+    GeneralField,
     Intake,
     OfferingFee,
     Program,
@@ -44,33 +43,16 @@ from .services.program_filters import (
 
 
 def _canonical_field_choices(*, university=None):
-    departments = Department.objects.filter(
+    general_fields = GeneralField.objects.filter(
         is_active=True,
-        university__is_active=True,
         programs__is_active=True,
         programs__university__is_active=True,
     ).exclude(slug_en="")
 
     if university is not None:
-        departments = departments.filter(university=university)
+        general_fields = general_fields.filter(programs__university=university)
 
-    language = normalized_language_code()
-    localized_name_field = f"name_{language}"
-    choices_by_slug: dict[str, Department] = {}
-    for department in departments.order_by("slug_en", "name_en", "pk").distinct():
-        existing = choices_by_slug.get(department.slug_en)
-        if existing is None:
-            choices_by_slug[department.slug_en] = department
-            continue
-        existing_localized_name = existing.__dict__.get(localized_name_field, "")
-        department_localized_name = department.__dict__.get(localized_name_field, "")
-        if not existing_localized_name and department_localized_name:
-            choices_by_slug[department.slug_en] = department
-
-    return sorted(
-        choices_by_slug.values(),
-        key=lambda department: (department.localized_name.casefold(), department.slug_en),
-    )
+    return general_fields.distinct().order_by("sort_order", "name_en", "pk")
 
 
 def _program_filter_options(*, university=None):
@@ -150,23 +132,23 @@ def home(request):
     ).order_by("-listing_priority", "name_en")[:8]
 
     study_fields = (
-        Department.objects.filter(
+        GeneralField.objects.filter(
             is_active=True,
-            university__is_active=True,
             programs__is_active=True,
             programs__university__is_active=True,
         )
         .exclude(slug_en="")
-        .values("slug_en")
         .annotate(
-            name_en=Max("name_en"),
-            name_fa=Max("name_fa"),
-            name_tr=Max("name_tr"),
-            name_ar=Max("name_ar"),
-            program_count=Count("programs", distinct=True),
+            program_count=Count(
+                "programs",
+                filter=Q(
+                    programs__is_active=True,
+                    programs__university__is_active=True,
+                ),
+                distinct=True,
+            )
         )
-        .exclude(name_en="")
-        .order_by("-program_count", "name_en")[:10]
+        .order_by("-program_count", "sort_order", "name_en")[:10]
     )
 
     faq_preview = active_faqs.select_related("category").order_by(

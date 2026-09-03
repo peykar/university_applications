@@ -280,17 +280,45 @@ The command never repairs data. Human output is the default; JSON and CSV are
 available for review/automation. `--fail-on-errors` is opt-in so an exploratory
 audit remains non-disruptive.
 
-## Locale-independent public filter identity (CAT-052)
+## Locale-independent public filter identity (CAT-052, superseded in part by CAT-055)
 
 Slug-backed public catalogue filters use `slug_en` as their stable URL identity in
-all supported locales. Locale selection affects presentation labels only. A field
-query such as `?field=engineering` therefore filters `Department.slug_en` and never
-fans out across `slug_fa`, `slug_tr`, or `slug_ar`.
+all supported locales. Locale selection affects presentation labels only. CHG-0017
+keeps that URL invariant but moves the `field` dimension from repeated University-owned
+Department slugs to the global TurkDemy `GeneralField.slug_en`. Public controls expose
+only active GeneralFields connected to active Programs at active Universities. The
+homepage applies the same active-catalogue boundary. Department remains source/catalogue
+structure and is no longer the public field-filter identity.
 
-Departments are University-owned, so the same logical field may exist as multiple
-rows. Public field controls collapse those rows by canonical `slug_en`; the chosen
-representative prefers an explicit name for the active locale and otherwise uses the
-normal English fallback. Only rows connected to active Programs at active Universities
-may contribute public choices. The homepage study-field aggregation applies the same
-active-catalogue boundary and groups counts by canonical field slug, preventing links
-published from inactive/legacy catalogue rows from leading to zero-result pages.
+
+## GeneralField classification layer (CHG-0017)
+
+`GeneralField` is a TurkDemy-owned taxonomy layer that sits beside, not inside, the
+University hierarchy. The existing `AcademicUnit` and `Department` models remain
+unchanged and continue to represent source/university structure.
+
+```text
+University
+ ├── AcademicUnit / Department
+ └── Program
+      └── general_field? ──> GeneralField (global TurkDemy taxonomy)
+```
+
+Each Program has at most one GeneralField. The nullable relation makes curation state
+explicit: `NULL` means the Program has not yet been mapped or intentionally remains
+unclassified. No mapping is inferred from Department names/slugs during import.
+
+Public `?field=` filtering resolves exclusively against `GeneralField.slug_en`; labels
+are localized at presentation time. This keeps one stable filter identity across EN,
+FA, TR and AR while separating it from University-specific Department data. Homepage
+field discovery uses the same GeneralField relation and active-catalogue constraints.
+
+Django Admin is the first curation surface. GeneralField has localized editorial and
+SEO fields so a later SEO change can create canonical field landing pages without
+changing the taxonomy model. Program admin exposes the mapping through autocomplete
+and list/filter/search support.
+
+`import_programs_for_university` deliberately excludes GeneralField from update
+defaults. New Programs therefore remain null and existing assignments survive
+re-import. The schema validator rejects a supplied `general_field` key so accidental
+automatic classification cannot become an undocumented import convention.

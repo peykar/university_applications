@@ -37,6 +37,11 @@ unit. It is distinct from Department.
 Programme-level data includes academic unit/department where applicable, degree,
 thesis type, study mode, duration, and instruction-language composition.
 
+**General Field** — TurkDemy-wide curated study-field classification used for
+cross-University discovery and future SEO landing pages. It is independent from
+a University's AcademicUnit/Department structure and is assigned manually after
+programme import verification.
+
 **ProgramOffering** — intake-specific instance of a Program with academic year,
 semester/intake, tuition variants, deposit, preparation terms, quota/deadline,
 validity and related commercial data.

@@ -1478,3 +1478,14 @@
 - Agent Applicant Activity now shows the same structured recommendation reason.
 - Reused existing structured recommendation/activity data; no schema, permission,
   or recommendation transaction behavior changed.
+
+
+## 2026-09-03 — TurkDemy General Field taxonomy
+
+- Added CHG-0017 / CAT-053–CAT-058: global multilingual `GeneralField` and optional
+  curated Program mapping, independent from University AcademicUnit/Department.
+- Public `field` filtering and homepage field discovery now use GeneralField canonical
+  English slugs and active Program mappings.
+- Added admin curation and multilingual editorial/SEO metadata for future field pages.
+- `import_programs_for_university` never maps GeneralField: new Programs remain null,
+  re-imports preserve manual mappings, and import-provided `general_field` is rejected.

@@ -118,6 +118,62 @@ class Department(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin)
         return self.localized_name
 
 
+class GeneralField(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
+    """TurkDemy-wide curated study-field classification for Programs."""
+
+    description_en = models.TextField(blank=True)
+    description_fa = models.TextField(blank=True)
+    description_tr = models.TextField(blank=True)
+    description_ar = models.TextField(blank=True)
+
+    seo_title_en = models.CharField(max_length=255, blank=True)
+    seo_title_fa = models.CharField(max_length=255, blank=True)
+    seo_title_tr = models.CharField(max_length=255, blank=True)
+    seo_title_ar = models.CharField(max_length=255, blank=True)
+    seo_description_en = models.TextField(blank=True)
+    seo_description_fa = models.TextField(blank=True)
+    seo_description_tr = models.TextField(blank=True)
+    seo_description_ar = models.TextField(blank=True)
+
+    sort_order = models.PositiveIntegerField(default=0, db_index=True)
+
+    class Meta:
+        ordering = ("sort_order", "name_en")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("slug_en",),
+                condition=~models.Q(slug_en=""),
+                name="uniq_general_field_slug_en",
+            ),
+            models.UniqueConstraint(
+                fields=("slug_fa",),
+                condition=~models.Q(slug_fa=""),
+                name="uniq_general_field_slug_fa",
+            ),
+            models.UniqueConstraint(
+                fields=("slug_tr",),
+                condition=~models.Q(slug_tr=""),
+                name="uniq_general_field_slug_tr",
+            ),
+            models.UniqueConstraint(
+                fields=("slug_ar",),
+                condition=~models.Q(slug_ar=""),
+                name="uniq_general_field_slug_ar",
+            ),
+        ]
+
+    @property
+    def localized_seo_title(self):
+        return localized_value(self, "seo_title")
+
+    @property
+    def localized_seo_description(self):
+        return localized_value(self, "seo_description")
+
+    def __str__(self):
+        return self.localized_name
+
+
 class AcademicUnitType(models.TextChoices):
     FACULTY = "faculty", _("Faculty")
     SCHOOL = "school", _("School")
@@ -260,6 +316,18 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
         related_name="programs",
         null=True,
         blank=True,
+    )
+
+    general_field = models.ForeignKey(
+        GeneralField,
+        on_delete=models.SET_NULL,
+        related_name="programs",
+        null=True,
+        blank=True,
+        help_text=_(
+            "TurkDemy-curated general study field. Assign manually after catalogue "
+            "import and verification; importers must not populate or overwrite it."
+        ),
     )
 
     description_en = models.TextField(blank=True)
