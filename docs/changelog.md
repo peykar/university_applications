@@ -1,3 +1,8 @@
+### UI-0011 Program conversion-card action stabilization
+
+- Reduced the Program Detail `Need help?` card to exactly two contextual actions: **Start a Request** and **Ask TurkDemy**.
+- Removed `My Requests`, `Browse programs`, and `View university` from that card so account/discovery navigation cannot compete with the conversion decision.
+
 ### UI-0011 mobile University bridge-card removal stabilization
 
 Removed the redundant overlapping University mini-card from mobile Program Detail because the hero already exposes University and City context and the full University showcase remains later on the page. Reclaimed the overlap spacing so the four-cell Program fact summary follows the hero directly. Desktop behavior and all Program, Request, Offering and SEO semantics remain unchanged.

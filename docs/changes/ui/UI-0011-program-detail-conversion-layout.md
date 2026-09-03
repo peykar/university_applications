@@ -108,3 +108,8 @@ the page. UI-0011 therefore removes that bridge card from mobile entirely and re
 overlap spacing. The mobile sequence is now Hero → four Program facts → Request → Offerings →
 University showcase → Similar Programs → More Programs. Desktop keeps its existing adjacent University
 context card. No Program, University, Request, Offering, URL, permission, or SEO behavior changes.
+
+## Conversion-card action stabilization
+
+A final product review clarified that the Program Detail conversion card has one job: help a visitor either proceed with the current Program or discuss it with TurkDemy. The card therefore exposes exactly two actions: **Start a Request** and **Ask TurkDemy**. Account navigation (`My Requests`), catalogue escape navigation (`Browse programs`), and University navigation are intentionally excluded from this conversion surface.
+

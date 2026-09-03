@@ -55,10 +55,14 @@ class ProgramDetailConversionLayoutTests(SimpleTestCase):
         self.assertIn('{% trans "Study mode" %}', self.template)
         self.assertIn(".program-fact-pills{display:none}", self.css)
 
-    def test_mobile_request_card_uses_one_primary_and_two_secondary_actions(self):
-        self.assertIn('class="program-contact-secondary-actions"', self.template)
-        self.assertIn('{% trans "My Requests" %}', self.template)
-        self.assertIn(".program-contact-secondary-actions{grid-template-columns:1fr 1fr", self.css)
+    def test_request_card_has_only_conversion_and_contact_actions(self):
+        card = self.template.split('<div class="program-contact-card">', 1)[1].split("</div>", 1)[0]
+        self.assertIn('{% trans "Start a Request" %}', card)
+        self.assertIn('{% trans "Ask TurkDemy" %}', card)
+        self.assertNotIn('{% trans "My Requests" %}', card)
+        self.assertNotIn('{% trans "Browse programs" %}', card)
+        self.assertNotIn('{% trans "View university" %}', card)
+        self.assertEqual(card.count('class="button '), 2)
 
     def test_mobile_university_facts_and_related_programs_match_compact_direction(self):
         self.assertIn("grid-template-columns:repeat(3,minmax(0,1fr))", self.css)
