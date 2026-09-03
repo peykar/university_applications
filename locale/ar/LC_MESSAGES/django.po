@@ -3273,3 +3273,7 @@ msgstr "تم الإنهاء والتحويل إلى سجل طالب؛ تم إن�
 # CHG-0013 activity fallback
 msgid "Re-finalized existing student record; created %(count)s new draft application(s)."
 msgstr "تمت إعادة إنهاء سجل الطالب الحالي؛ تم إنشاء %(count)s طلب مسودة جديد."
+
+# CHG-0014
+msgid "No due date"
+msgstr "لا يوجد تاريخ استحقاق"

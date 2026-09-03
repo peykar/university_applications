@@ -42,7 +42,7 @@
   <div class="agent-panel-head"><h2>{% trans "Application activity" %}</h2></div>
   <div class="activity-timeline compact">
     {% for event in activity_events %}
-      <article class="activity-item"><span class="activity-dot"></span><div class="activity-content"><div class="activity-meta"><strong>{{ event.title }}</strong><span>{{ event.when|date:"Y-m-d H:i" }}</span></div><p>{{ event.detail }}</p></div></article>
+      <article class="activity-item"><span class="activity-dot"></span><div class="activity-content"><div class="activity-meta"><strong>{{ event.title }}</strong><span>{{ event.when|localized_datetime }}</span></div><p>{{ event.detail }}</p></div></article>
     {% empty %}<div class="empty-state">{% trans "No activity yet." %}</div>{% endfor %}
   </div>
 </section>
@@ -54,7 +54,7 @@
     <div class="lead-chat-messages">
       {% for message in application_messages %}
         <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
-          <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|date:"Y-m-d H:i" }}</time></div>
+          <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|localized_datetime }}</time></div>
           {% if message.localized_body %}<div class="chat-message-body">{{ message.localized_body|linebreaksbr }}</div>{% endif %}
           {% for attachment in message.attachments.all %}<a class="chat-attachment" href="{{ attachment.file.url }}">{{ attachment.original_name|default:"Attachment" }}</a>{% endfor %}
         </article>

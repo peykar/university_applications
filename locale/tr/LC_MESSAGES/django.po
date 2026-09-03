@@ -3295,3 +3295,7 @@ msgstr "Sonlandırıldı ve bir öğrenci kaydına dönüştürüldü; %(count)s
 # CHG-0013 activity fallback
 msgid "Re-finalized existing student record; created %(count)s new draft application(s)."
 msgstr "Mevcut öğrenci kaydı yeniden sonlandırıldı; %(count)s yeni taslak başvuru oluşturuldu."
+
+# CHG-0014
+msgid "No due date"
+msgstr "Son tarih yok"

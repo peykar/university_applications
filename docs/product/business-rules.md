@@ -181,3 +181,26 @@ existing-database slug rebuild resolves a canonical collision deterministically:
 first Program by Program ID keeps the unsuffixed slug and later Programs receive the
 smallest available numeric tail (`-2`, `-3`, ...). The collision and every resolved slug
 are reported.
+
+
+## Locale-aware calendar presentation
+
+BR-I18N-001 — Canonical application dates and datetimes remain Gregorian Python/Django
+values internally; calendar conversion is a presentation concern and MUST NOT rewrite
+database values.
+
+BR-I18N-002 — User-visible dates and datetimes use the active presentation language's
+approved calendar at read time.
+
+BR-I18N-003 — Persian (`fa`) user-visible dates use the Solar Hijri/Jalali calendar.
+English, Turkish, and Arabic continue to use Gregorian unless a future approved change
+introduces another calendar.
+
+BR-I18N-004 — Localized date presentation uses locale-appropriate month names, ordering,
+punctuation, and numerals. Persian uses Persian digits; Arabic uses Arabic-Indic digits.
+
+BR-I18N-005 — Timezone conversion follows the existing TurkDemy timezone rules before
+calendar/date formatting. Calendar localization MUST NOT change the represented instant.
+
+BR-I18N-006 — Date-only values remain date-only and MUST NOT acquire timezone or
+time-of-day semantics through localization.

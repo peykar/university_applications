@@ -1,5 +1,17 @@
 ## 2026-09-03 — CHG-0013 Localized structured Activity rendering
 
+
+## 2026-09-03 — Locale-aware calendar and datetime presentation
+
+- Implemented CHG-0014 / I18N-002–I18N-009 with centralized user-facing date,
+  datetime and time formatters.
+- Persian presentation now converts canonical Gregorian values to Solar Hijri/Jalali
+  with Persian month names and digits; Arabic remains Gregorian with Arabic-Indic
+  digits; English/Turkish remain Gregorian with locale-aware date text.
+- Migrated translation-enabled customer/Agent/messaging/application/activity/TODO
+  display surfaces while preserving machine-facing ISO and native datetime-control
+  values.
+
 - Agent Applicant Activity descriptions now follow the viewer's active language.
 - Predefined events use semantic metadata plus a centralized presentation-time
   renderer instead of relying on the language used when audit text was written.

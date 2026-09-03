@@ -145,7 +145,7 @@
             </div>
             <div>
               <dt>{% trans "Last updated" %}</dt>
-              <dd>{{ lead.updated_at|date:"M j, Y H:i" }}</dd>
+              <dd>{{ lead.updated_at|localized_datetime }}</dd>
             </div>
           </dl>
           <p>

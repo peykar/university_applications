@@ -64,7 +64,7 @@
        {% else %}
         {% trans "System" %}
        {% endif %}
-       · {{ activity.created_at|date:"M j, Y H:i" }}
+       · {{ activity.created_at|localized_datetime }}
       </span>
      </div>
 

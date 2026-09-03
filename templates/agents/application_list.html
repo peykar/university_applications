@@ -21,7 +21,7 @@
 <button class="button" type="submit">{% trans "Filter" %}</button><a href="{% url 'agent-application-list' %}">{% trans "Clear" %}</a>
 </form>
 <div class="agent-table-wrap"><table class="agent-table"><thead><tr><th>{% trans "Student" %}</th><th>{% trans "Program" %}</th><th>{% trans "University" %}</th><th>{% trans "Status" %}</th><th>{% trans "Updated" %}</th></tr></thead><tbody>
-{% for application in applications %}<tr><td><a href="{% url 'agent-student-detail' application.student.pk %}">{{ application.student }}</a></td><td>{{ application.program_offering.program.localized_name }}</td><td>{{ application.program_offering.program.university.localized_name }}</td><td><span class="status-pill">{{ application.get_status_display }}</span></td><td>{{ application.updated_at|date:"M j, Y" }}</td></tr>
+{% for application in applications %}<tr><td><a href="{% url 'agent-student-detail' application.student.pk %}">{{ application.student }}</a></td><td>{{ application.program_offering.program.localized_name }}</td><td>{{ application.program_offering.program.university.localized_name }}</td><td><span class="status-pill">{{ application.get_status_display }}</span></td><td>{{ application.updated_at|localized_date }}</td></tr>
 {% empty %}<tr><td colspan="5">{% trans "No formal applications match these filters." %}</td></tr>{% endfor %}
 </tbody></table></div></section>
 {% endblock %}

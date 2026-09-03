@@ -36,3 +36,16 @@ Change: UI-0005
 - [x] `I18N-T13` — Make the shared language switch deterministic across locale-prefixed and
       non-prefixed product routes, preserving query state and preventing an unresolved URL from
       silently retaining the previous locale (`BUG-0036`).
+
+
+- [x] `I18N-T14` — Add centralized locale-aware date, datetime and time presentation
+      helpers plus template filters (`CHG-0014`).
+- [x] `I18N-T15` — Convert Persian display dates to Solar Hijri/Jalali and apply
+      approved Persian/Arabic numeral presentation without changing canonical values.
+- [x] `I18N-T16` — Audit and migrate customer, Agent, messaging, Application,
+      Activity, TODO/communication and public deadline display surfaces away from raw
+      Gregorian template formatting while preserving machine-facing ISO/control values.
+- [x] `I18N-T17` — Add formatter, timezone, historical-value and template-integrity
+      regression coverage for EN/FA/TR/AR.
+- [x] `I18N-T18` — Update localization SDD, operator documentation, change history,
+      and archive verification for `CHG-0014`.

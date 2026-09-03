@@ -999,7 +999,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
 
     def test_message_timestamps_keep_date_and_time_on_mobile(self):
         self.assertIn(
-            'message.created_at|date:"M j, Y · H:i"',
+            "message.created_at|localized_datetime",
             self.request_section,
         )
         self.assertNotIn('message.created_at|date:"H:i"', self.request_section)

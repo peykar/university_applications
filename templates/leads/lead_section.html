@@ -21,7 +21,7 @@
       <dl class="entity-facts-grid request-profile-facts">
         <div><dt>{% trans "Email" %}</dt><dd>{{ lead.email|default:"—" }}</dd></div>
         <div><dt>{% trans "Phone" %}</dt><dd>{{ lead.cell|default:"—" }}</dd></div>
-        <div><dt>{% trans "Birthdate" %}</dt><dd>{{ lead.birthdate|default_if_none:"—" }}</dd></div>
+        <div><dt>{% trans "Birthdate" %}</dt><dd>{{ lead.birthdate|localized_date|default:"—" }}</dd></div>
         <div><dt>{% trans "Gender" %}</dt><dd>{{ lead.get_gender_display|default:"—" }}</dd></div>
       </dl>
     </section>
@@ -54,8 +54,8 @@
       <dl class="entity-facts-grid request-profile-facts">
         <div><dt>{% trans "Passport number" %}</dt><dd>{{ lead.passport_no|default:"—" }}</dd></div>
         <div><dt>{% trans "Issuing authority" %}</dt><dd>{{ lead.passport_issuing_authority|default:"—" }}</dd></div>
-        <div><dt>{% trans "Date of issue" %}</dt><dd>{{ lead.passport_date_of_issue|default_if_none:"—" }}</dd></div>
-        <div><dt>{% trans "Date of expiry" %}</dt><dd>{{ lead.passport_date_of_expiry|default_if_none:"—" }}</dd></div>
+        <div><dt>{% trans "Date of issue" %}</dt><dd>{{ lead.passport_date_of_issue|localized_date|default:"—" }}</dd></div>
+        <div><dt>{% trans "Date of expiry" %}</dt><dd>{{ lead.passport_date_of_expiry|localized_date|default:"—" }}</dd></div>
       </dl>
     </section>
 
@@ -305,7 +305,7 @@
                     {% trans "Your advisor" %}
                   {% endif %}
                 </strong>
-                <time datetime="{{ message.created_at|date:'c' }}">{{ message.created_at|date:"M j, Y · H:i" }}</time>
+                <time datetime="{{ message.created_at|date:'c' }}">{{ message.created_at|localized_datetime }}</time>
               </div>
               {% if message.localized_body %}<div class="chat-message-body" dir="auto">{{ message.localized_body|linebreaksbr }}</div>{% endif %}
               {% for attachment in message.attachments.all %}

@@ -1,9 +1,9 @@
 # Application-wide localization design
 
 Status: IMPLEMENTED
-Version: 1.0
+Version: 1.1
 Requirement: I18N-001
-Change: UI-0005
+Changes: UI-0005, CHG-0014
 
 ## Surface inventory
 
@@ -112,3 +112,33 @@ a compatibility fallback, and render their interface sentence under the active r
 Referenced localizable catalogue entities are resolved at display time so the event follows current
 approved localized names. User-authored reason/comment values embedded in an event remain verbatim.
 Legacy system messages without structured metadata continue to show their stored historical body.
+
+
+## Locale-aware calendar and datetime presentation
+
+`apps.core.localization.localized_date()`, `localized_datetime()` and
+`localized_time()` are the canonical read-only presentation helpers. Their template
+filters are registered through the existing application-wide localization template
+builtin.
+
+The formatter first applies Django's existing local-time conversion to timezone-aware
+datetimes. It then selects presentation by active locale:
+
+- `en`: Gregorian, English date text and Western digits;
+- `tr`: Gregorian, Turkish date text and Western digits;
+- `fa`: Solar Hijri/Jalali, Persian month names and Persian digits;
+- `ar`: Gregorian, Arabic date text and Arabic-Indic digits.
+
+Persian conversion is implemented as a pure deterministic presentation conversion;
+models, ORM fields and persisted values remain standard Django `date`/`datetime`
+values. Date-only values bypass timezone conversion.
+
+Two datetime display densities are supported: the default includes year, while
+`short` omits year for compact message/timeline surfaces. Both use the same calendar
+selection and numeral rules.
+
+Translation-enabled templates must use these presentation filters for human-visible
+dates rather than Django's raw `date` filter. Two machine-facing exceptions remain
+intentional: ISO `<time datetime>` attributes and native `datetime-local` input values.
+Those values remain Gregorian/ISO because they are interchange/control values rather
+than rendered calendar prose.

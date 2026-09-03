@@ -121,7 +121,7 @@
                 {% endif %}
               {% endfor %}
               <div><dt>{% trans "Quota" %}</dt><dd>{{ offering.quota|default:"—" }}</dd></div>
-              <div><dt>{% trans "Deadline" %}</dt><dd>{{ offering.deadline|default:"—" }}</dd></div>
+              <div><dt>{% trans "Deadline" %}</dt><dd>{{ offering.deadline|localized_date|default:"—" }}</dd></div>
             </dl>
             {% if offering.notes %}<p class="muted">{{ offering.notes }}</p>{% endif %}
           </article>

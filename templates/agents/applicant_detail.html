@@ -43,9 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
  <div class="section-audit">
   <span
    class="section-audit-indicator"
-   title="{% if lead.updated_by %}{% blocktrans with person=lead.updated_by.get_full_name|default:lead.updated_by.username when=lead.updated_at|date:'M j, Y H:i' %}Last updated by {{ person }} · {{ when }}{% endblocktrans %}{% else %}{% blocktrans with when=lead.updated_at|date:'M j, Y H:i' %}Last updated · {{ when }}{% endblocktrans %}{% endif %}"
+   title="{% if lead.updated_by %}{% blocktrans with person=lead.updated_by.get_full_name|default:lead.updated_by.username when=lead.updated_at|localized_datetime %}Last updated by {{ person }} · {{ when }}{% endblocktrans %}{% else %}{% blocktrans with when=lead.updated_at|localized_datetime %}Last updated · {{ when }}{% endblocktrans %}{% endif %}"
   >
-   {% trans "Updated" %} {{ lead.updated_at|date:"M j, Y H:i" }}
+   {% trans "Updated" %} {{ lead.updated_at|localized_datetime }}
   </span>
  </div><p>{{ lead.email|default:lead.user.email }}</p></div><span class="status-pill">{{ lead.get_status_display }}</span></div>
  <dl class="agent-facts">
@@ -274,9 +274,9 @@ document.addEventListener("DOMContentLoaded", () => {
  </div>
  <div class="internal-notes-meta">
   {% if lead.updated_by %}
-   {% blocktrans with person=lead.updated_by.get_full_name|default:lead.updated_by.username when=lead.updated_at|date:"M j, Y H:i" %}Applicant record last updated by {{ person }} · {{ when }}{% endblocktrans %}
+   {% blocktrans with person=lead.updated_by.get_full_name|default:lead.updated_by.username when=lead.updated_at|localized_datetime %}Applicant record last updated by {{ person }} · {{ when }}{% endblocktrans %}
   {% else %}
-   {% blocktrans with when=lead.updated_at|date:"M j, Y H:i" %}Applicant record last updated · {{ when }}{% endblocktrans %}
+   {% blocktrans with when=lead.updated_at|localized_datetime %}Applicant record last updated · {{ when }}{% endblocktrans %}
   {% endif %}
  </div>
 </section>
@@ -290,10 +290,10 @@ document.addEventListener("DOMContentLoaded", () => {
     <div class="system-event-row">
       <span class="system-event-icon" aria-hidden="true">✓</span>
       <span class="system-event-text">{{ message.localized_body }}</span>
-      <time>{{ message.created_at|date:"M j, H:i" }}</time>
+      <time>{{ message.created_at|localized_datetime:"short" }}</time>
     </div>
    {% else %}
-    <header><strong>{{ message.get_sender_role_display }}</strong><time>{{ message.created_at|date:"M j, H:i" }}</time></header>
+    <header><strong>{{ message.get_sender_role_display }}</strong><time>{{ message.created_at|localized_datetime:"short" }}</time></header>
     {% if message.localized_body %}<p>{{ message.localized_body|linebreaksbr }}</p>{% endif %}
    {% endif %}
    {% if message.sender_role != "system" %}
@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <span
       class="status-pill {% if document.review_status == 'pending' %}warning{% elif document.review_status == 'approved' %}success{% else %}danger{% endif %}"
       {% if document.reviewed_by and document.reviewed_at %}
-        title="{% trans 'Last reviewed by' %} {{ document.reviewed_by.get_full_name|default:document.reviewed_by.username }} · {{ document.reviewed_at|date:'M j, Y H:i' }}"
+        title="{% trans 'Last reviewed by' %} {{ document.reviewed_by.get_full_name|default:document.reviewed_by.username }} · {{ document.reviewed_at|localized_datetime }}"
       {% endif %}
     >{{ document.get_review_status_display }}</span>
    </div>

@@ -21,7 +21,7 @@
     <div class="agent-list">
       {% for todo in my_todos %}
         <a class="agent-list-row" href="{% url 'agent-todo-list' %}">
-          <span><strong>{{ todo.title }}</strong><small>{{ todo.due_date|default:"No due date" }}</small></span>
+          <span><strong>{{ todo.title }}</strong><small>{% if todo.due_date %}{{ todo.due_date|localized_date }}{% else %}{% trans "No due date" %}{% endif %}</small></span>
           <span class="status-pill">{{ todo.get_status_display }}</span>
         </a>
       {% empty %}<p class="empty-state">{% trans "No active TODOs assigned to you." %}</p>{% endfor %}
@@ -33,7 +33,7 @@
       {% for communication in recent_communications %}
         <a class="agent-list-row" href="{% url 'agent-communication-list' %}">
           <span><strong>{{ communication.get_channel_display }} · {{ communication.get_counterparty_type_display }}</strong><small>{{ communication.summary|truncatechars:72 }}</small></span>
-          <time>{{ communication.occurred_at|date:"M j, H:i" }}</time>
+          <time>{{ communication.occurred_at|localized_datetime:"short" }}</time>
         </a>
       {% empty %}<p class="empty-state">{% trans "No communication logged yet." %}</p>{% endfor %}
     </div>
@@ -59,7 +59,7 @@
       {% for message in recent_messages %}
         <a class="agent-list-row" href="{{ message.conversation.get_agent_url }}">
           <span><strong>{{ message.conversation.subject_label }}</strong><small>{{ message.localized_body|truncatechars:72|default:"Attachment" }}</small></span>
-          <time>{{ message.created_at|date:"M j, H:i" }}</time>
+          <time>{{ message.created_at|localized_datetime:"short" }}</time>
         </a>
       {% empty %}<p class="empty-state">{% trans "You're all caught up." %}</p>{% endfor %}
     </div>

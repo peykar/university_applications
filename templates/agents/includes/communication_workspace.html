@@ -21,14 +21,14 @@
         <header>
           <div>
             <strong>{{ communication.get_channel_display }} · {{ communication.get_counterparty_type_display }}</strong>
-            <small>{{ communication.occurred_at|date:"M j, Y H:i" }} · {{ communication.performed_by }}</small>
+            <small>{{ communication.occurred_at|localized_datetime }} · {{ communication.performed_by }}</small>
           </div>
           {% if communication.counterparty_name %}<span class="status-pill">{{ communication.counterparty_name }}</span>{% endif %}
         </header>
         <p>{{ communication.summary|linebreaksbr }}</p>
         <div class="operation-meta">
           {% if communication.subject %}<span>{% trans "Subject" %}: {{ communication.subject }}</span>{% endif %}
-          <span>{% trans "Recorded" %}: {{ communication.created_at|date:"M j, Y H:i" }}</span>
+          <span>{% trans "Recorded" %}: {{ communication.created_at|localized_datetime }}</span>
           {% if communication.revisions.count %}<span>{% blocktrans count count=communication.revisions.count %}{{ count }} revision{% plural %}{{ count }} revisions{% endblocktrans %}</span>{% endif %}
         </div>
         <div class="operation-actions">

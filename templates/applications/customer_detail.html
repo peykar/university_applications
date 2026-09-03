@@ -15,7 +15,7 @@
       <div><dt>{% trans "Tuition" %}</dt><dd>{{ application.tuition }}</dd></div>
       <div><dt>{% trans "Deposit" %}</dt><dd>{{ application.deposit|default:"—" }}</dd></div>
       <div><dt>{% trans "Intake" %}</dt><dd>{{ application.program_offering.intake.localized_name|default:"—" }} {{ application.program_offering.academic_year.localized_name|default:"" }}</dd></div>
-      <div><dt>{% trans "Last updated" %}</dt><dd>{{ application.updated_at|date:"Y-m-d H:i" }}</dd></div>
+      <div><dt>{% trans "Last updated" %}</dt><dd>{{ application.updated_at|localized_datetime }}</dd></div>
     </dl>
   </section>
 
@@ -61,7 +61,7 @@
         <article class="activity-item">
           <span class="activity-dot"></span>
           <div class="activity-content">
-            <div class="activity-meta"><strong>{{ event.title }}</strong><span>{{ event.when|date:"Y-m-d H:i" }}</span></div>
+            <div class="activity-meta"><strong>{{ event.title }}</strong><span>{{ event.when|localized_datetime }}</span></div>
             <p>{{ event.detail }}</p>
           </div>
         </article>
@@ -76,7 +76,7 @@
       <div class="lead-chat-messages">
         {% for message in application_messages %}
           <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
-            <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|date:"Y-m-d H:i" }}</time></div>
+            <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|localized_datetime }}</time></div>
             {% if message.localized_body %}<div class="chat-message-body">{{ message.localized_body|linebreaksbr }}</div>{% endif %}
             {% for attachment in message.attachments.all %}<a class="chat-attachment" href="{{ attachment.file.url }}">📎 {{ attachment.original_name }}</a>{% endfor %}
           </article>

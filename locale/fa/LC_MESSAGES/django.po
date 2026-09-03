@@ -3285,3 +3285,7 @@ msgstr "نهایی شد و به پرونده دانشجو تبدیل شد؛ %(co
 # CHG-0013 activity fallback
 msgid "Re-finalized existing student record; created %(count)s new draft application(s)."
 msgstr "پرونده دانشجوی موجود دوباره نهایی شد؛ %(count)s درخواست پذیرش پیش‌نویس جدید ایجاد شد."
+
+# CHG-0014
+msgid "No due date"
+msgstr "بدون تاریخ سررسید"

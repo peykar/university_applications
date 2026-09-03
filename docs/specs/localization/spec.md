@@ -1,7 +1,7 @@
 # Application-wide localization
 
 Status: APPROVED
-Version: 1.0
+Version: 1.1
 Owner: TurkDemy product/platform
 
 ## Problem
@@ -44,6 +44,7 @@ missing localized data.
 
 ### Out of scope
 
+- Machine-readable HTML values required by native controls/semantics (for example `datetime-local` values and `<time datetime>` ISO attributes) remain canonical Gregorian/ISO values; the human-facing text around them uses the localized presentation layer.
 - Automatically generating or guessing missing domain-data translations.
 - Translating third-party/Django-admin surfaces that TurkDemy has not explicitly
   chosen to localize as product UI.
@@ -87,6 +88,54 @@ Acceptance criteria:
 - Regression tests cover representative public, account/authentication, customer
   workspace/messaging, and any translation-enabled agent/staff page families that
   exist in the routing/template configuration at implementation time.
+
+
+
+I18N-002 — Canonical localized date presentation
+
+The system MUST provide one canonical presentation mechanism for user-visible dates.
+The same stored Gregorian date MUST render according to the active locale without
+changing the stored value.
+
+I18N-003 — Canonical localized datetime presentation
+
+The system MUST provide one canonical presentation mechanism for user-visible
+datetimes, including compact timeline/message variants. Presentation MUST preserve the
+existing timezone semantics.
+
+I18N-004 — Persian Solar Hijri presentation
+
+When Persian (`fa`) is active, user-visible Gregorian dates MUST be converted to the
+Solar Hijri/Jalali calendar at presentation time. Translating Gregorian month names
+without calendar conversion is not sufficient.
+
+I18N-005 — Locale-aware date text and numerals
+
+Human-facing date/datetime output MUST use the approved locale-specific ordering,
+month names, punctuation, and numeral system. Persian uses Persian digits and Persian
+Solar Hijri month names; Arabic remains Gregorian and uses Arabic-Indic digits.
+
+I18N-006 — Gregorian calendar for EN/TR/AR
+
+English, Turkish, and Arabic user-facing dates remain Gregorian. Their presentation
+MUST still follow the active language rather than forcing English date text.
+
+I18N-007 — Timezone-preserving datetime localization
+
+For timezone-aware datetimes, the system MUST apply the existing active/local timezone
+before calendar/date formatting. Localization MUST NOT alter the represented instant.
+
+I18N-008 — Date-only safety
+
+Date-only values such as birth dates, passport dates, and programme deadlines MUST
+remain date-only during presentation and MUST NOT acquire timezone or time-of-day
+semantics.
+
+I18N-009 — Presentation-only compatibility
+
+Existing historical dates/timestamps MUST require no data migration. Sorting,
+filtering, APIs, canonical machine-readable values, database values, and business
+logic remain unchanged by calendar presentation.
 
 ## Business rules / invariants
 
