@@ -72,3 +72,5 @@ the locked project dependencies.
 | `CAT-056` | Admin curation workflow | `CAT-T42` | `apps/universities/admin.py::GeneralFieldAdmin`; `ProgramAdmin` | admin/system checks |
 | `CAT-057` | Importer never maps GeneralField | `CAT-T44`, `CAT-T46` | `import_programs_for_university` validation/upsert defaults | `UniversityProgramJsonImportTests.test_import_creates_program_academic_unit_languages_and_source_bound_offering`; `test_reimport_preserves_manually_curated_general_fields`; `test_import_rejects_general_field_mapping_before_writes` |
 | `CAT-058` | SEO/editorial readiness; landing pages deferred | `CAT-T45` | `GeneralField.description_*`, `seo_title_*`, `seo_description_*`; docs boundary | SDD/document review |
+| `CAT-059` | City editorial/SEO metadata | `CAT-T47` | `apps/geography/models.py::City`; `apps/geography/admin.py::CityAdmin` | Django model/system checks; `tests/test_taxonomy_enrichment.py` |
+| `CAT-060` | One-time curated taxonomy enrichment | `CAT-T48` | `apps/universities/management/commands/enrich_taxonomy.py` | `tests/test_taxonomy_enrichment.py`; operator `--dry-run` |

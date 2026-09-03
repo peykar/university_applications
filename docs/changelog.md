@@ -1489,3 +1489,10 @@
 - Added admin curation and multilingual editorial/SEO metadata for future field pages.
 - `import_programs_for_university` never maps GeneralField: new Programs remain unmapped,
   re-imports preserve manual mappings, and import-provided `general_field` or `general_fields` is rejected.
+
+## 2026-09-03 — CHG-0018 curated taxonomy enrichment
+- Added multilingual City description/SEO storage and Admin editing.
+- Added `enrich_taxonomy` one-time command with transactional dry-run.
+- Seeded 24 curated GeneralFields and UUID-pinned mappings for 5,508 of 5,509 active
+  Programs from the supplied database snapshot; malformed `biruni` remains for manual review.
+- Kept normal catalogue import completely independent from GeneralField mapping.

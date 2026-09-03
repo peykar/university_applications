@@ -367,3 +367,17 @@ GeneralField landing-page routes; those routes remain a separate SEO/content cha
 CAT-052's earlier Department-backed field-filter behavior is superseded by CAT-055.
 Department remains University-owned catalogue structure and may still participate in
 search/similarity features where explicitly appropriate.
+
+## Curated taxonomy enrichment
+
+CAT-059 — City MUST support localized editorial description, localized SEO title,
+and localized SEO description so a used catalogue city can become an intentional
+SEO landing-page entity without storing editorial metadata outside the City record.
+
+CAT-060 — TurkDemy MUST provide an explicit operator-only one-time taxonomy
+enrichment command that can dry-run transactionally, creates/updates the curated
+GeneralField seed set, enriches an existing City by canonical `slug_en` without
+creating duplicate cities, and adds pre-reviewed Program-GeneralField mappings by
+Program UUID. The command MUST preserve any existing Program GeneralField mappings,
+MUST skip/report mapped UUIDs that are absent or inactive, and MUST explicitly
+report source records withheld for manual review rather than guessing a field.

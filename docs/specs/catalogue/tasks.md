@@ -136,3 +136,5 @@ Version: 3.1
 - [x] CAT-T46 (`CAT-055`, `CAT-057`) Add regression coverage for canonical field
       filtering, localized labels, inactive catalogue exclusion, no Department
       fallback, new-import empty mapping, re-import preservation and import rejection.
+- [x] CAT-T47 (`CAT-059`) Add localized editorial/SEO metadata to City and expose it in Django Admin.
+- [x] CAT-T48 (`CAT-060`) Add the one-time `enrich_taxonomy` command with transactional dry-run, 24 curated GeneralFields, Istanbul enrichment, and UUID-pinned mappings for the exported active catalogue.

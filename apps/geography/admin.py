@@ -51,6 +51,30 @@ class CityAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
     )
     autocomplete_fields = ("province",)
     prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
+    fieldsets = (
+        (None, {"fields": ("province", "is_active")}),
+        ("Names", {"fields": ("name_en", "name_fa", "name_tr", "name_ar")}),
+        ("Slugs", {"fields": ("slug_en", "slug_fa", "slug_tr", "slug_ar")}),
+        (
+            "Descriptions",
+            {"fields": ("description_en", "description_fa", "description_tr", "description_ar")},
+        ),
+        (
+            "SEO",
+            {
+                "fields": (
+                    "seo_title_en",
+                    "seo_description_en",
+                    "seo_title_fa",
+                    "seo_description_fa",
+                    "seo_title_tr",
+                    "seo_description_tr",
+                    "seo_title_ar",
+                    "seo_description_ar",
+                )
+            },
+        ),
+    )
 
     @admin.display(description="Country")
     def country_name(self, obj):

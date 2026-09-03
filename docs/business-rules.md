@@ -76,3 +76,8 @@
 - FAQ category counts are computed from related FAQ rows rather than manually stored.
 - Contact phone numbers, when supplied, must use a valid international phone format and are normalized to E.164.
 - `ContactSubmission.handled` is an internal workflow flag and does not turn a contact message into an admissions application.
+
+- `BR-CAT-GF-002` — Bulk GeneralField assignment is an explicit TurkDemy curation
+  operation, never a side effect of catalogue import. Snapshot-based enrichment must
+  identify Programs by stable UUID, preserve existing mappings, and leave uncertain
+  source records unmapped for manual review.
