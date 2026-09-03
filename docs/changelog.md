@@ -1,3 +1,7 @@
+### UI-0011 mobile University bridge-card removal stabilization
+
+Removed the redundant overlapping University mini-card from mobile Program Detail because the hero already exposes University and City context and the full University showcase remains later on the page. Reclaimed the overlap spacing so the four-cell Program fact summary follows the hero directly. Desktop behavior and all Program, Request, Offering and SEO semantics remain unchanged.
+
 ### UI-0011 mobile University bridge-card centering stabilization
 
 Centered the overlapping mobile University bridge card by physical viewport geometry and explicitly centered its logo, preventing RTL logical positioning from making the card or brand mark appear shifted. No product or SEO behavior changed.

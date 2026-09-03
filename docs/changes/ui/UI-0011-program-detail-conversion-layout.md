@@ -98,3 +98,13 @@ scanability still needed refinement. The same UI-0011 change therefore received 
 
 A final narrow-screen RTL review showed that the overlapping University bridge card and its logo could appear visually off-centre. UI-0011 now positions that card by physical viewport geometry (`left: 50%` plus `translateX(-50%)`) rather than logical inline offsets, so RTL text direction cannot influence its horizontal placement. The University logo is also explicitly centered on the same axis. This is visual-only and does not change Program, University, Request, catalogue, or SEO behavior.
 
+
+
+## Mobile University bridge-card removal stabilization
+
+A subsequent mobile review showed that the overlapping University bridge card was redundant: the hero
+already names and links the University and City, and the complete University showcase remains later in
+the page. UI-0011 therefore removes that bridge card from mobile entirely and reclaims the reserved
+overlap spacing. The mobile sequence is now Hero → four Program facts → Request → Offerings →
+University showcase → Similar Programs → More Programs. Desktop keeps its existing adjacent University
+context card. No Program, University, Request, Offering, URL, permission, or SEO behavior changes.

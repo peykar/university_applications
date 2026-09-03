@@ -445,8 +445,9 @@ conversion surface: on desktop the Request card MUST remain adjacent and sticky 
 Program content, a single active Offering MUST use the available main-content width, and on
 narrower layouts the Request surface MUST precede the long detail stream. On mobile, the hero MUST keep safe reading space from the viewport/header edges. Program facts MUST
 be owned by one compact four-cell summary surface instead of being repeated in both hero pills and the
-summary strip, while a compact University bridge card MAY overlap the hero to preserve visual context.
-The Request card MUST keep one dominant action and compact secondary actions. University facts and
+summary strip. Because the hero already exposes the University name and City and the full University
+showcase appears later, mobile MUST NOT render a separate University bridge card between the hero and
+summary. The Request card MUST keep one dominant action and compact secondary actions. University facts and
 related-program discovery MUST use dense mobile-native layouts. This presentation MUST preserve
 Offering data, University/related discovery,
 CHG-0023 contextual links, Request workflow semantics and Program SEO identity.

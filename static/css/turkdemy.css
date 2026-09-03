@@ -6815,3 +6815,14 @@ a.entity-list-row:hover{
   .related-program-price strong{font-size:.94rem!important}
   .related-program-price span,.related-program-card .card-action{font-size:.63rem!important}
 }
+
+
+/* UI-0011 stabilization — mobile hero has no redundant University bridge card. */
+@media(max-width:720px){
+  .program-university-mini-card-mobile{display:none!important}
+  .program-detail-hero{
+    margin-bottom:14px!important;
+    padding-bottom:64px!important;
+  }
+  .program-summary-grid{margin-top:0!important}
+}

@@ -50,14 +50,6 @@
       <a href="{% url 'university-detail' program.university.slug_en %}">{% trans "View university" %} →</a>
     </aside>
   </div>
-  <aside class="program-university-mini-card program-university-mini-card-mobile">
-    {% if program.university.logo %}
-      <img src="{{ program.university.logo.url }}" alt="{{ program.university.localized_name }}">
-    {% endif %}
-    <strong>{{ program.university.localized_name }}</strong>
-    <span>{{ program.university.city.localized_name }} · {{ program.university.get_university_type_display }}</span>
-    <a href="{% url 'university-detail' program.university.slug_en %}">{% trans "View university" %} →</a>
-  </aside>
 </section>
 
 <section class="program-summary-grid">

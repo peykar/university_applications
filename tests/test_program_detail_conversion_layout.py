@@ -46,9 +46,11 @@ class ProgramDetailConversionLayoutTests(SimpleTestCase):
         self.assertIn("scroll-snap-type:x mandatory", self.css)
         self.assertIn(".related-program-card{flex:0 0 min(84vw,280px)", self.css)
 
-    def test_mobile_hero_uses_breathing_room_and_bridged_university_context(self):
+    def test_mobile_hero_uses_breathing_room_without_duplicate_university_card(self):
         self.assertIn("padding:68px 26px 92px", self.css)
-        self.assertIn("bottom:-66px", self.css)
+        self.assertNotIn('program-university-mini-card-mobile">', self.template)
+        self.assertIn("margin-bottom:14px!important", self.css)
+        self.assertIn("padding-bottom:64px!important", self.css)
         self.assertIn("grid-template-columns:repeat(4,minmax(0,1fr))", self.css)
         self.assertIn('{% trans "Study mode" %}', self.template)
         self.assertIn(".program-fact-pills{display:none}", self.css)
@@ -62,12 +64,9 @@ class ProgramDetailConversionLayoutTests(SimpleTestCase):
         self.assertIn("grid-template-columns:repeat(3,minmax(0,1fr))", self.css)
         self.assertIn("flex-basis:min(46vw,176px)", self.css)
 
-    def test_mobile_university_bridge_card_is_physically_centered_in_ltr_and_rtl(self):
-        self.assertIn("left:50%", self.css)
-        self.assertIn("right:auto", self.css)
-        self.assertIn("width:calc(100% - 48px)", self.css)
-        self.assertIn("transform:translateX(-50%)", self.css)
-        self.assertIn("margin-inline:auto", self.css)
+    def test_mobile_does_not_render_redundant_university_bridge_card(self):
+        self.assertNotIn('program-university-mini-card-mobile">', self.template)
+        self.assertIn(".program-university-mini-card-mobile{display:none!important}", self.css)
 
     def test_mobile_request_copy_is_shorter(self):
         self.assertIn(

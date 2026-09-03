@@ -384,7 +384,8 @@ At widths below 1000px the grid collapses and the Request sidebar receives negat
 so it appears before the long main content without duplicating the conversion action in the DOM.
 Mobile uses the approved conversion-first composition: the hero gets generous safe spacing; hero fact
 pills are suppressed so degree/language/duration/study-mode appear only once in a compact four-cell
-summary row; and a small University bridge card overlaps the hero boundary. The Request card keeps one
-dominant CTA with two compact secondary actions. The later University section uses a three-column by
+summary row. The hero already names and links the University and City, so mobile deliberately omits a
+separate University bridge card and moves directly from hero context to the fact row. The Request card
+keeps one dominant CTA with two compact secondary actions. The later University section uses a three-column by
 two-row fact grid, shortened expandable copy and a wide media treatment. Similar Programs use compact
 horizontal snap cards so several alternatives are visible without creating a long repeated stack.
