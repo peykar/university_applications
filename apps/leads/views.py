@@ -168,6 +168,11 @@ def _lead_entity_context(*, request, lead, mark_read=False):
         {
             "label": _customer_activity_label(activity),
             "created_at": activity.created_at,
+            "suggestion_reason": (
+                activity.metadata.get("suggestion_reason", "")
+                if activity.activity_type == LeadActivityType.PROGRAM_SUGGESTED
+                else ""
+            ),
         }
         for activity in activity_qs
     ]

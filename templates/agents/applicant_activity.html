@@ -71,6 +71,9 @@
      {% if activity.description %}
       <p>{{ activity.description }}</p>
      {% endif %}
+     {% if activity.activity_type == "program_suggested" and activity.metadata.suggestion_reason %}
+      <p class="activity-recommendation-reason" dir="auto">{{ activity.metadata.suggestion_reason }}</p>
+     {% endif %}
 
      {% if activity.metadata.changes %}
       <div class="activity-changes">

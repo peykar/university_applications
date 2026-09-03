@@ -15,6 +15,9 @@ baseline subject to the gap report.
 - [x] Add named tests for `PRG-002` through `PRG-006` and defensive lifecycle
       validation.
 - [x] Update PRG traceability for the REF-0002 implementation.
+- [x] `CHG-0011`: render an Agent recommendation reason on the customer Request
+      Overview program card and with PROGRAM_SUGGESTED activity presentations.
+- [x] Add regression coverage for PRG-010 customer and Agent presentation.
 - [ ] Resolve any remaining `PRG` findings marked `SPEC GAP` or `CODE GAP` in
       `docs/spec-code-gap-report.md`.
 - [ ] For the next behavioral change, add requirement IDs before implementation.

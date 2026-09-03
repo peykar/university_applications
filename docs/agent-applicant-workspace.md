@@ -42,3 +42,10 @@ Agent-only wide canvas. The standard site container, sidebar geometry, heading
 hierarchy, entity navigation, responsive behavior, and RTL treatment match My
 TurkDemy. Applicant-specific panels and tables may remain denser inside the shared
 content column when the workflow requires it.
+
+
+## Program recommendation activity
+
+PROGRAM_SUGGESTED events display the structured recommendation reason, when one
+was supplied, beneath the event description in Applicant Activity. The reason
+comes from activity metadata and remains distinct from internal notes.

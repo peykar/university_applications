@@ -1418,3 +1418,12 @@
   replacement events localize document-type labels; Applicant finalization copy is locale-aware.
 - Human-authored messages and legacy system rows remain unchanged, with stored English bodies kept
   as resilient fallback snapshots for new events.
+
+
+## 2026-09-03 — Recommendation reasons in Overview and activity
+
+- Added PRG-010 / CHG-0011 so Agent recommendation reasons are visible on the
+  customer Request Overview program card and alongside PROGRAM_SUGGESTED events.
+- Agent Applicant Activity now shows the same structured recommendation reason.
+- Reused existing structured recommendation/activity data; no schema, permission,
+  or recommendation transaction behavior changed.

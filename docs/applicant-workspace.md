@@ -22,3 +22,11 @@ most of the available width.
 
 The page-specific styles are scoped under `.customer-applicant-page` so the
 Agent Workspace and other lead views keep their own presentation.
+
+
+## Agent recommendation reasons
+
+When an Agent recommendation contains a customer-understandable reason, the
+customer sees it on the Request Overview program card, on the Programs tab, and
+with the PROGRAM_SUGGESTED item in Progress. The reason is recommendation data,
+not an internal Agent note.

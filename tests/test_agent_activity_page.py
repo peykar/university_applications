@@ -50,3 +50,11 @@ class AgentActivityPageTests(SimpleTestCase):
         self.assertIn('"notes": (', self.views)
         self.assertIn("LeadActivityType.NOTE", self.views)
         self.assertIn("LeadActivityType.INTERNAL_NOTES_UPDATED", self.views)
+
+    def test_program_suggestion_activity_shows_recommendation_reason(self):
+        self.assertIn(
+            'activity.activity_type == "program_suggested"',
+            self.activity,
+        )
+        self.assertIn("activity.metadata.suggestion_reason", self.activity)
+        self.assertIn('class="activity-recommendation-reason" dir="auto"', self.activity)

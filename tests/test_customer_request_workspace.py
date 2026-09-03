@@ -793,6 +793,24 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         self.assertIn("{{ interest.suggestion_reason }}", programs)
         self.assertNotIn("{{ interest.notes }}", programs)
 
+    def test_agent_suggestion_reason_is_visible_on_request_overview_program_card(self):
+        self.assertIn(
+            'class="request-overview-program-suggestion-reason" dir="auto"',
+            self.request_detail,
+        )
+        self.assertIn("{{ interest.suggestion_reason }}", self.request_detail)
+        self.assertNotIn("{{ interest.notes }}", self.request_detail)
+
+    def test_program_suggestion_activity_exposes_reason_in_customer_progress(self):
+        self.assertIn(
+            "activity.activity_type == LeadActivityType.PROGRAM_SUGGESTED",
+            self.views,
+        )
+        self.assertIn('activity.metadata.get("suggestion_reason", "")', self.views)
+        self.assertIn("{% if activity.suggestion_reason %}", self.request_detail)
+        self.assertIn("{{ activity.suggestion_reason }}", self.request_detail)
+        self.assertIn('class="request-progress-note" dir="auto"', self.request_detail)
+
     def test_finalized_program_management_is_read_only(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
             '{% elif entity_tab == "documents" %}', 1

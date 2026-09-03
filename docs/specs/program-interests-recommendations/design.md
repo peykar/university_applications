@@ -21,6 +21,11 @@ Status: BASELINED
   together.
 - The Agent view owns HTTP concerns only: Agent scoping, request parsing,
   catalogue lookup, user-facing flash messages, and redirect behavior.
+- Recommendation reasons remain structured data: `LeadProgramInterest.suggestion_reason`
+  is rendered on customer program surfaces, and the corresponding
+  `LeadActivity.metadata["suggestion_reason"]` is rendered with the customer and
+  Agent PROGRAM_SUGGESTED activity presentation. The reason is not duplicated
+  into the activity description string.
 - Automatic/system-generated program recommendations remain disabled.
 - Recommendation removal remains a separate Agent endpoint and is not part of
   REF-0002's creation/update transaction boundary.

@@ -46,7 +46,14 @@
                     {% with offering=interest.program.customer_offerings.0 %}· {% trans "From" %} {{ offering.display_tuition_fee.amount|currency_amount:offering.display_tuition_fee.currency }} / {{ offering.display_tuition_fee.get_basis_display }}{% endwith %}
                   {% endif %}
                 </small>
-                {% if interest.source == "agent" %}<em>{% trans "Suggested by your advisor" %}</em>{% else %}<em class="request-overview-program-source-user">{% trans "Added by you" %}</em>{% endif %}
+                {% if interest.source == "agent" %}
+                  <em>{% trans "Suggested by your advisor" %}</em>
+                  {% if interest.suggestion_reason %}
+                    <small class="request-overview-program-suggestion-reason" dir="auto">{{ interest.suggestion_reason }}</small>
+                  {% endif %}
+                {% else %}
+                  <em class="request-overview-program-source-user">{% trans "Added by you" %}</em>
+                {% endif %}
               </span>
               <b>→</b>
             </a>
@@ -64,7 +71,7 @@
           <div class="section-heading"><div><h2>{% trans "Progress" %}</h2></div></div>
           <ol class="request-progress-list">
             {% for activity in activities|slice:":6" %}
-              <li><span></span><div><strong>{{ activity.label }}</strong><time>{{ activity.created_at|date:"M j, Y · H:i" }}</time></div></li>
+              <li><span></span><div><strong>{{ activity.label }}</strong>{% if activity.suggestion_reason %}<p class="request-progress-note" dir="auto">{{ activity.suggestion_reason }}</p>{% endif %}<time>{{ activity.created_at|date:"M j, Y · H:i" }}</time></div></li>
             {% empty %}
               <li><span></span><div><strong>{% trans "Request received" %}</strong></div></li>
             {% endfor %}

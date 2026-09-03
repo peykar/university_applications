@@ -34,6 +34,11 @@ NOT be treated as a formal Application.
 PRG-009 — Agent program search for recommendation MUST only return active
 Programs whose Universities are active.
 
+PRG-010 — When an Agent recommendation includes a reason, that reason MUST be
+customer-visible on the Request Overview program summary and alongside the
+PROGRAM_SUGGESTED activity; the Agent activity timeline MUST also show the same
+structured reason as part of that event.
+
 ## Acceptance policy
 
 Each requirement is accepted when its observable behavior is implemented and

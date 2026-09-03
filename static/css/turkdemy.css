@@ -5887,6 +5887,9 @@ a.entity-list-row:hover{
 /* Customer Request: richer program comparison and management */
 .request-overview-program-meta{color:#5f7183!important;font-weight:700}
 .request-overview-program-source-user{background:#eef4f8!important;color:#5e7182!important}
+.request-overview-program-suggestion-reason{display:block;margin-top:5px;color:#53697d;font-size:.72rem;font-weight:500;line-height:1.45;unicode-bidi:plaintext}
+.request-progress-note{margin:1px 0 0;color:#53697d;font-size:.7rem;line-height:1.45;unicode-bidi:plaintext}
+.activity-recommendation-reason{unicode-bidi:plaintext}
 .request-program-card{display:block;color:inherit;text-decoration:none;cursor:default}
 .request-program-detail-link{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;color:inherit;text-decoration:none}
 .request-program-detail-link:hover{color:inherit;text-decoration:none}
