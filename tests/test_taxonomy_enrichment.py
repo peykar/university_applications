@@ -12,6 +12,13 @@ def test_city_has_localized_editorial_and_seo_fields():
         assert f"seo_description_{locale}" in field_names
 
 
+def test_city_has_banner_and_localized_alt_fields():
+    field_names = {field.name for field in City._meta.fields}
+    assert "banner" in field_names
+    for locale in ("en", "fa", "tr", "ar"):
+        assert f"banner_alt_{locale}" in field_names
+
+
 def test_taxonomy_snapshot_is_explicit_and_leaves_only_known_bad_record_unmapped():
     assert len(enrich_taxonomy.GENERAL_FIELDS) == 24
     assert len(enrich_taxonomy.PROGRAM_FIELD_MAP) == 5508

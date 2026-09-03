@@ -3430,3 +3430,6 @@ msgstr "مشاهده همه برنامه‌های این شهر"
 
 msgid "No active universities are available in this city."
 msgstr "در حال حاضر دانشگاه فعالی در این شهر موجود نیست."
+
+msgid "Main banner image used on the public City landing page."
+msgstr "تصویر بنر اصلی مورد استفاده در صفحه عمومی شهر."

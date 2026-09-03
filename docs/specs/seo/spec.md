@@ -84,3 +84,8 @@ the City has an active University, page-specific metadata, CollectionPage/breadc
 structured data, and crawlable internal links from University detail pages. Equivalent
 query-string city filters remain `noindex,follow`.
 
+SEO-017 — When a curated City banner exists, the City landing page MUST use that image as
+its visible representative media, Open Graph/Twitter image, and CollectionPage image.
+The visible image MUST have locale-aware meaningful alt text. When no City banner exists,
+the page MUST omit City-specific image markup and MUST NOT invent a social image.
+

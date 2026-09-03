@@ -297,12 +297,15 @@ def university_city_detail(request, slug):
     }
     if city_description:
         schema_node["description"] = city_description
+    if city.banner:
+        schema_node["image"] = absolute_media_url(city.banner.url)
 
     return render(
         request,
         "public/university_city_detail.html",
         {
             "city": city,
+            "seo_image_url": (absolute_media_url(city.banner.url) if city.banner else ""),
             "universities": page_obj.object_list,
             "page_obj": page_obj,
             "university_count": paginator.count,

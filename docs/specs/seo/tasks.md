@@ -31,5 +31,10 @@ Status: BASELINED
 ## CHG-0020
 
 - [x] `SEO-016` Promote qualifying Cities to explicit indexable University-city landing pages without promoting arbitrary city-filter URLs.
+- [x] User verified CHG-0020.
+
+## CHG-0021
+
+- [x] `SEO-017` Use an optional curated City banner as visible, social and structured-data representative media with localized alt text and a clean no-image fallback.
 - [ ] Run `make format` and `make check` in the project environment.
 

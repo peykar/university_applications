@@ -3444,3 +3444,6 @@ msgstr "Bu şehirdeki tüm programları keşfedin"
 
 msgid "No active universities are available in this city."
 msgstr "Bu şehirde şu anda aktif üniversite bulunmuyor."
+
+msgid "Main banner image used on the public City landing page."
+msgstr "Herkese açık şehir sayfasında kullanılan ana banner görseli."

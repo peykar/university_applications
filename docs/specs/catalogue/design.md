@@ -336,3 +336,16 @@ City pages use CollectionPage + BreadcrumbList structured data. Sitemap emission
 restricted to active Cities with active Universities. University detail pages provide
 crawlable internal links to their City's canonical landing route.
 
+## City banner media (CAT-067)
+
+`City.banner` stores one optional shared visual under `cities/banners/`. Localized
+`banner_alt_*` fields provide meaningful accessibility/SEO text. The model exposes
+`localized_banner_alt`, which follows the shared localization fallback and ultimately
+falls back to the localized City name. City Admin provides the upload field, localized
+alt fields, and a read-only preview.
+
+The City landing template renders the banner directly below the hero when present and
+omits the entire media block when absent. The view promotes the same banner to the page's
+Open Graph/Twitter image and CollectionPage `image` property using an absolute media URL.
+No image is synthesized when a City has no curated banner.
+

@@ -1519,3 +1519,10 @@
   sitemap inclusion, University-detail internal links, and regression coverage while
   preserving query-string city filters as `noindex,follow`.
 
+
+
+## 2026-09-03 — CHG-0021 City banner media
+
+- Added one optional City banner image with localized EN/FA/TR/AR alt text and Admin preview/editing.
+- City landing pages now render the curated responsive banner when present and use it as `og:image`, `twitter:image`, and CollectionPage image metadata.
+- Missing City banners remain a clean no-image state; canonical, hreflang, sitemap and query-indexability rules are unchanged.

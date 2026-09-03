@@ -141,3 +141,10 @@ English slugs are ASCII; Persian, Turkish, and Arabic localized slugs preserve
 valid Unicode. Existing/non-empty slugs are never automatically replaced when a
 name changes, so established URLs remain stable. If the source name is empty,
 its slug remains empty.
+
+
+## City banner media
+
+City Admin includes one optional shared banner image, a read-only preview, and localized
+EN/FA/TR/AR alternative-text fields. The banner is used by the public City landing page
+and as its social/structured-data representative image.

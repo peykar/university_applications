@@ -81,4 +81,5 @@ the locked project dependencies.
 | `CAT-064` | Indexable canonical City landing route | `CAT-T53`, `CAT-T56` | `apps/public/urls.py`; `apps/public/views.py::university_city_detail`; `apps/public/context_processors.py` | `tests/test_public_seo.py`; `tests/test_public_page_metadata.py` |
 | `CAT-065` | City landing content and catalogue discovery | `CAT-T54`, `CAT-T56` | `templates/public/university_city_detail.html`; `apps/public/views.py::university_city_detail` | `tests/test_public_page_metadata.py` |
 | `CAT-066` | City SEO/sitemap/internal linking | `CAT-T55`, `CAT-T56` | `apps/public/seo_views.py`; `templates/public/university_detail.html`; `templates/public/university_city_detail.html` | `tests/test_public_seo.py`; `tests/test_public_page_metadata.py` |
+| `CAT-067` | Optional City banner, localized alt text and public/admin presentation | `CAT-T57`–`CAT-T60` | `apps/geography/models.py::City`; `apps/geography/admin.py::CityAdmin`; `apps/public/views.py::university_city_detail`; `templates/public/university_city_detail.html`; `static/css/turkdemy.css` | `tests/test_taxonomy_enrichment.py`; `tests/test_public_page_metadata.py` |
 

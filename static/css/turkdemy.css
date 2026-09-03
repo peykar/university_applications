@@ -6212,3 +6212,9 @@ a.entity-list-row:hover{
   text-decoration: underline;
 }
 
+
+
+/* CHG-0021: City banner media. */
+.city-landing-banner-wrap{margin:28px 0 0}
+.city-landing-banner{display:block;width:100%;height:clamp(260px,38vw,520px);object-fit:cover;border-radius:18px}
+@media(max-width:720px){.city-landing-banner-wrap{margin-top:20px}.city-landing-banner{height:240px;border-radius:14px}}

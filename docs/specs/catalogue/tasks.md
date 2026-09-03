@@ -154,5 +154,13 @@ Version: 3.1
 - [x] CAT-T54 (`CAT-065`) Render localized City editorial content, paginated active Universities and representative Programs with a canonical city-filter discovery link.
 - [x] CAT-T55 (`CAT-066`) Add City canonical/hreflang, structured data, sitemap inclusion and crawlable University-detail internal linking.
 - [x] CAT-T56 (`CAT-064`–`CAT-066`) Add public metadata/SEO regression tests and synchronized documentation.
+- [x] User verified CHG-0020.
+
+## CHG-0021 — City banner media
+
+- [x] CAT-T57 (`CAT-067`) Add optional City banner storage, localized alt text and localized fallback behavior.
+- [x] CAT-T58 (`CAT-067`) Add City Admin upload/preview and localized alt editing.
+- [x] CAT-T59 (`CAT-067`, `SEO-017`) Render the responsive City banner and reuse it for social/structured-data image metadata.
+- [x] CAT-T60 (`CAT-067`, `SEO-017`) Add regression tests, SEO review and synchronized documentation.
 - [ ] Run `make format` and `make check` locally.
 

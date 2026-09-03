@@ -47,6 +47,20 @@ class City(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
     seo_description_tr = models.TextField(blank=True)
     seo_description_ar = models.TextField(blank=True)
 
+    banner = models.ImageField(
+        upload_to="cities/banners/",
+        blank=True,
+        help_text=_("Main banner image used on the public City landing page."),
+    )
+    banner_alt_en = models.CharField(max_length=255, blank=True)
+    banner_alt_fa = models.CharField(max_length=255, blank=True)
+    banner_alt_tr = models.CharField(max_length=255, blank=True)
+    banner_alt_ar = models.CharField(max_length=255, blank=True)
+
+    @property
+    def localized_banner_alt(self):
+        return localized_value(self, "banner_alt") or self.localized_name
+
     @property
     def localized_seo_title(self):
         return localized_value(self, "seo_title")

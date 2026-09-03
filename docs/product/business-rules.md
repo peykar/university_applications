@@ -239,3 +239,8 @@ indexable University discovery landing page at
 the route identity across locales. Equivalent city query-filter URLs remain
 noindex navigation surfaces rather than canonical City pages.
 
+BR-SEO-006 — A City MAY have one curated banner image shared across locales. When present,
+the banner is the representative image for the City landing page and its social metadata.
+Visible image alternative text MUST be localized with English fallback and MUST NOT be
+replaced by decorative or invented text when curated alt text exists.
+

@@ -43,6 +43,9 @@ class PublicPageMetadataTests(TestCase):
             seo_description_en=(
                 "Compare universities and study programs in Istanbul with TurkDemy."
             ),
+            banner="cities/banners/istanbul.jpg",
+            banner_alt_en="Istanbul skyline and Bosphorus",
+            banner_alt_fa="نمای استانبول و تنگه بسفر",
         )
         cls.city = city
         cls.university = University.objects.create(
@@ -193,10 +196,47 @@ class PublicPageMetadataTests(TestCase):
         self.assertIn("SEO Test University", html)
         self.assertIn("Computer Engineering", html)
         self.assertIn('name="robots" content="index,follow"', html)
+        self.assertIn(
+            'src="/media/cities/banners/istanbul.jpg"',
+            html,
+        )
+        self.assertIn('alt="Istanbul skyline and Bosphorus"', html)
+        self.assertIn(
+            (
+                'property="og:image" '
+                'content="https://turkdemy.com/media/cities/banners/istanbul.jpg"'
+            ),
+            html,
+        )
         schema = self._schema(response)
         types = {node["@type"] for node in schema["@graph"]}
         self.assertIn("CollectionPage", types)
         self.assertIn("BreadcrumbList", types)
+        city_node = next(node for node in schema["@graph"] if node["@type"] == "CollectionPage")
+        self.assertEqual(
+            city_node["image"],
+            "https://turkdemy.com/media/cities/banners/istanbul.jpg",
+        )
+
+    def test_city_banner_alt_is_localized(self):
+        response = self.client.get("/fa/universities/cities/istanbul-seo/")
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn('alt="نمای استانبول و تنگه بسفر"', html)
+
+    def test_city_without_banner_omits_visible_and_social_image(self):
+        self.city.banner = ""
+        self.city.save(update_fields=["banner"])
+        with translation.override("en"):
+            url = reverse("university-city-detail", args=[self.city.slug_en])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertNotIn('class="city-landing-banner"', html)
+        self.assertNotIn('property="og:image"', html)
+        schema = self._schema(response)
+        city_node = next(node for node in schema["@graph"] if node["@type"] == "CollectionPage")
+        self.assertNotIn("image", city_node)
 
     def test_sitemap_contains_city_landing_page(self):
         response = self.client.get("/sitemap.xml")

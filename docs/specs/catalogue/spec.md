@@ -420,3 +420,9 @@ Universities, page-specific social metadata, CollectionPage plus breadcrumb stru
 data, and crawlable internal links from University detail pages. Equivalent
 query-string city filters remain noindex navigation surfaces.
 
+CAT-067 — A City MAY store one curated public banner image plus localized alternative
+text for EN/FA/TR/AR. The banner MUST be editable from City Admin, rendered on the City
+landing page when present, and omitted cleanly when absent. Alternative text MUST use the
+active locale with canonical English fallback, then the localized City name as the final
+fallback.
+

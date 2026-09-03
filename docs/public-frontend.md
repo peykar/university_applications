@@ -60,3 +60,10 @@ static/
 `LocaleMiddleware` and `i18n_patterns` provide EN/FA/TR/AR URL prefixes.
 The base template includes a language selector and RTL page direction for
 Persian and Arabic.
+
+
+### City banner media
+
+`/<lang>/universities/cities/<city-slug_en>/` renders the City's optional curated banner
+below the hero. The same banner supplies Open Graph/Twitter and CollectionPage image
+metadata; localized alt text is used for accessibility and SEO.

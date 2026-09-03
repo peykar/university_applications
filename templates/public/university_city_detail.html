@@ -26,6 +26,16 @@
   </div>
 </section>
 
+{% if city.banner %}
+  <figure class="city-landing-banner-wrap">
+    <img
+      class="city-landing-banner"
+      src="{{ city.banner.url }}"
+      alt="{{ city.localized_banner_alt }}"
+    >
+  </figure>
+{% endif %}
+
 <section class="home-section city-landing-universities">
   <div class="section-heading">
     <div>

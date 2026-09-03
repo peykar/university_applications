@@ -3416,3 +3416,6 @@ msgstr "استكشف جميع البرامج في هذه المدينة"
 
 msgid "No active universities are available in this city."
 msgstr "لا توجد جامعات نشطة متاحة حاليًا في هذه المدينة."
+
+msgid "Main banner image used on the public City landing page."
+msgstr "صورة البانر الرئيسية المستخدمة في صفحة المدينة العامة."

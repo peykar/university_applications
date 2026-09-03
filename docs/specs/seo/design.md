@@ -55,3 +55,12 @@ applicable SEO effects in its change record and tests.
   University.
 - University detail pages link their City label to the dedicated landing page.
 
+
+
+## CHG-0021 City representative image
+
+City landing pages use `City.banner` as the single curated representative image when it
+exists. The view converts its media URL to an absolute URL for `og:image`,
+`twitter:image`, and CollectionPage `image`. The template uses
+`City.localized_banner_alt` for visible alternative text. Missing banners remain a clean
+no-image state; there is no generated or unrelated fallback image.

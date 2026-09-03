@@ -2,6 +2,7 @@ from collections.abc import Sequence
 from typing import ClassVar
 
 from django.contrib import admin
+from django.utils.html import format_html
 
 from apps.core.admin import ActiveActionsMixin, AuditAdminMixin
 
@@ -51,10 +52,24 @@ class CityAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
     )
     autocomplete_fields = ("province",)
     prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
+    readonly_fields = ("banner_preview",)
     fieldsets = (
         (None, {"fields": ("province", "is_active")}),
         ("Names", {"fields": ("name_en", "name_fa", "name_tr", "name_ar")}),
         ("Slugs", {"fields": ("slug_en", "slug_fa", "slug_tr", "slug_ar")}),
+        (
+            "Media",
+            {
+                "fields": (
+                    "banner",
+                    "banner_preview",
+                    "banner_alt_en",
+                    "banner_alt_fa",
+                    "banner_alt_tr",
+                    "banner_alt_ar",
+                )
+            },
+        ),
         (
             "Descriptions",
             {"fields": ("description_en", "description_fa", "description_tr", "description_ar")},
@@ -75,6 +90,15 @@ class CityAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
             },
         ),
     )
+
+    @admin.display(description="Banner")
+    def banner_preview(self, obj):
+        if not obj.banner:
+            return "—"
+        return format_html(
+            '<img src="{}" style="max-height:120px;max-width:320px;" alt="" />',
+            obj.banner.url,
+        )
 
     @admin.display(description="Country")
     def country_name(self, obj):

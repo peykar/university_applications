@@ -84,3 +84,10 @@ Formal Application creation snapshots the active discounted tuition when present
 otherwise list tuition, and snapshots an active structured deposit when present.
 An offering without an active amount-bearing tuition fee cannot start an Application.
 
+
+
+### City public media
+
+`City` stores an optional `banner` (`cities/banners/`) plus `banner_alt_en`,
+`banner_alt_fa`, `banner_alt_tr`, and `banner_alt_ar`. `localized_banner_alt` uses the
+active locale, then English, then the localized City name.

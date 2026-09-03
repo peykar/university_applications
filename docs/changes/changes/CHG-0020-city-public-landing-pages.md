@@ -1,6 +1,6 @@
 # CHG-0020 — City public landing pages
 
-Status: VERIFYING
+Status: VERIFIED
 Requested: 2026-09-03
 
 ## Request
@@ -50,6 +50,5 @@ CHANGE
 
 ## Verification
 
-- [ ] `make format` locally.
-- [ ] `make check` locally.
-- [ ] Manually open at least one EN and one RTL City landing page.
+- [x] User verified CHG-0020 behavior.
+- [x] City landing page and sitemap behavior accepted.
