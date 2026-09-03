@@ -24,3 +24,13 @@ baseline subject to the gap report.
 - [x] `AUD-008`, `AUD-009` Add regression tests and update traceability/docs.
 - [ ] Run `make format` and `make check` in the project environment.
 
+## UI-0010 — cohesive RTL Activity timeline
+
+- [x] `AUD-010` Keep Activity actor/date metadata adjacent to the event heading.
+- [x] `AUD-010` Use logical start alignment so the compact metadata stack follows
+      LTR/RTL direction naturally.
+- [x] `AUD-010` Add bidi-safe presentation for Activity descriptions, actor names,
+      and structured old/new audit values.
+- [x] `AUD-010` Add structural regression coverage and update traceability/docs.
+- [ ] Run `make format` and `make check` in the project environment.
+

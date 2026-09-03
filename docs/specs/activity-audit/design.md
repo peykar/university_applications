@@ -22,6 +22,16 @@ Status: BASELINED
   `localized_changes`, while old/new snapshot values remain immutable audit data.
   Activity-type choice labels continue to use Django i18n.
 
+
+- The dedicated Agent Activity timeline keeps title, actor and localized timestamp
+  in one compact metadata stack so wide desktop layouts do not visually detach
+  metadata from its event. The stack uses logical `start` alignment and therefore
+  follows LTR/RTL page direction without physical left/right overrides.
+- Activity descriptions and structured old/new audit values use `dir="auto"` plus
+  plaintext bidi isolation at presentation time. This protects English emails,
+  filenames, Program names and other LTR values embedded in Persian/Arabic pages
+  while preserving the exact stored/display value.
+
 ## Cross-cutting constraints
 
 - Follow canonical rules in `docs/product/business-rules.md`.

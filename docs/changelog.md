@@ -1,5 +1,12 @@
 ## 2026-09-03 — CHG-0013 Localized structured Activity rendering
 
+## 2026-09-03 — Agent Activity RTL grouping and bidi polish
+
+- Implemented UI-0010 / AUD-010: Activity actor/date metadata now stays grouped
+  beside its event instead of spanning to the opposite edge of wide panels.
+- Added logical start alignment and bidi-safe handling for actor names, Activity
+  descriptions, and structured old/new audit values without changing stored text
+  or Activity behavior.
 
 ## 2026-09-03 — Locale-aware calendar and datetime presentation
 

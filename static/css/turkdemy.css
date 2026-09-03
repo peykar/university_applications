@@ -4126,26 +4126,42 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 }
 .activity-content{min-width:0}
 .activity-meta{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:baseline;
-  flex-wrap:wrap;
+  display:grid;
+  justify-items:start;
+  gap:3px;
 }
 .activity-meta strong{
   color:#25394c;
   font-size:.78rem;
 }
-.activity-meta span{
+.activity-byline{
+  display:inline-flex;
+  align-items:baseline;
+  gap:5px;
+  max-width:100%;
   color:#8a96a1;
   font-size:.67rem;
 }
+.activity-actor{
+  max-width:min(28rem,60vw);
+  overflow-wrap:anywhere;
+  text-align:start;
+  unicode-bidi:plaintext;
+}
+.activity-byline time{white-space:nowrap}
+.activity-meta-separator{color:#a2adb6}
 .activity-content p{
   margin:5px 0 6px;
   color:#536579;
   font-size:.74rem;
   line-height:1.5;
   overflow-wrap:anywhere;
+}
+.activity-description{
+  width:fit-content;
+  max-width:100%;
+  text-align:start;
+  unicode-bidi:plaintext;
 }
 .activity-visibility{
   display:inline-flex;
@@ -4187,10 +4203,14 @@ html[dir=rtl] .customer-applicant-page .chat-message-body{text-align:right}
 .activity-change-row strong{color:#536579}
 .activity-change-old{color:#7f8b96;overflow-wrap:anywhere}
 .activity-change-new{color:#31485c;font-weight:650;overflow-wrap:anywhere}
+.activity-change-old,
+.activity-change-new{text-align:start;unicode-bidi:plaintext}
 .activity-change-arrow{text-align:center;color:#9ba7b1}
 @media(max-width:700px){
   .activity-change-row{grid-template-columns:1fr 16px 1fr}
   .activity-change-row strong{grid-column:1/-1}
+  .activity-byline{flex-wrap:wrap}
+  .activity-actor{max-width:100%}
 }
 
 

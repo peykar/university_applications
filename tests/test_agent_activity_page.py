@@ -15,6 +15,7 @@ class AgentActivityPageTests(SimpleTestCase):
         self.activity = (root / "templates" / "agents" / "applicant_activity.html").read_text(
             encoding="utf-8"
         )
+        self.css = (root / "static" / "css" / "turkdemy.css").read_text(encoding="utf-8")
 
     def test_activity_has_dedicated_route_and_page(self):
         self.assertIn("def applicant_activity", self.views)
@@ -58,3 +59,21 @@ class AgentActivityPageTests(SimpleTestCase):
         )
         self.assertIn("activity.metadata.suggestion_reason", self.activity)
         self.assertIn('class="activity-recommendation-reason" dir="auto"', self.activity)
+
+    def test_activity_metadata_stays_grouped_with_event_content(self):
+        self.assertIn('class="activity-byline"', self.activity)
+        self.assertIn('class="activity-actor" dir="auto"', self.activity)
+        self.assertIn("<time>{{ activity.created_at|localized_datetime }}</time>", self.activity)
+
+        activity_meta_css = self.css.split(".activity-meta{", 1)[1].split("}", 1)[0]
+        self.assertIn("display:grid;", activity_meta_css)
+        self.assertIn("justify-items:start;", activity_meta_css)
+        self.assertIn("gap:3px;", activity_meta_css)
+        self.assertNotIn("justify-content:space-between;", activity_meta_css)
+
+    def test_activity_dynamic_content_is_bidi_safe(self):
+        self.assertIn('class="activity-description" dir="auto"', self.activity)
+        self.assertIn('class="activity-change-old" dir="auto"', self.activity)
+        self.assertIn('class="activity-change-new" dir="auto"', self.activity)
+        self.assertIn(".activity-description{", self.css)
+        self.assertIn("unicode-bidi:plaintext;", self.css)

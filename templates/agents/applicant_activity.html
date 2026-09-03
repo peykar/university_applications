@@ -58,18 +58,21 @@
         <span class="activity-visibility">{% trans "Customer visible" %}</span>
        {% endif %}
       </div>
-      <span>
-       {% if activity.created_by %}
-        {{ activity.created_by.get_full_name|default:activity.created_by.username }}
-       {% else %}
-        {% trans "System" %}
-       {% endif %}
-       · {{ activity.created_at|localized_datetime }}
-      </span>
+      <div class="activity-byline">
+       <span class="activity-actor" dir="auto">
+        {% if activity.created_by %}
+         {{ activity.created_by.get_full_name|default:activity.created_by.username }}
+        {% else %}
+         {% trans "System" %}
+        {% endif %}
+       </span>
+       <span class="activity-meta-separator" aria-hidden="true">·</span>
+       <time>{{ activity.created_at|localized_datetime }}</time>
+      </div>
      </div>
 
      {% if activity.localized_description %}
-      <p>{{ activity.localized_description }}</p>
+      <p class="activity-description" dir="auto">{{ activity.localized_description }}</p>
      {% endif %}
      {% if activity.activity_type == "program_suggested" and activity.metadata.suggestion_reason %}
       <p class="activity-recommendation-reason" dir="auto">{{ activity.metadata.suggestion_reason }}</p>
@@ -80,9 +83,9 @@
        {% for change in activity.localized_changes %}
         <div class="activity-change-row">
          <strong>{% translate change.label %}</strong>
-         <span class="activity-change-old">{{ change.old }}</span>
+         <span class="activity-change-old" dir="auto">{{ change.old }}</span>
          <span class="activity-change-arrow" aria-hidden="true">→</span>
-         <span class="activity-change-new">{{ change.new }}</span>
+         <span class="activity-change-new" dir="auto">{{ change.new }}</span>
         </div>
        {% endfor %}
       </div>

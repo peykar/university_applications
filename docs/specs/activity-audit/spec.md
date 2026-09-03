@@ -1,7 +1,7 @@
 # Activity and audit
 
 Status: BASELINED
-Version: 1.1
+Version: 1.2
 
 ## Goal
 
@@ -38,6 +38,13 @@ AUD-009 — Localization MUST preserve historical Activity rows without rewritin
 or deleting their stored audit payload. The presentation layer MUST localize
 recognized legacy predefined descriptions when structured metadata is absent,
 and MUST leave unknown/free-form descriptions verbatim.
+
+
+AUD-010 — Agent Activity timeline presentation MUST keep each event's actor/timestamp
+metadata visually grouped with that event instead of distributing it to the opposite
+edge of a wide panel. In RTL locales, timeline content MUST retain logical start
+alignment and mixed-direction human/domain values MUST use bidi-safe presentation
+without changing their stored text.
 
 ## Acceptance policy
 
