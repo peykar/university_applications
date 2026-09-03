@@ -94,3 +94,9 @@ At tablet and mobile widths the conversion card is moved before the long detail 
 uses a compact action treatment where space permits; mobile returns to a single-column card with
 full-width actions. This is presentation-only: Request workflow semantics and Program SEO identity
 remain unchanged.
+
+On narrow mobile screens, University facts stay in a compact two-column grid, the University
+description is collapsed behind a localized read-more control, and University media spans the
+available content width. Similar Programs becomes a horizontally swipeable snap row rather than a
+long vertical stack. The compact list for additional programs at the same University remains
+vertical because it is intentionally scan-oriented.

@@ -3460,3 +3460,15 @@ msgstr "متابعة الطلب"
 #: CHG-0023
 msgid "This Request is for"
 msgstr "هذا الطلب لـ"
+
+#: UI-0011 stabilization
+msgid "Start a Request and let TurkDemy help with the next steps."
+msgstr "ابدأ طلباً ودع TurkDemy يساعدك في الخطوات التالية."
+
+#: UI-0011 stabilization
+msgid "Read more"
+msgstr "اقرأ المزيد"
+
+#: UI-0011 stabilization
+msgid "Show less"
+msgstr "عرض أقل"

@@ -30,3 +30,31 @@ class ProgramDetailConversionLayoutTests(SimpleTestCase):
     def test_mobile_request_card_returns_to_a_single_column_action_stack(self):
         self.assertIn(".program-contact-card{display:block;padding:20px}", self.css)
         self.assertIn(".program-contact-card .button{width:100%;margin-top:9px}", self.css)
+
+    def test_mobile_university_context_is_compact_and_expandable(self):
+        self.assertIn("grid-template-columns:repeat(2,minmax(0,1fr))", self.css)
+        self.assertIn("data-university-description-toggle", self.template)
+        self.assertIn('{% trans "Read more" %}', self.template)
+        self.assertIn('{% trans "Show less" %}', self.template)
+        self.assertIn(
+            ".university-media-item,.university-media-featured{display:block;width:100%;height:auto;aspect-ratio:16/9",
+            self.css,
+        )
+
+    def test_mobile_similar_programs_use_horizontal_snap_scrolling(self):
+        self.assertIn(".related-program-grid{display:flex;grid-template-columns:none", self.css)
+        self.assertIn("scroll-snap-type:x mandatory", self.css)
+        self.assertIn(".related-program-card{flex:0 0 min(84vw,280px)", self.css)
+
+    def test_mobile_request_copy_is_shorter(self):
+        self.assertIn(
+            '{% trans "Start a Request and let TurkDemy help with the next steps." %}',
+            self.template,
+        )
+        self.assertNotIn(
+            (
+                "Start a Request and TurkDemy can help you with requirements, tuition, "
+                "intake selection and the next steps."
+            ),
+            self.template,
+        )

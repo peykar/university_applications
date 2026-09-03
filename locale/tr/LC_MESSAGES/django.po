@@ -3488,3 +3488,15 @@ msgstr "Talebe devam et"
 #: CHG-0023
 msgid "This Request is for"
 msgstr "Bu Talep şu kişi için"
+
+#: UI-0011 stabilization
+msgid "Start a Request and let TurkDemy help with the next steps."
+msgstr "Bir Talep başlatın ve sonraki adımlarda TurkDemy size yardımcı olsun."
+
+#: UI-0011 stabilization
+msgid "Read more"
+msgstr "Devamını oku"
+
+#: UI-0011 stabilization
+msgid "Show less"
+msgstr "Daha az göster"

@@ -3474,3 +3474,15 @@ msgstr "ادامه درخواست"
 #: CHG-0023
 msgid "This Request is for"
 msgstr "این درخواست برای"
+
+#: UI-0011 stabilization
+msgid "Start a Request and let TurkDemy help with the next steps."
+msgstr "یک درخواست شروع کنید و ادامه مسیر را به TurkDemy بسپارید."
+
+#: UI-0011 stabilization
+msgid "Read more"
+msgstr "بیشتر بخوانید"
+
+#: UI-0011 stabilization
+msgid "Show less"
+msgstr "نمایش کمتر"

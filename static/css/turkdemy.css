@@ -6383,3 +6383,25 @@ a.entity-list-row:hover{
   .university-media-item{height:120px}
   .university-media-featured{height:220px}
 }
+
+/* UI-0011 stabilization — mobile Program Detail density. */
+.university-description-toggle{display:none}
+.university-description-less{display:none}
+@media(max-width:720px){
+  .program-contact-card p:not(.eyebrow){font-size:.86rem;line-height:1.5;margin-bottom:10px}
+  .university-info-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:16px 0}
+  .university-info-grid div{padding:10px 11px;min-width:0}
+  .university-description-collapsible{position:relative}
+  .university-description-copy{max-height:7.6em;overflow:hidden;line-height:1.55}
+  .university-description-collapsible:not(.is-expanded) .university-description-copy::after{content:"";position:absolute;inset-inline:0;bottom:34px;height:2.8em;background:linear-gradient(to bottom,rgba(255,255,255,0),#fff)}
+  .university-description-collapsible.is-expanded .university-description-copy{max-height:none}
+  .university-description-toggle{display:inline-flex;border:0;background:transparent;padding:5px 0;margin-top:3px;color:var(--link);font:inherit;font-size:.82rem;font-weight:800;cursor:pointer}
+  .university-description-collapsible.is-expanded .university-description-more{display:none}
+  .university-description-collapsible.is-expanded .university-description-less{display:inline}
+  .university-media-grid{display:block;margin-top:14px}
+  .university-media-item,.university-media-featured{display:block;width:100%;height:auto;aspect-ratio:16/9;margin-top:9px}
+  .university-media-item img{width:100%;height:100%;object-fit:cover}
+  .related-program-grid{display:flex;grid-template-columns:none;gap:12px;overflow-x:auto;overflow-y:hidden;margin-inline:-4px;padding:2px 4px 12px;scroll-snap-type:x mandatory;scroll-padding-inline:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .related-program-grid::-webkit-scrollbar{display:none}
+  .related-program-card{flex:0 0 min(84vw,280px);min-height:250px;scroll-snap-align:start}
+}

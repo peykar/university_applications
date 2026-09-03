@@ -1544,6 +1544,9 @@
 
 ## 2026-09-03 — UI-0011 Program Detail conversion layout
 
+**UI-0011 mobile stabilization:** after narrow-screen visual review, compacted University facts to two columns, added localized description expansion, widened University media, shortened conversion-card support copy, and changed Similar Programs to a horizontal snap-scrolling row.
+
+
 - Rebalanced Program Detail into a denser main-content + 320px sticky Request sidebar layout.
 - Made a single Offering fill the content column and strengthened the Start a Request hierarchy.
 - Compacted University/media and related-program presentation to reduce unnecessary page length.

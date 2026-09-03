@@ -1,6 +1,6 @@
 # UI-0011 — Program Detail conversion layout
 
-Status: IMPLEMENTED
+Status: IMPLEMENTED — MOBILE STABILIZATION APPLIED
 Requested: 2026-09-03
 
 ## Request
@@ -41,3 +41,17 @@ permissions or persistence behavior changes.
 - [x] Tablet/mobile users encounter the Request action before the long detail content.
 - [x] RTL/LTR behavior continues to rely on logical document direction.
 - [x] No Request workflow, catalogue data or SEO behavior changes.
+
+## Mobile stabilization
+
+After visual review on a narrow Persian viewport, UI-0011 was refined without opening a new UI change:
+
+- Shortened the Request-card explanatory copy so the primary CTA appears sooner.
+- Kept University facts in a two-column mobile grid instead of a tall single-column stack.
+- Added a compact mobile University-description treatment with explicit **Read more / Show less** controls.
+- Let University media use the full mobile content width.
+- Changed Similar Programs to a horizontally swipeable, scroll-snapped row on mobile so related discovery does not dominate page height.
+- Preserved the compact "More programs at this university" list.
+- Added FA/TR/AR translations for the new UI copy.
+
+These are presentation-only refinements; Request workflow, catalogue semantics and SEO identity remain unchanged.

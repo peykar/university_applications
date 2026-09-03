@@ -185,7 +185,13 @@
       </div>
 
       {% if program.university.localized_description %}
-        <div class="university-description">{{ program.university.localized_description|truncatewords:80 }}</div>
+        <div class="university-description university-description-collapsible" data-university-description>
+          <div class="university-description-copy">{{ program.university.localized_description|truncatewords:80 }}</div>
+          <button class="university-description-toggle" type="button" aria-expanded="false" data-university-description-toggle>
+            <span class="university-description-more">{% trans "Read more" %}</span>
+            <span class="university-description-less">{% trans "Show less" %}</span>
+          </button>
+        </div>
       {% endif %}
 
       {% if program.university.banner or university_media %}
@@ -288,11 +294,24 @@
     <div class="program-contact-card">
       <p class="eyebrow">{% trans "Need help?" %}</p>
       <h3>{% trans "Interested in this program?" %}</h3>
-      <p>{% trans "Start a Request and TurkDemy can help you with requirements, tuition, intake selection and the next steps." %}</p>
+      <p>{% trans "Start a Request and let TurkDemy help with the next steps." %}</p>
       <a class="button button-accent" href="{% url 'apply-program' program.slug_en %}">{% trans "Start a Request" %}</a>
       <a class="button button-secondary" href="{% url 'contact' %}">{% trans "Ask TurkDemy" %}</a>
       <a class="secondary-card-link" href="{% url 'program-list' %}?university={{ program.university.slug_en }}">{% trans "Browse this university's programs" %}</a>
     </div>
   </aside>
 </div>
+
+<script>
+(() => {
+  const description = document.querySelector("[data-university-description]");
+  const toggle = document.querySelector("[data-university-description-toggle]");
+  if (!description || !toggle) return;
+
+  toggle.addEventListener("click", () => {
+    const expanded = description.classList.toggle("is-expanded");
+    toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+  });
+})();
+</script>
 {% endblock %}
