@@ -6388,6 +6388,10 @@ a.entity-list-row:hover{
 .university-description-toggle{display:none}
 .university-description-less{display:none}
 @media(max-width:720px){
+  /* Keep the hero readable below the mobile header and remove duplicate summary surfaces. */
+  .program-detail-hero{padding:88px 26px 48px}
+  .program-university-mini-card{display:none}
+  .program-summary-grid{display:none}
   .program-contact-card p:not(.eyebrow){font-size:.86rem;line-height:1.5;margin-bottom:10px}
   .university-info-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:16px 0}
   .university-info-grid div{padding:10px 11px;min-width:0}

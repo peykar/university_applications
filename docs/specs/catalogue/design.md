@@ -382,4 +382,8 @@ retain the same information with tighter vertical density.
 
 At widths below 1000px the grid collapses and the Request sidebar receives negative flex/grid order
 so it appears before the long main content without duplicating the conversion action in the DOM.
-Mobile returns the conversion card to a conventional stacked layout with full-width buttons.
+Mobile returns the conversion card to a conventional stacked layout with full-width buttons. The
+mobile hero receives additional block/inline safe spacing below the fixed shell, while the separate
+University mini-card and four-item summary strip are suppressed because their content is already
+represented by the hero context/fact pills and the later University showcase. This removes duplicate
+information without removing catalogue data from the page.

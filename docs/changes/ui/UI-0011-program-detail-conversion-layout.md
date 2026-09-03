@@ -55,3 +55,18 @@ After visual review on a narrow Persian viewport, UI-0011 was refined without op
 - Added FA/TR/AR translations for the new UI copy.
 
 These are presentation-only refinements; Request workflow, catalogue semantics and SEO identity remain unchanged.
+
+## Mobile repetition/readability stabilization
+
+A second Persian mobile review found two remaining presentation issues. The hero text sat too close
+to the mobile shell/viewport edge, and the compact University card plus four-item summary strip
+immediately repeated information already visible in the hero and later University section. UI-0011
+was therefore stabilized again without opening UI-0012:
+
+- Increased mobile hero top/side/bottom padding to preserve a comfortable reading frame below the
+  mobile header.
+- Hid the hero University mini-card on mobile; the hero already names/links the University and the
+  full University showcase remains later on the page.
+- Hid the standalone four-item Program summary strip on mobile; degree/language/duration context is
+  already present in the hero, avoiding an immediate duplicate block.
+- Desktop/tablet structure and all Program, Offering, Request and SEO semantics remain unchanged.

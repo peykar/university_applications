@@ -443,6 +443,8 @@ navigation.
 CAT-070 — Program Detail MUST present its existing decision information with a prominent Request
 conversion surface: on desktop the Request card MUST remain adjacent and sticky to the main
 Program content, a single active Offering MUST use the available main-content width, and on
-narrower layouts the Request surface MUST precede the long detail stream. This presentation MUST
-preserve Offering data, University/related discovery, CHG-0023 contextual links, Request workflow
-semantics and Program SEO identity.
+narrower layouts the Request surface MUST precede the long detail stream. On mobile, the hero MUST
+keep safe reading space from the viewport/header edges and MUST NOT repeat the same University/fact
+summary again immediately below the hero when that information is already present in the hero and
+later University section. This presentation MUST preserve Offering data, University/related discovery,
+CHG-0023 contextual links, Request workflow semantics and Program SEO identity.

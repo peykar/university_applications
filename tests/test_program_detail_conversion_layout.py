@@ -46,6 +46,11 @@ class ProgramDetailConversionLayoutTests(SimpleTestCase):
         self.assertIn("scroll-snap-type:x mandatory", self.css)
         self.assertIn(".related-program-card{flex:0 0 min(84vw,280px)", self.css)
 
+    def test_mobile_hero_has_safe_reading_space_and_avoids_duplicate_summaries(self):
+        self.assertIn(".program-detail-hero{padding:88px 26px 48px}", self.css)
+        self.assertIn(".program-university-mini-card{display:none}", self.css)
+        self.assertIn(".program-summary-grid{display:none}", self.css)
+
     def test_mobile_request_copy_is_shorter(self):
         self.assertIn(
             '{% trans "Start a Request and let TurkDemy help with the next steps." %}',

@@ -100,3 +100,11 @@ description is collapsed behind a localized read-more control, and University me
 available content width. Similar Programs becomes a horizontally swipeable snap row rather than a
 long vertical stack. The compact list for additional programs at the same University remains
 vertical because it is intentionally scan-oriented.
+
+
+### Mobile duplication guard
+
+On phone-sized viewports the Program hero keeps extra safe spacing from the mobile shell. The
+University mini-card and standalone four-item summary strip are not rendered visually at this
+breakpoint because their facts are already exposed by the hero and later University showcase. This
+keeps the mobile reading sequence concise while preserving the full desktop/tablet decision layout.

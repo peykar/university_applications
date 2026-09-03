@@ -1,3 +1,11 @@
+
+### UI-0011 mobile repetition/readability stabilization
+
+- Increased Program hero safe spacing on phone-sized viewports.
+- Removed the immediately duplicated mobile University mini-card and Program summary strip from the visual flow.
+- Added regression coverage and synchronized Catalogue/UI documentation.
+- No Request, catalogue, pricing or SEO behavior changed.
+
 ## 2026-09-03 — CHG-0013 Localized structured Activity rendering
 
 ## 2026-09-03 — Page-specific public SEO metadata
