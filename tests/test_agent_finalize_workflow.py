@@ -59,9 +59,11 @@ class AgentFinalizeWorkflowTests(SimpleTestCase):
     def test_finalize_route_exists(self):
         self.assertIn('name="agent-applicant-finalize"', self.urls)
 
-    def test_closed_or_finalized_leads_are_not_finalized_again(self):
+    def test_closed_and_finalized_leads_are_guarded_but_reopened_can_complete(self):
         self.assertIn("LeadStatus.CLOSED", self.views)
         self.assertIn("LeadStatus.FINALIZED", self.views)
+        self.assertIn("LeadStatus.REOPENED", self.views)
+        self.assertIn("Complete Reopened Request", self.create_template)
 
     def test_finalize_allows_zero_or_more_discussed_program_selections(self):
         self.assertIn('request.POST.getlist("program_interest")', self.views)

@@ -3100,3 +3100,63 @@ msgstr ""
 
 msgid "Only active programs at active universities can be recommended."
 msgstr "يمكن التوصية فقط بالبرامج النشطة في الجامعات النشطة."
+
+msgid "A closed Request must be reopened by TurkDemy first."
+msgstr "يجب أن يعيد TurkDemy فتح الطلب المغلق أولاً."
+
+msgid "Complete Reopened Request"
+msgstr "إكمال الطلب المعاد فتحه"
+
+msgid "Complete Request"
+msgstr "إكمال الطلب"
+
+msgid "Completed Request — adding a new program will reopen it."
+msgstr "طلب مكتمل — إضافة برنامج جديد ستعيد فتحه."
+
+msgid "Internal Lead notes are read-only after Student creation."
+msgstr "ملاحظات الطلب الداخلية للقراءة فقط بعد إنشاء سجل الطالب."
+
+msgid "New draft applications and Request completion are committed together; the existing Student and applications are preserved."
+msgstr "يتم حفظ طلبات التقديم المسودة الجديدة وإكمال الطلب معًا؛ مع الحفاظ على الطالب وطلبات التقديم الحالية."
+
+msgid "Reopened Request"
+msgstr "طلب معاد فتحه"
+
+msgid "Reopened Request completed for %(student)s."
+msgstr "اكتمل الطلب المعاد فتحه لـ %(student)s."
+
+msgid "Replace documents on the student record after Student creation."
+msgstr "استبدل المستندات في سجل الطالب بعد إنشاء الطالب."
+
+msgid "Request reopened after a new program was added."
+msgstr "أعيد فتح الطلب بعد إضافة برنامج جديد."
+
+msgid "Review & complete"
+msgstr "مراجعة وإكمال"
+
+msgid "Student-linked or closed applicant data cannot be edited here."
+msgstr "لا يمكن تعديل بيانات المتقدم المرتبطة بطالب أو المغلقة هنا."
+
+msgid "The Student record already exists. Review the newly discussed programs and create only the additional draft applications that are needed."
+msgstr "سجل الطالب موجود بالفعل. راجع البرامج التي نوقشت حديثًا وأنشئ فقط طلبات التقديم المسودة الإضافية المطلوبة."
+
+msgid "The selected intake must belong to this program."
+msgstr "يجب أن تكون الدفعة المختارة تابعة لهذا البرنامج."
+
+msgid "This Request profile can no longer be edited after Student creation."
+msgstr "لم يعد من الممكن تعديل ملف هذا الطلب بعد إنشاء الطالب."
+
+msgid "This completed Request has no Student record to reopen."
+msgstr "لا يحتوي هذا الطلب المكتمل على سجل طالب لإعادة فتحه."
+
+msgid "This completed Request was reopened for the new program."
+msgstr "أعيد فتح هذا الطلب المكتمل للبرنامج الجديد."
+
+msgid "This program is already on the applicant programs."
+msgstr "هذا البرنامج موجود بالفعل ضمن برامج المتقدم."
+
+msgid "Upload documents to the student record after Student creation."
+msgstr "حمّل المستندات إلى سجل الطالب بعد إنشاء الطالب."
+
+msgid "Application already exists"
+msgstr "طلب التقديم موجود بالفعل"

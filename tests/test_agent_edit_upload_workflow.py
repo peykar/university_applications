@@ -37,8 +37,9 @@ class AgentEditUploadWorkflowTests(SimpleTestCase):
         self.assertIn("LeadActivityType.DOCUMENT_UPLOADED", self.views)
         self.assertIn("uploaded and approved by agent user", self.views)
 
-    def test_finalized_lead_is_not_edited_as_lead(self):
-        self.assertIn("Finalized or closed applicant data cannot be edited here.", self.views)
+    def test_student_linked_lead_is_not_edited_as_lead(self):
+        self.assertIn("lead.converted_student_id or lead.status == LeadStatus.CLOSED", self.views)
+        self.assertIn("Student-linked or closed applicant data cannot be edited here.", self.views)
         self.assertIn("Upload documents to the Student record after finalization.", self.views)
 
     def test_invalid_edit_rerenders_page_with_form_errors(self):

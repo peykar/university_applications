@@ -194,13 +194,69 @@ def finalize_lead(
 
     if lead.status == LeadStatus.CLOSED:
         raise ValidationError("A closed lead cannot be finalized.")
-    if lead.converted_student_id:
+    if lead.converted_student_id and lead.status != LeadStatus.REOPENED:
         student = lead.converted_student
         if student is None:
             raise ValidationError("Converted student record could not be loaded.")
         return student
 
     _validate_application_selections(lead, application_selections)
+
+    if lead.converted_student_id:
+        student = lead.converted_student
+        if student is None:
+            raise ValidationError("Converted student record could not be loaded.")
+        created_count = 0
+        for _interest, offering in application_selections:
+            duplicate = (
+                student.applications.filter(
+                    program_offering=offering,
+                )
+                .exclude(status__in=("rejected", "withdrawn", "cancelled"))
+                .exists()
+            )
+            if duplicate:
+                continue
+            create_student_application(
+                student=student,
+                offering=offering,
+                performed_by=actor,
+            )
+            created_count += 1
+
+        now = timezone.now()
+        lead.status = LeadStatus.FINALIZED
+        lead.validated_by = actor
+        lead.validated_at = now
+        lead.updated_by = actor
+        lead.save(
+            update_fields=(
+                "status",
+                "validated_by",
+                "validated_at",
+                "updated_by",
+                "updated_at",
+            )
+        )
+        LeadActivity.objects.create(
+            lead=lead,
+            activity_type=LeadActivityType.FINALIZED,
+            description=(
+                f"Re-finalized existing Student {student.pk}; "
+                f"created {created_count} new draft application(s)."
+            ),
+            metadata={"new_application_count": created_count, "reopened": True},
+            is_customer_visible=True,
+            created_by=actor,
+            updated_by=actor,
+        )
+        send_system_message(
+            lead,
+            event_type=SystemMessageEventType.LEAD_FINALIZED,
+            event_data={"student_id": str(student.pk)},
+            performed_by=actor,
+        )
+        return student
     if student_data is None:
         student_data = _student_data_from_lead(lead)
     if selected_document_ids is None:

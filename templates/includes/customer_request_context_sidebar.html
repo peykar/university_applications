@@ -24,7 +24,7 @@
         <p class="request-context-empty">{% trans "No documents uploaded yet." %}</p>
       {% endfor %}
     </div>
-    {% if lead.status != "finalized" %}
+    {% if not lead.converted_student_id %}
       <a class="request-context-action" href="{% url 'lead-documents' lead.pk %}">+ {% trans "Upload document" %}</a>
     {% endif %}
   </section>

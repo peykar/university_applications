@@ -48,3 +48,8 @@ case-management data, not Applicant/person profile data.
 - Customer Applicant pages never render the internal note.
 - Finalized Lead notes remain visible as historical Agent context but are
   read-only; ongoing person/case maintenance belongs to the Student workflow.
+
+
+## Reopened converted lifecycle (CHG-0012)
+
+`LeadStatus.REOPENED` is preserved by `Lead.save()` rather than re-derived to NEW/ASSIGNED. It is reserved for a converted Lead that has returned to Request-stage program work. The Student relation remains intact, and mutation guards for historical person/document data therefore key off `converted_student_id`, not only FINALIZED status.

@@ -1,3 +1,7 @@
+## 2026-09-03 — Reopen completed Request for a new program
+
+- CHG-0012: Finalized customer Requests can reopen when a genuinely new Program is added from Apply; the existing Student and Applications are preserved, Lead person/documents remain historical, and Agent completion creates only missing new draft Applications before returning the Request to finalized.
+
 ## 2026-09-03 — Bidi-aware advisor recommendation notes
 
 - Added UI-0009: recommendation reasons now use a consistent, subtle advisor-note callout across customer and Agent recommendation surfaces.

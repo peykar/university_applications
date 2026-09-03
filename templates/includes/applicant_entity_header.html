@@ -23,7 +23,7 @@
             {{ lead.get_status_display }}
           {% elif lead.status == "new" %}
             {% trans "Received" %}
-          {% elif lead.status == "assigned" %}
+          {% elif lead.status == "assigned" or lead.status == "reopened" %}
             {% trans "In progress" %}
           {% elif lead.status == "finalized" %}
             {% trans "Completed" %}
@@ -40,7 +40,7 @@
       {% if agent_context and entity_tab == "overview" and lead.status != "finalized" and lead.status != "closed" %}
         <a class="button" href="{% url 'agent-applicant-programs' lead.pk %}#recommend-program">{% trans "Recommend program" %}</a>
       {% endif %}
-      {% if entity_tab == "profile" and agent_context %}
+      {% if entity_tab == "profile" and agent_context and not lead.converted_student_id %}
         <a class="button button-secondary" href="{% url 'agent-applicant-edit' lead.pk %}">{% trans "Edit applicant" %}</a>
       {% endif %}
     </div>

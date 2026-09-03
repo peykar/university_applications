@@ -27,6 +27,7 @@ from apps.universities.models import (
 class LeadStatus(models.TextChoices):
     NEW = "new", _("New")
     ASSIGNED = "assigned", _("Assigned")
+    REOPENED = "reopened", _("Reopened")
     FINALIZED = "finalized", _("Finalized")
     CLOSED = "closed", _("Closed")
 
@@ -195,7 +196,11 @@ class Lead(BaseModel):
         )
 
     def save(self, *args, **kwargs):
-        if self.status not in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
+        if self.status not in {
+            LeadStatus.REOPENED,
+            LeadStatus.FINALIZED,
+            LeadStatus.CLOSED,
+        }:
             self.status = LeadStatus.ASSIGNED if self.assigned_to_id else LeadStatus.NEW
             update_fields = kwargs.get("update_fields")
             if update_fields is not None:

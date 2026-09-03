@@ -22,6 +22,9 @@ Status: BASELINED
 | `FIN-016` | `apps/leads/services/conversion.py::finalize_lead` | `tests/test_atomic_lead_finalization.py` | Covered |
 | `FIN-017` | `apps/leads/models.py::LeadDocument.converted_student_document`, `apps/leads/services/conversion.py::_copy_selected_documents` | `tests/test_student_record_conversion_structure.py`, `tests/test_student_application_workflow.py` | Covered |
 
+| `FIN-018` | `apps/agents/views.py::applicant_finalize`, `templates/agents/student_record_create.html`, `apps/leads/services/conversion.py::finalize_lead` | `tests/test_lead_workflow.py::LeadWorkflowTests::test_refinalizing_reopened_request_reuses_student_and_adds_only_new_application`, `tests/test_agent_finalize_workflow.py` | Covered |
+| `FIN-019` | `apps/leads/services/conversion.py::finalize_lead` | `tests/test_lead_workflow.py::LeadWorkflowTests::test_refinalizing_reopened_request_reuses_student_and_adds_only_new_application` | Covered |
+
 ## Notes
 
 This baseline intentionally starts at capability level. When a requirement is

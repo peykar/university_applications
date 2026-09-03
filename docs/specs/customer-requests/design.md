@@ -259,3 +259,8 @@ Customer Request navigation places **Preferences** between Profile and Programs 
 The read-only workspace groups the complete `LeadPreference` surface into Study preferences, University preferences, Budget, and Other preferences. It reuses the Request page-title/action convention with **Edit preferences →** at logical end and the shared `request-page-primary-action` component. Finalized Requests are read-only both in markup and direct edit routing. Saving and cancelling return to Preferences rather than jumping to Programs.
 
 The Program preferences context card remains valuable as a compact summary on other Request tabs, but it links to the Preferences tab. Preferences itself suppresses the context sidebar and uses full width to avoid presenting the same data twice.
+
+
+## Reopening completed Requests for a new program (CHG-0012)
+
+The Apply Program form intentionally keeps customer-owned finalized Requests selectable. `add_customer_program_interest()` is the transactional boundary for adding the Program. A genuinely new Program moves FINALIZED → REOPENED and emits a customer-visible lifecycle activity; an already-present Program is a no-op and does not reopen the Request. Customer presentation maps REOPENED to **In progress**. Programs become editable, while profile/document mutation stays locked whenever `converted_student_id` exists.

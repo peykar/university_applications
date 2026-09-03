@@ -3122,3 +3122,63 @@ msgstr ""
 
 msgid "Only active programs at active universities can be recommended."
 msgstr "Yalnızca aktif üniversitelerdeki aktif programlar önerilebilir."
+
+msgid "A closed Request must be reopened by TurkDemy first."
+msgstr "Kapalı bir Talep önce TurkDemy tarafından yeniden açılmalıdır."
+
+msgid "Complete Reopened Request"
+msgstr "Yeniden Açılan Talebi Tamamla"
+
+msgid "Complete Request"
+msgstr "Talebi Tamamla"
+
+msgid "Completed Request — adding a new program will reopen it."
+msgstr "Tamamlanmış Talep — yeni bir program eklemek Talebi yeniden açar."
+
+msgid "Internal Lead notes are read-only after Student creation."
+msgstr "Öğrenci oluşturulduktan sonra dahili Talep notları salt okunurdur."
+
+msgid "New draft applications and Request completion are committed together; the existing Student and applications are preserved."
+msgstr "Yeni taslak başvurular ve Talebin tamamlanması birlikte kaydedilir; mevcut Öğrenci ve başvurular korunur."
+
+msgid "Reopened Request"
+msgstr "Yeniden Açılan Talep"
+
+msgid "Reopened Request completed for %(student)s."
+msgstr "%(student)s için yeniden açılan Talep tamamlandı."
+
+msgid "Replace documents on the student record after Student creation."
+msgstr "Öğrenci oluşturulduktan sonra belgeleri öğrenci kaydında değiştirin."
+
+msgid "Request reopened after a new program was added."
+msgstr "Yeni bir program eklendikten sonra Talep yeniden açıldı."
+
+msgid "Review & complete"
+msgstr "İncele ve tamamla"
+
+msgid "Student-linked or closed applicant data cannot be edited here."
+msgstr "Öğrenciye bağlı veya kapalı başvuru sahibi verileri burada düzenlenemez."
+
+msgid "The Student record already exists. Review the newly discussed programs and create only the additional draft applications that are needed."
+msgstr "Öğrenci kaydı zaten mevcut. Yeni görüşülen programları inceleyin ve yalnızca gereken ek taslak başvuruları oluşturun."
+
+msgid "The selected intake must belong to this program."
+msgstr "Seçilen dönem bu programa ait olmalıdır."
+
+msgid "This Request profile can no longer be edited after Student creation."
+msgstr "Öğrenci oluşturulduktan sonra bu Talep profili artık düzenlenemez."
+
+msgid "This completed Request has no Student record to reopen."
+msgstr "Bu tamamlanmış Talebin yeniden açılabilecek bir Öğrenci kaydı yok."
+
+msgid "This completed Request was reopened for the new program."
+msgstr "Bu tamamlanmış Talep yeni program için yeniden açıldı."
+
+msgid "This program is already on the applicant programs."
+msgstr "Bu program zaten başvuru sahibinin programları arasında."
+
+msgid "Upload documents to the student record after Student creation."
+msgstr "Öğrenci oluşturulduktan sonra belgeleri öğrenci kaydına yükleyin."
+
+msgid "Application already exists"
+msgstr "Başvuru zaten mevcut"

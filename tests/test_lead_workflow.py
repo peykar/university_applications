@@ -18,6 +18,7 @@ from apps.leads.models import (
     LeadStatus,
 )
 from apps.leads.services.conversion import finalize_lead
+from apps.leads.services.program_interests import add_customer_program_interest
 from apps.leads.services.recommendations import (
     RecommendationOutcome,
     recommend_program,
@@ -205,6 +206,139 @@ class LeadWorkflowTests(TestCase):
             updated_by=self.staff,
         )
         return [(interest, offering or self.offering)]
+
+    def _make_second_program_and_offering(self):
+        program = Program.objects.create(
+            university=self.program.university,
+            degree=DegreeType.BACHELOR,
+            name_en="Computer Engineering",
+            name_fa="",
+            name_tr="",
+            name_ar="",
+            slug_en="computer-engineering",
+            slug_fa="computer-engineering",
+            slug_tr="computer-engineering",
+            slug_ar="computer-engineering",
+            created_by=self.staff,
+            updated_by=self.staff,
+        )
+        language = ProgramLanguage.objects.get(name_en="English")
+        ProgramInstructionLanguage.objects.create(
+            program=program,
+            language=language,
+            is_primary=True,
+            created_by=self.staff,
+            updated_by=self.staff,
+        )
+        offering = ProgramOffering.objects.create(
+            program=program,
+            academic_year=self.offering.academic_year,
+            intake=self.offering.intake,
+            created_by=self.staff,
+            updated_by=self.staff,
+        )
+        OfferingFee.objects.create(
+            offering=offering,
+            fee_type=OfferingFeeType.TUITION,
+            currency=Currency.USD,
+            amount=Decimal("9000"),
+            basis=FeeBasis.ANNUAL,
+            created_by=self.staff,
+            updated_by=self.staff,
+        )
+        return program, offering
+
+    def test_new_program_reopens_finalized_request_without_undoing_conversion(self):
+        lead = self.make_lead()
+        student = finalize_lead(
+            lead,
+            application_selections=self.make_application_selection(lead),
+            performed_by=self.staff,
+        )
+        lead.refresh_from_db()
+        converted_at = lead.converted_at
+        program, offering = self._make_second_program_and_offering()
+
+        result = add_customer_program_interest(
+            lead=lead,
+            program=program,
+            offering=offering,
+            performed_by=self.user,
+        )
+
+        lead.refresh_from_db()
+        self.assertTrue(result.created)
+        self.assertTrue(result.reopened)
+        self.assertEqual(lead.status, LeadStatus.REOPENED)
+        self.assertEqual(lead.converted_student_id, student.pk)
+        self.assertEqual(lead.converted_at, converted_at)
+        self.assertEqual(student.applications.count(), 1)
+        self.assertTrue(
+            LeadActivity.objects.filter(
+                lead=lead,
+                activity_type=LeadActivityType.REOPENED,
+                is_customer_visible=True,
+            ).exists()
+        )
+
+    def test_existing_program_does_not_reopen_finalized_request(self):
+        lead = self.make_lead()
+        finalize_lead(
+            lead,
+            application_selections=self.make_application_selection(lead),
+            performed_by=self.staff,
+        )
+        lead.refresh_from_db()
+
+        result = add_customer_program_interest(
+            lead=lead,
+            program=self.program,
+            offering=self.offering,
+            performed_by=self.user,
+        )
+
+        lead.refresh_from_db()
+        self.assertFalse(result.created)
+        self.assertFalse(result.reopened)
+        self.assertEqual(lead.status, LeadStatus.FINALIZED)
+
+    def test_refinalizing_reopened_request_reuses_student_and_adds_only_new_application(self):
+        lead = self.make_lead()
+        student = finalize_lead(
+            lead,
+            application_selections=self.make_application_selection(lead),
+            performed_by=self.staff,
+        )
+        lead.refresh_from_db()
+        converted_at = lead.converted_at
+        program, offering = self._make_second_program_and_offering()
+        result = add_customer_program_interest(
+            lead=lead,
+            program=program,
+            offering=offering,
+            performed_by=self.user,
+        )
+        lead.refresh_from_db()
+
+        completed_student = finalize_lead(
+            lead,
+            application_selections=[(result.interest, offering)],
+            performed_by=self.staff,
+        )
+
+        lead.refresh_from_db()
+        self.assertEqual(completed_student.pk, student.pk)
+        self.assertEqual(lead.status, LeadStatus.FINALIZED)
+        self.assertEqual(lead.converted_at, converted_at)
+        self.assertEqual(student.applications.count(), 2)
+        self.assertEqual(
+            student.applications.filter(program_offering=self.offering).count(),
+            1,
+        )
+        self.assertEqual(
+            student.applications.filter(program_offering=offering).count(),
+            1,
+        )
 
     def test_recommend_program_service_creates_interest_activity_and_message(self):
         lead = self.make_lead()

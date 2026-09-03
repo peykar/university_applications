@@ -12,3 +12,8 @@ baseline subject to the gap report.
 - [ ] For the next behavioral change, add requirement IDs before implementation.
 - [ ] Update traceability after each implementation change.
 - [ ] Run `make format` and `make check`.
+
+
+## CHANGE: explicit reopened lifecycle (CHG-0012)
+
+- [x] `APL-008` Add REOPENED status for converted Requests receiving a genuinely new customer Program while preserving downstream records and Lead person/document locks.

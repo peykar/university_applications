@@ -31,4 +31,10 @@ class ApplyProgramSelectorUXTests(SimpleTestCase):
     def test_apply_flow_creates_new_applicant_inside_transaction(self):
         self.assertIn("with transaction.atomic():", self.views)
         self.assertIn("Lead.objects.create(", self.views)
-        self.assertIn("LeadProgramInterest.objects.get_or_create(", self.views)
+        self.assertIn("add_customer_program_interest(", self.views)
+
+    def test_completed_request_choice_explains_that_new_program_reopens_it(self):
+        self.assertIn(
+            "Completed Request — adding a new program will reopen it.",
+            self.forms,
+        )

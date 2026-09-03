@@ -23,9 +23,9 @@ class FinalizedCustomerLeadMutationStructureTests(SimpleTestCase):
             "def lead_preferences",
             1,
         )[0]
-        self.assertIn("lead.status == LeadStatus.FINALIZED", edit_block)
+        self.assertIn("lead.converted_student_id", edit_block)
         self.assertIn(
-            'if lead.status != "finalized"',
+            "if not lead.converted_student_id",
             self.section,
         )
         self.assertIn(
@@ -33,15 +33,15 @@ class FinalizedCustomerLeadMutationStructureTests(SimpleTestCase):
             self.section,
         )
 
-    def test_customer_preferences_edit_has_finalized_guard(self):
+    def test_customer_preferences_edit_has_student_link_guard(self):
         edit_block = self.views.split("def lead_preferences_edit", 1)[1].split(
             "def lead_detail",
             1,
         )[0]
-        self.assertIn("lead.status == LeadStatus.FINALIZED", edit_block)
+        self.assertIn("lead.converted_student_id", edit_block)
         self.assertIn('return redirect("lead-preferences", lead_id=lead.pk)', edit_block)
         self.assertIn(
-            'if lead.status != "finalized"',
+            "if not lead.converted_student_id",
             self.section.split('{% elif entity_tab == "preferences" %}', 1)[1].split(
                 '{% elif entity_tab == "programs" %}', 1
             )[0],
@@ -56,20 +56,20 @@ class FinalizedCustomerLeadMutationStructureTests(SimpleTestCase):
             "def lead_send_message",
             1,
         )[0]
-        self.assertIn("lead.status == LeadStatus.FINALIZED", upload_block)
-        self.assertIn("lead.status == LeadStatus.FINALIZED", replace_block)
+        self.assertIn("lead.converted_student_id", upload_block)
+        self.assertIn("lead.converted_student_id", replace_block)
 
     def test_finalized_document_ui_is_read_only(self):
         self.assertIn(
-            'document.review_status == "replacement_requested" and lead.status != "finalized"',
+            'document.review_status == "replacement_requested" and not lead.converted_student_id',
             self.section,
         )
         self.assertIn(
-            'if lead.status != "finalized"',
+            "if not lead.converted_student_id",
             self.section,
         )
         self.assertIn(
-            'if lead.status != "finalized"',
+            "if not lead.converted_student_id",
             self.section,
         )
         self.assertIn("Request documents are read-only", self.section)

@@ -1,7 +1,7 @@
 # Applicant management
 
 Status: BASELINED
-Version: 1.1
+Version: 1.2
 
 ## Goal
 
@@ -31,6 +31,8 @@ APL-007 — Internal notes MUST be private Agent case-management data, MUST NOT 
 part of Applicant profile editing, MUST be visible to Agent users on Applicant
 Overview, and MUST be edited only through the dedicated internal-note workflow.
 Internal-note changes MUST be audited and MUST NOT be customer-visible.
+
+APL-008 — A finalized Applicant MAY enter explicit `reopened` status when the owning customer adds a genuinely new Program. Reopening MUST preserve the linked Student and all existing Applications and MUST NOT restore Lead-based person/document editing.
 
 ## Acceptance policy
 

@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <div class="agent-detail-grid agent-applicant-overview">
 <div>
 <section class="agent-panel">
- <div class="agent-panel-head"><div><div class="section-heading-actions"><h2>{% trans "Applicant" %}</h2>{% if lead.status != "finalized" and lead.status != "closed" %}<a class="section-action" href="{% url 'agent-applicant-edit' lead.pk %}">{% trans "Edit applicant" %}</a>{% endif %}</div>
+ <div class="agent-panel-head"><div><div class="section-heading-actions"><h2>{% trans "Applicant" %}</h2>{% if not lead.converted_student_id and lead.status != "closed" %}<a class="section-action" href="{% url 'agent-applicant-edit' lead.pk %}">{% trans "Edit applicant" %}</a>{% endif %}</div>
  <div class="section-audit">
   <span
    class="section-audit-indicator"
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
      data-modal-target="close-applicant-modal"
    >{% trans "Close applicant" %}</button>
    {% if lead.assigned_to == request.user %}
-    <a class="button" href="{% url 'agent-applicant-finalize' lead.pk %}">{% trans "Create Student Record" %}</a>
+    <a class="button" href="{% url 'agent-applicant-finalize' lead.pk %}">{% if lead.status == "reopened" %}{% trans "Complete Reopened Request" %}{% else %}{% trans "Create Student Record" %}{% endif %}</a>
    {% endif %}
   {% endif %}
  </div>
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
  
  {% endif %}
 
- {% if lead.status != "finalized" %}
+ {% if not lead.converted_student_id %}
  <dialog class="agent-modal" id="internal-notes-modal" aria-labelledby="internal-notes-title">
   <div class="agent-modal-card">
    <div class="agent-modal-head">
@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
  {% endif %}
 
 
- {% if lead.status != "finalized" %}
+ {% if not lead.converted_student_id %}
  <dialog class="agent-modal" id="upload-document-modal" aria-labelledby="upload-document-title">
   <div class="agent-modal-card">
    <div class="agent-modal-head">

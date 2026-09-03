@@ -37,6 +37,8 @@ assignee remains and otherwise to `new`.
 
 BR-APL-004 — Only the responsible Agent user finalizes an active Lead.
 
+BR-APL-005 — A finalized Lead MAY be reopened when its owning customer adds a genuinely new Program interest. Reopening is a new lifecycle phase, not reversal of conversion: the existing Student, conversion timestamp, documents, and Applications MUST be preserved.
+
 ## Finalization
 
 BR-FIN-001 — Lead finalization validates before conversion and must not leave a
@@ -55,7 +57,10 @@ BR-FIN-003 — Failed finalization leaves the Lead active and reports validation
 errors.
 
 BR-FIN-004 — After finalization, person/document maintenance belongs to the
-Student workflow rather than editing the historical Lead.
+Student workflow rather than editing the historical Lead. This remains true while a
+converted Lead is reopened for additional program work.
+
+BR-FIN-006 — Re-finalizing a reopened converted Lead MUST reuse its existing Student, preserve existing Applications and conversion provenance, and create only additional non-duplicate DRAFT Applications selected by the responsible Agent.
 
 ## Programs and offerings
 

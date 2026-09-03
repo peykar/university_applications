@@ -32,3 +32,10 @@ baseline subject to the gap report.
 - [x] `FIN-016` Keep all conversion database mutations under the atomic service boundary.
 - [x] `FIN-017` Preserve the existing LeadDocument → StudentDocument conversion bridge only.
 - [x] Add/update tests and SDD traceability.
+
+
+## CHANGE: reopen finalized Request for additional programs (CHG-0012)
+
+- [x] `FIN-018` Reuse the existing Student when completing a reopened converted Request and skip person/document reconversion.
+- [x] `FIN-019` Create only missing selected Applications, preserve conversion provenance, audit completion, and return the Request to finalized.
+- [x] Add runtime lifecycle regression tests and update traceability.

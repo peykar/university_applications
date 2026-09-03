@@ -10,7 +10,7 @@
   <section class="lead-panel entity-section request-profile-panel">
     <div class="section-heading request-profile-heading">
       <h2>{% trans "Profile" %}</h2>
-      {% if lead.status != "finalized" %}
+      {% if not lead.converted_student_id %}
         <a class="button request-page-primary-action request-profile-action" href="{% url 'lead-edit' lead.pk %}">{% trans "Edit profile" %} →</a>
       {% endif %}
     </div>
@@ -77,7 +77,7 @@
   <section class="lead-panel entity-section request-preferences-panel">
     <div class="section-heading request-preferences-heading">
       <h2>{% trans "Preferences" %}</h2>
-      {% if lead.status != "finalized" %}
+      {% if not lead.converted_student_id %}
         <a class="button request-page-primary-action request-preferences-action" href="{% url 'lead-preferences-edit' lead.pk %}">{% trans "Edit preferences" %} →</a>
       {% endif %}
     </div>
@@ -197,7 +197,7 @@
   <section class="lead-panel entity-section request-documents-panel">
     <div class="section-heading request-documents-heading">
       <h2>{% trans "Documents" %}</h2>
-      {% if documents and lead.status != "finalized" %}
+      {% if documents and not lead.converted_student_id %}
         <button type="button" class="button request-page-primary-action modal-trigger" data-modal-target="customer-document-upload">+ {% trans "Upload document" %}</button>
       {% endif %}
     </div>
@@ -220,7 +220,7 @@
           <a class="request-document-open" href="{{ document.file.url }}" target="_blank" rel="noopener" aria-label="{% blocktrans with document_type=document.get_document_type_display %}Open {{ document_type }}{% endblocktrans %}" title="{% trans 'Open document' %}">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h12m-5-5 5 5-5 5"/></svg>
           </a>
-          {% if document.review_status == "replacement_requested" and lead.status != "finalized" %}
+          {% if document.review_status == "replacement_requested" and not lead.converted_student_id %}
             <details class="document-replace-panel request-document-replace">
               <summary>{% trans "Replace document" %}</summary>
               <form method="post" enctype="multipart/form-data" action="{% url 'lead-document-replace' lead.id document.id %}" class="document-replace-form">
@@ -235,13 +235,13 @@
         <div class="empty-state request-document-empty">
           <p>{% trans "No documents yet." %}</p>
           <span>{% trans "Upload the documents TurkDemy needs to process this Request." %}</span>
-          {% if lead.status != "finalized" %}
+          {% if not lead.converted_student_id %}
             <button type="button" class="button modal-trigger" data-modal-target="customer-document-upload">{% trans "Upload document" %}</button>
           {% endif %}
         </div>
       {% endfor %}
     </div>
-    {% if lead.status == "finalized" %}
+    {% if lead.converted_student_id %}
       <div class="customer-document-upload-row customer-document-upload-locked">
         <div>
           <strong>{% trans "Request documents are read-only" %}</strong>
@@ -251,7 +251,7 @@
     {% endif %}
   </section>
 
-  {% if lead.status != "finalized" %}
+  {% if not lead.converted_student_id %}
   <dialog class="customer-document-modal" id="customer-document-upload">
     <div class="customer-document-modal-card">
       <div class="customer-document-modal-head"><div><h2>{% trans "Upload document" %}</h2></div><button type="button" class="modal-close button-reset">×</button></div>

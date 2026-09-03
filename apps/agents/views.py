@@ -551,10 +551,10 @@ def applicant_activity(request, lead_id):
 @require_POST
 def applicant_internal_notes(request, lead_id):
     lead = get_object_or_404(_agent_leads(request), pk=lead_id)
-    if lead.status == LeadStatus.FINALIZED:
+    if lead.converted_student_id:
         messages.error(
             request,
-            _("Internal Lead notes are read-only after finalization."),
+            _("Internal Lead notes are read-only after Student creation."),
         )
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
@@ -604,10 +604,10 @@ def applicant_edit(request, lead_id):
             resource_name="applicant",
             list_url_name="agent-applicant-list",
         )
-    if lead.status in {LeadStatus.FINALIZED, LeadStatus.CLOSED}:
+    if lead.converted_student_id or lead.status == LeadStatus.CLOSED:
         messages.error(
             request,
-            _("Finalized or closed applicant data cannot be edited here."),
+            _("Student-linked or closed applicant data cannot be edited here."),
         )
         return redirect("agent-applicant-profile", lead_id=lead.pk)
 
@@ -646,7 +646,7 @@ def applicant_edit(request, lead_id):
 @require_POST
 def applicant_document_upload(request, lead_id):
     lead = get_object_or_404(_agent_leads(request), pk=lead_id)
-    if lead.status == LeadStatus.FINALIZED:
+    if lead.converted_student_id:
         messages.error(
             request,
             _("Upload documents to the Student record after finalization."),
@@ -873,6 +873,18 @@ def _student_conversion_programs(lead: Lead, request) -> list[dict[str, object]]
     selected_ids = (
         set(request.POST.getlist("program_interest")) if request.method == "POST" else set()
     )
+    existing_active_offering_ids: set[object] = set()
+    converted_student = lead.converted_student
+    if converted_student is not None:
+        existing_active_offering_ids = set(
+            converted_student.applications.exclude(
+                status__in=(
+                    ApplicationStatus.REJECTED,
+                    ApplicationStatus.WITHDRAWN,
+                    ApplicationStatus.CANCELLED,
+                )
+            ).values_list("program_offering_id", flat=True)
+        )
     rows: list[dict[str, object]] = []
     interests = lead.program_interests.select_related(
         "program",
@@ -890,12 +902,22 @@ def _student_conversion_programs(lead: Lead, request) -> list[dict[str, object]]
             selected_offering_id = request.POST.get(f"offering_{interest.pk}", "")
         elif interest.program_offering is not None and interest.program_offering.is_active:
             selected_offering_id = str(interest.program_offering_id)
+        already_applied = (
+            interest.program_offering_id in existing_active_offering_ids
+            if interest.program_offering_id
+            else False
+        )
         rows.append(
             {
                 "interest": interest,
                 "offerings": offerings,
-                "selected": str(interest.pk) in selected_ids,
+                "selected": (
+                    str(interest.pk) in selected_ids
+                    if request.method == "POST"
+                    else bool(selected_offering_id) and not already_applied
+                ),
                 "selected_offering_id": str(selected_offering_id),
+                "already_applied": already_applied,
             }
         )
     return rows
@@ -928,19 +950,28 @@ def applicant_finalize(request, lead_id):
         )
         return redirect("agent-applicant-detail", lead_id=lead.pk)
 
+    is_reopened = lead.status == LeadStatus.REOPENED and bool(lead.converted_student_id)
     form = StudentRecordConversionForm(
-        request.POST if request.method == "POST" else None,
+        request.POST if request.method == "POST" and not is_reopened else None,
         initial=_student_conversion_initial(lead),
     )
-    documents = list(lead.documents.select_related("reviewed_by").order_by("-created_at"))
+    documents = (
+        []
+        if is_reopened
+        else list(lead.documents.select_related("reviewed_by").order_by("-created_at"))
+    )
     selected_document_ids = (
-        set(request.POST.getlist("document"))
-        if request.method == "POST"
-        else {str(document.pk) for document in documents if document.is_verified}
+        set()
+        if is_reopened
+        else (
+            set(request.POST.getlist("document"))
+            if request.method == "POST"
+            else {str(document.pk) for document in documents if document.is_verified}
+        )
     )
     program_rows = _student_conversion_programs(lead, request)
 
-    if request.method == "POST" and form.is_valid():
+    if request.method == "POST" and (is_reopened or form.is_valid()):
         errors: list[str] = []
         selections: list[tuple[LeadProgramInterest, ProgramOffering]] = []
         selected_interest_ids = set(request.POST.getlist("program_interest"))
@@ -978,8 +1009,8 @@ def applicant_finalize(request, lead_id):
             try:
                 student = finalize_lead(
                     lead,
-                    student_data=form.cleaned_data,
-                    selected_document_ids=list(selected_document_ids),
+                    student_data=None if is_reopened else form.cleaned_data,
+                    selected_document_ids=(None if is_reopened else list(selected_document_ids)),
                     application_selections=selections,
                     performed_by=request.user,
                 )
@@ -996,19 +1027,25 @@ def applicant_finalize(request, lead_id):
                     for message in exc.messages:
                         form.add_error(None, message)
             else:
-                messages.success(
-                    request,
-                    _(
-                        "Student record created for %(student)s. Transferred "
-                        "%(documents)s document(s) and created %(applications)s "
-                        "draft application(s)."
+                if is_reopened:
+                    messages.success(
+                        request,
+                        _("Reopened Request completed for %(student)s.") % {"student": student},
                     )
-                    % {
-                        "student": student,
-                        "documents": len(selected_document_ids),
-                        "applications": len(selections),
-                    },
-                )
+                else:
+                    messages.success(
+                        request,
+                        _(
+                            "Student record created for %(student)s. Transferred "
+                            "%(documents)s document(s) and created %(applications)s "
+                            "draft application(s)."
+                        )
+                        % {
+                            "student": student,
+                            "documents": len(selected_document_ids),
+                            "applications": len(selections),
+                        },
+                    )
                 return redirect("agent-student-detail", student_id=student.pk)
         else:
             for error in errors:
@@ -1024,6 +1061,7 @@ def applicant_finalize(request, lead_id):
             "selected_document_ids": selected_document_ids,
             "program_rows": program_rows,
             "selected_document_count": len(selected_document_ids),
+            "is_reopened": is_reopened,
             "agent_context": True,
         },
     )

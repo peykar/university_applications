@@ -311,6 +311,10 @@ class ApplyProgramForm(LocalizedFormMixin, forms.Form):
                 if is_self and str(lead)
                 else (lead.email or str(_("Applicant managed by you")))
             )
+            if lead.status == "finalized":
+                subtitle = str(_("Completed Request — adding a new program will reopen it."))
+            elif lead.status == "reopened":
+                subtitle = str(_("Reopened Request"))
             value = f"lead:{lead.pk}"
             choices.append((value, title))
             self.applicant_options.append(

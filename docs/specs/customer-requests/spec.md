@@ -288,3 +288,9 @@ CRQ-088 — The Preferences tab MUST be a read-only customer workspace with one 
 CRQ-089 — Editable Requests MUST expose one **Edit preferences →** page-level action on the Preferences tab. The action MUST reuse the shared `request-page-primary-action` component and open a dedicated preferences edit route. Saving or cancelling MUST return to the Preferences tab; finalized Requests MUST not render the action and direct edit access MUST be rejected safely.
 
 CRQ-090 — The Program preferences card in Request context MUST remain a compact summary/shortcut on Overview, Profile, Programs, and desktop Messages, linking to the Preferences tab. The Preferences workspace itself MUST suppress the Request context sidebar and use the available Request-detail width so the same preferences are not duplicated beside their own page.
+
+CRQ-091 — The public Apply flow MAY list a customer-owned finalized Request in **Who are you applying for?**. If the customer adds a genuinely new Program to that Request, the system MUST atomically add the Program interest and move the Request to `reopened`; selecting a Program already present on the Request MUST NOT reopen it or duplicate the interest.
+
+CRQ-092 — A reopened Request MUST be customer-presented as **In progress** and its Programs workflow MUST be editable again. The linked Student and existing Applications remain authoritative downstream records.
+
+CRQ-093 — Reopening a converted Request MUST NOT restore Lead profile or Lead-document mutation. Those surfaces remain read-only because person/document maintenance belongs to the existing Student workflow.

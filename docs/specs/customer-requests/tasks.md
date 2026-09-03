@@ -115,3 +115,10 @@ Status: IMPLEMENTED
 - [x] `CRQ-088` Build a complete grouped read-only Preferences workspace.
 - [x] `CRQ-089` Add shared page-level Edit preferences action, dedicated edit route, return flow, and finalized guard.
 - [x] `CRQ-090` Keep Program preferences as context summary elsewhere while making Preferences full-width and non-duplicative.
+
+
+## CHANGE: reopen completed Request from Apply flow (CHG-0012)
+
+- [x] `CRQ-091` Keep completed Requests selectable and atomically reopen only for a genuinely new Program.
+- [x] `CRQ-092` Present reopened Requests as In progress and restore program management.
+- [x] `CRQ-093` Keep Lead profile/document mutation locked after Student conversion.

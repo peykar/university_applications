@@ -3112,3 +3112,63 @@ msgstr ""
 
 msgid "Only active programs at active universities can be recommended."
 msgstr "فقط برنامه‌های فعال در دانشگاه‌های فعال را می‌توان پیشنهاد کرد."
+
+msgid "A closed Request must be reopened by TurkDemy first."
+msgstr "یک درخواست بسته ابتدا باید توسط TurkDemy دوباره باز شود."
+
+msgid "Complete Reopened Request"
+msgstr "تکمیل درخواست بازگشایی‌شده"
+
+msgid "Complete Request"
+msgstr "تکمیل درخواست"
+
+msgid "Completed Request — adding a new program will reopen it."
+msgstr "درخواست تکمیل‌شده — افزودن برنامه جدید آن را دوباره باز می‌کند."
+
+msgid "Internal Lead notes are read-only after Student creation."
+msgstr "یادداشت‌های داخلی درخواست پس از ایجاد دانشجو فقط خواندنی هستند."
+
+msgid "New draft applications and Request completion are committed together; the existing Student and applications are preserved."
+msgstr "درخواست‌های پذیرش پیش‌نویس جدید و تکمیل درخواست با هم ثبت می‌شوند؛ دانشجو و درخواست‌های پذیرش موجود حفظ می‌شوند."
+
+msgid "Reopened Request"
+msgstr "درخواست بازگشایی‌شده"
+
+msgid "Reopened Request completed for %(student)s."
+msgstr "درخواست بازگشایی‌شده برای %(student)s تکمیل شد."
+
+msgid "Replace documents on the student record after Student creation."
+msgstr "پس از ایجاد دانشجو، مدارک را در پرونده دانشجو جایگزین کنید."
+
+msgid "Request reopened after a new program was added."
+msgstr "پس از افزودن برنامه جدید، درخواست دوباره باز شد."
+
+msgid "Review & complete"
+msgstr "بررسی و تکمیل"
+
+msgid "Student-linked or closed applicant data cannot be edited here."
+msgstr "اطلاعات متقاضیِ متصل به دانشجو یا بسته‌شده را نمی‌توان اینجا ویرایش کرد."
+
+msgid "The Student record already exists. Review the newly discussed programs and create only the additional draft applications that are needed."
+msgstr "پرونده دانشجو از قبل وجود دارد. برنامه‌های جدید را بررسی کنید و فقط درخواست‌های پذیرش پیش‌نویس اضافی موردنیاز را ایجاد کنید."
+
+msgid "The selected intake must belong to this program."
+msgstr "ورودی انتخاب‌شده باید متعلق به همین برنامه باشد."
+
+msgid "This Request profile can no longer be edited after Student creation."
+msgstr "پس از ایجاد دانشجو، پروفایل این درخواست دیگر قابل ویرایش نیست."
+
+msgid "This completed Request has no Student record to reopen."
+msgstr "این درخواست تکمیل‌شده پرونده دانشجویی برای بازگشایی ندارد."
+
+msgid "This completed Request was reopened for the new program."
+msgstr "این درخواست تکمیل‌شده برای برنامه جدید دوباره باز شد."
+
+msgid "This program is already on the applicant programs."
+msgstr "این برنامه از قبل در فهرست برنامه‌های متقاضی وجود دارد."
+
+msgid "Upload documents to the student record after Student creation."
+msgstr "پس از ایجاد دانشجو، مدارک را در پرونده دانشجو بارگذاری کنید."
+
+msgid "Application already exists"
+msgstr "درخواست پذیرش از قبل وجود دارد"

@@ -1,7 +1,7 @@
 # Applicant finalization
 
 Status: BASELINED
-Version: 1.2
+Version: 1.3
 
 ## Goal
 
@@ -69,6 +69,10 @@ leave the Lead unfinalized and MUST NOT commit partial database conversion state
 FIN-017 — Existing LeadDocument → StudentDocument conversion provenance MAY be
 retained to prevent duplicate document conversion. No equivalent persistent
 LeadProgramInterest → Application provenance relation is required.
+
+FIN-018 — The responsible Agent MAY complete a `reopened` converted Lead through the finalization action. This MUST reuse the existing Student and MUST NOT repeat Student creation or Lead-document transfer.
+
+FIN-019 — Re-finalizing a reopened Lead MUST preserve existing active Applications and the original `converted_at` provenance, create DRAFT Applications only for selected offerings that do not already have an active Application for that Student, record finalization activity/communication, and return the Lead to `finalized`.
 
 ## Acceptance policy
 

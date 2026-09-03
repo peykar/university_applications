@@ -16,7 +16,7 @@ class LeadAssignmentLifecycleStructureTests(SimpleTestCase):
 
     def test_statuses_are_minimal(self):
         block = self.models.split("class LeadStatus", 1)[1].split("class LeadSource", 1)[0]
-        for value in ("NEW", "ASSIGNED", "FINALIZED", "CLOSED"):
+        for value in ("NEW", "ASSIGNED", "REOPENED", "FINALIZED", "CLOSED"):
             self.assertIn(value, block)
         for value in ("IN_REVIEW", "NEEDS_INFO", "CONVERTED", "REJECTED"):
             self.assertNotIn(value, block)

@@ -12,6 +12,8 @@ Status: BASELINED
 | `APL-006` | `design.md` | Baseline verification: existing project tests; replace with named tests when this requirement changes. | Baseline |
 | `APL-007` | `apps/agents/forms.py::AgentLeadEditForm`, `apps/agents/views.py::applicant_internal_notes`, `templates/agents/applicant_detail.html` | `tests/test_agent_internal_notes_activity.py`, `tests/test_agent_edit_upload_workflow.py` | Covered |
 
+| `APL-008` | `apps/leads/models.py::LeadStatus`, `apps/leads/services/program_interests.py` | `tests/test_lead_workflow.py::LeadWorkflowTests::test_new_program_reopens_finalized_request_without_undoing_conversion` | Covered |
+
 ## Notes
 
 This baseline intentionally starts at capability level. When a requirement is

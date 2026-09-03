@@ -1,6 +1,6 @@
 {% extends "agents/base.html" %}
 {% load i18n %}
-{% block agent_title %}{% trans "Create Student Record" %}{% endblock %}
+{% block agent_title %}{% if is_reopened %}{% trans "Complete Reopened Request" %}{% else %}{% trans "Create Student Record" %}{% endif %}{% endblock %}
 {% block agent_page_header %}{% endblock %}
 {% block agent_content %}
 <div class="applicant-edit-page student-record-create-page">
@@ -9,14 +9,14 @@
     <span aria-hidden="true">/</span>
     <a href="{% url 'agent-applicant-profile' lead.pk %}">{{ lead }}</a>
     <span aria-hidden="true">/</span>
-    <span>{% trans "Create Student Record" %}</span>
+    <span>{% if is_reopened %}{% trans "Complete Reopened Request" %}{% else %}{% trans "Create Student Record" %}{% endif %}</span>
   </nav>
 
   <header class="applicant-edit-hero">
     <div class="applicant-edit-hero-copy">
       <span class="eyebrow">{% trans "Applicant conversion" %}</span>
-      <h1>{% trans "Create Student Record" %}</h1>
-      <p>{% trans "Review the student information, choose which applicant documents to transfer, and optionally create draft applications from discussed programs." %}</p>
+      <h1>{% if is_reopened %}{% trans "Complete Reopened Request" %}{% else %}{% trans "Create Student Record" %}{% endif %}</h1>
+      {% if is_reopened %}<p>{% trans "The Student record already exists. Review the newly discussed programs and create only the additional draft applications that are needed." %}</p>{% else %}<p>{% trans "Review the student information, choose which applicant documents to transfer, and optionally create draft applications from discussed programs." %}</p>{% endif %}
     </div>
     <div class="applicant-edit-hero-meta">
       <span class="lead-status lead-status-{{ lead.status }}">{{ lead.get_status_display }}</span>
@@ -36,6 +36,7 @@
     {% csrf_token %}
     <div class="applicant-edit-layout">
       <main class="applicant-edit-sections">
+        {% if not is_reopened %}
         <section class="applicant-edit-card">
           <div class="applicant-edit-card-head">
             <span class="applicant-edit-step">01</span>
@@ -93,6 +94,7 @@
           <p class="modal-help">{% trans "If you select a document that is not verified, it will be approved as part of the successful conversion and copied to the Student document library. Unchecking an already verified document does not change its verification status." %}</p>
         </section>
 
+        {% endif %}
         <section class="applicant-edit-card">
           <div class="applicant-edit-card-head">
             <span class="applicant-edit-step">03</span>
@@ -103,10 +105,10 @@
               {% with interest=row.interest %}
                 <div class="student-conversion-program">
                   <label class="student-conversion-row">
-                    <input type="checkbox" name="program_interest" value="{{ interest.pk }}"{% if row.selected %} checked{% endif %}{% if not row.offerings %} disabled{% endif %}>
+                    <input type="checkbox" name="program_interest" value="{{ interest.pk }}"{% if row.selected %} checked{% endif %}{% if not row.offerings or row.already_applied %} disabled{% endif %}>
                     <span class="student-conversion-row-main">
                       <strong>{{ interest.program }}</strong>
-                      <small>{% if interest.source == "user" %}{% trans "Customer-added" %}{% else %}{% trans "Agent-suggested" %}{% endif %}</small>
+                      <small>{% if row.already_applied %}{% trans "Application already exists" %}{% elif interest.source == "user" %}{% trans "Customer-added" %}{% else %}{% trans "Agent-suggested" %}{% endif %}</small>
                     </span>
                   </label>
                   {% if row.offerings %}
@@ -133,11 +135,11 @@
         <section class="applicant-edit-card">
           <div class="applicant-edit-card-head">
             <span class="applicant-edit-step">04</span>
-            <div><h2>{% trans "Review & create" %}</h2><p>{% trans "The Student, selected document transfers, draft applications, and applicant finalization are committed as one conversion workflow." %}</p></div>
+            <div><h2>{% if is_reopened %}{% trans "Review & complete" %}{% else %}{% trans "Review & create" %}{% endif %}</h2><p>{% if is_reopened %}{% trans "New draft applications and Request completion are committed together; the existing Student and applications are preserved." %}{% else %}{% trans "The Student, selected document transfers, draft applications, and applicant finalization are committed as one conversion workflow." %}{% endif %}</p></div>
           </div>
           <div class="applicant-edit-actions">
             <a class="button button-secondary" href="{% url 'agent-applicant-detail' lead.pk %}">{% trans "Cancel" %}</a>
-            <button class="button" type="submit">{% trans "Create Student Record" %}</button>
+            <button class="button" type="submit">{% if is_reopened %}{% trans "Complete Request" %}{% else %}{% trans "Create Student Record" %}{% endif %}</button>
           </div>
         </section>
       </main>

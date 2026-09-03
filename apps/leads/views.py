@@ -5,6 +5,7 @@ from pathlib import Path
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.db.models import Prefetch
@@ -54,6 +55,7 @@ from .models import (
 )
 from .services.activity import record_applicant_profile_update
 from .services.messaging import ensure_conversation, send_system_message
+from .services.program_interests import add_customer_program_interest
 
 
 def _customer_lead(user, lead_id):
@@ -336,10 +338,10 @@ def lead_create(request):
 @login_required
 def lead_edit(request, lead_id):
     lead = _customer_lead(request.user, lead_id)
-    if lead.status == LeadStatus.FINALIZED:
+    if lead.converted_student_id:
         messages.error(
             request,
-            _("This Request profile can no longer be edited."),
+            _("This Request profile can no longer be edited after Student creation."),
         )
         return redirect("lead-profile", lead_id=lead.pk)
 
@@ -386,7 +388,7 @@ def lead_preferences(request, lead_id):
 @login_required
 def lead_preferences_edit(request, lead_id):
     lead = _customer_lead(request.user, lead_id)
-    if lead.status == LeadStatus.FINALIZED:
+    if lead.converted_student_id:
         messages.error(
             request,
             _("This Request's preferences can no longer be edited."),
@@ -545,10 +547,10 @@ def lead_messages(request, lead_id):
 @require_POST
 def lead_document_upload(request, lead_id):
     lead = _customer_lead(request.user, lead_id)
-    if lead.status == LeadStatus.FINALIZED:
+    if lead.converted_student_id:
         messages.error(
             request,
-            _("Upload documents to the student record after finalization."),
+            _("Upload documents to the student record after Student creation."),
         )
         return redirect("lead-documents", lead_id=lead.pk)
 
@@ -580,10 +582,10 @@ def lead_document_upload(request, lead_id):
 @require_POST
 def lead_document_replace(request, lead_id, document_id):
     lead = _customer_lead(request.user, lead_id)
-    if lead.status == LeadStatus.FINALIZED:
+    if lead.converted_student_id:
         messages.error(
             request,
-            _("Replace documents on the student record after finalization."),
+            _("Replace documents on the student record after Student creation."),
         )
         return redirect("lead-documents", lead_id=lead.pk)
 
@@ -752,31 +754,35 @@ def apply_program(request, slug):
                     lead.email = request.user.email or ""
                     lead.save(update_fields=("email", "updated_at"))
 
-            LeadProgramInterest.objects.get_or_create(
-                lead=lead,
-                program=program,
-                program_offering=offering,
-                defaults={
-                    "source": LeadProgramInterestSource.USER,
-                    "created_by": request.user,
-                    "updated_by": request.user,
-                },
-            )
+            try:
+                result = add_customer_program_interest(
+                    lead=lead,
+                    program=program,
+                    offering=offering,
+                    performed_by=request.user,
+                )
+            except ValidationError as exc:
+                form.add_error(None, exc.messages[0])
+            else:
+                if result.reopened:
+                    messages.info(
+                        request,
+                        _("This completed Request was reopened for the new program."),
+                    )
+                elif not result.created:
+                    messages.info(
+                        request,
+                        _("This program is already on the applicant programs."),
+                    )
 
-            LeadActivity.objects.create(
-                lead=lead,
-                activity_type=LeadActivityType.PROGRAM_ADDED,
-                description=_("Program added: %(program)s.") % {"program": program.localized_name},
-                is_customer_visible=True,
-                created_by=request.user,
-                updated_by=request.user,
-            )
-
-        messages.success(
-            request,
-            _("%(program)s added to the applicant programs.") % {"program": program.localized_name},
-        )
-        return redirect("lead-detail", lead_id=lead.pk)
+        if not form.errors:
+            if result.created:
+                messages.success(
+                    request,
+                    _("%(program)s added to the applicant programs.")
+                    % {"program": program.localized_name},
+                )
+            return redirect("lead-detail", lead_id=lead.pk)
 
     return render(
         request,

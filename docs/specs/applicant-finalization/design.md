@@ -43,3 +43,10 @@ standalone validated workflow phase.
 - The service validates selections before durable conversion, creates the Student and any draft Applications, transfers selected documents, then finalizes the Lead. Database changes share one `transaction.atomic()` boundary.
 - `LeadDocument.converted_student_document` remains the idempotent document-conversion bridge. `LeadProgramInterest` has no persistent Application pointer; application creation uses the discussed interest only as transient UI/service input.
 - Django admin bulk finalization remains unavailable because the workflow requires per-applicant review and selections.
+
+## Reopened converted Requests (CHG-0012)
+
+- `LeadStatus.REOPENED` represents additional Request-stage program work after a Student already exists; it does not undo conversion.
+- Customer addition uses `apps.leads.services.program_interests.add_customer_program_interest(...)`, which locks the Lead, refuses closed Requests, de-duplicates by Program identity, creates the interest, and atomically records the customer-visible REOPENED and PROGRAM_ADDED activities when transitioning from FINALIZED.
+- `finalize_lead()` has a converted/reopened branch. It reuses `converted_student`, skips Student/document conversion, skips already-active Student+offering Applications, creates only missing selected DRAFT Applications, preserves `converted_at`, records FINALIZED activity/system communication, and returns the Lead to FINALIZED.
+- The Agent finalization page becomes a program-only completion surface for reopened converted Leads; Student/profile/document editing remains in Student workflows.

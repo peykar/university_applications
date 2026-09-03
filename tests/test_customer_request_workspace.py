@@ -319,7 +319,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         )[0]
         self.assertEqual(profile.count('{% trans "Edit profile" %}'), 1)
         self.assertIn("{% url 'lead-edit' lead.pk %}", profile)
-        self.assertIn('{% if lead.status != "finalized" %}', profile)
+        self.assertIn("{% if not lead.converted_student_id %}", profile)
         self.assertNotIn('{% trans "Edit profile" %}', self.request_header)
 
     def test_profile_uses_shared_page_title_action_convention(self):
@@ -538,7 +538,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         edit = self.views.split("def lead_preferences_edit(request, lead_id):", 1)[1].split(
             "@login_required\ndef lead_detail", 1
         )[0]
-        self.assertIn("lead.status == LeadStatus.FINALIZED", edit)
+        self.assertIn("if lead.converted_student_id:", edit)
         self.assertIn('return redirect("lead-preferences", lead_id=lead.pk)', edit)
         self.assertIn('"entity_tab": "preferences"', edit)
 
@@ -879,7 +879,7 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
         documents = self.request_section.split('{% elif entity_tab == "documents" %}', 1)[1].split(
             '{% elif entity_tab == "applications" %}', 1
         )[0]
-        self.assertIn('{% if documents and lead.status != "finalized" %}', documents)
+        self.assertIn("{% if documents and not lead.converted_student_id %}", documents)
         self.assertIn("empty-state request-document-empty", documents)
         self.assertNotIn('{% trans "Add another document" %}', documents)
 
