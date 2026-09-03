@@ -122,10 +122,10 @@ Version: 3.1
 
 
 - [x] CAT-T41 (`CAT-053`, `CAT-054`) Add global multilingual/SEO-ready
-      `GeneralField` and optional `Program.general_field` without changing
+      `GeneralField` and optional many-to-many `Program.general_fields` without changing
       AcademicUnit/Department semantics.
 - [x] CAT-T42 (`CAT-056`) Add GeneralField Django Admin management and expose
-      manual Program mapping with list/filter/search/autocomplete support.
+      manual Program multi-field mapping with list/filter/search/autocomplete support.
 - [x] CAT-T43 (`CAT-055`) Move public field choices, field filtering and homepage
       field discovery from repeated Department slugs to GeneralField.
 - [x] CAT-T44 (`CAT-057`) Keep `import_programs_for_university` GeneralField-neutral:
@@ -135,4 +135,4 @@ Version: 3.1
       record the field-landing-page boundary for the later SEO phase.
 - [x] CAT-T46 (`CAT-055`, `CAT-057`) Add regression coverage for canonical field
       filtering, localized labels, inactive catalogue exclusion, no Department
-      fallback, new-import null mapping, re-import preservation and import rejection.
+      fallback, new-import empty mapping, re-import preservation and import rejection.

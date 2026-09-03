@@ -348,16 +348,6 @@ class UniversityAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
             },
         ),
         (
-            "TurkDemy classification",
-            {
-                "fields": ("general_field",),
-                "description": (
-                    "Curated after catalogue import verification. This classification "
-                    "is independent from the university Academic Unit and Department."
-                ),
-            },
-        ),
-        (
             "Descriptions",
             {
                 "classes": ("collapse",),
@@ -541,7 +531,7 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "university",
         "academic_unit",
         "department",
-        "general_field",
+        "general_field_summary",
         "degree",
         "study_mode",
         "language_summary",
@@ -553,7 +543,7 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "degree",
         "study_mode",
         "instruction_languages",
-        "general_field",
+        "general_fields",
         "university",
         "is_active",
     )
@@ -566,13 +556,13 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
         "university__name_en",
         "academic_unit__name_en",
         "department__name_en",
-        "general_field__name_en",
+        "general_fields__name_en",
     )
     autocomplete_fields = (
         "university",
         "academic_unit",
         "department",
-        "general_field",
+        "general_fields",
     )
     prepopulated_fields: ClassVar[dict[str, Sequence[str]]] = {"slug_en": ("name_en",)}
     ordering = ("-listing_priority", "university__name_en", "name_en")
@@ -603,6 +593,16 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
             },
         ),
         (
+            "TurkDemy classification",
+            {
+                "fields": ("general_fields",),
+                "description": (
+                    "Curated after catalogue import verification. A Program may belong "
+                    "to multiple TurkDemy General Fields; imports never modify these mappings."
+                ),
+            },
+        ),
+        (
             "Descriptions",
             {
                 "classes": ("collapse",),
@@ -623,6 +623,10 @@ class ProgramAdmin(AuditAdminMixin, ActiveActionsMixin, admin.ModelAdmin):
             },
         ),
     )
+
+    @admin.display(description="General fields")
+    def general_field_summary(self, obj):
+        return ", ".join(field.localized_name for field in obj.general_fields.all()) or "—"
 
     @admin.display(description="Instruction languages")
     def language_summary(self, obj):

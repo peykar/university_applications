@@ -167,9 +167,9 @@ class Command(BaseCommand):
                 raise CommandError(f"{path}.listing_priority must be an integer.")
             self._validate_optional_text(program, "internal_notes", path=path)
             self._validate_optional_bool(program, "is_active", path=path)
-            if "general_field" in program:
+            if "general_field" in program or "general_fields" in program:
                 raise CommandError(
-                    f"{path}.general_field is TurkDemy-curated and must be assigned "
+                    f"{path}.general_fields are TurkDemy-curated and must be assigned "
                     "manually after import verification; remove it from the import file."
                 )
 
@@ -430,7 +430,7 @@ class Command(BaseCommand):
         # GeneralField is intentionally absent from importer defaults. It is a
         # TurkDemy-curated classification assigned only after catalogue verification.
         # New Programs therefore start unmapped, while re-imports preserve any
-        # existing manual Program.general_field assignment.
+        # existing manual Program.general_fields assignments.
 
         source_slug_en = str(row["slug_en"])
         university_prefix = f"{university.slug_en}-"

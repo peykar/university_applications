@@ -318,15 +318,13 @@ class Program(BaseModel, LocalizedNameMixin, LocalizedSlugMixin, ActiveMixin):
         blank=True,
     )
 
-    general_field = models.ForeignKey(
+    general_fields = models.ManyToManyField(
         GeneralField,
-        on_delete=models.SET_NULL,
         related_name="programs",
-        null=True,
         blank=True,
         help_text=_(
-            "TurkDemy-curated general study field. Assign manually after catalogue "
-            "import and verification; importers must not populate or overwrite it."
+            "TurkDemy-curated general study fields. Assign manually after catalogue "
+            "import and verification; importers must not populate, overwrite, or clear them."
         ),
     )
 

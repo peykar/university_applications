@@ -301,24 +301,20 @@ unchanged and continue to represent source/university structure.
 University
  ├── AcademicUnit / Department
  └── Program
-      └── general_field? ──> GeneralField (global TurkDemy taxonomy)
+      └── general_fields* ──> GeneralField (global TurkDemy taxonomy)
 ```
 
-Each Program has at most one GeneralField. The nullable relation makes curation state
-explicit: `NULL` means the Program has not yet been mapped or intentionally remains
-unclassified. No mapping is inferred from Department names/slugs during import.
+Each Program may have zero or more GeneralFields. The optional many-to-many relation makes curation state explicit: an empty relation means the Program has not yet been mapped or intentionally remains unclassified, while interdisciplinary Programs may be mapped to multiple GeneralFields. No mapping is inferred from Department names/slugs during import.
 
 Public `?field=` filtering resolves exclusively against `GeneralField.slug_en`; labels
 are localized at presentation time. This keeps one stable filter identity across EN,
 FA, TR and AR while separating it from University-specific Department data. Homepage
-field discovery uses the same GeneralField relation and active-catalogue constraints.
+field discovery uses the same GeneralField many-to-many relation and active-catalogue constraints.
 
 Django Admin is the first curation surface. GeneralField has localized editorial and
 SEO fields so a later SEO change can create canonical field landing pages without
 changing the taxonomy model. Program admin exposes the mapping through autocomplete
 and list/filter/search support.
 
-`import_programs_for_university` deliberately excludes GeneralField from update
-defaults. New Programs therefore remain null and existing assignments survive
-re-import. The schema validator rejects a supplied `general_field` key so accidental
-automatic classification cannot become an undocumented import convention.
+`import_programs_for_university` deliberately excludes GeneralField memberships from update
+defaults. New Programs therefore remain unmapped and all existing assignments survive re-import. The schema validator rejects supplied `general_field` and `general_fields` keys so accidental automatic classification cannot become an undocumented import convention.

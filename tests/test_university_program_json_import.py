@@ -176,7 +176,7 @@ class UniversityProgramJsonImportTests(TestCase):
         offering = ProgramOffering.objects.get(program=program, source=self.source)
 
         self.assertEqual(program.academic_unit, unit)
-        self.assertIsNone(program.general_field)
+        self.assertEqual(program.general_fields.count(), 0)
         self.assertEqual(program.duration_months, 48)
         self.assertEqual(
             program.internal_notes,
@@ -229,7 +229,7 @@ class UniversityProgramJsonImportTests(TestCase):
             "Normalized from the university tuition sheet.",
         )
 
-    def test_reimport_preserves_manually_curated_general_field(self):
+    def test_reimport_preserves_manually_curated_general_fields(self):
         payload = self._payload()
         self._run(payload)
         program = Program.objects.get(university=self.university)
@@ -239,18 +239,27 @@ class UniversityProgramJsonImportTests(TestCase):
             created_by=self.user,
             updated_by=self.user,
         )
-        program.general_field = field
-        program.save(update_fields=["general_field", "updated_at"])
+        program.general_fields.add(field)
 
         payload["programs"][0]["name_en"] = "Software Engineering Updated"
         self._run(payload)
 
         program.refresh_from_db()
-        self.assertEqual(program.general_field, field)
+        self.assertEqual(list(program.general_fields.all()), [field])
 
     def test_import_rejects_general_field_mapping_before_writes(self):
         payload = self._payload()
         payload["programs"][0]["general_field"] = "engineering"
+
+        with self.assertRaises(CommandError):
+            self._run(payload)
+
+        self.assertFalse(Program.objects.filter(university=self.university).exists())
+        self.assertFalse(AcademicUnit.objects.filter(university=self.university).exists())
+
+    def test_import_rejects_general_fields_mapping_before_writes(self):
+        payload = self._payload()
+        payload["programs"][0]["general_fields"] = ["engineering", "computer-science-it"]
 
         with self.assertRaises(CommandError):
             self._run(payload)

@@ -148,7 +148,6 @@ class ProgramFilterTests(TestCase):
         self.program = Program.objects.create(
             university=university,
             department=department,
-            general_field=general_field,
             degree="bachelor",
             name_en="Computer Engineering",
             name_fa="",
@@ -161,6 +160,7 @@ class ProgramFilterTests(TestCase):
             created_by=user,
             updated_by=user,
         )
+        self.program.general_fields.add(general_field)
         ProgramInstructionLanguage.objects.create(
             program=self.program,
             language=language,
@@ -242,9 +242,28 @@ class ProgramFilterTests(TestCase):
         self.assertEqual(canonical.count(), 1)
         self.assertEqual(localized_slug.count(), 0)
 
+    def test_program_can_belong_to_multiple_general_fields(self):
+        computing = GeneralField.objects.create(
+            name_en="Computer Science & IT",
+            slug_en="computer-science-it",
+            created_by=get_system_user(),
+            updated_by=get_system_user(),
+        )
+        self.program.general_fields.add(computing)
+
+        engineering = apply_program_filters(
+            Program.objects.all(), ProgramFilterState(field="engineering")
+        )
+        computing_results = apply_program_filters(
+            Program.objects.all(), ProgramFilterState(field="computer-science-it")
+        )
+
+        self.assertEqual(engineering.count(), 1)
+        self.assertEqual(computing_results.count(), 1)
+        self.assertEqual(self.program.general_fields.count(), 2)
+
     def test_field_filter_does_not_fall_back_to_department(self):
-        self.program.general_field = None
-        self.program.save(update_fields=["general_field", "updated_at"])
+        self.program.general_fields.clear()
 
         qs = apply_program_filters(
             Program.objects.all(),

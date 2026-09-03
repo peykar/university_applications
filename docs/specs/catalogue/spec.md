@@ -340,27 +340,24 @@ name, localized slug, localized editorial description, localized SEO title,
 localized SEO description, active state, and explicit sort order. Its non-empty
 localized slugs MUST be globally unique.
 
-CAT-054 — A Program MAY reference zero or one `GeneralField`. The relation MUST
-be optional so newly imported or not-yet-reviewed Programs can remain intentionally
-unclassified. GeneralField does not replace Program.department or
-Program.academic_unit.
+CAT-054 — A Program MAY reference zero or more `GeneralField` records through an optional many-to-many relation. Newly imported or not-yet-reviewed Programs can remain intentionally unclassified, while genuinely interdisciplinary Programs may be manually mapped to multiple GeneralFields. GeneralField does not replace Program.department or Program.academic_unit.
 
 CAT-055 — Public catalogue filtering by the `field` query dimension MUST use
-`Program.general_field` and the GeneralField canonical English slug. Field choices
+`Program.general_fields` and the GeneralField canonical English slug. Field choices
 MUST expose only active GeneralFields that have at least one active Program at an
 active University; a University-scoped Program catalogue MUST expose only fields
 represented by that University's active Programs. Localized slugs MUST NOT be
 accepted as alternate filter identities.
 
 CAT-056 — Django Admin MUST allow TurkDemy staff to create/edit GeneralFields and
-manually map Programs to them. Program administration MUST make the GeneralField
-assignment visible, searchable/filterable, and selectable without altering the
+manually map Programs to one or more of them. Program administration MUST make the GeneralField
+assignments visible, searchable/filterable, and selectable without altering the
 University-owned Department/AcademicUnit structure.
 
 CAT-057 — `import_programs_for_university` MUST NOT infer, assign, overwrite, or
-clear `Program.general_field`. A newly imported Program MUST remain unmapped. A
-re-import of an existing manually mapped Program MUST preserve that assignment.
-A normalized import row that attempts to supply `general_field` MUST be rejected
+clear `Program.general_fields`. A newly imported Program MUST remain unmapped. A
+re-import of an existing manually mapped Program MUST preserve those assignments.
+A normalized import row that attempts to supply either legacy `general_field` or `general_fields` MUST be rejected
 before import writes.
 
 CAT-058 — GeneralField's localized description and SEO metadata are the canonical

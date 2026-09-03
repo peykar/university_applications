@@ -3393,5 +3393,5 @@ msgid "University programs in Türkiye"
 msgstr "Türkiye'deki üniversite programları"
 
 
-msgid "TurkDemy-curated general study field. Assign manually after catalogue import and verification; importers must not populate or overwrite it."
-msgstr "TurkDemy tarafından yönetilen genel çalışma alanı. Katalog içe aktarıldıktan ve doğrulandıktan sonra manuel olarak atayın; içe aktarıcılar bu alanı doldurmamalı veya üzerine yazmamalıdır."
+msgid "TurkDemy-curated general study fields. Assign manually after catalogue import and verification; importers must not populate, overwrite, or clear them."
+msgstr "TurkDemy tarafından düzenlenen genel çalışma alanları. Katalog içe aktarma ve doğrulama sonrasında manuel olarak atayın; içe aktarıcılar bunları doldurmamalı, üzerine yazmamalı veya temizlememelidir."

@@ -83,7 +83,7 @@ Catalogue v3 is the sole active catalogue representation. The canonical domain i
 University
  ├── AcademicUnit / Department
  └── Program
-      ├── GeneralField? → TurkDemy-wide curated classification
+      ├── GeneralField* → TurkDemy-wide curated classifications
       ├── ProgramInstructionLanguage → ProgramLanguage
       ├── study mode / duration_months
       └── ProgramOffering
@@ -96,7 +96,4 @@ University
 Catalogue v2 compatibility models and fields have been removed. Importers, Admin,
 exports, UI/API consumers, and Application creation use Intake and OfferingFee.
 
-`GeneralField` is intentionally outside the University hierarchy. It provides one
-canonical TurkDemy-wide field identity for public filtering and future field landing
-pages. Programme imports do not classify it; TurkDemy admins assign it only after
-reviewing the imported catalogue.
+`GeneralField` is intentionally outside the University hierarchy. It provides canonical TurkDemy-wide field identities for public filtering and future field landing pages. A Program may belong to multiple GeneralFields when genuinely interdisciplinary. Programme imports do not classify it; TurkDemy admins assign memberships only after reviewing the imported catalogue.

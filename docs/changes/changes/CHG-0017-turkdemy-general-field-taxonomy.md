@@ -25,15 +25,13 @@ no GeneralField landing page is introduced in this change.
 
 - Added global `GeneralField` with localized names/slugs/descriptions, localized SEO
   title/description, active state and sort order.
-- Added optional `Program.general_field` with `SET_NULL` behavior and explicit admin
-  help text describing manual post-verification curation.
+- Added optional many-to-many `Program.general_fields` relation and explicit admin
+  help text describing manual post-verification curation and interdisciplinary multi-field mapping.
 - Added GeneralField administration and exposed Program mapping/filter/search/autocomplete.
 - Switched public `field` filtering, field choices and homepage field discovery to
   GeneralField while keeping `Department` intact for University catalogue structure.
 - Kept canonical filter identity on `GeneralField.slug_en` across locales.
-- `import_programs_for_university` rejects import-provided `general_field`, leaves new
-  Programs unmapped, and does not include the relation in update defaults so re-import
-  preserves a manual assignment.
+- `import_programs_for_university` rejects import-provided `general_field` or `general_fields`, leaves new Programs unmapped, and never touches the many-to-many relation so re-import preserves all manual assignments.
 - Updated catalogue/domain/business/import documentation and regression coverage.
 
 ## SEO review
@@ -49,13 +47,14 @@ future dedicated field-landing-page change.
 - No change to University-owned AcademicUnit/Department modeling.
 - No automatic field inference or import mapping.
 - No GeneralField hierarchy.
+- No automatic primary-field inference; all GeneralField memberships are curated manually.
 - No public GeneralField landing-page routes yet.
 
 ## Database rollout
 
 The repository intentionally does not commit generated Django migrations. After
 updating an existing checkout, run the normal `makemigrations`/`migrate` workflow.
-The new Program relation is nullable, so existing Programs remain valid and start
+The new Program many-to-many relation is optional, so existing Programs remain valid and start
 unmapped until manually curated.
 
 ## Verification

@@ -3365,5 +3365,5 @@ msgid "University programs in Türkiye"
 msgstr "البرامج الجامعية في تركيا"
 
 
-msgid "TurkDemy-curated general study field. Assign manually after catalogue import and verification; importers must not populate or overwrite it."
-msgstr "مجال دراسي عام تديره TurkDemy. عيّنه يدويًا بعد استيراد الكتالوج والتحقق منه؛ ويجب ألا تقوم أدوات الاستيراد بتعبئته أو استبدال قيمته."
+msgid "TurkDemy-curated general study fields. Assign manually after catalogue import and verification; importers must not populate, overwrite, or clear them."
+msgstr "مجالات الدراسة العامة التي يديرها TurkDemy. تُسند يدويًا بعد استيراد الكتالوج والتحقق منه؛ ويجب ألا تقوم أدوات الاستيراد بتعيينها أو الكتابة فوقها أو مسحها."
