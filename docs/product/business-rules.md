@@ -204,3 +204,19 @@ calendar/date formatting. Calendar localization MUST NOT change the represented 
 
 BR-I18N-006 — Date-only values remain date-only and MUST NOT acquire timezone or
 time-of-day semantics through localization.
+
+## Public SEO
+
+BR-SEO-001 — Adding or modifying a public page MUST include an SEO impact review
+in the same change. Relevant metadata, canonical identity, localization
+alternates, indexability, sitemap behavior, structured/social metadata, semantic
+crawlability, internal linking, and duplicate-content risks MUST be updated or
+explicitly marked not applicable.
+
+BR-SEO-002 — Public multilingual pages MUST expose a canonical URL and reciprocal
+language alternates for supported locales when equivalent localized routes exist.
+
+BR-SEO-003 — Arbitrary search/filter query combinations are navigation surfaces,
+not standalone SEO landing pages, unless a future approved requirement promotes
+a specific route to an indexable landing page.
+

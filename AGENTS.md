@@ -147,6 +147,30 @@ route/form/action wiring as well as the lower-level service behavior where
 practical. A service test alone is insufficient evidence that a visible button
 or modal works.
 
+
+
+## Public-page SEO gate
+
+Every change that adds or modifies a public page MUST include an SEO impact review
+as part of the same change. SEO is not a later cleanup task.
+
+For each affected public page, explicitly evaluate and update as applicable:
+
+- localized document title and meta description;
+- canonical URL identity;
+- reciprocal `hreflang` alternates and `x-default`;
+- robots/indexability policy;
+- sitemap inclusion/exclusion;
+- Open Graph/social metadata and representative image;
+- structured data when the page represents a supported entity/content type;
+- semantic headings, crawlable content and meaningful image alternative text;
+- internal links and URL stability;
+- filter, query-string and pagination duplicate-content behavior.
+
+If an item is not applicable, the implementation/change record should make that
+clear rather than silently omitting the review. Public-page tasks and tests MUST
+include SEO acceptance coverage appropriate to the affected surface.
+
 ## Global invariants
 
 - A `LeadProgramInterest` is exploratory; it is not an `Application` until an Agent explicitly selects it for conversion.

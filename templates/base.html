@@ -8,6 +8,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}TurkDemy{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{% trans 'Study in Türkiye with TurkDemy.' %}{% endblock %}">
+  <meta name="robots" content="{{ seo_robots|default:'noindex,follow' }}">
+  {% if seo_canonical_url %}
+    <link rel="canonical" href="{{ seo_canonical_url }}">
+    {% for alternate in seo_alternates %}
+      <link rel="alternate" hreflang="{{ alternate.language }}" href="{{ alternate.href }}">
+    {% endfor %}
+    <meta property="og:url" content="{{ seo_canonical_url }}">
+  {% endif %}
+  <meta property="og:site_name" content="TurkDemy">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{% block og_title %}TurkDemy{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{% trans 'Study in Türkiye with TurkDemy.' %}{% endblock %}">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="{% static 'branding/favicon.ico' %}" sizes="any">
   <link rel="icon" type="image/svg+xml" href="{% static 'branding/turkdemy-mark.svg' %}">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'branding/favicon-32x32.png' %}">

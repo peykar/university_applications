@@ -137,6 +137,7 @@ TEMPLATES = [
                 "apps.accounts.context_processors.authentication_providers",
                 "apps.agents.context_processors.agent_workspace",
                 "apps.core.context_processors.customer_support_links",
+                "apps.public.context_processors.seo",
             ],
         },
     }

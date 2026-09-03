@@ -78,3 +78,5 @@ See also: [Agent applicant workspace](agent-applicant-workspace.md).
 - `university-data-dump.md` — export one University catalogue as JSON for offline comparison and Rasa text enrichment.
 
 - `catalogue-v3-cutover.md` — safe pre-migration backfill when upgrading an existing database from the removed Catalogue v2 storage.
+
+- `docs/specs/seo/` — canonical public SEO behavior and public-page SEO development gate.

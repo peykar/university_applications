@@ -1,5 +1,12 @@
 ## 2026-09-03 — CHG-0013 Localized structured Activity rendering
 
+## 2026-09-03 — Public-page SEO becomes a development invariant
+
+- Added CHG-0015 and the Public SEO capability.
+- Every future public-page addition/modification must review SEO in the same change.
+- Added canonical URLs, multilingual hreflang, robots/indexability policy,
+  root sitemap/robots endpoints, and baseline social metadata.
+
 ## 2026-09-03 — Agent Activity RTL grouping and bidi polish
 
 - Implemented UI-0010 / AUD-010: Activity actor/date metadata now stays grouped

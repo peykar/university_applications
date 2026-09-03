@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.urls import URLPattern, URLResolver, include, path
 
 from apps.core.views import switch_language
+from apps.public.seo_views import robots_txt, sitemap_xml
 
 admin.site.site_header = "TurkDemy Administration"
 admin.site.site_title = "TurkDemy Admin"
@@ -14,6 +15,8 @@ handler404 = "apps.core.views.page_not_found"
 
 
 urlpatterns: list[URLPattern | URLResolver] = [
+    path("robots.txt", robots_txt, name="robots-txt"),
+    path("sitemap.xml", sitemap_xml, name="sitemap-xml"),
     path("i18n/setlang/", switch_language, name="set_language"),
     path("health/", include("apps.health.urls")),
     path("api/v1/", include("apps.api.urls")),
