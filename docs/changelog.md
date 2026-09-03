@@ -1,3 +1,9 @@
+## 2026-09-03 — Bidi-aware advisor recommendation notes
+
+- Added UI-0009: recommendation reasons now use a consistent, subtle advisor-note callout across customer and Agent recommendation surfaces.
+- Logical inline-start styling plus automatic direction keeps Persian/Arabic notes naturally right-anchored on English pages while LTR notes remain left-anchored.
+- No recommendation data, workflow, permissions, or activity semantics changed.
+
 
 ## 2026-09-03 — REF-0002 program recommendation transactional service
 

@@ -642,6 +642,17 @@ class CustomerRequestWorkspaceTests(SimpleTestCase):
             programs,
         )
 
+    def test_advisor_recommendation_notes_use_shared_mixed_direction_callout(self):
+        self.assertIn("border-inline-start:2px solid #cad9e5", self.css)
+        self.assertIn("text-align:start;unicode-bidi:plaintext", self.css)
+        self.assertIn("background:#f7f9fb", self.css)
+        self.assertIn('class="request-program-suggestion-reason" dir="auto"', self.request_section)
+        self.assertIn(
+            'class="request-overview-program-suggestion-reason" dir="auto"',
+            self.request_detail,
+        )
+        self.assertIn('class="request-progress-note" dir="auto"', self.request_detail)
+
     def test_program_intake_copy_is_customer_friendly(self):
         programs = self.request_section.split('{% elif entity_tab == "programs" %}', 1)[1].split(
             '{% elif entity_tab == "documents" %}', 1

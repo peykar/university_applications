@@ -174,6 +174,8 @@ icon at rest, a darker gray hover state, and a focus-visible outline for keyboar
 ## Advisor recommendation-note presentation
 
 Agent recommendation provenance and explanation are deliberately distinct. The compact **Suggested by your advisor** label identifies origin; when `suggestion_reason` is present, it renders below that label as ordinary readable note text rather than inline badge copy. The note uses `dir="auto"` plus bidi-safe styling so its direction follows its actual content without changing the surrounding page direction. Generic `notes` remains internal.
+
+UI-0009 refines that explanation into a subtle advisor-note callout with a logical inline-start accent border, neutral background, compact padding, `text-align: start`, and automatic direction. Because the border is logical rather than physically left/right, an RTL note places its accent on the right while an LTR note places it on the left.
 ## Unassigned Request messaging
 
 A Lead may legitimately exist without an Agent when `DEFAULT_LEAD_AGENT_ID` is empty, invalid, inactive, or when an older record predates assignment. Customer Request rendering therefore does not call `ensure_conversation()` for an Agent-less Lead. The Request context uses an empty `Message` queryset, zero unread count, and no recent messages until an Agent organization exists. The Request Messages tab renders an assignment-pending explanation instead of a compose form. A direct message POST is also guarded and redirects safely with customer-facing feedback. Once an Agent is assigned, the existing generic conversation service creates/loads the canonical Agent + customer + subject conversation normally.

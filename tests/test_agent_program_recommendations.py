@@ -33,6 +33,10 @@ class AgentProgramRecommendationStructureTests(SimpleTestCase):
         self.assertIn("LeadActivityType.PROGRAM_SUGGESTED", self.service)
         self.assertIn("send_system_message(", self.service)
 
+    def test_agent_program_reason_uses_bidi_aware_note_treatment(self):
+        self.assertIn('class="program-recommendation-reason" dir="auto"', self.section)
+        self.assertIn("border-inline-start:2px solid #cad9e5", self.css)
+
     def test_agent_can_remove_own_recommendation(self):
         self.assertIn("def applicant_remove_recommendation", self.views)
         self.assertIn('name="agent-applicant-program-remove"', self.urls)

@@ -26,6 +26,7 @@ Status: BASELINED
   `LeadActivity.metadata["suggestion_reason"]` is rendered with the customer and
   Agent PROGRAM_SUGGESTED activity presentation. The reason is not duplicated
   into the activity description string.
+- UI-0009 gives those rendered reasons a shared bidi-aware advisor-note treatment; this is presentation-only and does not alter recommendation/activity/message persistence.
 - Automatic/system-generated program recommendations remain disabled.
 - Recommendation removal remains a separate Agent endpoint and is not part of
   REF-0002's creation/update transaction boundary.
