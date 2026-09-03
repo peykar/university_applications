@@ -6703,3 +6703,104 @@ a.entity-list-row:hover{
   .more-program-row strong{font-size:.76rem!important}
   .more-program-price{font-size:.76rem!important}
 }
+
+/* UI-0011 visual polish — final narrow-screen spacing and hierarchy pass. */
+@media(max-width:720px){
+  .program-detail-hero{
+    min-height:330px;
+    margin-bottom:82px;
+    padding:68px 26px 92px;
+  }
+  .program-detail-copy{padding-inline:10px}
+  .program-breadcrumbs{margin-bottom:20px;font-size:.74rem;line-height:1.75}
+  .program-degree-label{margin-bottom:10px}
+  .program-detail-copy h1{
+    margin-bottom:12px;
+    font-size:clamp(2.15rem,10.5vw,2.8rem);
+    line-height:1.2;
+    letter-spacing:-.02em;
+  }
+  .program-hero-university{font-size:.92rem;line-height:1.7}
+  .program-context-links{gap:7px;margin-top:17px}
+  .program-context-links a{padding:7px 10px;font-size:.73rem;line-height:1.35}
+
+  .program-university-mini-card-mobile{
+    inset-inline:24px;
+    bottom:-66px;
+    min-height:132px;
+    padding:16px 18px;
+    gap:5px;
+  }
+  .program-university-mini-card-mobile img{width:50px;height:50px}
+  .program-university-mini-card-mobile strong{font-size:1rem}
+  .program-university-mini-card-mobile span{font-size:.72rem;line-height:1.45}
+  .program-university-mini-card-mobile a{font-size:.75rem;margin-top:3px}
+
+  .program-summary-grid{
+    min-height:68px;
+    margin-bottom:18px!important;
+  }
+  .program-summary-card,
+  .program-summary-card:nth-child(2),
+  .program-summary-card:nth-child(-n+2),
+  .program-summary-card:last-child{
+    display:flex;
+    min-height:68px;
+    padding:12px 6px!important;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  .program-summary-card span{font-size:.62rem!important;line-height:1.35}
+  .program-summary-card strong{font-size:.78rem!important;line-height:1.4;margin-top:5px!important}
+
+  .program-detail-sidebar{margin-bottom:34px}
+  .program-contact-card{padding:19px!important}
+  .program-contact-card .eyebrow{margin-bottom:5px!important}
+  .program-contact-card h3{font-size:1.14rem!important;line-height:1.35!important;margin-bottom:6px!important}
+  .program-contact-card p:not(.eyebrow){font-size:.79rem!important;line-height:1.65!important;margin-bottom:10px!important}
+  .program-contact-card .button-accent{min-height:44px;margin-top:8px!important;font-size:.84rem}
+  .program-contact-secondary-actions{gap:9px!important;margin-top:9px!important}
+  .program-contact-secondary-actions .button{min-height:40px;padding:8px 7px!important;font-size:.73rem!important;line-height:1.35}
+  .program-contact-card .secondary-card-link{margin-top:10px!important;font-size:.71rem!important}
+
+  .program-detail-layout .detail-section{margin-bottom:34px!important}
+  .detail-section h2{font-size:1.44rem!important;line-height:1.35!important;margin-bottom:14px!important}
+  .section-heading{margin-bottom:12px}
+  .offering-card{padding:18px!important}
+
+  .university-showcase{padding:17px!important}
+  .university-showcase-header{gap:10px!important}
+  .university-showcase-title{gap:10px!important}
+  .university-showcase-title img{width:48px!important;height:48px!important;flex-basis:48px!important}
+  .university-showcase-title h2{font-size:1.06rem!important;line-height:1.35!important}
+  .university-showcase-title p:last-child{font-size:.69rem!important;line-height:1.45}
+  .university-showcase-header .button{padding:8px 9px!important;font-size:.67rem!important}
+  .university-info-grid{margin:16px 0!important}
+  .university-info-grid div{min-height:58px;padding:10px 5px!important}
+  .university-info-grid span{font-size:.56rem!important;line-height:1.35}
+  .university-info-grid strong{font-size:.69rem!important;line-height:1.4;margin-top:4px!important}
+  .university-description{font-size:.77rem!important;line-height:1.7!important}
+  .university-description-copy{max-height:5.1em!important}
+  .university-description-toggle{
+    margin-top:6px;
+    padding:6px 8px;
+    border-radius:8px;
+    background:#f4f7fa;
+    font-size:.76rem;
+  }
+  .university-media-item,.university-media-featured{aspect-ratio:16/7.5!important;margin-top:12px!important}
+  .university-showcase-actions{margin-top:12px!important;font-size:.69rem!important}
+
+  .related-program-grid{gap:10px!important;padding-bottom:12px!important}
+  .related-program-card{
+    flex-basis:min(46vw,176px)!important;
+    min-height:208px!important;
+    padding:12px!important;
+  }
+  .related-program-university{font-size:.61rem!important}
+  .related-program-card h3{font-size:.84rem!important;line-height:1.4!important;margin:.4rem 0!important}
+  .related-program-card .muted{font-size:.64rem!important;line-height:1.45}
+  .related-program-price strong{font-size:.94rem!important}
+  .related-program-price span,.related-program-card .card-action{font-size:.63rem!important}
+}

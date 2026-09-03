@@ -79,3 +79,17 @@ the approved visual direction. UI-0011 was therefore corrected in-place: hero fa
 owner in a compact four-cell strip, the University bridge card returns as a deliberate overlap, the
 conversion card uses one primary plus two compact secondary actions, University facts use a 3x2 grid,
 and Related Programs expose multiple swipeable cards at once.
+
+
+## Final visual-polish stabilization
+
+A final narrow-screen review confirmed the corrected composition but showed that spacing and
+scanability still needed refinement. The same UI-0011 change therefore received a final polish pass:
+
+- increased hero title/subtitle breathing room without changing the information hierarchy;
+- increased separation between the hero and overlapping University bridge card;
+- made the four-cell Program facts row easier to scan with larger labels/values and consistent height;
+- improved spacing and balance inside the Request conversion card and its secondary actions;
+- increased spacing and legibility inside the University 3x2 facts grid and made Read more more discoverable;
+- widened Similar Program cards slightly and strengthened their mobile typography;
+- preserved all Program, Offering, Request, SEO, URL and permission behavior.

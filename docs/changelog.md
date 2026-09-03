@@ -1,3 +1,7 @@
+### UI-0011 final mobile visual polish
+
+Refined Program Detail mobile hero spacing, bridge-card separation, fact-row readability, Request-card spacing, University-grid legibility/read-more affordance, and Similar Program card width/typography without changing behavior or SEO identity.
+
 ### UI-0011 approved mobile visual-direction correction
 
 Adjusted Program Detail mobile composition to match the reviewed target: increased hero breathing room, restored the overlapping University bridge card, moved degree/language/duration/study-mode into one compact summary row while suppressing duplicate hero fact pills, tightened the Request card into one primary plus two secondary actions, changed University facts to a 3x2 grid, widened media, and increased the density of swipeable related-program cards.

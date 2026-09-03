@@ -47,8 +47,8 @@ class ProgramDetailConversionLayoutTests(SimpleTestCase):
         self.assertIn(".related-program-card{flex:0 0 min(84vw,280px)", self.css)
 
     def test_mobile_hero_uses_breathing_room_and_bridged_university_context(self):
-        self.assertIn("padding:92px 24px 104px", self.css)
-        self.assertIn("bottom:-72px", self.css)
+        self.assertIn("padding:68px 26px 92px", self.css)
+        self.assertIn("bottom:-66px", self.css)
         self.assertIn("grid-template-columns:repeat(4,minmax(0,1fr))", self.css)
         self.assertIn('{% trans "Study mode" %}', self.template)
         self.assertIn(".program-fact-pills{display:none}", self.css)
@@ -60,7 +60,7 @@ class ProgramDetailConversionLayoutTests(SimpleTestCase):
 
     def test_mobile_university_facts_and_related_programs_match_compact_direction(self):
         self.assertIn("grid-template-columns:repeat(3,minmax(0,1fr))", self.css)
-        self.assertIn("flex:0 0 min(44vw,168px)", self.css)
+        self.assertIn("flex-basis:min(46vw,176px)", self.css)
 
     def test_mobile_request_copy_is_shorter(self):
         self.assertIn(
