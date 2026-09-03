@@ -43,3 +43,4 @@ Status: BASELINED
 
 - [x] `SEO-018` Add crawlable homepage City destination links to canonical City landing pages with localized banner alt text.
 - [ ] Run `make format` and `make check` in the project environment.
+- [x] `SEO-019` Add canonical crawlable Program-detail links to qualifying City and GeneralField landing pages without changing Program page metadata identity.

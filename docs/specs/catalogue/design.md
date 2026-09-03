@@ -362,3 +362,12 @@ Cards reuse `City.banner` and `City.localized_banner_alt` when curated. Missing 
 a non-semantic visual placeholder while preserving the localized City name as visible text.
 The desktop layout is a compact responsive card grid; mobile uses a horizontally swipeable
 row so destination discovery does not create excessive page height.
+
+## Program contextual discovery (CAT-069)
+
+Program detail is a junction between specific programme intent and broader catalogue
+discovery. The University remains a first-class link; the University's active City links to
+`/universities/cities/<slug_en>/`, and active mapped GeneralFields link to
+`/programs/fields/<slug_en>/`. Canonical English slugs remain route identity across locales.
+Query-string filters remain advanced-navigation surfaces and are not substituted for these
+curated landing links.

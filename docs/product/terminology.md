@@ -13,7 +13,8 @@ Applicants and may also belong to one or more Agent organizations.
 workspace session. It determines workspace scope.
 
 **Applicant / Lead** — provisional admissions case owned by a User. `Lead` is
-the current model name; UI generally says Applicant.
+the current model name and Applicant/Lead are internal lifecycle terms. Customer-facing
+surfaces present this case as a **Request**.
 
 **Responsible agent** — Agent user assigned to a Lead. Responsibility does not
 restrict visibility from other authorized users of the same Agent.

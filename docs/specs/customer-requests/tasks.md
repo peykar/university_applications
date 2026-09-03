@@ -122,3 +122,7 @@ Status: IMPLEMENTED
 - [x] `CRQ-091` Keep completed Requests selectable and atomically reopen only for a genuinely new Program.
 - [x] `CRQ-092` Present reopened Requests as In progress and restore program management.
 - [x] `CRQ-093` Keep Lead profile/document mutation locked after Student conversion.
+
+## CHG-0023 — public discovery-to-Request conversion
+
+- [x] `CRQ-094` Rename the Program-detail conversion CTA and Program-interest selection flow to customer-facing Request terminology without changing workflow semantics.

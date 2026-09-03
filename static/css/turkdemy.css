@@ -6309,3 +6309,9 @@ a.entity-list-row:hover{
     padding:12px 13px 14px;
   }
 }
+
+/* CHG-0023: canonical discovery context links on Program detail. */
+.program-context-link{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.program-context-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.program-context-links a{display:inline-flex;align-items:center;border:1px solid rgba(255,255,255,.34);border-radius:999px;padding:6px 10px;color:inherit;text-decoration:none;font-size:.84rem;font-weight:700}
+.program-context-links a:hover,.program-context-links a:focus-visible{text-decoration:underline;text-underline-offset:3px}

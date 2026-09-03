@@ -95,3 +95,8 @@ canonical indexable City landing routes. It MUST NOT promote query-string city f
 canonical destination pages. Reusing a curated City banner on a homepage destination card
 MUST preserve locale-aware meaningful alt text. Existing homepage canonical, hreflang,
 robots, sitemap identity, social metadata, and structured data remain unchanged.
+
+SEO-019 — Program detail contextual links to City and GeneralField discovery MUST use the
+canonical indexable landing routes with stable English-slug route identity. The change MUST
+not alter Program canonical/hreflang/robots/sitemap identity and MUST not promote equivalent
+query-string filters as canonical pages.

@@ -25,3 +25,4 @@ Status: BASELINED
 
 
 | `SEO-018` | `apps/public/views.py::home`; `templates/public/home.html`; `static/css/turkdemy.css` | `tests/test_public_page_metadata.py`; `tests/test_mobile_homepage.py` | Automated |
+| `SEO-019` | `apps/public/views.py::program_detail`; `templates/public/program_detail.html` | `tests/test_discovery_to_request.py` | Automated |

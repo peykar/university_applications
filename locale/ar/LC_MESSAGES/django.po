@@ -3428,3 +3428,35 @@ msgstr "أين تريد أن تدرس؟"
 
 msgid "Explore destination"
 msgstr "استكشف الوجهة"
+
+#: CHG-0023
+msgid "Start a Request"
+msgstr "بدء طلب"
+
+#: CHG-0023
+msgid "Interested in this program?"
+msgstr "هل أنت مهتم بهذا البرنامج؟"
+
+#: CHG-0023
+msgid "Start a Request and TurkDemy can help you with requirements, tuition, intake selection and the next steps."
+msgstr "ابدأ طلباً ويمكن لـ TurkDemy مساعدتك في المتطلبات والرسوم الدراسية واختيار موعد البدء والخطوات التالية."
+
+#: CHG-0023
+msgid "Explore related study fields"
+msgstr "استكشف مجالات الدراسة ذات الصلة"
+
+#: CHG-0023
+msgid "Who is this Request for?"
+msgstr "لمن هذا الطلب؟"
+
+#: CHG-0023
+msgid "Choose an existing Request, yourself, or someone new."
+msgstr "اختر طلباً موجوداً أو نفسك أو شخصاً جديداً."
+
+#: CHG-0023
+msgid "Continue Request"
+msgstr "متابعة الطلب"
+
+#: CHG-0023
+msgid "This Request is for"
+msgstr "هذا الطلب لـ"

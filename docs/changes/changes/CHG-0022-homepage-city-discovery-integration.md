@@ -1,6 +1,6 @@
 # CHG-0022 — Homepage City discovery integration
 
-Status: VERIFYING
+Status: VERIFIED
 Requested: 2026-09-03
 
 ## Request

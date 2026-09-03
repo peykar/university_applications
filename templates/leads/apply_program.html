@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Apply" %} — {{ program.localized_name }}{% endblock %}
+{% block title %}{% trans "Start a Request" %} — {{ program.localized_name }}{% endblock %}
 {% block content %}
 <section class="program-apply-page">
   <header class="program-apply-hero">
-    <p class="eyebrow">{% trans "Apply / express interest" %}</p>
+    <p class="eyebrow">{% trans "Start a Request" %}</p>
     <h1>{{ program.localized_name }}</h1>
     <p class="lead">
       {{ program.university.localized_name }} ·
@@ -23,8 +23,8 @@
       <div class="program-apply-step-heading">
         <span class="program-apply-step-number">1</span>
         <div>
-          <h2>{% trans "Who are you applying for?" %}</h2>
-          <p>{% trans "Choose an existing applicant, yourself, or create someone new." %}</p>
+          <h2>{% trans "Who is this Request for?" %}</h2>
+          <p>{% trans "Choose an existing Request, yourself, or someone new." %}</p>
         </div>
       </div>
 
@@ -104,7 +104,7 @@
         {% trans "Back to program" %}
       </a>
       <button class="button" type="submit">
-        {% trans "Continue application" %}
+        {% trans "Continue Request" %}
       </button>
     </div>
   </form>

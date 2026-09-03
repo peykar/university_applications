@@ -264,3 +264,11 @@ The Program preferences context card remains valuable as a compact summary on ot
 ## Reopening completed Requests for a new program (CHG-0012)
 
 The Apply Program form intentionally keeps customer-owned finalized Requests selectable. `add_customer_program_interest()` is the transactional boundary for adding the Program. A genuinely new Program moves FINALIZED → REOPENED and emits a customer-visible lifecycle activity; an already-present Program is a no-op and does not reopen the Request. Customer presentation maps REOPENED to **In progress**. Programs become editable, while profile/document mutation stays locked whenever `converted_student_id` exists.
+
+## Public discovery-to-Request conversion (CRQ-094)
+
+The Program detail page is the conversion boundary from anonymous catalogue discovery to the
+customer Request workflow. The visible CTA is **Start a Request**. Authentication and the
+existing `apply_program` service flow remain authoritative: it may create/reuse a Lead-backed
+Request, add Program interest, and reopen a completed Request under CRQ-091–093. No new
+Request model and no formal Application are created by this copy/navigation change.

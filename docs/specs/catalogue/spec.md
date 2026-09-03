@@ -433,3 +433,9 @@ curated City banner with localized alt text when available. The destination sele
 prefer Cities with more active Universities, then more active Programs, with a stable name
 tie-breaker.
 
+
+CAT-069 — Program detail pages MUST expose crawlable contextual discovery links for the
+Program's active mapped GeneralFields and for its active University City when canonical
+slugs are available. These links MUST use the dedicated GeneralField and City landing
+routes, not equivalent query-string filters, while preserving University and related-Program
+navigation.

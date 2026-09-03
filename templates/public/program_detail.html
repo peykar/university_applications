@@ -21,7 +21,7 @@
       <h1>{{ program.localized_name }}</h1>
       <p class="program-hero-university">
         <a href="{% url 'university-detail' program.university.slug_en %}">{{ program.university.localized_name }}</a>
-        · {{ program.university.city.localized_name }}
+        · {% if program.university.city.is_active and program.university.city.slug_en %}<a class="program-context-link" href="{% url 'university-city-detail' program.university.city.slug_en %}">{{ program.university.city.localized_name }}</a>{% else %}{{ program.university.city.localized_name }}{% endif %}
       </p>
 
       <div class="program-fact-pills">
@@ -30,6 +30,15 @@
         {% if program.duration_months %}<span>{{ program.duration_display }}</span>{% endif %}
         {% if program.thesis_type %}<span>{{ program.get_thesis_type_display }}</span>{% endif %}
       </div>
+      {% if program.general_fields.all %}
+        <nav class="program-context-links" aria-label="{% trans 'Explore related study fields' %}">
+          {% for field in program.general_fields.all %}
+            {% if field.is_active and field.slug_en %}
+              <a href="{% url 'program-field-detail' field.slug_en %}">{{ field.localized_name }}</a>
+            {% endif %}
+          {% endfor %}
+        </nav>
+      {% endif %}
     </div>
 
     <aside class="program-university-mini-card">
@@ -278,9 +287,9 @@
   <aside class="program-detail-sidebar">
     <div class="program-contact-card">
       <p class="eyebrow">{% trans "Need help?" %}</p>
-      <h3>{% trans "Questions about this program?" %}</h3>
-      <p>{% trans "Contact TurkDemy for guidance about requirements, tuition and the application process." %}</p>
-      <a class="button button-accent" href="{% url 'apply-program' program.slug_en %}">{% trans "Apply / I'm interested" %}</a>
+      <h3>{% trans "Interested in this program?" %}</h3>
+      <p>{% trans "Start a Request and TurkDemy can help you with requirements, tuition, intake selection and the next steps." %}</p>
+      <a class="button button-accent" href="{% url 'apply-program' program.slug_en %}">{% trans "Start a Request" %}</a>
       <a class="button button-secondary" href="{% url 'contact' %}">{% trans "Ask TurkDemy" %}</a>
       <a class="secondary-card-link" href="{% url 'program-list' %}?university={{ program.university.slug_en }}">{% trans "Browse this university's programs" %}</a>
     </div>

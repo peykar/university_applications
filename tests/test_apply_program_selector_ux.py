@@ -14,9 +14,10 @@ class ApplyProgramSelectorUXTests(SimpleTestCase):
         self.views = (root / "apps" / "leads" / "views.py").read_text(encoding="utf-8")
 
     def test_customer_language_does_not_expose_lead_or_offering_labels(self):
-        self.assertIn("Who are you applying for?", self.template)
+        self.assertIn("Who is this Request for?", self.template)
         self.assertIn("When would you like to start?", self.template)
         self.assertNotIn('<h2>{% trans "Choose an applicant" %}</h2>', self.template)
+        self.assertNotIn("Who are you applying for?", self.template)
 
     def test_someone_new_is_inline_and_optional(self):
         self.assertIn('str(_("Someone new"))', self.forms)

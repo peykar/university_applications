@@ -294,3 +294,9 @@ CRQ-091 — The public Apply flow MAY list a customer-owned finalized Request in
 CRQ-092 — A reopened Request MUST be customer-presented as **In progress** and its Programs workflow MUST be editable again. The linked Student and existing Applications remain authoritative downstream records.
 
 CRQ-093 — Reopening a converted Request MUST NOT restore Lead profile or Lead-document mutation. Those surfaces remain read-only because person/document maintenance belongs to the existing Student workflow.
+
+CRQ-094 — The public Program conversion path MUST present the primary action as **Start a
+Request** and the selection/continuation page MUST use customer-facing Request terminology.
+The route MAY retain its internal `apply-program` implementation name, but visible copy MUST
+NOT describe the exploratory Program-interest action as a formal Application. Existing
+Request reuse/reopen semantics remain unchanged.

@@ -247,7 +247,7 @@ class ApplyProgramForm(LocalizedFormMixin, forms.Form):
     applicant = forms.ChoiceField(
         choices=(),
         widget=forms.RadioSelect,
-        label=_("I am applying for"),
+        label=_("This Request is for"),
     )
     offering = forms.ModelChoiceField(
         queryset=ProgramOffering.objects.none(),

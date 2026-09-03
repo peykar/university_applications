@@ -248,3 +248,10 @@ BR-SEO-007 — The public homepage MUST expose a crawlable City-discovery surfac
 qualifying catalogue Cities. Featured destination cards MUST link directly to the canonical
 `/universities/cities/<slug_en>/` landing route rather than to query-string city filters.
 
+
+BR-SEO-008 — Public discovery detail pages MUST reinforce canonical discovery routes rather
+than dead-end taxonomy labels. A Program detail page MUST link its qualifying City to the
+canonical City landing route and each active mapped GeneralField to its canonical field
+landing route. The primary customer conversion action from a Program MUST use the
+customer-facing Request concept; internal Lead/Application lifecycle terminology MUST NOT
+be introduced by that conversion CTA.

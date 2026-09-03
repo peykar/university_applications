@@ -72,3 +72,9 @@ card is an ordinary crawlable anchor to `/universities/cities/<slug_en>/`, stren
 internal discovery of the dedicated City SEO surface without changing homepage canonical
 identity or promoting `/programs/?city=...` filter URLs. Curated City banners retain their
 localized alternative text when reused on the homepage.
+
+## Program contextual internal linking (SEO-019)
+
+Program detail links taxonomy context directly to the already-indexable City and GeneralField
+landing routes. These are semantic crawlable anchors. Existing Program metadata, canonical,
+hreflang, robots, sitemap participation and structured-data identity remain unchanged.

@@ -782,6 +782,7 @@ def program_detail(request, slug):
             "instruction_language_rows__language",
             Prefetch("offerings", queryset=active_offerings, to_attr="active_offerings"),
             Prefetch("university__media", queryset=active_media, to_attr="active_media"),
+            "general_fields",
         ),
         slug_en=slug,
         is_active=True,

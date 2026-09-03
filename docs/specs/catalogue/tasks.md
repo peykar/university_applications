@@ -171,3 +171,8 @@ Version: 3.1
 - [x] CAT-T62 (`CAT-068`) Render localized City destination cards between Featured Universities and GeneralField discovery, linking to canonical City landing pages and reusing curated banners.
 - [x] CAT-T63 (`CAT-068`, `SEO-018`) Add responsive/mobile presentation, translations, public-page regression coverage, and synchronized SEO/documentation updates.
 - [ ] Run `make format` and `make check` in the project environment.
+
+## CHG-0023 — Discovery-to-Request conversion and internal linking
+
+- [x] CAT-T64 (`CAT-069`, `SEO-019`) Link Program City and active GeneralFields to their canonical public landing pages.
+- [x] CAT-T65 (`CAT-069`) Prefetch Program GeneralFields for the detail surface and preserve existing University/related-program discovery.

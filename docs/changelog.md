@@ -1533,3 +1533,11 @@
 - Added a Study destinations section between Featured Universities and study-field discovery.
 - Homepage destination cards link directly to canonical City landing pages, show active University/Program counts, and reuse curated City banners with localized alt text.
 - Added responsive/mobile presentation, translations, SEO/internal-link review, and regression coverage without changing homepage canonical/sitemap identity or promoting query-string city filters.
+
+
+## 2026-09-03 — CHG-0023 Discovery-to-Request conversion and internal linking
+
+- Audited the public Homepage → City/Field → University → Program → Request journey.
+- Added canonical City and GeneralField context links on Program detail.
+- Replaced public Program-interest Application wording with customer-facing **Start a Request** terminology while preserving existing workflow/reopen semantics.
+- Preserved Program SEO identity while strengthening crawlable internal linking to curated landing pages.
