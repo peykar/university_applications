@@ -371,3 +371,15 @@ discovery. The University remains a first-class link; the University's active Ci
 `/programs/fields/<slug_en>/`. Canonical English slugs remain route identity across locales.
 Query-string filters remain advanced-navigation surfaces and are not substituted for these
 curated landing links.
+
+## Program Detail conversion layout (CAT-070)
+
+The Program page remains a decision surface rather than a raw record view. Desktop keeps the main
+catalogue information at inline-start and the Request conversion card in an adjacent sticky column;
+CSS Grid follows the document direction so RTL naturally mirrors the visual placement. A lone
+Offering spans the main column to avoid artificial whitespace. The University showcase and media
+retain the same information with tighter vertical density.
+
+At widths below 1000px the grid collapses and the Request sidebar receives negative flex/grid order
+so it appears before the long main content without duplicating the conversion action in the DOM.
+Mobile returns the conversion card to a conventional stacked layout with full-width buttons.

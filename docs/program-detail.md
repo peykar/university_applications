@@ -81,3 +81,16 @@ percent sign is preserved as-is; otherwise the structured percentage is appended
 to the display label. Every amount-bearing fee also displays its canonical fee
 basis (annual, per semester, whole program, per credit, or one time). Public UI
 does not calculate or infer discounts between fee rows.
+
+## Conversion layout (UI-0011)
+
+Program Detail uses a decision-oriented two-column desktop layout: the main column contains
+offerings and supporting catalogue context while a prominent **Start a Request** card remains
+sticky beside it. A lone active Offering expands across the main column rather than reserving
+space for a nonexistent second card. University media/context is intentionally compact so the
+page maintains useful information density.
+
+At tablet and mobile widths the conversion card is moved before the long detail stream. Tablet
+uses a compact action treatment where space permits; mobile returns to a single-column card with
+full-width actions. This is presentation-only: Request workflow semantics and Program SEO identity
+remain unchanged.

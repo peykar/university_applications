@@ -176,3 +176,10 @@ Version: 3.1
 
 - [x] CAT-T64 (`CAT-069`, `SEO-019`) Link Program City and active GeneralFields to their canonical public landing pages.
 - [x] CAT-T65 (`CAT-069`) Prefetch Program GeneralFields for the detail surface and preserve existing University/related-program discovery.
+
+## UI-0011 — Program Detail conversion layout
+
+- [x] CAT-T66 (`CAT-070`) Rebalance desktop Program Detail spacing and strengthen the sticky Request conversion card.
+- [x] CAT-T67 (`CAT-070`) Expand a lone Offering, compact University/media presentation, and move conversion before long content on narrower layouts.
+- [x] CAT-T68 (`CAT-070`) Add responsive structural regression coverage and synchronize Program Detail/UI documentation.
+- [ ] Run `make format` and `make check` in the project environment.

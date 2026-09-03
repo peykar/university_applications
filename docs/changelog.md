@@ -1541,3 +1541,10 @@
 - Added canonical City and GeneralField context links on Program detail.
 - Replaced public Program-interest Application wording with customer-facing **Start a Request** terminology while preserving existing workflow/reopen semantics.
 - Preserved Program SEO identity while strengthening crawlable internal linking to curated landing pages.
+
+## 2026-09-03 — UI-0011 Program Detail conversion layout
+
+- Rebalanced Program Detail into a denser main-content + 320px sticky Request sidebar layout.
+- Made a single Offering fill the content column and strengthened the Start a Request hierarchy.
+- Compacted University/media and related-program presentation to reduce unnecessary page length.
+- Moved the conversion card before long content on tablet/mobile while preserving RTL/LTR logical layout and CHG-0023 behavior.

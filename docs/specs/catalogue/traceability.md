@@ -86,3 +86,4 @@ the locked project dependencies.
 
 | `CAT-068` | Homepage City discovery links | `CAT-T61`–`CAT-T63` | `apps/public/views.py::home`; `templates/public/home.html`; `static/css/turkdemy.css` | `tests/test_public_page_metadata.py`; `tests/test_mobile_homepage.py` |
 | `CAT-069` | Program contextual City/GeneralField discovery | `CAT-T64`–`CAT-T65` | `apps/public/views.py::program_detail`; `templates/public/program_detail.html` | `tests/test_discovery_to_request.py` |
+| `CAT-070` | Program Detail conversion hierarchy and responsive density | `CAT-T66`–`CAT-T68` | `templates/public/program_detail.html`; `static/css/turkdemy.css` | `tests/test_program_detail_conversion_layout.py` |

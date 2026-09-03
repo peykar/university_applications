@@ -6315,3 +6315,71 @@ a.entity-list-row:hover{
 .program-context-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .program-context-links a{display:inline-flex;align-items:center;border:1px solid rgba(255,255,255,.34);border-radius:999px;padding:6px 10px;color:inherit;text-decoration:none;font-size:.84rem;font-weight:700}
 .program-context-links a:hover,.program-context-links a:focus-visible{text-decoration:underline;text-underline-offset:3px}
+
+/* ============================================================
+   UI-0011 — Program detail conversion layout
+   ============================================================ */
+.program-detail-layout{
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:28px;
+  margin-top:36px;
+}
+.program-detail-layout>main{min-width:0}
+.program-detail-layout>main>.detail-section:first-child{margin-top:0}
+.program-detail-layout .detail-section{margin-bottom:48px}
+.offering-card-grid>.offering-card:only-child{grid-column:1/-1}
+.program-detail-sidebar{top:88px}
+.program-contact-card{
+  padding:26px;
+  border-color:#cfd8e2;
+  border-radius:18px;
+  box-shadow:0 14px 38px rgba(20,35,60,.09);
+}
+.program-contact-card .eyebrow{margin-bottom:8px}
+.program-contact-card h3{font-size:1.45rem;line-height:1.18;margin:.15rem 0 .75rem}
+.program-contact-card p:not(.eyebrow){font-size:.92rem;line-height:1.65;margin-bottom:16px}
+.program-contact-card .button-accent{
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+}
+.program-contact-card .button-secondary{display:flex;align-items:center;justify-content:center}
+.university-showcase{padding:26px}
+.university-info-grid{margin:22px 0 18px}
+.university-description{line-height:1.65}
+.university-media-grid{margin-top:18px}
+.university-media-item{height:128px}
+.university-media-featured{height:265px}
+.related-program-card{min-height:280px}
+@media(max-width:1000px){
+  .program-detail-layout{grid-template-columns:1fr;margin-top:28px}
+  .program-detail-sidebar{order:-1;position:static}
+  .program-contact-card{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    gap:10px 12px;
+    align-items:center;
+  }
+  .program-contact-card .eyebrow,.program-contact-card h3,.program-contact-card p:not(.eyebrow){grid-column:1/2}
+  .program-contact-card .eyebrow{margin:0}
+  .program-contact-card h3{margin:0}
+  .program-contact-card p:not(.eyebrow){margin:0}
+  .program-contact-card .button{width:auto;margin:0;white-space:nowrap}
+  .program-contact-card .button-accent{grid-column:2;grid-row:1/3}
+  .program-contact-card .button-secondary{grid-column:3;grid-row:1/3}
+  .program-contact-card .secondary-card-link{grid-column:2/4;margin:0;text-align:start}
+}
+@media(max-width:720px){
+  .program-detail-layout{margin-top:20px}
+  .program-detail-layout .detail-section{margin-bottom:38px}
+  .program-contact-card{display:block;padding:20px}
+  .program-contact-card h3{margin:.2rem 0 .6rem}
+  .program-contact-card p:not(.eyebrow){margin-bottom:12px}
+  .program-contact-card .button{width:100%;margin-top:9px}
+  .program-contact-card .secondary-card-link{text-align:center;margin-top:12px}
+  .university-showcase{padding:20px}
+  .university-media-item{height:120px}
+  .university-media-featured{height:220px}
+}
