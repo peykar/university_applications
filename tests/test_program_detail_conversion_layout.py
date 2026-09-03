@@ -62,6 +62,13 @@ class ProgramDetailConversionLayoutTests(SimpleTestCase):
         self.assertIn("grid-template-columns:repeat(3,minmax(0,1fr))", self.css)
         self.assertIn("flex-basis:min(46vw,176px)", self.css)
 
+    def test_mobile_university_bridge_card_is_physically_centered_in_ltr_and_rtl(self):
+        self.assertIn("left:50%", self.css)
+        self.assertIn("right:auto", self.css)
+        self.assertIn("width:calc(100% - 48px)", self.css)
+        self.assertIn("transform:translateX(-50%)", self.css)
+        self.assertIn("margin-inline:auto", self.css)
+
     def test_mobile_request_copy_is_shorter(self):
         self.assertIn(
             '{% trans "Start a Request and let TurkDemy help with the next steps." %}',

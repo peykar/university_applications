@@ -93,3 +93,8 @@ scanability still needed refinement. The same UI-0011 change therefore received 
 - increased spacing and legibility inside the University 3x2 facts grid and made Read more more discoverable;
 - widened Similar Program cards slightly and strengthened their mobile typography;
 - preserved all Program, Offering, Request, SEO, URL and permission behavior.
+
+## Mobile bridge-card centering stabilization
+
+A final narrow-screen RTL review showed that the overlapping University bridge card and its logo could appear visually off-centre. UI-0011 now positions that card by physical viewport geometry (`left: 50%` plus `translateX(-50%)`) rather than logical inline offsets, so RTL text direction cannot influence its horizontal placement. The University logo is also explicitly centered on the same axis. This is visual-only and does not change Program, University, Request, catalogue, or SEO behavior.
+

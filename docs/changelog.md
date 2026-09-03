@@ -1,3 +1,7 @@
+### UI-0011 mobile University bridge-card centering stabilization
+
+Centered the overlapping mobile University bridge card by physical viewport geometry and explicitly centered its logo, preventing RTL logical positioning from making the card or brand mark appear shifted. No product or SEO behavior changed.
+
 ### UI-0011 final mobile visual polish
 
 Refined Program Detail mobile hero spacing, bridge-card separation, fact-row readability, Request-card spacing, University-grid legibility/read-more affordance, and Similar Program card width/typography without changing behavior or SEO identity.
