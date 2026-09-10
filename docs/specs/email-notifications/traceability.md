@@ -20,3 +20,6 @@ Status: ACTIVE
 | `MAIL-014` | `apps/core/services/business_email.py` | `tests/test_business_email_notifications.py` | Exact |
 | `MAIL-015` | post-commit side-effect boundary | design + service tests | Partial |
 | `MAIL-016` | business email copy/routes | `tests/test_business_email_notifications.py` | Exact |
+| `MAIL-017` | `apps/core/services/business_email_content.py`, `apps/core/email_previews.py` | `tests/test_email_preview_gallery.py`, `tests/test_business_email_notifications.py` | Exact |
+| `MAIL-018` | `templates/emails/base.html`, locale catalogs | `tests/test_email_preview_gallery.py`, localization integrity tests | Exact |
+

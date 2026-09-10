@@ -3586,3 +3586,20 @@ msgstr "تم بدء طلبك الجامعي"
 
 msgid "Your university application was updated"
 msgstr "تم تحديث طلبك الجامعي"
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "The uploaded scan is incomplete."
+msgstr "المسح الضوئي المرفوع غير مكتمل."
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "Review applicant documents"
+msgstr "مراجعة مستندات المتقدم"
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "This is an automated message from %(brand)s."
+msgstr "هذه رسالة آلية من %(brand)s."
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "Please do not share verification or sign-in codes."
+msgstr "يرجى عدم مشاركة رموز التحقق أو تسجيل الدخول."
+

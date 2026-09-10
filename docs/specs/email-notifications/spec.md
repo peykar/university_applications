@@ -1,7 +1,7 @@
 # Email and notification templates
 
 Status: ACTIVE
-Version: 1.1
+Version: 1.2
 
 ## Goal
 
@@ -53,6 +53,13 @@ domain transaction.
 
 MAIL-016 — Customer business emails MUST use customer-facing terminology and direct localized
 application/request links where a corresponding route exists.
+
+MAIL-017 — Business Email Preview Gallery entries MUST render the same production content builder used
+for delivery, using realistic sample data; generic placeholder preview copy MUST NOT substitute for the
+actual outgoing subject/body structure.
+
+MAIL-018 — Shared branded email chrome, including footer/support and automated-message text, MUST be
+localized to the selected/active email language.
 
 ## Acceptance policy
 

@@ -204,6 +204,54 @@ def sample_email_context() -> dict[str, Any]:
     }
 
 
+def _business_preview_context(email_type: str, language: str) -> dict[str, Any]:
+    base = f"https://turkdemy.com/{language}"
+    contexts: dict[str, dict[str, Any]] = {
+        "request_received": {
+            "name": "Sample Student",
+            "url": f"{base}/requests/42/",
+        },
+        "new_request_agent": {
+            "applicant": "Sample Student",
+            "url": f"{base}/agents/applicants/42/",
+        },
+        "new_message_customer": {
+            "url": f"{base}/messages/12/",
+        },
+        "new_message_agent": {
+            "url": f"{base}/agents/messages/12/",
+        },
+        "program_recommended": {
+            "program": "Computer Engineering",
+            "university": "Istanbul Ayd\u0131n University",
+            "url": f"{base}/requests/42/programs/",
+        },
+        "document_action_required": {
+            "document": str(_("Passport")),
+            "reason": str(_("The uploaded scan is incomplete.")),
+            "url": f"{base}/requests/42/documents/",
+        },
+        "request_moving_forward": {
+            "url": f"{base}/requests/42/",
+        },
+        "application_started": {
+            "program": "Computer Engineering",
+            "university": "Istanbul Ayd\u0131n University",
+            "url": f"{base}/applications/108/",
+        },
+        "application_status_updated": {
+            "status": str(_("Submitted")),
+            "url": f"{base}/applications/108/",
+        },
+        "todo_assigned": {
+            "title": str(_("Review applicant documents")),
+            "due": "2026-09-15",
+            "url": f"{base}/agents/todos/",
+        },
+    }
+    return contexts[email_type]
+
+
 def render_email_preview(
     *,
     email_type: str,
@@ -214,37 +262,26 @@ def render_email_preview(
         if spec.template_prefix.startswith("emails/business/"):
             from django.core.mail import EmailMultiAlternatives
 
+            from apps.core.services.business_email_content import (
+                build_business_email_content,
+            )
             from apps.core.services.email_branding import render_branded_email_html
 
             sample = sample_email_context()
-            subjects = {
-                "request_received": _("We received your TurkDemy request"),
-                "new_request_agent": _("New TurkDemy request"),
-                "new_message_customer": _("You have a new TurkDemy message"),
-                "new_message_agent": _("New message from a TurkDemy customer"),
-                "program_recommended": _("A new program was recommended for you"),
-                "document_action_required": _("A document needs your attention"),
-                "request_moving_forward": _("Your TurkDemy request is moving forward"),
-                "application_started": _("Your university application has started"),
-                "application_status_updated": _("Your university application was updated"),
-                "todo_assigned": _("A TurkDemy task was assigned to you"),
-            }
-            text = str(
-                _(
-                    "This is a representative preview of the %(label)s email. "
-                    "The live email includes the relevant request, applicant, program, "
-                    "document, application, message, or task context and a direct "
-                    "TurkDemy link."
-                )
-                % {"label": spec.label}
+            content = build_business_email_content(
+                email_type,
+                **_business_preview_context(email_type, language),
             )
             message = EmailMultiAlternatives(
-                subject=str(subjects[email_type]),
-                body=text,
+                subject=content.subject,
+                body=content.text_body,
                 to=[sample["email"]],
             )
             message.attach_alternative(
-                render_branded_email_html(subject=str(subjects[email_type]), text_body=text),
+                render_branded_email_html(
+                    subject=content.subject,
+                    text_body=content.text_body,
+                ),
                 "text/html",
             )
         else:

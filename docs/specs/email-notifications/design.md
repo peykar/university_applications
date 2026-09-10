@@ -6,12 +6,16 @@ Status: ACTIVE
 
 - `apps/core/email_previews.py` is the canonical outgoing-type registry and preview surface.
 - `apps/core/services/emailing.py` rejects unregistered outgoing email types.
-- `apps/core/services/business_email.py` owns business-recipient selection, customer-safe copy,
-  direct links, and post-commit dispatch.
+- `apps/core/services/business_email.py` owns business-recipient selection, direct links, and
+  post-commit dispatch.
+- `apps/core/services/business_email_content.py` is the shared production/preview copy builder for
+  every business email type. The preview gallery supplies representative primitive context to this
+  builder instead of maintaining separate placeholder content.
 - Existing domain services/views call the business-email service only after the relevant domain
   state has been persisted.
-- Authentication rendering remains owned by the account adapter; business previews use the shared
-  branded HTML renderer.
+- Authentication rendering remains owned by the account adapter; business previews use the same
+  business content builder as delivery and the shared branded HTML renderer.
+- `templates/emails/base.html` localizes reusable branded/footer chrome in the active email language.
 - Base-domain configuration remains environment-driven through `SITE_URL`.
 - Supported language behavior follows project i18n settings/active translation context.
 

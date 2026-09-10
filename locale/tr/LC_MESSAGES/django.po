@@ -3614,3 +3614,20 @@ msgstr "Üniversite başvurunuz başlatıldı"
 
 msgid "Your university application was updated"
 msgstr "Üniversite başvurunuz güncellendi"
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "The uploaded scan is incomplete."
+msgstr "Yüklenen tarama eksik."
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "Review applicant documents"
+msgstr "Başvuru sahibi belgelerini incele"
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "This is an automated message from %(brand)s."
+msgstr "Bu, %(brand)s tarafından gönderilen otomatik bir mesajdır."
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "Please do not share verification or sign-in codes."
+msgstr "Lütfen doğrulama veya oturum açma kodlarını paylaşmayın."
+

@@ -3600,3 +3600,20 @@ msgstr "درخواست پذیرش دانشگاهی شما آغاز شده است
 
 msgid "Your university application was updated"
 msgstr "درخواست پذیرش دانشگاهی شما به‌روزرسانی شد"
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "The uploaded scan is incomplete."
+msgstr "اسکن بارگذاری‌شده ناقص است."
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "Review applicant documents"
+msgstr "بررسی مدارک متقاضی"
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "This is an automated message from %(brand)s."
+msgstr "این یک پیام خودکار از %(brand)s است."
+
+#: templates/emails/base.html apps/core/email_previews.py
+msgid "Please do not share verification or sign-in codes."
+msgstr "لطفاً کدهای تأیید یا ورود را با دیگران به اشتراک نگذارید."
+

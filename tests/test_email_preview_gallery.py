@@ -120,3 +120,36 @@ class EmailPreviewGalleryTests(TestCase):
                 self.assertIn("ترک‌دمی", html)
             else:
                 self.assertIn("ترك ديمي", html)
+
+    def test_business_preview_uses_production_copy_not_placeholder(self):
+        self.client.force_login(self.superuser)
+        response = self.client.get(
+            reverse(
+                "email-preview-detail",
+                args=["request_received", "en"],
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "We received your request")
+        self.assertContains(response, "Sample Student")
+        self.assertNotContains(response, "representative preview")
+
+    def test_business_preview_localizes_shared_email_chrome(self):
+        self.client.force_login(self.superuser)
+        response = self.client.get(
+            reverse(
+                "email-preview-html",
+                args=["request_received", "fa"],
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn(
+            "جستجوی دانشگاه و پشتیبانی پذیرش برای دانشجویان بین‌المللی در ترکیه.",
+            html,
+        )
+        self.assertIn("این یک پیام خودکار از ترک‌دمی است.", html)
+        self.assertNotIn(
+            "University discovery and admissions support for international students",
+            html,
+        )

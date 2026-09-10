@@ -1,4 +1,5 @@
 <!doctype html>
+{% load i18n %}
 <html lang="{{ email_language|default:'en' }}" dir="{{ email_direction|default:'ltr' }}">
 <head>
   <meta charset="utf-8">
@@ -29,13 +30,14 @@
           <tr>
             <td style="padding:20px 34px;background:#0b2436;color:#c7d3dd;font-size:12px;line-height:1.6;">
               <strong style="color:#ffffff;">{{ brand_name }}</strong><br>
-              University discovery and admissions support for international students in Türkiye.<br>
+              {% trans "University discovery and admissions support for international students in Türkiye." %}<br>
               <a href="{{ site_url }}" style="color:#ffffff;">{{ site_domain }}</a>
             </td>
           </tr>
         </table>
         <div style="max-width:620px;padding:16px 8px 0;color:#8a98a8;font-size:11px;line-height:1.5;">
-          This is an automated message from {{ brand_name }}. Please do not share verification or sign-in codes.
+          {% blocktrans with brand=brand_name %}This is an automated message from {{ brand }}.{% endblocktrans %}
+          {% trans "Please do not share verification or sign-in codes." %}
         </div>
       </td>
     </tr>

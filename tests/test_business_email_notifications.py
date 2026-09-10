@@ -49,3 +49,24 @@ class TodoEmailPolicyTests(SimpleTestCase):
         )
         notify_todo_assigned(todo, performed_by=SimpleNamespace(pk=7))
         on_commit.assert_called_once()
+
+
+class BusinessEmailContentTests(SimpleTestCase):
+    def test_request_received_preview_and_delivery_share_content_builder(self):
+        from apps.core.services.business_email_content import build_business_email_content
+
+        content = build_business_email_content(
+            "request_received",
+            name="Sample Student",
+            url="https://turkdemy.com/en/requests/42/",
+        )
+        self.assertEqual(content.subject, "We received your TurkDemy request")
+        self.assertIn("Hello Sample Student,", content.text_body)
+        self.assertIn("We received your request.", content.text_body)
+        self.assertIn("https://turkdemy.com/en/requests/42/", content.text_body)
+
+    def test_unknown_business_email_type_is_rejected(self):
+        from apps.core.services.business_email_content import build_business_email_content
+
+        with self.assertRaises(ValueError):
+            build_business_email_content("not-a-real-email")

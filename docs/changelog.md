@@ -1595,3 +1595,11 @@ Adjusted Program Detail mobile composition to match the reviewed target: increas
   locale catalogs.
 - Recompiled `django.mo` files so localization-integrity checks can resolve the new messages.
 - Preserved interpolation placeholders and existing FEAT-0013 notification behavior.
+
+## 2026-09-10 — BUG-0037 business email preview parity
+
+- Business entries in the Email Preview Gallery now render the same content builder used for live
+  delivery instead of generic representative placeholder text.
+- Added realistic sample context for all business email preview types.
+- Localized the reusable branded email footer and automated/security notice.
+- Added `MAIL-017` and `MAIL-018` with exact traceability and regression coverage.
