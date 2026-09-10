@@ -3617,3 +3617,59 @@ msgstr "این یک پیام خودکار از %(brand)s است."
 msgid "Please do not share verification or sign-in codes."
 msgstr "لطفاً کدهای تأیید یا ورود را با دیگران به اشتراک نگذارید."
 
+
+
+# BUG-0038 business email CTA and localized brand
+#, python-format
+msgid "We received your %(brand)s request"
+msgstr "درخواست شما در %(brand)s دریافت شد"
+
+#, python-format
+msgid "New %(brand)s request"
+msgstr "درخواست جدید %(brand)s"
+
+#, python-format
+msgid "You have a new %(brand)s message"
+msgstr "یک پیام جدید در %(brand)s دارید"
+
+#, python-format
+msgid "New message from a %(brand)s customer"
+msgstr "پیام جدید از یک مشتری %(brand)s"
+
+#, python-format
+msgid "There is a new message waiting for you in %(brand)s."
+msgstr "یک پیام جدید در %(brand)s منتظر شماست."
+
+#, python-format
+msgid "A document in your %(brand)s request needs to be replaced."
+msgstr "یکی از مدارک درخواست شما در %(brand)s باید جایگزین شود."
+
+#, python-format
+msgid "Your %(brand)s request is moving forward"
+msgstr "درخواست شما در %(brand)s در حال پیشرفت است"
+
+#, python-format
+msgid "A %(brand)s task was assigned to you"
+msgstr "یک وظیفه در %(brand)s به شما اختصاص داده شد"
+
+msgid "View your request"
+msgstr "مشاهده درخواست شما"
+
+msgid "Open applicant"
+msgstr "باز کردن متقاضی"
+
+msgid "Open tasks"
+msgstr "مشاهده وظایف"
+
+msgid "Open the conversation"
+msgstr "باز کردن گفتگو"
+
+msgid "Review your documents"
+msgstr "بررسی مدارک شما"
+
+msgid "View your programs"
+msgstr "مشاهده برنامه‌های تحصیلی شما"
+
+msgid "View application"
+msgstr "مشاهده درخواست پذیرش"
+

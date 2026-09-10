@@ -3603,3 +3603,59 @@ msgstr "هذه رسالة آلية من %(brand)s."
 msgid "Please do not share verification or sign-in codes."
 msgstr "يرجى عدم مشاركة رموز التحقق أو تسجيل الدخول."
 
+
+
+# BUG-0038 business email CTA and localized brand
+#, python-format
+msgid "We received your %(brand)s request"
+msgstr "لقد استلمنا طلبك على %(brand)s"
+
+#, python-format
+msgid "New %(brand)s request"
+msgstr "طلب %(brand)s جديد"
+
+#, python-format
+msgid "You have a new %(brand)s message"
+msgstr "لديك رسالة جديدة في %(brand)s"
+
+#, python-format
+msgid "New message from a %(brand)s customer"
+msgstr "رسالة جديدة من أحد عملاء %(brand)s"
+
+#, python-format
+msgid "There is a new message waiting for you in %(brand)s."
+msgstr "هناك رسالة جديدة بانتظارك في %(brand)s."
+
+#, python-format
+msgid "A document in your %(brand)s request needs to be replaced."
+msgstr "يجب استبدال أحد المستندات في طلبك على %(brand)s."
+
+#, python-format
+msgid "Your %(brand)s request is moving forward"
+msgstr "طلبك على %(brand)s يتقدم"
+
+#, python-format
+msgid "A %(brand)s task was assigned to you"
+msgstr "تم تعيين مهمة في %(brand)s لك"
+
+msgid "View your request"
+msgstr "عرض طلبك"
+
+msgid "Open applicant"
+msgstr "فتح المتقدم"
+
+msgid "Open tasks"
+msgstr "فتح المهام"
+
+msgid "Open the conversation"
+msgstr "فتح المحادثة"
+
+msgid "Review your documents"
+msgstr "راجع مستنداتك"
+
+msgid "View your programs"
+msgstr "عرض برامجك"
+
+msgid "View application"
+msgstr "عرض طلب التقديم"
+

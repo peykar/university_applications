@@ -15,3 +15,7 @@ Status: ACTIVE
 - [ ] Future change: notification preferences/digests.
 - [ ] Future change: scheduled TODO due/overdue reminders.
 - [ ] Future change: university-recipient/submission notifications.
+
+
+- [x] MAIL-019 Render structured business-email CTA as a clickable HTML action and retain URL in plain text.
+- [x] MAIL-020 Resolve TurkDemy brand mentions in business copy through localized email branding.

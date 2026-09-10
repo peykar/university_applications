@@ -37,3 +37,8 @@ and direct link, but messaging notifications intentionally do not copy message b
 Follow `docs/product/business-rules.md`, permissions architecture, auditability requirements, and
 service-layer workflow ownership. Email is a side effect of a successful workflow, not the workflow
 transaction itself.
+
+
+## Business CTA and localized brand
+
+Business email content exposes a primary CTA label and URL separately from body copy. HTML delivery and preview rendering use these values to produce a clickable action, while the plain-text alternative retains the label and raw URL. Brand mentions in business copy resolve through the shared localized email-brand helper so Persian and Arabic messages use the same localized brand presentation as the branded email chrome.

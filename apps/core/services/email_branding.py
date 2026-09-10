@@ -20,6 +20,8 @@ def branded_email_context(
     *,
     subject: str,
     text_body: str,
+    cta_label: str = "",
+    cta_url: str = "",
 ) -> dict[str, str]:
     language = translation.get_language() or settings.LANGUAGE_CODE
     direction = "rtl" if language.split("-")[0] in {"fa", "ar"} else "ltr"
@@ -32,11 +34,24 @@ def branded_email_context(
         "email_direction": direction,
         "site_url": site_url,
         "site_domain": site_url.removeprefix("https://").removeprefix("http://"),
+        "cta_label": cta_label,
+        "cta_url": cta_url,
     }
 
 
-def render_branded_email_html(*, subject: str, text_body: str) -> str:
+def render_branded_email_html(
+    *,
+    subject: str,
+    text_body: str,
+    cta_label: str = "",
+    cta_url: str = "",
+) -> str:
     return render_to_string(
         "emails/base.html",
-        branded_email_context(subject=subject, text_body=text_body),
+        branded_email_context(
+            subject=subject,
+            text_body=text_body,
+            cta_label=cta_label,
+            cta_url=cta_url,
+        ),
     )

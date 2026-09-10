@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.utils import translation
 
 from .business_email_content import BusinessEmailContent, build_business_email_content
+from .email_branding import render_branded_email_html
 from .emailing import send_email
 
 logger = logging.getLogger(__name__)
@@ -31,6 +32,12 @@ def _send(*, email_type: str, recipient, content: BusinessEmailContent) -> None:
         subject=content.subject,
         to=email,
         text_body=content.text_body,
+        html_body=render_branded_email_html(
+            subject=content.subject,
+            text_body="\n\n".join(line for line in content.lines if line),
+            cta_label=content.cta_label,
+            cta_url=content.cta_url,
+        ),
     )
 
 

@@ -23,3 +23,6 @@ Status: ACTIVE
 | `MAIL-017` | `apps/core/services/business_email_content.py`, `apps/core/email_previews.py` | `tests/test_email_preview_gallery.py`, `tests/test_business_email_notifications.py` | Exact |
 | `MAIL-018` | `templates/emails/base.html`, locale catalogs | `tests/test_email_preview_gallery.py`, localization integrity tests | Exact |
 
+
+| `MAIL-019` | `BusinessEmailContent`, `render_branded_email_html`, preview + delivery paths | `tests/test_business_email_notifications.py` | Exact |
+| `MAIL-020` | `localized_email_brand_name`, business email content builder | `tests/test_business_email_notifications.py` | Exact |

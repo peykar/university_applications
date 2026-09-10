@@ -1603,3 +1603,11 @@ Adjusted Program Detail mobile composition to match the reviewed target: increas
 - Added realistic sample context for all business email preview types.
 - Localized the reusable branded email footer and automated/security notice.
 - Added `MAIL-017` and `MAIL-018` with exact traceability and regression coverage.
+
+
+## 2026-09-10 — BUG-0038 business email CTA and localized brand
+
+- Business HTML emails now render their primary deep link as a clickable CTA instead of plain text.
+- Plain-text alternatives retain the action label and raw URL.
+- Persian and Arabic business email subjects/body copy now use the shared localized TurkDemy brand name.
+- Preview and production rendering remain on the same content/rendering path.

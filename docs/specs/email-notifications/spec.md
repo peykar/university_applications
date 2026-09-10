@@ -1,7 +1,7 @@
 # Email and notification templates
 
 Status: ACTIVE
-Version: 1.2
+Version: 1.3
 
 ## Goal
 
@@ -60,6 +60,10 @@ actual outgoing subject/body structure.
 
 MAIL-018 — Shared branded email chrome, including footer/support and automated-message text, MUST be
 localized to the selected/active email language.
+
+MAIL-019 — Business HTML emails MUST render their primary action as a clickable CTA using the same localized deep link preserved in the plain-text fallback.
+
+MAIL-020 — Business email subjects/body copy that mention the TurkDemy brand MUST use the localized email brand name for the active email language.
 
 ## Acceptance policy
 

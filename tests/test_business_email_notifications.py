@@ -61,6 +61,8 @@ class BusinessEmailContentTests(SimpleTestCase):
             url="https://turkdemy.com/en/requests/42/",
         )
         self.assertEqual(content.subject, "We received your TurkDemy request")
+        self.assertEqual(content.cta_label, "View your request")
+        self.assertEqual(content.cta_url, "https://turkdemy.com/en/requests/42/")
         self.assertIn("Hello Sample Student,", content.text_body)
         self.assertIn("We received your request.", content.text_body)
         self.assertIn("https://turkdemy.com/en/requests/42/", content.text_body)
@@ -70,3 +72,31 @@ class BusinessEmailContentTests(SimpleTestCase):
 
         with self.assertRaises(ValueError):
             build_business_email_content("not-a-real-email")
+
+
+class BusinessEmailBrandAndLinkTests(SimpleTestCase):
+    def test_persian_subject_uses_localized_brand(self):
+        from django.utils import translation
+
+        from apps.core.services.business_email_content import build_business_email_content
+
+        with translation.override("fa"):
+            content = build_business_email_content(
+                "request_received",
+                name="Sample Student",
+                url="https://turkdemy.com/fa/requests/42/",
+            )
+        self.assertIn("ترک‌دمی", content.subject)
+        self.assertNotIn("TurkDemy", content.subject)
+
+    def test_business_html_renders_clickable_cta(self):
+        from apps.core.services.email_branding import render_branded_email_html
+
+        html = render_branded_email_html(
+            subject="Subject",
+            text_body="Body",
+            cta_label="View request",
+            cta_url="https://turkdemy.com/en/requests/42/",
+        )
+        self.assertIn('href="https://turkdemy.com/en/requests/42/"', html)
+        self.assertIn("View request", html)

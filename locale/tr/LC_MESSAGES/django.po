@@ -3631,3 +3631,59 @@ msgstr "Bu, %(brand)s tarafından gönderilen otomatik bir mesajdır."
 msgid "Please do not share verification or sign-in codes."
 msgstr "Lütfen doğrulama veya oturum açma kodlarını paylaşmayın."
 
+
+
+# BUG-0038 business email CTA and localized brand
+#, python-format
+msgid "We received your %(brand)s request"
+msgstr "%(brand)s talebinizi aldık"
+
+#, python-format
+msgid "New %(brand)s request"
+msgstr "Yeni %(brand)s talebi"
+
+#, python-format
+msgid "You have a new %(brand)s message"
+msgstr "%(brand)s üzerinde yeni bir mesajınız var"
+
+#, python-format
+msgid "New message from a %(brand)s customer"
+msgstr "Bir %(brand)s müşterisinden yeni mesaj"
+
+#, python-format
+msgid "There is a new message waiting for you in %(brand)s."
+msgstr "%(brand)s üzerinde sizi bekleyen yeni bir mesaj var."
+
+#, python-format
+msgid "A document in your %(brand)s request needs to be replaced."
+msgstr "%(brand)s talebinizdeki bir belgenin değiştirilmesi gerekiyor."
+
+#, python-format
+msgid "Your %(brand)s request is moving forward"
+msgstr "%(brand)s talebiniz ilerliyor"
+
+#, python-format
+msgid "A %(brand)s task was assigned to you"
+msgstr "Size bir %(brand)s görevi atandı"
+
+msgid "View your request"
+msgstr "Talebinizi görüntüleyin"
+
+msgid "Open applicant"
+msgstr "Başvuru sahibini aç"
+
+msgid "Open tasks"
+msgstr "Görevleri aç"
+
+msgid "Open the conversation"
+msgstr "Konuşmayı aç"
+
+msgid "Review your documents"
+msgstr "Belgelerinizi inceleyin"
+
+msgid "View your programs"
+msgstr "Programlarınızı görüntüleyin"
+
+msgid "View application"
+msgstr "Başvuruyu görüntüle"
+

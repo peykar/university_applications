@@ -280,7 +280,9 @@ def render_email_preview(
             message.attach_alternative(
                 render_branded_email_html(
                     subject=content.subject,
-                    text_body=content.text_body,
+                    text_body="\n\n".join(line for line in content.lines if line),
+                    cta_label=content.cta_label,
+                    cta_url=content.cta_url,
                 ),
                 "text/html",
             )
