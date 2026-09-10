@@ -7,6 +7,7 @@ from django.db.models import Q, QuerySet
 from django.utils import timezone
 
 from apps.applications.models import Application
+from apps.core.services.business_email import notify_todo_assigned
 from apps.leads.models import Lead, LeadActivity, LeadActivityType
 
 from .models import CommunicationLog, CommunicationLogRevision, Todo, TodoStatus
@@ -92,6 +93,7 @@ def create_todo(*, agent, actor, title, description="", due_date=None, assignee=
         description=f"TODO created: {todo.title}.",
         metadata={"todo_id": str(todo.pk), "event": "todo_created"},
     )
+    notify_todo_assigned(todo, performed_by=actor)
     return todo
 
 
@@ -100,6 +102,7 @@ def update_todo(*, todo, actor, status=None, assignee_marker=False, assignee=Non
     if not todo.agent.users.filter(pk=actor.pk).exists():
         raise PermissionDenied("Active Agent membership is required.")
     fields = ["updated_by", "updated_at"]
+    previous_assignee_id = todo.assignee_id
     if assignee_marker:
         if assignee is not None and not todo.agent.users.filter(pk=assignee.pk).exists():
             raise PermissionDenied("Assignee must belong to the owning Agent organization.")
@@ -119,6 +122,8 @@ def update_todo(*, todo, actor, status=None, assignee_marker=False, assignee=Non
         fields.extend(["completed_by", "completed_at"])
     todo.updated_by = actor
     todo.save(update_fields=tuple(dict.fromkeys(fields)))
+    if assignee_marker and todo.assignee_id != previous_assignee_id:
+        notify_todo_assigned(todo, performed_by=actor)
     _record_private_activity(
         subject=todo.subject,
         actor=actor,

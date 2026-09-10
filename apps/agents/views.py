@@ -16,6 +16,10 @@ from django.views.decorators.http import require_POST
 
 from apps.applications.models import Application, ApplicationDocument, ApplicationStatus
 from apps.applications.services import create_student_application
+from apps.core.services.business_email import (
+    notify_application_status_changed,
+    notify_document_action_required,
+)
 from apps.leads.models import (
     Lead,
     LeadActivity,
@@ -1151,6 +1155,7 @@ def applicant_document_review(request, lead_id, document_id):
 
     if review_status == LeadDocumentReviewStatus.REPLACEMENT_REQUESTED:
         reason = document.review_note.strip()
+        notify_document_action_required(lead=lead, document=document)
         send_system_message(
             lead,
             event_type=SystemMessageEventType.DOCUMENT_REPLACEMENT_REQUESTED,
@@ -1741,9 +1746,11 @@ def application_status(request, application_id):
         messages.error(request, _("Invalid application status."))
         return redirect("agent-application-detail", application_id=application.pk)
 
+    old_status = application.status
     application.status = status
     application.updated_by = request.user
     application.save(update_fields=("status", "updated_by", "updated_at"))
+    notify_application_status_changed(application=application, old_status=old_status)
     messages.success(request, _("Application status updated."))
     return redirect("agent-application-detail", application_id=application.pk)
 

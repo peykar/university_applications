@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.utils.translation import gettext as _
 
+from apps.core.services.business_email import notify_program_recommended
 from apps.messaging.models import SystemMessageEventType
 
 from ..models import (
@@ -139,6 +140,7 @@ def recommend_program(*, lead: Lead, program, agent_user, reason: str = "") -> R
         },
         performed_by=agent_user,
     )
+    notify_program_recommended(lead=lead, program=program)
     return RecommendationResult(
         interest=interest,
         outcome=RecommendationOutcome.CREATED,

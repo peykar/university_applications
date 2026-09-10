@@ -9,6 +9,7 @@ from django.utils import timezone
 
 from apps.applications.services import create_student_application
 from apps.core.audit import get_system_user
+from apps.core.services.business_email import notify_request_finalized
 from apps.messaging.models import SystemMessageEventType
 from apps.students.models import Student, StudentDocument
 from apps.universities.models import ProgramOffering
@@ -263,6 +264,7 @@ def finalize_lead(
             event_data={"student_id": str(student.pk)},
             performed_by=actor,
         )
+        notify_request_finalized(lead)
         return student
     if student_data is None:
         student_data = _student_data_from_lead(lead)
@@ -335,6 +337,7 @@ def finalize_lead(
         event_data={"student_id": str(student.pk)},
         performed_by=actor,
     )
+    notify_request_finalized(lead)
 
     return student
 

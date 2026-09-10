@@ -3476,3 +3476,113 @@ msgstr "عرض أقل"
 #: UI-0011 stabilization
 msgid "Browse programs"
 msgstr "تصفح البرامج"
+
+# FEAT-0013 business email notifications
+msgid "A TurkDemy task was assigned to you"
+msgstr "تم تعيين مهمة في TurkDemy لك"
+
+msgid "A document in your TurkDemy request needs to be replaced."
+msgstr "يجب استبدال أحد المستندات في طلبك على TurkDemy."
+
+msgid "A document needs your attention"
+msgstr "هناك مستند يحتاج إلى انتباهك"
+
+msgid "A new customer request is ready for review."
+msgstr "هناك طلب عميل جديد جاهز للمراجعة."
+
+msgid "A new program was recommended for you"
+msgstr "تمت التوصية ببرنامج جديد لك"
+
+#, python-format
+msgid "An application has been started for %(program)s at %(university)s."
+msgstr "تم بدء طلب تقديم لبرنامج %(program)s في %(university)s."
+
+#, python-format
+msgid "Applicant: %(name)s"
+msgstr "المتقدم: %(name)s"
+
+#, python-format
+msgid "Document: %(document)s"
+msgstr "المستند: %(document)s"
+
+#, python-format
+msgid "Due: %(due)s"
+msgstr "الموعد النهائي: %(due)s"
+
+#, python-format
+msgid "Hello %(name)s,"
+msgstr "مرحبًا %(name)s،"
+
+msgid "New TurkDemy request"
+msgstr "طلب TurkDemy جديد"
+
+msgid "New message from a TurkDemy customer"
+msgstr "رسالة جديدة من أحد عملاء TurkDemy"
+
+#, python-format
+msgid "Open applicant: %(url)s"
+msgstr "فتح المتقدم: %(url)s"
+
+#, python-format
+msgid "Open tasks: %(url)s"
+msgstr "فتح المهام: %(url)s"
+
+#, python-format
+msgid "Open the conversation: %(url)s"
+msgstr "فتح المحادثة: %(url)s"
+
+#, python-format
+msgid "Reason: %(reason)s"
+msgstr "السبب: %(reason)s"
+
+#, python-format
+msgid "Review your documents: %(url)s"
+msgstr "راجع مستنداتك: %(url)s"
+
+#, python-format
+msgid "Task: %(title)s"
+msgstr "المهمة: %(title)s"
+
+msgid "There is a new message waiting for you in TurkDemy."
+msgstr "هناك رسالة جديدة بانتظارك في TurkDemy."
+
+#, python-format
+msgid "This is a representative preview of the %(label)s email. The live email includes the relevant request, applicant, program, document, application, message, or task context and a direct TurkDemy link."
+msgstr "هذه معاينة نموذجية لبريد %(label)s الإلكتروني. يتضمن البريد الفعلي سياق الطلب أو المتقدم أو البرنامج أو المستند أو طلب التقديم أو الرسالة أو المهمة ذات الصلة، بالإضافة إلى رابط مباشر إلى TurkDemy."
+
+#, python-format
+msgid "View application: %(url)s"
+msgstr "عرض طلب التقديم: %(url)s"
+
+#, python-format
+msgid "View your programs: %(url)s"
+msgstr "عرض برامجك: %(url)s"
+
+#, python-format
+msgid "View your request: %(url)s"
+msgstr "عرض طلبك: %(url)s"
+
+msgid "We completed the initial review of your request and it is moving to the next stage."
+msgstr "أكملنا المراجعة الأولية لطلبك وهو ينتقل الآن إلى المرحلة التالية."
+
+msgid "We received your TurkDemy request"
+msgstr "لقد استلمنا طلبك على TurkDemy"
+
+msgid "We received your request. Your advisor will review it and guide you through the next steps."
+msgstr "لقد استلمنا طلبك. سيقوم مستشارك بمراجعته وإرشادك خلال الخطوات التالية."
+
+msgid "You have a new TurkDemy message"
+msgstr "لديك رسالة جديدة في TurkDemy"
+
+msgid "Your TurkDemy request is moving forward"
+msgstr "طلبك على TurkDemy يتقدم"
+
+#, python-format
+msgid "Your application status is now: %(status)s"
+msgstr "حالة طلب التقديم لديك الآن: %(status)s"
+
+msgid "Your university application has started"
+msgstr "تم بدء طلبك الجامعي"
+
+msgid "Your university application was updated"
+msgstr "تم تحديث طلبك الجامعي"

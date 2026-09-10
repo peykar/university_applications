@@ -1,14 +1,15 @@
 # Email and notification templates — tasks
 
-Status: BASELINED
+Status: ACTIVE
 
-The current implementation predates formal SDD. Existing behavior is treated as
-baseline subject to the gap report.
-
-- [x] Extract established intended behavior into `MAIL` requirements.
-- [x] Record current technical design.
-- [ ] Resolve any `MAIL` findings marked `SPEC GAP` or `CODE GAP` in
-      `docs/spec-code-gap-report.md`.
-- [ ] For the next behavioral change, add requirement IDs before implementation.
-- [ ] Update traceability after each implementation change.
-- [ ] Run `make format` and `make check`.
+- [x] Extract established authentication behavior into `MAIL` requirements.
+- [x] Define business notification recipient/event policy.
+- [x] Register business outgoing types in the Email Preview Gallery.
+- [x] Implement post-commit business notification service.
+- [x] Wire Request, messaging, recommendation, document replacement, finalization, Application,
+      Application-status, and TODO-assignment events.
+- [x] Add requirement-level tests for registry and event dispatch behavior.
+- [x] Update traceability and changelog.
+- [ ] Future change: notification preferences/digests.
+- [ ] Future change: scheduled TODO due/overdue reminders.
+- [ ] Future change: university-recipient/submission notifications.

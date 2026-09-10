@@ -7,6 +7,7 @@ from typing import Any
 
 from django.contrib.auth import get_user_model
 from django.utils import translation
+from django.utils.translation import gettext as _
 
 from apps.accounts.adapters import TurkDemyAccountAdapter
 
@@ -20,6 +21,66 @@ class EmailPreviewSpec:
 
 
 EMAIL_PREVIEW_REGISTRY: dict[str, EmailPreviewSpec] = {
+    "request_received": EmailPreviewSpec(
+        "request_received",
+        "Request received",
+        "emails/business/request_received",
+        "Requests",
+    ),
+    "new_request_agent": EmailPreviewSpec(
+        "new_request_agent",
+        "New request for agent",
+        "emails/business/new_request_agent",
+        "Agent operations",
+    ),
+    "new_message_customer": EmailPreviewSpec(
+        "new_message_customer",
+        "New message for customer",
+        "emails/business/new_message_customer",
+        "Messaging",
+    ),
+    "new_message_agent": EmailPreviewSpec(
+        "new_message_agent",
+        "New message for agent",
+        "emails/business/new_message_agent",
+        "Messaging",
+    ),
+    "program_recommended": EmailPreviewSpec(
+        "program_recommended",
+        "Program recommended",
+        "emails/business/program_recommended",
+        "Programs",
+    ),
+    "document_action_required": EmailPreviewSpec(
+        "document_action_required",
+        "Document action required",
+        "emails/business/document_action_required",
+        "Documents",
+    ),
+    "request_moving_forward": EmailPreviewSpec(
+        "request_moving_forward",
+        "Request moving forward",
+        "emails/business/request_moving_forward",
+        "Requests",
+    ),
+    "application_started": EmailPreviewSpec(
+        "application_started",
+        "Application started",
+        "emails/business/application_started",
+        "Applications",
+    ),
+    "application_status_updated": EmailPreviewSpec(
+        "application_status_updated",
+        "Application status updated",
+        "emails/business/application_status_updated",
+        "Applications",
+    ),
+    "todo_assigned": EmailPreviewSpec(
+        "todo_assigned",
+        "Todo assigned",
+        "emails/business/todo_assigned",
+        "Agent operations",
+    ),
     "login_code": EmailPreviewSpec(
         key="login_code",
         label="Sign-in code",
@@ -150,12 +211,49 @@ def render_email_preview(
 ):
     spec = EMAIL_PREVIEW_REGISTRY[email_type]
     with translation.override(language):
-        adapter = TurkDemyAccountAdapter()
-        message = adapter.render_mail(
-            spec.template_prefix,
-            "student@example.com",
-            sample_email_context(),
-        )
+        if spec.template_prefix.startswith("emails/business/"):
+            from django.core.mail import EmailMultiAlternatives
+
+            from apps.core.services.email_branding import render_branded_email_html
+
+            sample = sample_email_context()
+            subjects = {
+                "request_received": _("We received your TurkDemy request"),
+                "new_request_agent": _("New TurkDemy request"),
+                "new_message_customer": _("You have a new TurkDemy message"),
+                "new_message_agent": _("New message from a TurkDemy customer"),
+                "program_recommended": _("A new program was recommended for you"),
+                "document_action_required": _("A document needs your attention"),
+                "request_moving_forward": _("Your TurkDemy request is moving forward"),
+                "application_started": _("Your university application has started"),
+                "application_status_updated": _("Your university application was updated"),
+                "todo_assigned": _("A TurkDemy task was assigned to you"),
+            }
+            text = str(
+                _(
+                    "This is a representative preview of the %(label)s email. "
+                    "The live email includes the relevant request, applicant, program, "
+                    "document, application, message, or task context and a direct "
+                    "TurkDemy link."
+                )
+                % {"label": spec.label}
+            )
+            message = EmailMultiAlternatives(
+                subject=str(subjects[email_type]),
+                body=text,
+                to=[sample["email"]],
+            )
+            message.attach_alternative(
+                render_branded_email_html(subject=str(subjects[email_type]), text_body=text),
+                "text/html",
+            )
+        else:
+            adapter = TurkDemyAccountAdapter()
+            message = adapter.render_mail(
+                spec.template_prefix,
+                "student@example.com",
+                sample_email_context(),
+            )
 
     html_body = ""
     alternatives = getattr(message, "alternatives", [])

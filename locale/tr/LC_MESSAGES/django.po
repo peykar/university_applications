@@ -3504,3 +3504,113 @@ msgstr "Daha az göster"
 #: UI-0011 stabilization
 msgid "Browse programs"
 msgstr "Programlara göz at"
+
+# FEAT-0013 business email notifications
+msgid "A TurkDemy task was assigned to you"
+msgstr "Size bir TurkDemy görevi atandı"
+
+msgid "A document in your TurkDemy request needs to be replaced."
+msgstr "TurkDemy talebinizdeki bir belgenin değiştirilmesi gerekiyor."
+
+msgid "A document needs your attention"
+msgstr "Bir belgeyle ilgilenmeniz gerekiyor"
+
+msgid "A new customer request is ready for review."
+msgstr "Yeni bir müşteri talebi incelemeye hazır."
+
+msgid "A new program was recommended for you"
+msgstr "Size yeni bir program önerildi"
+
+#, python-format
+msgid "An application has been started for %(program)s at %(university)s."
+msgstr "%(university)s bünyesindeki %(program)s programı için bir başvuru başlatıldı."
+
+#, python-format
+msgid "Applicant: %(name)s"
+msgstr "Başvuru sahibi: %(name)s"
+
+#, python-format
+msgid "Document: %(document)s"
+msgstr "Belge: %(document)s"
+
+#, python-format
+msgid "Due: %(due)s"
+msgstr "Son tarih: %(due)s"
+
+#, python-format
+msgid "Hello %(name)s,"
+msgstr "Merhaba %(name)s,"
+
+msgid "New TurkDemy request"
+msgstr "Yeni TurkDemy talebi"
+
+msgid "New message from a TurkDemy customer"
+msgstr "Bir TurkDemy müşterisinden yeni mesaj"
+
+#, python-format
+msgid "Open applicant: %(url)s"
+msgstr "Başvuru sahibini aç: %(url)s"
+
+#, python-format
+msgid "Open tasks: %(url)s"
+msgstr "Görevleri aç: %(url)s"
+
+#, python-format
+msgid "Open the conversation: %(url)s"
+msgstr "Konuşmayı aç: %(url)s"
+
+#, python-format
+msgid "Reason: %(reason)s"
+msgstr "Neden: %(reason)s"
+
+#, python-format
+msgid "Review your documents: %(url)s"
+msgstr "Belgelerinizi inceleyin: %(url)s"
+
+#, python-format
+msgid "Task: %(title)s"
+msgstr "Görev: %(title)s"
+
+msgid "There is a new message waiting for you in TurkDemy."
+msgstr "TurkDemy'de sizi bekleyen yeni bir mesaj var."
+
+#, python-format
+msgid "This is a representative preview of the %(label)s email. The live email includes the relevant request, applicant, program, document, application, message, or task context and a direct TurkDemy link."
+msgstr "Bu, %(label)s e-postasının örnek bir önizlemesidir. Gerçek e-posta ilgili talep, başvuru sahibi, program, belge, başvuru, mesaj veya görev bilgilerini ve doğrudan TurkDemy bağlantısını içerir."
+
+#, python-format
+msgid "View application: %(url)s"
+msgstr "Başvuruyu görüntüle: %(url)s"
+
+#, python-format
+msgid "View your programs: %(url)s"
+msgstr "Programlarınızı görüntüleyin: %(url)s"
+
+#, python-format
+msgid "View your request: %(url)s"
+msgstr "Talebinizi görüntüleyin: %(url)s"
+
+msgid "We completed the initial review of your request and it is moving to the next stage."
+msgstr "Talebinizin ilk incelemesini tamamladık ve talebiniz bir sonraki aşamaya ilerliyor."
+
+msgid "We received your TurkDemy request"
+msgstr "TurkDemy talebinizi aldık"
+
+msgid "We received your request. Your advisor will review it and guide you through the next steps."
+msgstr "Talebinizi aldık. Danışmanınız talebinizi inceleyecek ve sonraki adımlarda size rehberlik edecektir."
+
+msgid "You have a new TurkDemy message"
+msgstr "Yeni bir TurkDemy mesajınız var"
+
+msgid "Your TurkDemy request is moving forward"
+msgstr "TurkDemy talebiniz ilerliyor"
+
+#, python-format
+msgid "Your application status is now: %(status)s"
+msgstr "Başvuru durumunuz artık: %(status)s"
+
+msgid "Your university application has started"
+msgstr "Üniversite başvurunuz başlatıldı"
+
+msgid "Your university application was updated"
+msgstr "Üniversite başvurunuz güncellendi"

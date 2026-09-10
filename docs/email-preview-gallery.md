@@ -50,3 +50,12 @@ superuser-only HTML preview endpoint rather than calling the allauth adapter
 directly. django-allauth email rendering relies on its active request context
 for site/domain formatting, so endpoint-level testing mirrors production
 behavior and catches both rendering and routing failures.
+
+## Business workflow emails
+
+The gallery also contains the registered transactional business emails introduced by
+`FEAT-0013`: Request received/new Request, human message notifications, program recommendation,
+document action required, Request moving forward, Application started/status updated, and TODO
+assignment. These previews are representative; live messages substitute the relevant domain
+context and direct link. Any future outgoing business email must be registered here before it can
+be sent through TurkDemy's email service.

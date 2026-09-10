@@ -3,6 +3,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from apps.agents.models import Agent
+from apps.core.services.business_email import notify_request_created
 
 from .models import (
     Lead,
@@ -24,6 +25,7 @@ def create_lead_workspace(sender, instance, created, **kwargs):
             "updated_by": instance.updated_by,
         },
     )
+    notify_request_created(instance)
     LeadActivity.objects.create(
         lead=instance,
         activity_type=LeadActivityType.CREATED,

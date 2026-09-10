@@ -1580,3 +1580,18 @@ Adjusted Program Detail mobile composition to match the reviewed target: increas
 - Made a single Offering fill the content column and strengthened the Start a Request hierarchy.
 - Compacted University/media and related-program presentation to reduce unnecessary page length.
 - Moved the conversion card before long content on tablet/mobile while preserving RTL/LTR logical layout and CHG-0023 behavior.
+
+## 2026-09-10 — Business email notifications
+
+- Added FEAT-0013 and expanded the MAIL SDD capability from authentication-only templates to core
+  transactional Request, messaging, recommendation, document, finalization, Application, and TODO
+  notifications.
+- Registered all new outgoing types in the superuser Email Preview Gallery.
+- Added post-commit business email dispatch so rolled-back workflows do not emit email.
+
+## 2026-09-10 — BUG-0036 Business email locale catalogs
+
+- Added the 31 FEAT-0013 business-email/preview gettext strings to Persian, Turkish, and Arabic
+  locale catalogs.
+- Recompiled `django.mo` files so localization-integrity checks can resolve the new messages.
+- Preserved interpolation placeholders and existing FEAT-0013 notification behavior.

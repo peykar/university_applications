@@ -3,6 +3,7 @@ from __future__ import annotations
 from django.core.exceptions import ValidationError
 from django.db import transaction
 
+from apps.core.services.business_email import notify_application_created
 from apps.students.models import Student
 from apps.universities.models import OfferingFeeType, ProgramOffering
 
@@ -61,4 +62,5 @@ def create_student_application(
         updated_by=performed_by,
     )
 
+    notify_application_created(application)
     return application

@@ -54,3 +54,10 @@ code (`fa`, `ar`, etc.) rather than depending on compiled gettext catalogs.
 This keeps brand transliteration available immediately in all environments,
 including tests and preview tooling. Normal email sentences continue to use
 Django translations.
+
+## Transactional business notifications
+
+Core Request/Agent workflows now send selected action/milestone emails through
+`apps.core.services.business_email`. Delivery is scheduled after the surrounding database
+transaction commits. The event/recipient contract is governed by
+`docs/specs/email-notifications/spec.md`; routine internal changes remain in-app.

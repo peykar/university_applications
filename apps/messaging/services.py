@@ -9,6 +9,7 @@ from django.utils import timezone, translation
 from django.utils.translation import gettext as _
 
 from apps.core.audit import get_system_user
+from apps.core.services.business_email import notify_message
 
 from .models import (
     Conversation,
@@ -100,6 +101,7 @@ def send_message(*, conversation, sender, sender_role, body="", attachment=None)
         )
     conversation.updated_by = sender
     conversation.save(update_fields=("updated_by", "updated_at"))
+    notify_message(message)
     return message
 
 
