@@ -158,26 +158,7 @@
 </section>
 
 {% elif entity_tab == "messages" %}
-<section class="agent-panel entity-section">
-  <div class="agent-panel-head"><h2>{% trans "Messages about this applicant" %}</h2></div>
-  <div class="lead-chat">
-    <div class="lead-chat-messages">
-      {% for message in lead_messages %}
-        <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
-          <div class="chat-message-meta"><strong>{% if message.sender_role == "system" %}TurkDemy{% elif message.sender %}{{ message.sender.get_full_name|default:message.sender.username }}{% else %}TurkDemy{% endif %}</strong><time>{{ message.created_at|localized_datetime }}</time></div>
-          {% if message.localized_body %}<div class="chat-message-body">{{ message.localized_body|linebreaksbr }}</div>{% endif %}
-          {% for attachment in message.attachments.all %}<a class="chat-attachment" href="{{ attachment.file.url }}">📎 {{ attachment.original_name }}</a>{% endfor %}
-        </article>
-      {% empty %}<div class="empty-chat">{% trans "No messages yet." %}</div>{% endfor %}
-    </div>
-    {% if not conversation.is_closed %}
-      <form method="post" enctype="multipart/form-data" action="{% url 'agent-applicant-message' lead.pk %}" class="chat-compose">
-        {% csrf_token %}{{ message_form.body }}
-        <div class="chat-compose-actions"><div class="chat-file-control">{{ message_form.attachment }}</div><button class="button" type="submit">{% trans "Send reply" %}</button></div>
-      </form>
-    {% endif %}
-  </div>
-</section>
+{% include "agents/includes/applicant_conversation.html" %}
 {% elif entity_tab == "todos" %}
 {% include "agents/includes/todo_workspace.html" %}
 {% elif entity_tab == "communications" %}

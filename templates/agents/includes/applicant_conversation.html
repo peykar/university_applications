@@ -1,0 +1,134 @@
+{% load i18n %}
+<section class="agent-panel{% if entity_tab == 'messages' %} entity-section{% endif %}"{% if entity_tab != 'messages' %} id="messages"{% endif %}>
+  <div class="agent-panel-head">
+    <h2>{% trans "Messages about this applicant" %}</h2>
+  </div>
+  <div class="lead-chat applicant-conversation">
+    <div class="lead-chat-messages">
+      {% for message in lead_messages %}
+        {% if message.sender_role == "system" %}
+          <article class="agent-message system-event">
+            <div class="system-event-row">
+              <span class="system-event-icon" aria-hidden="true">✓</span>
+              <span class="system-event-text">{{ message.localized_body }}</span>
+              <time>{{ message.created_at|localized_datetime:"short" }}</time>
+            </div>
+          </article>
+        {% else %}
+        <article class="chat-message chat-message-{{ message.sender_role }}{% if message.sender == request.user %} chat-message-own{% endif %}">
+          <div class="chat-message-meta">
+            <strong>
+              {% if message.sender %}
+                {{ message.sender.get_full_name|default:message.sender.username }}
+              {% else %}
+                TurkDemy
+              {% endif %}
+            </strong>
+            <time>{{ message.created_at|localized_datetime }}</time>
+          </div>
+          {% if message.localized_body %}
+            <div class="chat-message-body">{{ message.localized_body|linebreaksbr }}</div>
+          {% endif %}
+            {% for attachment in message.attachments.all %}
+              <div class="agent-chat-attachment">
+                <a class="chat-attachment" href="{{ attachment.file.url }}" target="_blank" rel="noopener">
+                  📎 {{ attachment.original_name|default:"Attachment" }}
+                </a>
+                {% if message.sender_role == "customer" %}
+                  <div class="attachment-actions">
+                    {% if attachment.promoted_document %}
+                      <a
+                        class="status-pill success"
+                        href="{% url 'agent-applicant-documents' lead.pk %}#document-{{ attachment.promoted_document.pk }}"
+                      >✓ {% trans "Added to documents" %}</a>
+                    {% else %}
+                      <button
+                        type="button"
+                        class="text-action button-reset modal-trigger"
+                        data-modal-target="promote-attachment-{{ attachment.pk }}"
+                      >{% trans "Add to documents" %}</button>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+              {% if message.sender_role == "customer" and not attachment.promoted_document %}
+                <dialog
+                  class="agent-modal"
+                  id="promote-attachment-{{ attachment.pk }}"
+                  aria-labelledby="promote-title-{{ attachment.pk }}"
+                >
+                  <div class="agent-modal-card">
+                    <div class="agent-modal-head">
+                      <div>
+                        <span class="eyebrow">{% trans "Conversation attachment" %}</span>
+                        <h2 id="promote-title-{{ attachment.pk }}">{% trans "Add to documents" %}</h2>
+                        <p>{{ attachment.original_name|default:"Attachment" }}</p>
+                      </div>
+                      <button
+                        type="button"
+                        class="modal-close button-reset"
+                        aria-label="{% trans 'Close' %}"
+                      >×</button>
+                    </div>
+                    <form
+                      method="post"
+                      action="{% url 'agent-applicant-attachment-to-document' lead.pk attachment.pk %}"
+                      class="agent-modal-form"
+                    >
+                      {% csrf_token %}
+                      <label>{% trans "Document type" %}
+                        <select name="document_type" required>
+                          {% for value,label in promote_attachment_form.fields.document_type.choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                          {% endfor %}
+                        </select>
+                      </label>
+                      <label>
+                        {% trans "Name" %}
+                        <input type="text" name="name" value="{{ attachment.original_name }}">
+                      </label>
+                      <label>
+                        {% trans "Description" %}
+                        <textarea
+                          name="description"
+                          rows="3"
+                          placeholder="{% trans 'Optional note about this document' %}"
+                        ></textarea>
+                      </label>
+                      <p class="modal-help">
+                        {% trans "The attachment will be copied into the applicant's Documents and marked as Needs review." %}
+                      </p>
+                      <div class="agent-modal-actions">
+                        <button type="button" class="button button-secondary modal-close">
+                          {% trans "Cancel" %}
+                        </button>
+                        <button class="button" type="submit">{% trans "Add to documents" %}</button>
+                      </div>
+                    </form>
+                  </div>
+                </dialog>
+              {% endif %}
+            {% endfor %}
+        </article>
+        {% endif %}
+      {% empty %}
+        <div class="empty-chat">{% trans "No messages yet." %}</div>
+      {% endfor %}
+    </div>
+    {% if not conversation.is_closed %}
+      <form
+        method="post"
+        enctype="multipart/form-data"
+        action="{% url 'agent-applicant-message' lead.pk %}"
+        class="chat-compose"
+      >
+        {% csrf_token %}
+        {{ message_form.body }}
+        <div class="chat-compose-actions">
+          <div class="chat-file-control">{{ message_form.attachment }}</div>
+          <button class="button" type="submit">{% trans "Send reply" %}</button>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</section>

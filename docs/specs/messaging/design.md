@@ -46,3 +46,12 @@ document replacement upload/request, and Applicant finalization.
 
 The repository does not check in generated Django migrations. Operators use the normal project
 `makemigrations`/`migrate` workflow to add the two Message columns on existing databases.
+
+## Canonical Agent Applicant conversation presentation
+
+The Agent Applicant overview and the dedicated Applicant Messages route reuse
+`templates/agents/includes/applicant_conversation.html`. This is the canonical Agent-facing
+presentation for a Lead/Applicant Conversation so sender identity, localized system events,
+attachments, attachment-to-Document actions, and the message composer do not drift between the two
+surfaces. Route/view authorization and messaging service behavior remain unchanged.
+

@@ -18,3 +18,4 @@ baseline subject to the gap report.
       body fallback (`MSG-010`, `CHG-0010`).
 - [x] `MSG-T11` — Convert current workflow system-message producers and all product message
       presentation surfaces to `localized_body`; add runtime localization/compatibility regressions.
+- [x] `MSG-T12` — Consolidate Agent Applicant overview and dedicated Messages presentation into one canonical reusable conversation component (`MSG-007`, `MSG-008`, `MSG-010`, `UI-0012`).

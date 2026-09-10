@@ -12,6 +12,9 @@ class AgentDocumentReviewWorkflowStructureTests(SimpleTestCase):
         self.template = (root / "templates" / "agents" / "applicant_detail.html").read_text(
             encoding="utf-8"
         )
+        self.conversation_template = (
+            root / "templates" / "agents" / "includes" / "applicant_conversation.html"
+        ).read_text(encoding="utf-8")
 
     def test_document_has_review_workflow_fields(self):
         self.assertIn("class LeadDocumentReviewStatus", self.models)
@@ -22,7 +25,7 @@ class AgentDocumentReviewWorkflowStructureTests(SimpleTestCase):
     def test_chat_attachment_can_be_promoted_to_document(self):
         self.assertIn("applicant_attachment_to_document", self.views)
         self.assertIn("source_message_attachment=attachment", self.views)
-        self.assertIn("Add to documents", self.template)
+        self.assertIn("Add to documents", self.conversation_template)
 
     def test_agent_can_open_and_review_document(self):
         self.assertIn("applicant_document_review", self.views)
@@ -37,9 +40,15 @@ class AgentDocumentReviewWorkflowStructureTests(SimpleTestCase):
         self.assertIn("User-added", self.template)
 
     def test_chat_promotion_uses_modal_instead_of_inline_form(self):
-        self.assertIn('data-modal-target="promote-attachment-', self.template)
-        self.assertIn("Conversation attachment", self.template)
-        self.assertNotIn('<details class="attachment-promote">', self.template)
+        self.assertIn(
+            'data-modal-target="promote-attachment-',
+            self.conversation_template,
+        )
+        self.assertIn("Conversation attachment", self.conversation_template)
+        self.assertNotIn(
+            '<details class="attachment-promote">',
+            self.conversation_template,
+        )
 
     def test_approved_document_does_not_show_review_action(self):
         self.assertIn(

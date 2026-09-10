@@ -1611,3 +1611,13 @@ Adjusted Program Detail mobile composition to match the reviewed target: increas
 - Plain-text alternatives retain the action label and raw URL.
 - Persian and Arabic business email subjects/body copy now use the shared localized TurkDemy brand name.
 - Preview and production rendering remain on the same content/rendering path.
+
+## 2026-09-10 — UI-0012 canonical Applicant messaging UI
+
+- Consolidated the Agent Applicant overview and dedicated Messages route onto one shared
+  conversation component.
+- Sender names, localized system messages, attachments, customer-attachment promotion, and the
+  composer now render consistently on both surfaces.
+- Removed the duplicated legacy Applicant conversation markup without changing Conversation scope,
+  permissions, or send behavior.
+
